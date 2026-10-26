@@ -344,7 +344,7 @@ the early [CS886 report](https://gsd.uwaterloo.ca/sites/default/files/cs886repor
 evidence for the language. The [historical recovery below](#historical-translation-evidence)
 identifies printed rules separately from a pinned July 2011 implementation;
 the exact implementation accompanying the earliest reports remains unidentified.
-The current
+The original
 [compiler comparison](resolved-ir-comparison.md#source-identities-and-audit-boundary)
 pins `15adb2216909421bcb5022174d2d84ef2b42307c`; it does not identify the original
 translation. Compare generated constraints and their relational meaning
@@ -1108,7 +1108,8 @@ under the [bounded semantic comparison project issue](https://github.com/kbak/cl
 (package 0.5.3), with its MIT license inspected. Its matrix maps exact compiler
 passes/fields to SoSyM §§5.3–5.5, 6.1–6.2/Figures 16/22/23, Appendices 1–3/5
 and current Lean declarations. Compiler behavior is supplementary evidence,
-not a replacement semantic authority. No compiler code or fixtures are vendored.
+not a replacement semantic authority. The original documentation-only audit
+incorporated no compiler code or fixtures.
 
 The audit retains the accepted [span composition (Q1)](sources.md#span-composition-q1-research-for-4), [common-target disjointness (Q8)](sources.md#predicate-contracts-and-the-accepted-q8-correction) and top-level abstract corrections. The
 [comparison decisions D1–D8](resolved-ir-comparison.md#decisions-accepted-locations-and-dependency-boundaries) distinguish effective/default provenance, nested
@@ -1120,6 +1121,14 @@ and example inventory before extending the supported fragment. In particular,
 local Shapes and the B.5 reduct do not establish whole-model comparison;
 the [structural semantics and checker bridges](structural-checker.md) supply the
 separate whole-model interpretation and finite correctness results.
+
+The current executable dependency is
+[`6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea)
+(package 0.5.4). Its MIT license is unchanged. The
+[0.5.4 assessment](resolved-ir-comparison.md#compiler-054-compatibility) records
+changes to the matrix's names/defaults/groups/positions/options entries while
+retaining the historical audit above. The [import guide](resolved-import.md)
+owns current archive/schema/build identities. The paper remains semantic authority.
 
 ## Structural Compile contract
 
@@ -1361,7 +1370,7 @@ interpretation](structural-checker.md). Appendix 3 explains the authored/default
 effective values do not establish historical provenance or default correctness.
 
 Compiler evidence is pinned to
-[`gsdlab/clafer@15adb2216909421bcb5022174d2d84ef2b42307c`](https://github.com/gsdlab/clafer/tree/15adb2216909421bcb5022174d2d84ef2b42307c).
+[`gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea).
 `Intermediate/Intclafer.hs` owns the serialized types; `Language/Clafer.hs`
 `analyze`/`generate` fixes the paired boundary. `Common.createUidIClaferMap`,
 `Optimizer.optimizeModule`/`optimizeClafer`/`makeZeroUnusedAbs`, and

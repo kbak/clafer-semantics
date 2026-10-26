@@ -62,7 +62,7 @@ The reviewed symbol relation uses the signature and field inventory from the
 owners, binary arities and target UIDs. It never strips guessed suffixes. When
 reference and containment have identical endpoints, the reference is the first
 field according to pinned `Generator/Alloy.hs`, `genRelations` (lines 170–180 at
-`15adb2216909421bcb5022174d2d84ef2b42307c`). Receipt order and the reviewed capture's
+`6750e6f591b2131549122c13dee94d3d2257eaea`). Receipt order and the reviewed capture's
 provenance are explicit external assumptions. S excludes inherited fields;
 inherited membership is supported without allocating super objects. Unknown
 signatures, fields and auxiliaries cannot be ignored.
@@ -198,14 +198,13 @@ Original-model parsing, comparison parsing, profile validation, solving and
 witness extraction have distinct diagnostics. A failure after solving preserves
 the observed SAT/UNSAT result and cannot count as a completed comparison.
 
-The existing importer `spellings.cfr` fixture exposes a generated-output parser
-failure: its apostrophe UID is admitted by S but rejected by the pinned Alloy
-parser. The regression retains an `original_parse` error, null solver verdict
-and incomplete result; it does not narrow import admission or report UNSAT.
-The regression assertion passes only when that specific diagnostic is preserved.
-The comparison/replay CLI still returns nonzero, and other unanticipated execution
-errors fail required validation. The stable unrelated-overlap candidate and all
-three deletion-minimal injected cases are also retained as licensed JSON fixtures.
+The importer `spellings.cfr` fixture checks Latin-1 display names, escaped
+apostrophe UIDs and collisions with literal `__prime__` names. Its exact candidate
+and replay must complete with `agree_satisfies`, retaining distinct objects and
+reference heads. A separate injected malformed-Alloy test retains the
+`original_parse` diagnostic with no solver result. Unexpected execution errors
+fail required validation. The stable unrelated-overlap candidate and all three
+deletion-minimal injected cases are also retained as licensed JSON fixtures.
 
 ```sh
 python3 scripts/verification/comparison.py compare /external/capture candidate.json \

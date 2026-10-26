@@ -12,13 +12,15 @@ import json
 import re
 from pathlib import Path
 
-PIN = "15adb2216909421bcb5022174d2d84ef2b42307c"
-ARCHIVE = "a4d05b1575071d2357223700ec887bd08a093d288a2d6f92bb3ac16ec7579913"
-SOURCE_TREE = "959433f7885f905ec0c58dbb0aed9da28d0729cc9ceca15067be8bdd3b3462f0"
+PIN = "6750e6f591b2131549122c13dee94d3d2257eaea"
+VERSION = "0.5.4"
+EXPORT_SCHEMA = "generic-aeson-0.5.4/1"
+ARCHIVE = "2b9e111e21d979ff331816161738df9b07417658f788e0939f31b84292cae74f"
+SOURCE_TREE = "4312978c73cf593e7d12f02fc705b68e5b6e11e16da1ace08cb0ab40932f3a99"
 STACK_LOCK = {"bytes": 1410, "sha256": "2bed95387bc9ad79df4f70de77a9c7e468125c10a09a68a42da233434b59acff"}
 SCHEMA = "clafer-import/1"
 REGISTRY = {"root", "clafer", "integer", "int", "string", "double", "real", "boolean"}
-# LexClafer.x letters/identifier continuations; genId preserves the spelling.
+# LexClafer.x letters/identifier continuations; UID apostrophes become __prime__.
 LETTER = r"[A-Za-zÀ-ÖØ-öø-ÿ]"
 IDENTIFIER = LETTER + r"[A-Za-zÀ-ÖØ-öø-ÿ0-9_']*"
 ALLOY_RESERVED = set("abstract after all always and as assert before but check disj else enum eventually exactly expect extends fact for fun historically iden iff implies in Int let lone module no none not once one open or pred private releases run seq set sig since some steps String sum this triggered univ until var".split())
@@ -29,7 +31,8 @@ OPTIONS = dict(mode=["JSON", "Alloy"], console_output=False,
     alloy_mapping=True, self_contained=False, add_graph=False,
     show_references=False, add_comments=False, ecore2clafer=False,
     trace_len=10, scope_strategy="None", afm=False, meta_data=True,
-    minint=None, maxint=None, file="input.cfr")
+    minint=None, maxint=None, imports=[], import_root=[], public_imports=False,
+    import_base="", file="input.cfr")
 DECL_FIELDS = {"_cinPos", "_modifiers", "_gcard", "_ident", "_uid", "_parentUID",
                "_super", "_reference", "_card", "_glCard", "_elements"}
 
@@ -104,6 +107,24 @@ def interval(value, where):
     return value
 
 
+def position(value, where):
+    """Library capture spans have no file map; generated syntax may have no span."""
+    if value is None:
+        return
+    if type(value) is not dict or set(value) != {"start", "end"}:
+        reject("position", where)
+    points = []
+    for key in ("start", "end"):
+        point = value[key]
+        if type(point) is not dict or set(point) != {"line", "column"}:
+            reject("position", where)
+        if any(type(point[k]) is not int or point[k] < 1 for k in ("line", "column")):
+            reject("position", where)
+        points.append((point["line"], point["column"]))
+    if points[1] < points[0]:
+        reject("position", where)
+
+
 def loads(data):
     def pairs(items):
         result = {}
@@ -156,8 +177,7 @@ def check_candidate_bounds(candidate, bounds):
 def direct(exp, where):
     exact(exp, {"_iType", "_pid", "_inPos", "_exp"}, where)
     string(exp["_pid"], where)
-    if exp["_inPos"] is not None:
-        reject("position", where)
+    position(exp["_inPos"], where)
     e = exp["_exp"]
     if type(e) is not dict or e.get("tag") != "IClaferId":
         unsupported("expression", where)
@@ -217,8 +237,7 @@ def decode_ir(document):
             expected = parent if parent else ("clafer" if abstract else "root")
             if c["_parentUID"] != expected:
                 reject("parent_incidence", uid)
-            if c["_cinPos"] is not None:
-                reject("position", uid)
+            position(c["_cinPos"], uid)
             group = exact(c["_gcard"], {"_interval", "_isKeyword"}, uid)
             boolean(group["_isKeyword"], uid)
             interval(group["_interval"], uid)
@@ -523,7 +542,7 @@ def import_bundle(directory):
     p = Path(directory)
     manifest = loads((p / "manifest.json").read_bytes())
     exact(manifest, {"schema", "compiler_commit", "compiler_version", "export_schema", "inputs", "bounds"}, "manifest")
-    if (manifest["schema"], manifest["compiler_commit"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, PIN, "0.5.3", "generic-aeson-0.5.3/1"):
+    if (manifest["schema"], manifest["compiler_commit"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, PIN, VERSION, EXPORT_SCHEMA):
         unsupported("version")
     exact(manifest["inputs"], {"input.cfr", "analyzed.json", "model.als", "generation.json", "build.json"}, "artifacts")
     files = {}

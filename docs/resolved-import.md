@@ -34,8 +34,8 @@ explicit provisioning.
 To build explicitly or use the capture commands independently:
 
 Obtain the compiler source archive for
-`gsdlab/clafer@15adb2216909421bcb5022174d2d84ef2b42307c`, SHA-256
-`a4d05b1575071d2357223700ec887bd08a093d288a2d6f92bb3ac16ec7579913`.
+`gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea`, SHA-256
+`2b9e111e21d979ff331816161738df9b07417658f788e0939f31b84292cae74f`.
 Build outside the checkout:
 
 ```sh
@@ -77,7 +77,10 @@ its separate output files cannot establish a generation receipt.
 ## Artifacts and deterministic admission
 
 `manifest.json` uses schema `clafer-import/1`, export schema
-`generic-aeson-0.5.3/1`, compiler version `0.5.3` and the exact commit above.
+`generic-aeson-0.5.4/1`, compiler version `0.5.4` and the exact commit above.
+Older compiler/export identities are rejected. Replay historical bundles with
+their original source-matched adapter/runtime, or capture new bundles with 0.5.4;
+do not relabel historical evidence as a new compiler run.
 It hashes raw bytes of `input.cfr`, `analyzed.json`, `model.als`, `generation.json`
 and `build.json`, and carries explicit bounds. It does not hash itself.
 The receipt retains post-analysis/post-string-pass IR, actual backend-consumed
@@ -97,8 +100,19 @@ Unknown forms are rejected. Reference cycles do not trigger hierarchy traversal.
 Parent/super cycles, dangling/reserved IDs and backend-symbol collisions fail.
 Display names may repeat.
 Latin-1 letters and apostrophes permitted by the pinned lexer remain intact in
-names, UIDs and observed backend symbols. This is preservation of emitted text;
+display names. The compiler replaces UID apostrophes with `__prime__` and assigns
+distinct counters when that spelling collides with a literal name. The importer
+preserves those emitted UIDs and backend symbols without deriving them from names.
 Alloy parser/solver acceptance remains outside the import claim.
+
+Positions are either `null` for generated syntax or exact `{start, end}` objects
+with positive integer `line`/`column` coordinates and a nondecreasing exclusive end.
+They are checked metadata retained in the raw IR/receipt, not semantic bounds or
+identity. The single-file library API used here does not populate `inputFiles`,
+so its JSON and internal IR share spans without filenames. The compiler CLI's
+file-qualified spans are outside this capture schema. Import-related options
+must be empty/default and source `//# OPTIONS` directives remain rejected;
+multi-file loading is outside this profile.
 
 Compiler `root`, base `clafer` and six primitive IDs remain distinct. Concrete
 top-level parents become the synthetic root; abstract top-level `clafer` parents

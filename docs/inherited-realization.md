@@ -49,7 +49,7 @@ They are project decision IDs, not sections of the paper's Appendix 4.
   Parentless abstracts have no invented root parent or local parent-fiber bounds.
   Their unused numeric AST slot is not authored global cardinality.
 
-Supplementary evidence (MIT; no source copied):
+Supplementary audited 0.5.3 evidence (MIT; no source copied):
 [gsdlab/clafer@15adb2216909421bcb5022174d2d84ef2b42307c](https://github.com/gsdlab/clafer/tree/15adb2216909421bcb5022174d2d84ef2b42307c),
 `Intermediate/Desugarer.hs` (`desugarModifiers`),
 `Intermediate/ResolverInheritance.hs` (`resolveNClafer`), `Common.hs`
@@ -60,6 +60,8 @@ Supplementary evidence (MIT; no source copied):
 The compiler keeps ordinary children of abstract parents ordinary. Its wider
 parent-subtyping is not selected; its Telematics fixtures differ from the printed
 model, including names and extra version constraints. Preserve the remaining [comparison boundaries (D1–D8)](resolved-ir-comparison.md#decisions-accepted-locations-and-dependency-boundaries).
+The current [0.5.4 assessment](resolved-ir-comparison.md#compiler-054-compatibility)
+retains these realization boundaries separately from its default/group fixes.
 
 ## Scoped source-to-core inventory
 

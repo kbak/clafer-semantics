@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from protocol import PIN, SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
+from protocol import PIN, VERSION, EXPORT_SCHEMA, SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
 
 
 @strict_boundary
@@ -35,8 +35,8 @@ def capture(source, exporter, build_file, bounds, output):
              "build.json": build_bytes}
     for name, data in files.items():
         (output / name).write_bytes(data)
-    manifest = dict(schema=SCHEMA, compiler_commit=PIN, compiler_version="0.5.3",
-                    export_schema="generic-aeson-0.5.3/1", inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
+    manifest = dict(schema=SCHEMA, compiler_commit=PIN, compiler_version=VERSION,
+                    export_schema=EXPORT_SCHEMA, inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
     (output / "manifest.json").write_bytes(encoded(manifest))
     return import_bundle(output)
 

@@ -1333,7 +1333,10 @@ Covers:
 
 [Python tests](../tests/test_resolved_import.py) execute actual pinned captures,
 replay the emitted bundles through Lean admission and mutate schemas, bindings,
-cards, source constructors, options and receipts. [Lean tests](../tests/resolved_import.lean)
+cards, source constructors, options and receipts. They check live source spans
+and malformed position metadata, escaped/colliding apostrophe UIDs, keyword and
+numeric defaults, comment layout, unreachable concrete groups, old-version
+rejection and the saved IR's equality with a fresh export. [Lean tests](../tests/resolved_import.lean)
 exercise kernel/native admission and identity witnesses in
 [ImportExamples.lean](../Clafer/Verification/ImportExamples.lean), including
 repeated names, reference modes and repeated-target occurrences.
@@ -1467,6 +1470,10 @@ nesting, abstract cover/shared inheritance, rejected unrelated overlap with
 `agree_violates`, accepted distinct heads, nested overlap rejection, malformed/root inputs,
 cyclic and nonfunctional tables, unpinned witnesses, the fixed exhaustive domain,
 seeded candidates, all three shrunk mutations and pin/arithmetic/execution failures.
+`test_10_apostrophe_names_compare_and_replay` checks an exact nonempty candidate
+with escaped and colliding UIDs against Alloy and Lean, then replays it.
+`test_original_parser_failure_retains_stage` injects malformed Alloy directly
+into the bridge and checks the parser-stage error with no solver outcome.
 
 `RelationTests` checks generator counts, seeds, interruption and result algebra.
 It also checks exact predicate-name collisions and missing/duplicate original

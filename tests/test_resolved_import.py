@@ -78,6 +78,100 @@ class PinnedImportTests(unittest.TestCase):
         self.assertEqual("c0_Base", repeats[0]["super"])
         self.assertEqual([0, 0], next(n for n in nodes if n["name"] == "Unused")["card"])
 
+    def test_saved_ir_matches_live_capture(self):
+        self.assertEqual(p.loads((FIXTURES / "analyzed.json").read_bytes()), self.bag)
+
+    def test_apostrophe_uid_collisions_preserve_names(self):
+        nodes, _ = p.decode_ir(p.loads(self.receipts["spellings"]["json"]))
+        by_name = {n["name"]: n for n in nodes}
+        self.assertEqual("c0_same__prime__", by_name["same'"]["uid"])
+        self.assertEqual("c1_same__prime__", by_name["same__prime__"]["uid"])
+        self.assertEqual("c0_links__prime__", by_name["links'"]["uid"])
+        self.assertEqual(by_name["Élément"]["uid"], by_name["links'"]["target"])
+
+    def test_source_positions_are_strict_nonsemantic_metadata(self):
+        declaration = self.bag["iModule"]["_mDecls"][0]["_iClafer"]
+        self.assertIsInstance(declaration["_cinPos"], dict)
+        reference = self.bag["iModule"]["_mDecls"][2]["_iClafer"]["_reference"]["_ref"]
+        self.assertIsInstance(reference["_inPos"], dict)
+        valid = {"start": {"line": 1, "column": 1}, "end": {"line": 2, "column": 4}}
+        for position in (None, valid):
+            doc = copy.deepcopy(self.bag)
+            doc["iModule"]["_mDecls"][0]["_iClafer"]["_cinPos"] = position
+            self.assertEqual(p.decode_ir(self.bag), p.decode_ir(doc))
+        malformed = [[], {}, dict(valid, file="input.cfr"), dict(valid, start=None),
+            dict(valid, end={"line": 0, "column": 1}),
+            dict(valid, end={"line": True, "column": 1}),
+            dict(valid, end={"line": 2, "column": 1.5}),
+            dict(valid, start={"line": 3, "column": 1}),
+            dict(valid, end={"line": 2, "column": 1, "unknown": 0}),
+            dict(valid, end={"line": 2})]
+        for value in malformed:
+            for slot in ("declaration", "reference", "super"):
+                def change(doc):
+                    rows = doc["iModule"]["_mDecls"]
+                    if slot == "declaration":
+                        rows[0]["_iClafer"]["_cinPos"] = value
+                    elif slot == "reference":
+                        rows[2]["_iClafer"]["_reference"]["_ref"]["_inPos"] = value
+                    else:
+                        rows[1]["_iClafer"]["_super"]["_inPos"] = value
+                with self.subTest(position=value, slot=slot):
+                    self.rejected_ir(change, "position")
+        # Valid metadata is still compared exactly across the captured IR states
+        # and backend-consumed map; it cannot silently disappear in normalization.
+        base = self.receipts["set_and_bag_references"]
+        source = (FIXTURES / "set_and_bag_references.cfr").read_bytes()
+        for state, code in (("post_analysis", "string_pass_changed_ir"),
+                            ("consumed_map", "stale_consumed_map")):
+            receipt = copy.deepcopy(base)
+            row = (receipt[state]["_mDecls"][0]["_iClafer"] if state == "post_analysis"
+                   else dict(receipt[state])[declaration["_uid"]])
+            row["_cinPos"] = valid
+            if state == "consumed_map":
+                for element in dict(receipt[state])["root"]["_elements"]:
+                    if element["_iClafer"]["_uid"] == declaration["_uid"]:
+                        element["_iClafer"]["_cinPos"] = valid
+            with self.subTest(state=state), self.assertRaisesRegex(p.Rejection, code):
+                p.validate_generation(p.seal_receipt(receipt), source,
+                    receipt["json"].encode(), receipt["alloy"].encode())
+
+    def test_group_defaults_and_comment_layout(self):
+        cases = [("", [1, 1], False), ("0..* ", [1, 1], False),
+                 ("0..3 ", [0, 1], False), ("1..2 ", [0, 1], False),
+                 ("xor ", [0, 1], True), ("or ", [0, 1], True),
+                 ("mux ", [0, 1], True), ("opt ", [0, 1], True),
+                 ("/* comment */ opt ", [0, 1], True)]
+        for index, (group, card, keyword) in enumerate(cases):
+            source = self.directory / f"defaults-{index}.cfr"
+            source.write_text(group + "Owner\n  first\n  second\n")
+            receipt = p.loads(subprocess.check_output([str(self.exporter), str(source)], timeout=120))
+            with self.subTest(group=group):
+                self.assertEqual("captured", receipt["status"], receipt)
+                nodes, metadata, _ = p.validate_generation(p.seal_receipt(receipt), source.read_bytes(),
+                    receipt["json"].encode(), receipt["alloy"].encode())
+                self.assertEqual(["Owner", "first", "second"], [n["name"] for n in nodes])
+                self.assertEqual([card, card], [n["card"] for n in nodes[1:]])
+                self.assertEqual([nodes[0]["uid"]] * 2, [n["parent"] for n in nodes[1:]])
+                self.assertEqual(keyword, metadata[0]["keyword"])
+
+    def test_unreachable_concrete_groups_are_compiler_rejections(self):
+        cases = ["xor Empty\n", "or Empty ?\n", "3..* Few\n  x ?\n  y ?\n",
+                 "abstract xor Base\nConcrete : Base\n",
+                 "abstract Base\n  x ?\n2..* Concrete : Base\n"]
+        for index, text in enumerate(cases):
+            source = self.directory / f"unreachable-{index}.cfr"
+            source.write_text(text)
+            receipt = p.loads(subprocess.check_output([str(self.exporter), str(source)], timeout=120))
+            with self.subTest(source=text):
+                self.assertEqual("compiler_rejected", receipt["status"], receipt)
+                self.assertIn("cannot be satisfied", str(receipt["errors"]))
+        # Abstract groups remain inheritable; concrete children can reach the bound.
+        source = self.directory / "reachable-inherited.cfr"
+        source.write_text("abstract xor Base\nConcrete : Base\n  child ?\n")
+        receipt = p.loads(subprocess.check_output([str(self.exporter), str(source)], timeout=120))
+        self.assertEqual("captured", receipt["status"], receipt)
+
     def lean(self, core, candidate):
         proc = subprocess.run(["lake", "env", "lean", "--run", "Clafer/Verification/ImportMain.lean"],
             cwd=ROOT, input=p.encoded(dict(core, candidate=candidate)), capture_output=True, timeout=120, check=True)
@@ -155,6 +249,7 @@ class PinnedImportTests(unittest.TestCase):
                  "x\n[ some x ]\n", "x\nassert [ some x ]\n", "x\n<< max #x >>\n",
                  "initial x\n", "final x\n", "x\n[alloy| fact { no univ } |]\n",
                  "x\n[choco| hello |]\n", "//# OPTIONS --keep_unused\nx\n",
+                 "//# OPTIONS --import=missing.cfr\nx\n",
                  "x\ny\nz -> x ++ y\n", "abstract A\n  x\n", "a\n  b\n  r -> b\n"]
         for index, text in enumerate(cases):
             with self.subTest(source=text):
@@ -201,6 +296,11 @@ class PinnedImportTests(unittest.TestCase):
                 (directory / "manifest.json").write_bytes(p.encoded(altered))
                 with self.assertRaises(p.Rejection):
                     p.import_bundle(directory)
+            old = dict(manifest, compiler_commit="15adb2216909421bcb5022174d2d84ef2b42307c",
+                       compiler_version="0.5.3", export_schema="generic-aeson-0.5.3/1")
+            (directory / "manifest.json").write_bytes(p.encoded(old))
+            with self.assertRaisesRegex(p.Rejection, "version"):
+                p.import_bundle(directory)
             (directory / "manifest.json").write_bytes(p.encoded(manifest))
             (directory / "model.als").write_bytes(b"tampered")
             with self.assertRaisesRegex(p.Rejection, "artifact_hash"):
@@ -288,12 +388,18 @@ class PinnedImportTests(unittest.TestCase):
 
     def test_live_bound_combinations(self):
         # Bounded exhaustive receipt checks; this is not a semantic proof or solver search.
+        unreachable = {("1..1", "0..0"), ("1..*", "0..0"),
+                       ("2..3", "0..0"), ("2..3", "0..1"), ("2..3", "1..1")}
         for group in ["0..0", "0..1", "1..1", "2..3", "0..*", "1..*"]:
             for local in ["0..0", "0..1", "1..1", "2..3", "0..*", "1..*", "3..3"]:
                 with self.subTest(group=group, local=local):
                     source = self.directory / "bounds.cfr"
                     source.write_text(f"Target 0..*\n{group} box\n  heads ->> Target {local}\n")
                     g = p.loads(subprocess.check_output([str(self.exporter), str(source)], timeout=120))
+                    if (group, local) in unreachable:
+                        self.assertEqual("compiler_rejected", g["status"], g)
+                        self.assertIn("cannot be satisfied", str(g["errors"]))
+                        continue
                     self.assertEqual("captured", g["status"], g)
                     nodes, _, _ = p.validate_generation(p.seal_receipt(g), source.read_bytes(), g["json"].encode(), g["alloy"].encode())
                     self.assertEqual(3, len(nodes))

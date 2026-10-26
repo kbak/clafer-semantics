@@ -263,7 +263,7 @@ class LiveComparisonTests(unittest.TestCase):
             eight={"c0_x":8},keywords={**{f"c{i}_"+name:1 for i in range(4) for name in ("first","second")},
                 **{"c0_"+name:1 for name in ("exclusive","inclusive","atMostOne","optionalGroup")}},
             identities={"c0_Base":2,"c0_Unused":0,"c0_left":1,"c0_right":1,"c0_same":2,"c1_same":2,"c0_links":2},
-            spellings={"c0_box":2,"c0_links'":2,"c0_same'":2,"c0_Élément":2},
+            spellings={"c0_box":2,"c0_links__prime__":2,"c0_same__prime__":2,"c1_same__prime__":2,"c0_Élément":2},
             predicate_name={"c0_ib_candidate":1})
         for name,bounds in maps.items():
             path=cls.evidence / ("capture-"+name)
@@ -454,18 +454,31 @@ class LiveComparisonTests(unittest.TestCase):
         with self.assertRaisesRegex(p.Rejection,"replay_input_inventory"):
             c.replay(path,self.evidence/"bad-replay",runtime=self.runtime)
 
-    def test_10_original_parser_failure_retains_stage(self):
-        # S admits this existing spelling fixture. The pinned compiler emits an
-        # apostrophe UID rejected by the actual Alloy parser: no semantic verdict.
-        r,path=self.run_case("spellings",None,"inconclusive",unpinned=True)
+    def test_10_apostrophe_names_compare_and_replay(self):
+        # 0.5.4 escapes apostrophes in UIDs, including collisions with a literal
+        # __prime__ name, while retaining distinct head identities and references.
+        value=candidate({"c0_box":[1],"c0_Élément":[2],"c0_same__prime__":[3],
+                         "c1_same__prime__":[4],"c0_links__prime__":[5]},
+            [["c0_box",[0,1]],["c0_Élément",[0,2]],
+             ["c0_same__prime__",[1,3]],["c1_same__prime__",[1,4]],
+             ["c0_links__prime__",[1,5]]],[["c0_links__prime__",[5,2]]])
+        r,path=self.run_case("spellings",value,"agree_satisfies")
         self.assertEqual("admitted",r["admission"])
-        self.assertIsNone(r["solver"]);self.assertIsNone(r["lean"])
-        self.assertFalse(r["complete"])
-        self.assertEqual("original_parse",r["diagnostics"][0]["stage"])
-        self.assertEqual("error",r["diagnostics"][0]["status"])
-        replayed=c.replay(path,self.evidence/"spellings-parser-replay",runtime=self.runtime)
-        self.assertEqual("inconclusive",replayed["category"])
-        self.assertEqual("original_parse",replayed["diagnostics"][0]["stage"])
+        self.assertTrue(r["complete"])
+        replayed=c.replay(path,self.evidence/"spellings-replay",runtime=self.runtime)
+        self.assertEqual("agree_satisfies",replayed["category"])
+        self.assertTrue(replayed["complete"])
+
+    def test_original_parser_failure_retains_stage(self):
+        # Deliberately malformed input tests the diagnostic boundary independently
+        # of the compiler's now-correct apostrophe translation.
+        output=self.evidence/"injected-original-parser-failure"
+        output.mkdir()
+        (output/"original.als").write_text("sig Broken' {}\n")
+        result=alloy_runtime.solve(self.runtime,output,{})
+        self.assertEqual("original_parse",result["stage"])
+        self.assertEqual("error",result["status"])
+        self.assertIsNone(result.get("outcome"))
 
     def test_11_raw_candidate_bytes_and_malformed_replay(self):
         raw=("\n  "+json.dumps(self.repeat(1),indent=3)+" \n").encode()
