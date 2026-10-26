@@ -1071,7 +1071,7 @@ these defaults. Keyword provenance survives inheritance: `opt` and numeric
 This deliberately evolves Appendix 3/Figure 27 (PDF pp.31–32), whose general
 `1..1` child default has an exception for keyword groups. Numeric groups followed
 that general default when the SoSyM paper was completed. The
-[historical SoSyM checkpoint](https://github.com/kbak/clafer-semantics/tree/sosym-paper-baseline)
+[historical SoSyM checkpoint](https://github.com/kbak/clafer-semantics/tree/sosym)
 at `8a300bff11af2f458af70d56394f1899815455e9` preserves that convention together
 with the accepted paper corrections. The numeric change is language evolution,
 not a paper erratum or a claim about the paper's original meaning.
