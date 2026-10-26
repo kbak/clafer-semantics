@@ -393,8 +393,9 @@ partial native helpers rather than introducing choice or termination axioms.
 No native compiler executable or finite-carrier restriction on lower layers follows.
 
 Authored/effective multiplicities and abstractness remain inspectable. `Defaults`
-validates supplied Appendix 3 data, including inherited keyword provenance and
-explicit overrides; it does not elaborate defaults or realize primitive values.
+validates supplied data under the adopted
+[child-default policy](sources.md#current-child-default-policy), including inherited
+keyword provenance and explicit overrides; it does not elaborate defaults or realize primitive values.
 The [syntax/source correspondence](sources.md#resolved-2014-clafer-and-individual-shapes)
 records the supported forms, traversal measures and accepted parentless-head rule.
 

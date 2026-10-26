@@ -89,6 +89,49 @@ theorem explicit_overrides_keyword : Defaults explicitChild (some xorParent) non
   unfold Defaults; decide
 theorem inherited_group_bounds : Defaults inheritedGroup (some rootDecl) (some xorParent) := by
   unfold Defaults; decide
+
+/-- Numeric defaults cover every finite interval and every positive unbounded
+lower bound, not just the keyword-equivalent ranges. Validity is checked separately. -/
+theorem numeric_finite_default (lower upper : Nat) :
+    (GroupCard.bounds ⟨lower, .finite upper⟩).childDefault = optional := by
+  cases lower <;> rfl
+
+theorem numeric_positive_unbounded_default (lower : Nat) :
+    (GroupCard.bounds ⟨lower + 1, .unbounded⟩).childDefault = optional := rfl
+
+theorem numeric_unrestricted_default :
+    (GroupCard.bounds unrestricted).childDefault = one := rfl
+
+theorem opt_provenance_matters :
+    GroupCard.opt.range = (GroupCard.bounds unrestricted).range ∧
+    GroupCard.opt.childDefault ≠ (GroupCard.bounds unrestricted).childDefault := by decide
+
+def numericParent (r : DPGraph.Predicates.Range) : Declaration :=
+  { basicDecl with group := ⟨some (.bounds r), .bounds r⟩ }
+
+theorem numeric_child_defaults (lower upper : Nat) :
+    Defaults optionalChild (some (numericParent ⟨lower, .finite upper⟩)) none := by
+  cases lower <;>
+    simp [Defaults, optionalChild, setDecl, numericParent, basicDecl, GroupCard.childDefault]
+
+theorem numeric_mandatory_default_rejected :
+    ¬Defaults setDecl (some (numericParent one)) none := by unfold Defaults; decide
+
+theorem explicit_overrides_numeric :
+    Defaults explicitChild (some (numericParent one)) none := by unfold Defaults; decide
+
+def inheritedNumericGroup : Declaration :=
+  { derivedDecl with super := some basicDecl.id, group := ⟨none, .bounds one⟩ }
+
+theorem inherited_numeric_defaults :
+    Defaults inheritedNumericGroup (some rootDecl) (some (numericParent one)) ∧
+    Defaults optionalChild (some inheritedNumericGroup) none := by unfold Defaults; decide
+
+theorem unrestricted_and_absent_defaults :
+    Defaults setDecl (some (numericParent unrestricted)) none ∧
+    Defaults setDecl (some basicDecl) none ∧ Defaults setDecl none none := by
+  unfold Defaults; decide
+
 theorem unbounded_range_valid : ValidRange ⟨100, .unbounded⟩ := trivial
 theorem inverted_range_rejected : ¬ValidRange ⟨2, .finite 1⟩ := by unfold ValidRange; decide
 theorem basic_reference_inheritance_rejected : ¬Kind.CanExtend .basic .referenceSet := by
