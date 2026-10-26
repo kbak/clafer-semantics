@@ -343,7 +343,9 @@ Maintain the documentation and source analysis specified in the
 the [bounded semantic comparison project issue](https://github.com/kbak/clafer-semantics/issues/48), in
 [the comparison contract](resolved-ir-comparison.md). Use SoSyM as the primary
 semantic reference and pin the supplementary compiler to
-`15adb2216909421bcb5022174d2d84ef2b42307c`. Distinguish current Lean declarations,
+`15adb2216909421bcb5022174d2d84ef2b42307c` for the original audit. Maintain the current
+[0.5.4 comparison assessment](resolved-ir-comparison.md#compiler-054-compatibility)
+separately, preserving immutable historical citations. Distinguish current Lean declarations,
 proposed interfaces and unresolved source/version differences. This requirement
 authorizes a specification and audit, not an executable comparison implementation
 or a change to the current intent exclusions.
@@ -2466,11 +2468,14 @@ Needs: impl, proof
 
 Implement the authorized [resolved importer](resolved-import.md) under `Clafer/Verification/`, reusing the
 accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). Import
-only analyzed JSON from `gsdlab/clafer@15adb2216909421bcb5022174d2d84ef2b42307c`
+only analyzed JSON from `gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea` (0.5.4)
 under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
 separately from display names, parent/super/reference identities, effective local
 and group bounds, the exact `-1` unbounded sentinel and set/bag mode. Do not
 fabricate authored/default provenance or enlarge the comparison fragment.
+Validate nullable source spans as metadata, keeping the single-file library
+capture distinct from CLI file-qualified JSON. Preserve apostrophe display names
+and escaped, collision-distinct UIDs. Reject older compiler/export identities.
 
 Reject duplicate JSON keys, unknown fields/tags, duplicate/reserved/dangling IDs,
 inconsistent nesting/bindings/type hierarchies, prohibited cycles, missing or
@@ -2488,6 +2493,8 @@ checker correctness and selected interpretation; roundtrips alone do not suffice
 Keep JSON/parser/capture and runtime assumptions explicit. Supply kernel/native
 witnesses and actual pinned export tests, including repeated names, repeated-target
 bag/set heads, inheritance, nesting/groups, unused abstracts and malformed versions.
+Exercise 0.5.4 keyword/numeric defaults and unreachable concrete-group rejection
+without adopting them as new Lean semantics; retain the documented differences.
 
 Covers:
 - `intent~formalization-foundation~1`

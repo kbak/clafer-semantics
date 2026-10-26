@@ -1,4 +1,5 @@
 Élément 0..*
 box
   same' 0..*
+  same__prime__ 0..*
   links' ->> Élément 0..*

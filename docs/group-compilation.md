@@ -19,7 +19,7 @@ The [published article](sources.md#primary-source), SHA-256
 | Appendix 3 PDF p.32 | xor = 1..1, or = 1..*, mux = 0..1, opt = 0..*. Effective bounds/defaults are supplied by resolved input. |
 | B.4 Definitions 8–10 PDF p.31; §6.2.3–5 PDF pp.22–23 | Formulas retain full graph bindings; gluing translates declarations. Figure 23 total args is a separate MCS restriction. |
 
-The selected group-inheritance behavior follows compiler commit
+The selected group-inheritance behavior was audited against compiler commit
 `15adb2216909421bcb5022174d2d84ef2b42307c`:
 
 * [Generator/Alloy.hs, genGroupConst](https://github.com/gsdlab/clafer/blob/15adb2216909421bcb5022174d2d84ef2b42307c/src/Language/Clafer/Generator/Alloy.hs#L324)
@@ -48,8 +48,13 @@ as separate decisions.
 
 An empty inventory counts zero. Bounds containing zero hold; a positive lower
 bound forces the context extent empty. An empty context satisfies the universal
-predicate vacuously. This deliberately differs from `genGroupConst`'s unconditional
-empty-inventory skip. The [compiler license/source policy](sources.md#pinned-compiler-compatibility-audit)
+predicate vacuously. This deliberately differs from the audited 0.5.3
+`genGroupConst` empty-inventory skip. The current
+[0.5.4 capture profile](resolved-ir-comparison.md#compiler-054-compatibility)
+rejects concrete groups whose lower bound cannot be reached, even when their
+context could be empty; abstract groups remain exempt. This compiler rejection
+does not replace the independent zero-count meaning. The
+[compiler license/source policy](sources.md#pinned-compiler-compatibility-audit)
 applies; no compiler source is incorporated.
 
 ## Representation and interpretation

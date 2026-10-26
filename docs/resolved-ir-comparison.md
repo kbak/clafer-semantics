@@ -38,7 +38,7 @@ The primary reference is the [published SoSyM source](sources.md#primary-source)
 Locators below use its one-based PDF pages and the explicit legacy-subsection
 [aliases](sources.md#published-locators-and-legacy-aliases). The `52-S/v1` manifest
 retains its original preprint hash for replay compatibility; that historical pin
-is distinct from this current citation convention. Compiler observations use only
+is distinct from this current citation convention. The original matrix observations use
 [gsdlab/clafer at 15adb2216909421bcb5022174d2d84ef2b42307c][compiler], whose
 `clafer.cabal` says 0.5.3. The comparison with existing Lean declarations starts
 from planning baseline `kbak/clafer-lean` at
@@ -51,6 +51,31 @@ the typed constraint extension. Those revisions established typed syntax. The se
 [denotation extension](constraint-denotation.md) now supplies constraint meanings;
 user constraints remain excluded from this comparison fragment.
 Later revisions require a new matrix audit, even if a version string is unchanged.
+
+### Compiler 0.5.4 compatibility
+
+The executable [import profile](resolved-import.md) uses
+[0.5.4 at `6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea),
+as requested in [the dependency update](https://github.com/kbak/clafer-semantics/issues/115).
+The original matrix and its immutable 0.5.3 locators remain historical evidence;
+this assessment records the affected entries for the current profile. The MIT
+license, source archive, resolver and build identities are checked independently.
+
+| Affected matrix area | 0.5.4 observation and disposition |
+| --- | --- |
+| Names, resolved identities and bindings | `ResolverInheritance.uidIdent` escapes apostrophes as `__prime__`; `renameClafer'` counts collisions after escaping. Names stay unchanged. Import preserves emitted UIDs; spelling/collision comparison and replay exercise distinct identities. |
+| Effective local/group bounds and D1 | `analyzeCard` makes omitted children optional under all keyword groups, including `opt`. `desugarGCard` sets `_isKeyword` only for keywords. Numeric groups except `0..*` still make children optional, a difference from the paper's defaults. Effective values remain admitted without inventing authored provenance. |
+| Empty/unreachable concrete groups and D6 | `Language.Clafer.unsatisfiableGroups` rejects a concrete group's lower bound above its own/inherited children's summed upper bounds. Abstract groups are exempt. Rejection is `compiler_rejected`, including optional concrete contexts; it is not a Lean unsatisfiability verdict. The positive-empty-group S exclusion and independent zero-count meaning remain. |
+| IR fields and same-generation boundary | `Intclafer` serializes real spans. The single-fragment library capture leaves `inputFiles` empty, so both JSON and receipt use nullable `{start,end}` spans. The CLI's `spansInFiles` file mapping is outside the profile. Span validation preserves exact IR/map comparisons. |
+| Layout, parse failures and excluded forms | `LayoutResolver` ignores leading comments for indentation; `Language.Clafer.parse` rejects multiple same-line sibling declarations. These parser changes affect accepted source text, not the resolved S contract. The pre-desugaring AST audit still rejects expressions, temporal forms, initializers, enums and escapes. |
+| Options, imports and backend state | New import options stay empty/default; source directives remain rejected. No file/URL loader is invoked. `Generator/Alloy.hs`, `Common.hs`, `ResolverName.hs` and `StringAnalyzer.hs` are byte-identical to the audited pin. The optimizer change only prevents resolver skipping for apostrophe names; this profile already disables skipping. Existing ownership, cardinality, registry and no-string guards remain. |
+
+The unchanged Alloy group generator retains the documented counting differences
+outside S; these fixes do not establish general group equivalence. HTML escaping,
+CLI import loading and error rendering are outside paired capture. The effective
+core, independent Lean meanings, S combination guards and theorem hypotheses are
+unchanged. Live capture, decoder mutation and bounded comparison tests exercise
+this profile; they supply execution evidence, not source-compiler correctness.
 
 The compiler is supplementary implementation evidence. Its [MIT license][license]
 was inspected (Generative Software Development Lab, 2012–2019; Intelligent

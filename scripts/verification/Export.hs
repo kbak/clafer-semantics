@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
--- Adapter for gsdlab/clafer@15adb2216909421bcb5022174d2d84ef2b42307c.
+-- Adapter for gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea.
 -- External, unproved extraction code. See docs/resolved-import.md.
 module Main where
 
@@ -72,7 +72,10 @@ optionsJSON a = object
   , "add_comments" .= A.add_comments a, "ecore2clafer" .= A.ecore2clafer a
   , "trace_len" .= A.trace_len a, "scope_strategy" .= show (A.scope_strategy a)
   , "afm" .= A.afm a, "meta_data" .= A.meta_data a
-  , "minint" .= A.minint a, "maxint" .= A.maxint a, "file" .= A.file a ]
+  , "minint" .= A.minint a, "maxint" .= A.maxint a
+  , "imports" .= A.imports a, "import_root" .= A.import_root a
+  , "public_imports" .= A.public_imports a, "import_base" .= A.import_base a
+  , "file" .= A.file a ]
 
 -- Observations use the actual generator helpers and the actual consumed map.
 observations :: G.GEnv -> I.IModule -> [Value]

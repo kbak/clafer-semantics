@@ -210,7 +210,9 @@ point or an interpretation of arbitrary metamodels in one universal context.
 ## Source-to-obligation comparison
 
 The [source identities and historical audit](sources.md#historical-translation-evidence)
-separate the early reports, July 2011 snapshot, and current compiler pin.
+separate the early reports, July 2011 snapshot, and audited 0.5.3 compiler.
+The [current 0.5.4 capture assessment](resolved-ir-comparison.md#compiler-054-compatibility)
+does not extend these metamodel or expression claims.
 The [Diskin assessment](sources.md#generalized-sketches-and-model-reduct-coherence)
 retains the limits of inspected browser statements and missing source pages.
 
@@ -219,7 +221,7 @@ retains the limits of inspected browser statements and missing source pages.
 | SoSyM §6.1.3/Figure 21c, PDF pp.19–21; B.4 Definition 8, p.31 | Exact declaration objects, full bindings, indexed args, naming, key and totality | Argument indexing in ad does not strengthen the literal bag key; arrow shorthand omits isolated vertices |
 | Historical CS846 §4.3–4.4/Figures 12–13, PDF pp.5–7 | Resolved context, ownership, inherited membership and explicit generated facts must enter any language-preservation theorem | It does not encode the generic DP-graph formula metamodel or establish its key |
 | July 2011 `Alloy.hs`: `genClafer`, `genRelations`, `genParentConst`, `genGroupConst`, `genLExp`, `genDecl` | Distinguish relation-valued reference optimization, parent constraints, ordered expressions and scoped quantification | Optimization and intended meaning need comparison; a code path is not a preservation proof |
-| Current `Intclafer.hs`, `ResolverName.hs`, `Alloy.hs` at `15adb221…` | Separate declaration UIDs, expression occurrence IDs, operands, lexical binding and context paths | No existing expression-comparison harness coverage; occurrence IDs are not DP formula identity |
+| Audited 0.5.3 `Intclafer.hs`, `ResolverName.hs`, `Alloy.hs` at `15adb221…` | Separate declaration UIDs, expression occurrence IDs, operands, lexical binding and context paths | No existing expression-comparison harness coverage; occurrence IDs are not DP formula identity |
 | Wolter–Diskin 2007 §3 Definitions 6–7/Remark 4; §4 Definition 11/Proposition 3 | Ordinary signatures and restriction by precomposition fit the delivered API | Dependency-category structure is explicitly set aside there |
 | 2007 §5 Definition 14/Remark 8/Theorem 2 | Strongly persistent extension needs a section of restriction; pushout extension uses agreement on the overlap | Noninjective identifications cannot extend models that distinguish identified elements |
 | 2007 §7 Definitions 18–19/Proposition 5; Diskin–Wolter 2008 §4.2–4.3 | Typed-instance pullbacks require isomorphism-closed meanings and coherence | This construction stays with maps into the bounded semantic graph; it supplies no indexed/fibred equivalence |
