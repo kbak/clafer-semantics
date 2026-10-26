@@ -52,9 +52,11 @@ def GroupCard.range : GroupCard → Range
   | .bounds r => r | .xor => one | .or => ⟨1, .unbounded⟩
   | .mux => optional | .opt => unrestricted
 
-/-- Appendix 3: keyword groups make children optional by default. -/
+/-- Adopted evolution of Appendix 3 defaults: every group except numeric 0..*
+makes children optional. See docs/sources.md#current-child-default-policy. -/
 def GroupCard.childDefault : GroupCard → Range
-  | .bounds _ => one | .xor | .or | .mux | .opt => optional
+  | .bounds ⟨0, .unbounded⟩ => one
+  | .bounds _ | .xor | .or | .mux | .opt => optional
 
 structure Multiplicity where
   authored : Option Range := none
@@ -168,9 +170,10 @@ theorem AST.every_entry_indexed (a : AST) (d : Located) (h : d ∈ a.entries) :
   obtain ⟨i, hi, he⟩ := List.getElem_of_mem h
   exact ⟨⟨i, hi⟩, he⟩
 
-/-- Appendix 3 consistency for already defaulted input. An omitted group takes
+/-- Consistency for already defaulted input under the adopted child-default policy.
+An omitted group takes
 the super's effective group (including keyword provenance), or 0..* otherwise.
-Explicit child bounds override the parent's keyword default. -/
+Explicit child bounds override the parent's group default. -/
 def Defaults (d : Declaration) (parent super : Option Declaration) : Prop :=
   d.group.effective = d.group.authored.getD
     (super.map (·.group.effective) |>.getD (.bounds unrestricted)) ∧

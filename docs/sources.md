@@ -1028,8 +1028,9 @@ constructs from the same 37-page publisher e-offprint (SHA-256
 `653fc7868637680c44b6176d8ff643ec20149534fe1681ea4fc4ce636db76f2d`).
 Figures 16, 22 and 23 were visually cross-checked against their accompanying
 text. The formalization is independent; no publication figures/text or compiler
-implementation are vendored. The Haskell compiler does not select this slice's
-semantics; its separately pinned compatibility audit is linked below.
+implementation are vendored. The paper supplies this slice's semantic foundation;
+the explicitly adopted child-default evolution below uses the pinned Haskell
+compiler as supplementary implementation evidence.
 
 | Source locator | Selected contract and Lean correspondence |
 | --- | --- |
@@ -1049,11 +1050,41 @@ Clafer multiplicity sugar is already numeric at this boundary: `?` is 0..1,
 explicit, without preserving the original token spelling.
 
 Group keywords retain their provenance through inheritance so their child-default
-policy remains inspectable. Numeric group bounds alone do not induce keyword
-optional defaults. Effective bounds must be valid; root/domain metadata is
+policy remains inspectable. The [current child-default policy](#current-child-default-policy)
+distinguishes numeric 0..* from opt even though their group ranges agree.
+Effective bounds must be valid; root/domain metadata is
 separate from user defaulting. Acyclic inheritance uses an explicit rank witness
 as a selected well-formed-input condition, not a theorem attributed verbatim to
 Figure 22. Reference cycles are permitted and do not enter containment recursion.
+
+### Current child-default policy
+
+`GroupCard.childDefault` and `Defaults` adopt the numeric-group policy selected in
+[the defaulting decision](https://github.com/kbak/clafer-semantics/issues/118).
+An unannotated child has multiplicity `0..1` under `xor`, `or`, `mux`, `opt`,
+or a numeric group other than exactly `0..*`. A numeric `0..*` group gives
+`1..1`; an omitted group inherits its super's complete effective group, or uses
+numeric `0..*` if there is no inherited group. Explicit child bounds override
+these defaults. Keyword provenance survives inheritance: `opt` and numeric
+`0..*` have the same group range but different child defaults.
+
+This deliberately evolves Appendix 3/Figure 27 (PDF pp.31–32), whose general
+`1..1` child default has an exception for keyword groups. Numeric groups followed
+that general default when the SoSyM paper was completed. The
+[historical SoSyM checkpoint](https://github.com/kbak/clafer-semantics/tree/sosym)
+at `8a300bff11af2f458af70d56394f1899815455e9` preserves that convention together
+with the accepted paper corrections. The numeric change is language evolution,
+not a paper erratum or a claim about the paper's original meaning.
+
+The supplementary implementation evidence is Haskell 0.5.4's
+[`analyzeCard`, lines 221–230](https://github.com/gsdlab/clafer/blob/6750e6f591b2131549122c13dee94d3d2257eaea/src/Language/Clafer/Intermediate/ResolverInheritance.hs#L221-L230).
+Its numeric exception makes choice groups usable without marking every child
+optional. The adopted change concerns child defaults only: abstractness,
+explicit overrides, group counting, resolved-input guards and theorem assumptions
+retain their separate contracts. Matching defaults on the tested common domain
+does not establish general Haskell frontend equivalence. The
+[comparison audit](resolved-ir-comparison.md#compiler-054-compatibility) retains
+its historical observations and current admission boundary.
 
 **Accepted top-level abstract correction.** Section 5.3.4, PDF p.15, says
 that a parentless abstract's CS excludes the *head* class. Section 6.2.3, PDF p.22,

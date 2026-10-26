@@ -33,7 +33,7 @@ Browse implementation and proof artifacts by topic:
 
 [Syntax.lean](../Clafer/Syntax.lean): `Kind`, `Reference`, `Origin`,
 `PrimitiveDomain`, `Declaration`, `Tree`, `Forest`, `Tree.branch`, `AST`, `Multiplicity`, `GroupCard`,
-`GroupMultiplicity`, `Defaults`. [Context.lean](../Clafer/Context.lean) defines
+`GroupMultiplicity`, `GroupCard.childDefault`, `Defaults`. [Context.lean](../Clafer/Context.lean) defines
 `DeclId` separately from names. The forest stores containment; targets/supers
 store IDs. Numeric groups and keywords retain distinct authored forms.
 
@@ -48,8 +48,14 @@ Covers:
 model, including a primitive domain and an abstract reference; `repeated_names_distinct_ids`
 checks identity separation. `keyword_default`, `explicit_overrides_keyword`,
 `inherited_group_bounds`, `unbounded_range_valid` and `inverted_range_rejected`
-exercise the resolved/defaulted multiplicity boundary. These are input validation
-statements, not claims about a parser or resolver.
+exercise the resolved/defaulted multiplicity boundary.
+`numeric_finite_default` and `numeric_positive_unbounded_default` cover arbitrary
+numeric bounds. `numeric_unrestricted_default`, `opt_provenance_matters`,
+`numeric_child_defaults`, `numeric_mandatory_default_rejected`,
+`explicit_overrides_numeric`, `inherited_numeric_defaults` and
+`unrestricted_and_absent_defaults` check the adopted policy, its exception,
+provenance and rejection of the old mandatory default where it no longer applies.
+These are input validation statements, not claims about a parser or resolver.
 
 Covers:
 - `req~clafer-resolved-syntax~1`

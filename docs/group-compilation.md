@@ -41,8 +41,9 @@ a B object with only z passes. An effective opt override on B can admit two
 children. This special treatment of groups refines the paper's context-constraint
 account; ordinary explicit constraints on abstracts retain that account unchanged.
 
-Appendix 3 authored/effective provenance, override rules and child defaults are
-preserved. The comparison audit treats [authored defaults (D1)](resolved-ir-comparison.md#decision-d1) and
+Authored/effective provenance and explicit overrides are preserved; child defaults
+follow the adopted [policy](sources.md#current-child-default-policy), including its
+numeric-group evolution from Appendix 3. The comparison audit treats [authored defaults (D1)](resolved-ir-comparison.md#decision-d1) and
 [group semantics (D6)](resolved-ir-comparison.md#decision-d6)
 as separate decisions.
 

@@ -28,7 +28,11 @@ clarifications in reader-facing terms; the [source map](sources.md) retains thei
 exact locators, source identities and limits. These include link-preserving
 composition, common-target disjointness, guarded version comparison, top-level
 abstract heads and corrected ownership bounds. Full formula bindings, literal
-bag keys and total arguments remain distinct.
+bag keys and total arguments remain distinct. The selected language also adopts
+[practical numeric-group child defaults](sources.md#current-child-default-policy)
+so numeric choices can be optional without annotating every child. This is a
+language evolution from Appendix 3, separate from the accepted paper corrections;
+the historical SoSyM checkpoint preserves the original default convention.
 
 Structural Compile derives MCS validity under its [resolved-input contract](compile.md).
 Role identities, resolved referents and display names remain separate. Gluing
@@ -82,7 +86,7 @@ Compile/gluing preservation separate; the
 retains their source differences and unresolved historical identities.
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,
-production runtime configuration management, Claferize, post-2014 extensions,
+production runtime configuration management, Claferize, post-2014 extensions beyond the adopted child-default policy,
 a production parser and visualization. Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document

@@ -1487,9 +1487,13 @@ primitive-domain declarations (int, string, bool), and user declarations. Includ
 basic/reference-set/reference-bag forms, optional super IDs, abstractness and
 both clafer and group multiplicities, with natural lower bounds and finite or
 unbounded upper bounds. Input is already resolved and defaulted: retain authored
-values separately, validate explicit overrides, default 1..1 clafer bounds,
-keyword-induced optional children, and default 0..* or inherited group bounds.
-Retain inherited keyword provenance. No parser, name resolver or elaboration
+values separately and validate explicit overrides. Under the adopted
+[current child-default policy](sources.md#current-child-default-policy), omitted
+children are 0..1 under keyword groups and numeric groups other than 0..*;
+numeric 0..* or an absent unrestricted group gives 1..1. Omitted groups inherit
+the super's complete effective group, otherwise 0..*. Retain inherited keyword
+provenance, including the distinction between opt and numeric 0..*. This numeric
+default policy deliberately evolves the paper's Appendix 3 convention. No parser, name resolver or elaboration
 correctness theorem is promised.
 
 Covers:
