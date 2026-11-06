@@ -108,6 +108,7 @@ class PublicLibrariesTest(unittest.TestCase):
             "Clafer.Constraints.Denotation", "Clafer.Constraints.DenotationLaws",
             "Clafer.Constraints.DenotationInvariance", "Clafer.Constraints.DenotationRenaming",
             "Clafer.Constraints.DenotationSupport", "Clafer.Constraints.CollectionMeaning",
+            "Clafer.Constraints.Empty",
             "Clafer.Constraints.DenotationDefined", "Clafer.Constraints.DenotationExamples",
             "Clafer.Constraints.RepeatedDenotation", "Clafer.Constraints.Predicate",
             "Clafer.Examples.Telematics.Expressions", "Clafer.Examples.Telematics.ExpressionEnvironment",

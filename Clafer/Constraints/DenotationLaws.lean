@@ -14,6 +14,8 @@ variable (m : IntegerBinding.{u,w} s U) (ρ : Environment s U Γ)
     (Expr.boolean b : Expr s Γ _).denote m ρ = Option.some ⟨b = true⟩ := rfl
 @[simp] theorem denote_integer (n : Int) :
     (Expr.integer n : Expr s Γ _).denote m ρ = Option.some ⟨n⟩ := rfl
+@[simp] theorem denote_empty (k : Collection s) :
+    (Expr.empty k : Expr s Γ _).denote m ρ = Option.some ∅ := rfl
 @[simp] theorem denote_this :
     (Expr.this : Expr s Γ _).denote m ρ = Option.some {ρ.this} := rfl
 @[simp] theorem denote_extent (x : s.Vertex) :

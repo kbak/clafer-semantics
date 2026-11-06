@@ -63,6 +63,25 @@ Its singleton obligations follow from the actual head bounds, functional
 references and inherited class membership, independently of whether the
 comparison holds.
 
+## Empty collections
+
+The adopted [empty-set extension](https://github.com/kbak/clafer-semantics/issues/134)
+adds `Expr.empty` at any unary or binary collection shape. It denotes `Option.some ∅`;
+`Option.none` continues to mean undefined. The surface `none` has bottom element
+type and arity one. A resolved type annotation instantiates that bottom at a
+chosen element class without creating a declaration, inheritance edge, or value
+dependency on the class extent. Binary empties retain both endpoint annotations.
+Boolean and scalar integer types are separate; `integerOf` on an empty integer
+collection is undefined.
+
+`Empty.lean` proves count zero, true no/lone, false some/one, union and difference
+identities, intersection/subset/navigation laws and vacuous universal quantification.
+Laws that discard another operand retain its definedness premise. Empty expressions
+observe no extents or maps. General environment, support and renaming invariance
+cover the new constructor. This extension leaves structural Compile's positive-map
+support requirement unchanged; generic constraint denotation permits constant-only
+bodies. General source conditionals remain outside this core.
+
 ## Occurrence counts and inherited navigation
 
 Reference heads are objects with identity. A collection of two different heads
