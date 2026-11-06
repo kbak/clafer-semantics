@@ -419,6 +419,74 @@ Covers:
 
 Needs: impl
 
+## Behavioral structural compatibility
+
+`req~behavioral-structural-compatibility~1`
+
+Supply an independent resolved behavioral structural core covering own/inherited
+effective groups, authored abstractness, ordinary inherited fields, nested abstract
+types under concrete parents, refined containment parents, and inherited/refined
+references. Preserve source-permitted concrete supers; S10's backend restriction
+does not narrow source admission. Require rooted live containment, fixed typed
+actual parents, authored-abstract coverage, reference endpoint validity, multiplicity
+and complete effective-group bounds. Context views restrict existing identities
+and parents. Keep effective-default elaboration downstream and its adopted policy
+unchanged. Prove an exact validity equivalence on the historical guarded common
+fragment without relaxing its guards or changing its snapshot/constant theorems.
+
+Classify every S1–S11/T8/T10/T11 prerequisite in the
+[structural contract](behavioral-structure.md). The reviewed B32 profile rejects
+`:=` explicitly and interprets `=` as an ordinary presence-guarded equation at
+every live attachment state, with strict operand definedness. Preserve the
+historical SoSyM checkpoint. Supply admitted richer structural models and negative
+wrong-group, authored-abstract, reference-key and endpoint witnesses. No required
+structural matrix row may be left without an implementation or a reviewed
+disposition and named downstream obligation.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral references and partial atoms
+
+`req~behavioral-reference-atoms~1`
+
+Resolve the nearest declared reference while preserving head identity and one
+current target per head across refined reference views. Require live typed
+endpoints and set uniqueness in each declaration's containment fiber; preserve
+bag occurrences, including repeated targets. Supply separate heads, assignments
+and target-image observations for later modifiers. Resolved support bindings must
+retain full link carriers and repeated map occurrences; target-map links retain
+their intermediate heads. Prove endpoint typing from declaration roles and state
+validity, with heterogeneous actual-parent navigation kept explicit.
+
+Integrate captured identities/sets, current navigation, live-filtered standalone
+this, direct actual-parent navigation and domain-before-binding quantification.
+Prove all-constructor agreement with the static evaluator on singleton-compatible
+environments and live this; keep runtime typing and strict extraction obligations
+explicit. Provide resolved primitive expressions for finite-set coercion, strict
+extraction, cardinality, mathematical arithmetic, extrema and occurrence-indexed
+folds. Prove finite observed references give defined primitive coercion under
+target-domain typing without assuming a finite integer universe.
+
+Integrate partial atoms/domains with the accepted signed temporal meaning through
+a separate strict definedness judgment. Require all Boolean operands and every
+quantified member defined; temporal operands must be defined throughout the
+remaining uninterrupted parent interval, next only at its next active state,
+and lifetime-anchor bodies only when triggered. Undefined formulas have neither
+polarity. Prove completion independence, exact total-observation compatibility,
+static-atom agreement and guarded reuse of normalization/lowering. Include
+structural/current-navigation, infinite-primitive/finite-observation, repeated-head
+aggregation, zero-divisor, quantifier, cancellation and absent-context witnesses.
+Backend agreement retains explicit nonzero-divisor and intermediate-range
+obligations with the encoding owner; it is not a source wraparound rule.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
 ## Behavioral inherited-reference observation
 
 `req~behavioral-inherited-reference-observation~1`
@@ -697,8 +765,8 @@ and absent-context witnesses. Record the deliberate departure from the paper's
 snapshot-tagged environment. Keep observations total on the stated set domain.
 Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged
-environment and definedness conditions. Full structural/partial-atom integration
-remains owned by the structural-atom task and arithmetic decision D3.
+environment and definedness conditions. The separate behavioral references and
+partial-atoms requirement owns that integration under the adopted D3 rules.
 
 Covers:
 - `intent~formalization-foundation~1`

@@ -9,5 +9,9 @@ public import Clafer.Behavioral.InheritedReference
 public import Clafer.Behavioral.IntegerObservation
 public import Clafer.Behavioral.Arithmetic
 public import Clafer.Behavioral.Aggregate
+public import Clafer.Behavioral.StructuralBinding
+public import Clafer.Behavioral.StructuralSnapshot
+public import Clafer.Behavioral.StaticObservation
+public import Clafer.Behavioral.Initializers
 
 /-! Optional behavioral source semantics. Structural `import Clafer` stays independent. -/

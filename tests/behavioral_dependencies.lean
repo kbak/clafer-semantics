@@ -27,3 +27,14 @@ run_cmd do
 #check Clafer.Behavioral.Arithmetic.defined_iff
 #check Clafer.Behavioral.Aggregate.fold_defined_iff
 #check Clafer.Behavioral.Aggregate.select_singleton
+#check Clafer.Behavioral.Structural.valid_iff_common
+#check Clafer.Behavioral.Structural.Valid.refined_reference_agrees
+#check Clafer.Behavioral.StructuralBinding.Resolution.ofRoles
+#check Clafer.Behavioral.StructuralBinding.Resolution.coherent
+#check Clafer.Behavioral.CapturedStatic.agrees
+#check Clafer.Behavioral.PrimitiveExpression.finite_reference_operand
+#check Clafer.Behavioral.Formula.extension_agrees
+#check Clafer.Behavioral.Formula.total_agrees
+#check Clafer.Behavioral.Formula.satisfies_iff_lowered
+#check Clafer.Behavioral.StaticObservation.signed_atom_agrees
+#check Clafer.Behavioral.Initializers.default_rejected

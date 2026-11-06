@@ -33,13 +33,14 @@ It has no finite-identity assumption and counts quantifier witnesses by identity
 `one` means a unique satisfying identity; `lone` means at most one. Infinite
 domains are meaningful for both, without a finite-cardinality operation.
 
-This interface does not embed arbitrary static `Expr` values or identify an
-undefined value with false. No existing static atom evaluator is reused. The
-broader structural-atom task must prove any adapter's agreement on its explicit
-snapshot/environment domain and discharge actual definedness obligations,
-including partial primitive/integer operations under the unresolved arithmetic
-[decision D3](behavioral-profile.md#decisions-requiring-contract-review).
-The current static `Expr.not` and its partial denotation remain unchanged.
+This total interface does not identify undefined values with false. The separate
+[partial-atom contract](behavioral-structure.md#captured-static-atoms-and-partial-temporal-composition)
+provides `StaticObservation` and primitive-expression adapters with explicit
+captured-environment and definedness obligations. `Formula.Defined` requires all
+operands/members and every active temporal observation defined; `Satisfies`
+combines that domain with the signed denotation below. Completion independence
+and exact total compatibility justify reuse. The current static `Expr.not` and
+its partial denotation remain unchanged.
 
 ## Captured values and current navigation
 
@@ -181,5 +182,7 @@ The primary source is the behavioral paper §5 Definitions 4–5 (pp. 2:27–28)
 §6.1 (pp. 2:30–32), deliberately amended by pinned T2/T3/T7 and D1. The
 [source ledger](sources.md#behavioral-profile-sources) retains immutable hashes,
 licenses and candidate locators. SoSyM remains authoritative for the untouched
-static constraint semantics. These theorems do not prove compiler preservation,
-partial-atom agreement, surface-pattern correctness or finite-lasso completeness.
+static constraint semantics. These total-core theorems do not prove compiler
+preservation, surface-pattern correctness or finite-lasso completeness.
+`Formula.satisfies_iff_lowered` in `PartialCompatibility` supplies
+the separate partial bridge while retaining the original formula's definedness.

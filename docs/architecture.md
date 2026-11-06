@@ -29,24 +29,31 @@ checked witnesses. The [formula contract](behavioral-formulas.md) adds
 `Environment`/`Formula`, independent signed `Denotation`, interval `Lifetime`
 operators, `Normalization`, and `Lowering` into ordinary temporal `Core`.
 `FormulaExamples` reuses the valid trace fixture to distinguish source signs,
-classical counting barriers, attachment and identity capture. Observations are
-total. The separate [finite verification API](behavioral-verification.md) adds
+classical counting barriers, attachment and identity capture. The original
+observation interface remains total. `PartialObservation` and `PartialCompatibility`
+add strict definedness, completion-independent signed satisfaction and exact total
+compatibility. The separate [finite verification API](behavioral-verification.md) adds
 `Lasso`/`Orbit`, `FiniteEvaluation`, `LassoValidation`, `FiniteSets` and
 `Verification`, with `LassoExamples` as checked fixtures. Its imports may reuse
 the guarded structural checker; `Clafer.Behavioral` retains source independence.
-Full static/partial-atom agreement and surface meaning remain separate work.
+Finite adapters for richer structural/partial observations and surface meaning
+remain separate work.
 Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
-The [structural prerequisite audit](behavioral-structure.md) distinguishes the
-guarded snapshot predicates from inherited group/realization and atom APIs.
+The [structural and atom contract](behavioral-structure.md) distinguishes the
+guarded snapshot predicates from the richer `Structural.Core`/`Valid` model.
 `Clafer.Semantics.Groups` owns the reusable inherited-child union and group
 predicate; Compile retains definitionally equal aliases. Reference observations
-and integer-set conversion live under Behavioral. The existing richer realization
-module still imports Compile, while behavioral source meaning must remain
-independent of it. Further reuse needs an extraction or correspondence; dropping
-a support guard does not provide nested abstractness, refined parents or inherited
-references.
+and integer-set conversion live under Behavioral. `StructuralCompatibility`
+proves exact validity agreement on the unchanged static guards; `StructuralSnapshot`
+transports richer inherited groups and reference observations to live carriers.
+`StructuralBinding` constructs full current-state support bindings.
+`CapturedStatic`/`StaticObservation` adapt every typed static constructor under
+explicit environment and definedness hypotheses, while `PrimitiveExpression`
+adds resolved mathematical arithmetic, extrema and occurrence-indexed folds.
+`Initializers` implements the reviewed constant-equation/default-rejection profile.
+These source modules do not import Compile or Verification.
 
 Source meaning is independent of executable IR and target semantics. The upstream
 extension owns infinite traces, stable identity/parent data, lifetime meaning,
