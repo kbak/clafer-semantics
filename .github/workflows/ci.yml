@@ -28,10 +28,19 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements/intentbond.txt
+            requirements/documentation.txt
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: temurin
           java-version: '17'
+      - name: Cache pinned OFT download
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/oft
+          key: oft-v1-${{ hashFiles('requirements/intentbond.txt') }}
       - name: Install pinned IntentBond and verified OFT
         run: |
           python -m pip install -r requirements/intentbond.txt -r requirements/documentation.txt
@@ -65,6 +74,12 @@ jobs:
           echo "candidate=$candidate" >> "$GITHUB_OUTPUT"
           echo "CLAFER_VALIDATION_PLAN=$RUNNER_TEMP/validation-selection.json" >> "$GITHUB_ENV"
           echo "Validation: $mode; baseline: $baseline" >> "$GITHUB_STEP_SUMMARY"
+      - name: Identify Mathlib imports
+        id: imports
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          python scripts/project_modules.py --output-dir "$RUNNER_TEMP/module-inventory"
+          echo "digest=$(sha256sum "$RUNNER_TEMP/module-inventory/mathlib-imports.txt" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
       - uses: leanprover/lean-action@24581d74d674803a25a81b10b059c5c0cdd344c6 # v1
         if: steps.selection.outputs.mode != 'docs'
         with:
@@ -80,6 +95,21 @@ jobs:
         if: steps.selection.outputs.mode != 'docs'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
+          path: ${{ runner.temp }}/lean-dependencies/lake
+          key: lean-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lean-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+      - name: Check Lean cache migration
+        id: lean-cache
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if [ -d "$RUNNER_TEMP/lean-dependencies/lake" ]; then
+            echo 'restored=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Restore previous Lean cache layout
+        if: steps.selection.outputs.mode != 'docs' && steps.lean-cache.outputs.restored != 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
           path: |
             ${{ runner.temp }}/lean-dependencies/lake
             ${{ runner.temp }}/lean-dependencies/mathlib
@@ -87,26 +117,52 @@ jobs:
           restore-keys: |
             lean-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
             lean-deps-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
-      - name: Cache pinned compiler build dependencies
+      - name: Cache Mathlib downloads
         if: steps.selection.outputs.mode != 'docs'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/lean-dependencies/mathlib
+          key: mathlib-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ steps.imports.outputs.digest }}
+          restore-keys: |
+            mathlib-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+      - name: Cache verified exporter
+        if: steps.selection.outputs.mode != 'docs'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/clafer-compiler/clafer-capture
+            ${{ runner.temp }}/clafer-compiler/build.json
+            ${{ runner.temp }}/clafer-compiler/builder.sha256
+          key: clafer-exporter-v1-ubuntu24.04-${{ runner.arch }}-${{ hashFiles('scripts/verification/Export.hs', 'scripts/verification/build.py', 'scripts/verification/runtime.py', 'scripts/verification/protocol.py') }}
+      - name: Check exporter identity
+        id: exporter
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if python scripts/verification/runtime.py --check-cache "$RUNNER_TEMP/clafer-compiler"; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Cache pinned compiler build dependencies
+        if: steps.selection.outputs.mode != 'docs' && steps.exporter.outputs.ready != 'true'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ runner.temp }}/clafer-compiler
           key: clafer-compiler-${{ runner.os }}-${{ runner.arch }}-6750e6f591b2131549122c13dee94d3d2257eaea-stack3.11.1-ghc9.6.7
-      - name: Build pinned same-generation exporter
-        if: steps.selection.outputs.mode != 'docs'
+      - name: Install exporter build prerequisites
+        if: steps.selection.outputs.mode != 'docs' && steps.exporter.outputs.ready != 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libgmp-dev
-          mkdir -p "$RUNNER_TEMP/clafer-tools"
-          curl -fL --retry 3 https://github.com/commercialhaskell/stack/releases/download/v3.11.1/stack-3.11.1-linux-x86_64.tar.gz -o "$RUNNER_TEMP/clafer-tools/stack.tar.gz"
-          echo "1fda71e657cd8d355625cc66b61b352699279dfee2664c014a392163bd19a952  $RUNNER_TEMP/clafer-tools/stack.tar.gz" | sha256sum --check --strict
-          tar -xzf "$RUNNER_TEMP/clafer-tools/stack.tar.gz" -C "$RUNNER_TEMP/clafer-tools" --strip-components=1
-          curl -fL --retry 3 https://codeload.github.com/gsdlab/clafer/tar.gz/6750e6f591b2131549122c13dee94d3d2257eaea -o "$RUNNER_TEMP/clafer-tools/compiler.tar.gz"
-          python scripts/verification/build.py --archive "$RUNNER_TEMP/clafer-tools/compiler.tar.gz" \
-            --stack "$RUNNER_TEMP/clafer-tools/stack" --work "$RUNNER_TEMP/clafer-compiler"
-          echo "CLAFER_CAPTURE=$RUNNER_TEMP/clafer-compiler/clafer-capture" >> "$GITHUB_ENV"
-          echo "CLAFER_CAPTURE_BUILD=$RUNNER_TEMP/clafer-compiler/build.json" >> "$GITHUB_ENV"
+      - name: Prepare verified exporter
+        if: steps.selection.outputs.mode != 'docs'
+        run: python scripts/verification/runtime.py --github-env "$RUNNER_TEMP/clafer-compiler"
+      - name: Cache pinned Alloy download
+        if: steps.selection.outputs.mode != 'docs'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/clafer-alloy
+          key: alloy-v1-${{ hashFiles('requirements/intentbond.txt', 'scripts/verification/alloy_runtime.py') }}
       - name: Provision pinned Alloy comparison
         if: steps.selection.outputs.mode != 'docs'
         run: |
@@ -124,6 +180,8 @@ jobs:
           # Full checks retain all gates even when compiled artifacts are cached.
           LAKE_ARTIFACT_CACHE: 'true'
           LAKE_RESTORE_ARTIFACTS: 'true'
+          CLAFER_TEST_JOBS: '2'
+          CLAFER_TEST_EVIDENCE: ${{ runner.temp }}/python-tests
         run: |
           set +e
           ib check --repo "$GITHUB_WORKSPACE" --scope "$RUNNER_TEMP/trusted-scope.json" \
@@ -166,5 +224,6 @@ jobs:
             ${{ runner.temp }}/clafer-compiler/build.json
             ${{ runner.temp }}/clafer-compiler/build.log
             ${{ runner.temp }}/clafer-comparison-evidence/
+            ${{ runner.temp }}/python-tests/
           if-no-files-found: warn
           retention-days: 30

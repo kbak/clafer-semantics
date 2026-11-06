@@ -53,7 +53,30 @@ def download(url, path, sha256):
             temporary.unlink(missing_ok=True)
 
 
-def prepare():
+def work_directory(work=None):
+    if work is None:
+        default = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "clafer-capture"
+        work = Path(os.environ.get("CLAFER_CAPTURE_CACHE", default)) / PIN
+    work = Path(work).resolve()
+    if work.is_relative_to(HERE.parents[1]):
+        raise RuntimeError("Exporter cache must be outside the repository")
+    return work
+
+
+# [impl->req~lean-validation~1]
+def cached_runtime(work):
+    """Probe without downloading or building; a cache key alone is insufficient."""
+    executable, build = work / "clafer-capture", work / "build.json"
+    try:
+        recipe = hashlib.sha256((HERE / "build.py").read_bytes()).hexdigest()
+        if valid_runtime(executable, build) and (work / "builder.sha256").read_text() == recipe:
+            return executable, build
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+def prepare(work=None):
     explicit = os.environ.get("CLAFER_CAPTURE") or shutil.which("clafer-capture")
     if explicit:
         executable = Path(explicit).resolve()
@@ -67,11 +90,7 @@ def prepare():
         raise RuntimeError("Automatic exporter setup supports Linux x86_64; supply CLAFER_CAPTURE and CLAFER_CAPTURE_BUILD on other platforms")
     import fcntl
 
-    default = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "clafer-capture"
-    cache = Path(os.environ.get("CLAFER_CAPTURE_CACHE", default)).resolve()
-    if cache.is_relative_to(HERE.parents[1]):
-        raise RuntimeError("CLAFER_CAPTURE_CACHE must be outside the repository")
-    work = cache / PIN
+    work = work_directory(work)
     work.mkdir(parents=True, exist_ok=True)
     executable, build = work / "clafer-capture", work / "build.json"
     recipe = hashlib.sha256((HERE / "build.py").read_bytes()).hexdigest()
@@ -79,7 +98,7 @@ def prepare():
     # Independent source snapshots share dependencies, never concurrent writers.
     with (work / "build.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        if valid_runtime(executable, build) and stamp.is_file() and stamp.read_text() == recipe:
+        if cached_runtime(work):
             print(f"[capture] Reusing verified exporter: {executable}", file=sys.stderr, flush=True)
             return executable, build
         archive = work / "compiler.tar.gz"
@@ -107,7 +126,23 @@ def prepare():
 
 def main():
     if len(sys.argv) < 2:
-        raise RuntimeError("Usage: runtime.py COMMAND [ARG ...]")
+        raise RuntimeError("Usage: runtime.py COMMAND [ARG ...] | --check-cache WORK | --github-env WORK")
+    if sys.argv[1] in ("--check-cache", "--github-env"):
+        if len(sys.argv) != 3:
+            raise RuntimeError("Cache commands require exactly one external work directory")
+        work = work_directory(sys.argv[2])
+        if sys.argv[1] == "--check-cache":
+            return 0 if cached_runtime(work) else 1
+        destination = os.environ.get("GITHUB_ENV")
+        if not destination:
+            raise RuntimeError("--github-env requires GITHUB_ENV")
+        executable, build = prepare(work)
+        values = dict(CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build))
+        if any("\n" in value or "\r" in value for value in values.values()):
+            raise RuntimeError("GitHub environment paths must not contain newlines")
+        with Path(destination).open("a") as output:
+            output.writelines(f"{key}={value}\n" for key, value in values.items())
+        return 0
     executable, build = prepare()
     env = dict(os.environ, CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build))
     return subprocess.call(sys.argv[1:], env=env)
