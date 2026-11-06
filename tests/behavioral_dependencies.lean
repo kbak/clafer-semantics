@@ -13,3 +13,5 @@ run_cmd do
 
 #check Clafer.Behavioral.Trace.admissible_projection
 #check Clafer.Behavioral.StaticCorrespondence.constant_admissible
+#check Clafer.Behavioral.Formula.normalize_lower_agrees
+#check Clafer.Behavioral.Formula.persistent_eventually_consistent

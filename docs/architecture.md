@@ -25,8 +25,13 @@ implementation owners are listed in the contract.
 The [trace foundation](behavioral-traces.md) delivers shared static identities,
 infinite presence/reference data, lifetime boundaries and the live-carrier
 structural bridge in `Trace.lean` and `Snapshot.lean`; `Examples.lean` supplies
-checked witnesses. Signed formulas, surface meaning and lasso analysis remain
-separate work. Existing structural entry points and the dependency direction
+checked witnesses. The [formula contract](behavioral-formulas.md) adds
+`Environment`/`Formula`, independent signed `Denotation`, interval `Lifetime`
+operators, `Normalization`, and `Lowering` into ordinary temporal `Core`.
+`FormulaExamples` reuses the valid trace fixture to distinguish source signs,
+classical counting barriers, attachment and identity capture. Observations are
+total; full static/partial-atom agreement, surface meaning and lasso analysis
+remain separate work. Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
 Source meaning is independent of executable IR and target semantics. The upstream

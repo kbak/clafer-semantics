@@ -1490,7 +1490,12 @@ immutable source text above controls reproducibility:
 - [Errata review dispositions](https://github.com/gsdlab/clafer/issues/111#issuecomment-6636751998): trace-wide scopes, fixed parent across lifetimes, transition attachment and effective-group change.
 - [Root and parent correction](https://github.com/gsdlab/clafer/issues/112#issuecomment-6641299178): synthetic static root versus temporal root, actual parents of abstract instances and explicit backend limits.
 
-These decisions do not resolve every environment, pattern or arithmetic question.
+The [adopted D1 disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831)
+selects captured identities/sets with current navigation, including the distinct
+standalone-this and direct-navigation behavior. The
+[formula contract](behavioral-formulas.md) records that deliberate departure from
+the paper's snapshot-pair evaluator and checked changing-reference witnesses.
+These decisions do not resolve every structural-adapter, pattern or arithmetic question.
 The [contract decision register](behavioral-profile.md#decisions-requiring-contract-review)
 keeps those differences visible before any new definition. The existing
 [structural comparison](resolved-ir-comparison.md) and historical SoSyM checkpoint
@@ -1534,3 +1539,33 @@ no Alloy or publication source is copied. The semantic contract is in
 language evolution, not a correction attributed to the SoSyM paper. Existing
 partial scalar extraction and mathematical integers are retained. The executable
 comparison uses Alloy 6.2.0, source `794226dd07b536fe35c5ca44b529417183cd629b`.
+
+## Behavioral formula correspondence
+
+The [formula contract](behavioral-formulas.md) and
+[proof index](clafer-trace.md#behavioral-formulas-and-signed-normalization) cover
+Juodisius et al. §5 Definition 4 (pp. 2:27–28), Definition 5.4 and §6.1
+(pp. 2:30–32), with deliberate T2 parent-bounded signed negation and the T3
+attachment distinction. T7 supplies initial/last-live anchors. D1 selects
+identity/set capture with current relations instead of the paper's snapshot-pair
+navigation; the public disposition and concrete changing-reference witness
+remain linked from the contract. Existing static meanings are not reused or
+changed by this formula core. Partial primitive/integer and richer structural
+adapters retain their independent agreement obligations.
+
+At the immutable [candidate in the source ledger](#behavioral-profile-sources),
+`AlloyLtl.hs` lines 445–489 (`genPExp`, `pushNegations`, `hasTemporal`) provide
+supplementary normalization evidence; lines 504–558 and 578–604 give variable,
+this, parent-bound and anchor generation, and lines 173–185 give `parentRel`.
+The implementation is independently authored, with interval-based source meaning
+and a separate ordinary temporal core. one/lone retain the complete raw body,
+matching the normalizer's fallback; all/some/no propagate signs. Distributing
+classical temporal-free subtrees is justified by `temporalFree_polarity`, not a
+claim that generated ASTs are identical. Source anchor meaning uses actual
+`Starts`/`Ends` as required by T7; no unrestricted equality to generator output
+on absent contexts or arbitrary raw ASTs is asserted.
+
+`normalize_lower_agrees` proves this source-to-core translation. It is not a
+preservation theorem for the pinned Haskell compiler, source surface sugar,
+partial atoms or a finite lasso checker. The normalizer's source dualities do not
+turn source negation into classical complement after lifetime cancellation.

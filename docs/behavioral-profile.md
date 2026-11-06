@@ -9,8 +9,10 @@ selects independent source semantics and integration branches; it does not accep
 new definitions. This document specifies the complete intended behavioral surface,
 its owners and verification obligations.
 The [trace foundation](behavioral-traces.md) records the delivered identity,
-lifetime and structural bridge APIs and witnesses; later feature obligations
-remain separate.
+lifetime and structural bridge APIs and witnesses. The
+[formula contract](behavioral-formulas.md) supplies signed evaluation,
+normalization/lowering and the adopted D1 environments over total observations;
+later feature obligations remain separate.
 
 Profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
@@ -32,7 +34,8 @@ remains independent. The module inventory still builds and audits every owned
 module, including modules outside public entrypoint closures.
 
 These are responsibility boundaries. Trace/Snapshot APIs are documented in the
-[trace foundation](behavioral-traces.md); other names remain proposed.
+[trace foundation](behavioral-traces.md); formula/environment APIs in the
+[formula contract](behavioral-formulas.md). Other names remain proposed.
 Implementing tickets must publish actual declaration names and assumptions before
 accepted downstream use. Splitting a file within its responsibility is allowed;
 moving meaning across a repository or layer requires contract review.
@@ -40,7 +43,7 @@ moving meaning across a repository or layer requires contract review.
 | Owner | Proposed modules / interface | Required boundary |
 | --- | --- | --- |
 | [Trace and snapshot semantics (S2)][S2] | `Clafer/Behavioral/Trace.lean`, `Snapshot.lean` | Shared identity/type/parent data, live states, lifetimes, structural projection and constant embedding |
-| [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Normalization.lean` | Independent source satisfaction and signed normalization; no compiler IR or target imports |
+| [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Lifetime.lean`, `Normalization.lean`, `Lowering.lean` | Independent signed source satisfaction, interval meaning, normalization and ordinary temporal core; no compiler IR or target imports |
 | [Structural atom compatibility (S4)][S4] | `Atoms.lean`, `Structural.lean` | Explicit adapters to existing structural/constraint meanings, reference and primitive obligations |
 | [Surface meaning (S5)][S5] | `Surface.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
 | [Lasso checking (S6)][S6] | `Lasso.lean`, `Evaluation.lean` | Finite representation, infinite unfolding and exact-candidate evaluation theorem over the normalized core |
@@ -262,7 +265,7 @@ features cannot disappear through an unsupported-input guard.
 
 | Decision | Evidence / conflict | Required resolution and owners |
 | --- | --- | --- |
-| D1: observations of stored identities | P §5 pp. 2:26–28 attaches snapshots to environment values; pinned `AlloyLtl.genPExp'` emits bound variables as stable identities and current-state navigation. `thisAlive` filters standalone `this`, whereas direct `this` navigation starts at the identity even after its disappearance. | [S3]/[S4]/[C4]: specify stored sets versus re-evaluated paths, capture time, absent variable/this/parent/dref, and a changing-reference counterexample. Do not claim full agreement with the paper's snapshot-pair evaluator. |
+| D1: observations of stored identities — adopted | P §5 pp. 2:26–28 attaches snapshots to environment values; pinned `AlloyLtl.genPExp'` emits bound variables as stable identities and current-state navigation. `thisAlive` filters standalone `this`, whereas direct `this` navigation starts at the identity even after its disappearance. | [Approved disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831): capture identities/sets and use current relations, retaining standalone-this versus direct-navigation distinction. The [formula contract](behavioral-formulas.md#captured-values-and-current-navigation) and its witnesses give exact rules. [S4]/[C4] must preserve them in adapters; no full agreement with the paper's snapshot-pair evaluator is claimed. |
 | D2: independent scoped patterns | The paper lacks all 30 equations; pinned `TmpPatFollow` between q/r puts the p implication at the opener, unlike the after-until branch. | [S5]/[C7]/[C8]: evaluate a trace with q at 0, p later, r later still, and no response; record whether to correct the expansion or select that candidate behavior. Preserve the complete pattern scope while resolving the mismatch. |
 | D3: partial arithmetic | Current extraction is partial over mathematical Int; the Haskell/Alloy path has bounded arithmetic. Neither T1–T13 nor S11 specifies every undefined temporal atom case. | [S4]/[C6]/[C8]: enumerate `+`, `-`, unary minus, `*`, `/`, `%`, sum/product/min/max and `#`; settle division/sign/empty aggregate and undefinedness rules, then prove range/finite-observation bridges. No empty/multiple extraction silently becomes zero, false or true. |
 | D4: defaults and full structural prerequisites | P §6.1 `=` / `:=` are not temporal initializers; S6 nested abstracts and S9 resolution go beyond the current checker. | [S4]/[S5]/[C1]/[C6]: classify each initializer and inherited/nested case, including any unsupported form, in the compiler profile. Keep default elaboration downstream; retain source constraints and instance identity upstream. |

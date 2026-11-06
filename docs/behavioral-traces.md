@@ -3,8 +3,10 @@
 [The behavioral profile](behavioral-profile.md) supplies the versioned source
 contract. Its foundational trace API is exposed by `import Clafer.Behavioral`;
 ordinary `import Clafer` remains structural. This increment implements the
-identity, lifetime and common structural bridge obligations. Formula meaning,
-modifiers, surface reductions and lasso analysis remain separate work.
+identity, lifetime and common structural bridge obligations. The
+[formula contract](behavioral-formulas.md) adds signed formula meaning and
+parent-lifetime cancellation; modifiers, surface reductions and lasso analysis
+remain separate work.
 
 ## Shared identities and presence
 
@@ -101,8 +103,10 @@ No Compile, gluing, checker or importer contract is changed.
 at the preceding time. `Ends t x` means that `t` is live and `t + 1` is absent:
 it identifies the last live state. `starts_zero`, `starts_succ` and
 `end_then_start` cover initial presence, absence and reappearance. The root starts only at zero and never ends (`root_starts`, `root_never_ends`).
-Constant traces give these same laws for every object. These predicates do not yet interpret
-`initially`, `finally` or cancellation of temporal obligations.
+Constant traces give these same laws for every object. The
+[formula contract](behavioral-formulas.md#attachment-and-cancellation) uses these
+predicates for initial/final anchors and separately bounds temporal obligations
+by uninterrupted parent lifetimes.
 
 [Examples](../Clafer/Behavioral/Examples.lean) kernel-check a four-phase infinite
 cycle with two machine identities, repeated-target bag heads, persistent targets
@@ -133,5 +137,7 @@ birth and repeated lifetime anchors. T11 corrects set-only reference injectivity
 and group counting; this bridge retains the existing supported structural group
 contract. T13 does not impose finite bounds on the infinite source domain.
 SoSyM remains the source for the reused structural predicates. This foundation
-does not claim all of Definition 5: its constraint-satisfaction clause requires
-the later signed temporal semantics.
+does not claim all of Definition 5: the separate
+[signed temporal semantics](behavioral-formulas.md) supplies attached formula
+satisfaction over total observations; full structural atoms and surface meaning
+still have their own obligations.

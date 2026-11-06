@@ -34,8 +34,11 @@ Browse requirements by topic:
   [checker](#effective-structural-core-and-supported-fragment),
   [importer](#pinned-resolved-compiler-import) and
   [bounded comparison](#exact-bounded-candidate-comparison).
-- **Behavioral contract:** [profile](#behavioral-language-profile) and
-  [structural boundary](#behavioral-structural-and-repository-boundary).
+- **Behavioral:** [profile](#behavioral-language-profile),
+  [structural boundary](#behavioral-structural-and-repository-boundary),
+  [formula meaning](#behavioral-formula-meaning-and-attachment),
+  [signed normalization](#behavioral-signed-normalization) and
+  [environments](#behavioral-time-spanning-environments).
 - **Worked models:** [walkthrough](#small-lean-model-walkthrough),
   [representative integration](#representative-compilation-and-gluing) and
   [complete telematics model](#complete-resolved-appendix-6-integration).
@@ -510,6 +513,84 @@ separation. Keep the [precise hypotheses](behavioral-traces.md#projection-and-co
 source locators, actual Lean trace links and independent-import checks together.
 Do not change existing static Compile/checker contracts or claim temporal
 preservation from pointwise structural agreement.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral formula meaning and attachment
+
+`req~behavioral-formula-denotation~1`
+
+Give independent infinite-time meanings to X/F/G/U/W over the accepted traces.
+Each live applicable context starts its attached constraint at every time. Bound
+each temporal obligation by that context's fixed actual parent's remaining
+uninterrupted lifetime; use an always-present bound for synthetic-root context.
+Context disappearance alone does not cancel an obligation. A parent gap cancels
+it permanently, including when that identity later reappears; U still requires
+its left operand before cancellation. Initial/final anchors refer to the context's
+birth/last-live state, including zero and repeated lifetimes. State the exact
+root/persistent-parent laws and attachment distinctions.
+
+Follow the [formula contract](behavioral-formulas.md), behavioral paper §5
+Definitions 4–5 and §6.1 as changed by T2/T3/T7. Prove operator lowering and
+context/lifetime rules and provide valid-trace cancellation, reappearance,
+source-versus-parent attachment, U/W and anchor witnesses. Keep ordinary temporal
+logic separate from the source signs and from any finite representation.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral signed normalization
+
+`req~behavioral-signed-normalization~1`
+
+Define positive and negative source judgments independently of a normalizer and
+compiler output. Source negation flips polarity before lifetime bounds. Specify
+X/F/G/U/W and anchor sign rules, Boolean implication/equivalence/xor/conditionals,
+all/some/no propagation, and the classical one/lone barriers including their raw
+counting bodies. Keep Lean meta-level negation and assertion failure classical.
+Prove normalized shape, all-constructor agreement, lowering agreement and their
+composition, including binders and attachment. Establish ordinary classical
+polarity on total temporal-free observations without applying static `Expr.not`
+to temporal source formulas.
+
+Supply contrasting valid-trace witnesses where F error and its source negation
+both hold after parent cancellation, where negating the lowered F fails, and a
+theorem excluding both F polarities for a total atom under persistent-parent
+assumptions. Include nested negation, Boolean combinations and quantifier/counting
+boundaries. Apply the [signed formula contract](behavioral-formulas.md#signed-source-meaning-and-normalization)
+and pinned temporal erratum T2; do not infer unrestricted classical contradiction
+for source negation or claim compiler preservation from normalization alone.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral time-spanning environments
+
+`req~behavioral-environments~1`
+
+Implement the adopted [D1 identity/current-navigation contract](behavioral-formulas.md#captured-values-and-current-navigation).
+Quantifiers capture singleton identities and let captures evaluated sets; later
+times retain those values and the original attachment. Use lexically scoped
+variables. Current navigation reads current extents, containment and references;
+parent navigation can start at an absent identity but selects only a live fixed
+parent. Standalone this is live-filtered, while resolved direct this navigation
+starts at its fixed identity. Preserve bag-head identities and actual parent
+identity independently of targets and declaration roles.
+
+Prove capture, shadowing, absence and navigation equations, with changing-reference
+and absent-context witnesses. Record the deliberate departure from the paper's
+snapshot-tagged environment. Keep observations total on the stated set domain.
+Do not coerce undefined static/primitive values to Boolean results: any reuse of
+the static evaluator requires a separate agreement theorem with discharged
+environment and definedness conditions. Full structural/partial-atom integration
+remains owned by the structural-atom task and arithmetic decision D3.
 
 Covers:
 - `intent~formalization-foundation~1`
