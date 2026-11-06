@@ -73,8 +73,12 @@ while IFS= read -r source; do
   run_step "Lean test $source" lake env lean -DwarningAsError=true "$source"
 done < "$validation_dir/tests.txt"
 
+python_tests=(python3 -m unittest discover -s tests -v)
+if [[ "${CLAFER_TEST_JOBS:-1}" != 1 ]]; then
+  python_tests=(python3 scripts/run_tests.py --jobs "$CLAFER_TEST_JOBS")
+fi
 run_step 'Python tests (including Lean audit fixtures)' \
-  python3 scripts/verification/runtime.py lake env python3 -m unittest discover -s tests -v
+  python3 scripts/verification/runtime.py lake env "${python_tests[@]}"
 
 # leanchecker recursively enumerates each public root, including unimported
 # helpers/examples. Avoid rescanning every dependency directory for each leaf.

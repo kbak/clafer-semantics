@@ -75,6 +75,16 @@ After building, run the declaration/axiom audit and Lean/Python regression tests
 before the more expensive kernel replay. Any failed gate stops later stages;
 successful full validation still requires the complete kernel check.
 
+Python tests may run in at most four isolated worker processes; CI uses two.
+Discover the complete suite before partitioning, assign every test exactly once,
+and require matching execution receipts and successful exits from every worker.
+Reject missing/duplicate execution, discovery/setup failures, skips and silent
+worker exits. Preserve per-worker logs and the aggregate inventory/result outside
+source. Each worker owns its writable Alloy runtime and comparison evidence;
+compiler/solver executions, candidate enumeration and assertions remain unchanged.
+Cancellation stops active workers. All workers finish successfully before the
+kernel stage may run; the default local command remains sequential.
+
 Local and CI validation may instead run source-inventory preflight, its Python
 regressions, document filename/link checks and validation-selection regressions when a
 complete file-content and mode comparison with a frozen Git baseline proves that
@@ -117,6 +127,21 @@ manifest; save populated caches after successful validation and permit later
 commits with the same dependency identity to reuse them. Always invoke the full
 discovered module build so Lake validates every module's inputs before reuse;
 never substitute an unchecked copy of a prior checkout's build directory.
+
+Keep Mathlib downloads separate from evolving Lake build artifacts. Key the
+download cache by the discovered Mathlib import inventory as well as dependency
+identity, so changed imports can populate a new cache without uploading unchanged
+downloads on every commit. Cache Python package downloads and pinned OFT/Alloy
+jars; still install the pinned packages and verify each jar before use.
+
+CI first restores a small exporter cache containing its executable, build manifest
+and build-recipe digest. Validate all compiler/dependency, exporter-source/binary
+and recipe identities before omitting compiler setup. Only a valid cache may avoid
+restoring the Haskell build dependencies and installing build prerequisites.
+Missing, changed or corrupt cache entries require rebuilding or a failing check;
+they never authorize stale execution. Recheck the prepared exporter before exporting
+its paths into validation. Keep actual compiler/solver tests and evidence generation
+fresh, including on cache hits.
 
 Audit declarations by their originating project modules, including private and
 generated declarations regardless of namespace, with complete `import all`

@@ -14,6 +14,7 @@ import runtime as r
 from protocol import encoded
 
 
+# [itest->req~lean-validation~1]
 class CaptureRuntimeTests(unittest.TestCase):
     def setUp(self):
         scratch = tempfile.TemporaryDirectory()
@@ -91,6 +92,74 @@ class CaptureRuntimeTests(unittest.TestCase):
         with patch.dict(os.environ, CLAFER_CAPTURE_BUILD=str(build)):
             with self.assertRaisesRegex(RuntimeError, "requires CLAFER_CAPTURE"):
                 r.prepare()
+
+    def test_small_cache_reuses_without_build_dependencies(self):
+        work = self.root / "ci work"
+        expected = self.write_runtime(work)
+        (work / "builder.sha256").write_text(hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest())
+        with patch.object(r, "download") as download, patch.object(r.subprocess, "run") as build:
+            self.assertEqual(r.cached_runtime(work), expected)
+            self.assertEqual(r.prepare(work), expected)
+            download.assert_not_called()
+            build.assert_not_called()
+        self.assertFalse((work / "stack-root").exists())
+        self.assertFalse((work / "compiler").exists())
+
+    def test_cache_probe_rejects_missing_stale_and_corrupt_inputs_without_setup(self):
+        work = self.root / "ci"
+        with patch.object(r, "prepare") as prepare, \
+             patch.object(sys, "argv", ["runtime.py", "--check-cache", str(work)]):
+            self.assertEqual(r.main(), 1)
+            self.assertFalse(work.exists())
+            executable, build = self.write_runtime(work)
+            stamp = work / "builder.sha256"
+            self.assertEqual(r.main(), 1)
+            recipe = hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest()
+            stamp.write_text(recipe)
+            self.assertEqual(r.main(), 0)
+            for path in (executable, build, stamp, self.here / "Export.hs", self.here / "build.py"):
+                with self.subTest(path=path):
+                    original = path.read_bytes()
+                    path.write_bytes(original + b"changed")
+                    self.assertEqual(r.main(), 1)
+                    path.write_bytes(original)
+            executable.chmod(0o644)
+            self.assertEqual(r.main(), 1)
+            prepare.assert_not_called()
+
+    def test_github_env_prepares_and_exports_verified_paths(self):
+        work = self.root / "ci work"
+        expected = self.write_runtime(work)
+        output = self.root / "github-env"
+        output.write_text("EXISTING=retained\n")
+        with patch.dict(os.environ, GITHUB_ENV=str(output)), \
+             patch.object(sys, "argv", ["runtime.py", "--github-env", str(work)]), \
+             patch.object(r, "prepare", return_value=expected) as prepare, \
+             patch.object(r.subprocess, "call") as child:
+            self.assertEqual(r.main(), 0)
+            prepare.assert_called_once_with(work)
+            self.assertEqual(output.read_text(), f"EXISTING=retained\nCLAFER_CAPTURE={expected[0]}\nCLAFER_CAPTURE_BUILD={expected[1]}\n")
+            child.assert_not_called()
+            prepare.side_effect = RuntimeError("build failed")
+            with self.assertRaisesRegex(RuntimeError, "build failed"):
+                r.main()
+            self.assertEqual(output.read_text().count("CLAFER_CAPTURE="), 1)
+            prepare.side_effect = None
+            prepare.return_value = (Path("bad\nINJECTED=value"), expected[1])
+            with self.assertRaisesRegex(RuntimeError, "newlines"):
+                r.main()
+            self.assertNotIn("INJECTED", output.read_text())
+
+    def test_ci_commands_reject_in_tree_paths_and_missing_environment(self):
+        for command in ("--check-cache", "--github-env"):
+            with patch.object(sys, "argv", ["runtime.py", command, str(self.here / "cache")]):
+                with self.assertRaisesRegex(RuntimeError, "outside the repository"):
+                    r.main()
+        with patch.object(sys, "argv", ["runtime.py", "--github-env", str(self.work)]), \
+             patch.object(r, "prepare") as prepare:
+            with self.assertRaisesRegex(RuntimeError, "requires GITHUB_ENV"):
+                r.main()
+            prepare.assert_not_called()
 
     def test_path_runtime_and_default_cache_without_exporter_variables(self):
         executable, build = self.write_runtime(self.root / "path")

@@ -13,7 +13,7 @@ REPO = Path(__file__).resolve().parent.parent
 
 # [itest->req~lean-validation~1]
 class CheckScriptTest(unittest.TestCase):
-    def run_check(self, *, preflight=False, fail="", selection="full", dependencies="Mathlib.Data.Set.Defs\nMathlib.Tactic.FinCases\n"):
+    def run_check(self, *, preflight=False, fail="", selection="full", jobs="1", dependencies="Mathlib.Data.Set.Defs\nMathlib.Tactic.FinCases\n"):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "scripts").mkdir()
@@ -47,10 +47,19 @@ fi
                 env=dict(os.environ, PATH=str(root / "bin") + os.pathsep + os.environ["PATH"],
                          FACTORY_TESTS=str(root / "profile"), CALLS=str(root / "calls"),
                          FAIL_STEP=fail, PREFETCH_MODULES=dependencies,
+                         CLAFER_TEST_JOBS=jobs,
                          CLAFER_VALIDATION_PLAN=str(root / "plan.json"), SELECTED_MODE=selection),
                 capture_output=True, text=True, check=False,
             )
             return result, (root / "calls").read_text().splitlines()
+
+    def test_parallel_test_failure_still_prevents_kernel_replay(self):
+        for fail, code in (("", 0), ("scripts/run_tests.py", 23)):
+            with self.subTest(fail=fail):
+                result, calls = self.run_check(jobs="2", fail=fail)
+                self.assertEqual(result.returncode, code, result.stderr)
+                self.assertTrue(any("runtime.py lake env python3 scripts/run_tests.py --jobs 2" in call for call in calls))
+                self.assertEqual(any("leanchecker" in call for call in calls), code == 0)
 
     def test_preflight_and_module_failure_never_provision_or_invoke_lake(self):
         for preflight, fail, code in [(True, "", 0), (False, "test_project_modules.py", 23),
