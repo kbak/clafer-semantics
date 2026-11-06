@@ -37,6 +37,7 @@ noncomputable def Expr.rename {s Γ t} (f : String → String) (e : Expr s Γ t)
   match e with
   | .boolean b => .boolean b
   | .integer n => .integer n
+  | .empty k => .empty k
   | .this => .this
   | .extent x => .extent x
   | .var v => .var (v.rename f)

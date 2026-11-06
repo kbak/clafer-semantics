@@ -20,6 +20,7 @@ public import Clafer.Constraints.DenotationInvariance
 public import Clafer.Constraints.DenotationSupport
 public import Clafer.Constraints.DenotationRenaming
 public import Clafer.Constraints.DenotationDefined
+public import Clafer.Constraints.Empty
 
 /-!
 # Structural 2014 Clafer

@@ -96,8 +96,10 @@ historical static profiles remain supported.
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,
 production runtime configuration management, Claferize, post-2014 extensions
-beyond the adopted child-default policy and the separately reviewed behavioral
-profile, a production parser and visualization. Keep the foundation reproducible and
+beyond the adopted child-default policy,
+[empty-collection extension](constraint-denotation.md#empty-collections) and the
+separately reviewed behavioral profile, a production parser and visualization.
+Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document
 owns the detailed scope; [requirements](spec.md) state the precise promises.

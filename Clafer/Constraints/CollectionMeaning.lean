@@ -34,6 +34,9 @@ private theorem collection_result {s : Support} {U : Type u}
     (ρ : Environment s U Γ) (hρ : ρ.Admissible m) :
     CollectionResult m t (e.denote m ρ) := by
   induction e with
+  | empty k =>
+    refine ⟨∅, rfl, ?_⟩
+    cases k <;> simp [Collection.Typed]
   | this => exact ⟨{ρ.this},rfl,by intro x hx; cases Set.mem_singleton_iff.mp hx; exact hρ.1⟩
   | extent x => exact ⟨m.model.obj x,rfl,Set.Subset.refl _⟩
   | var v => exact ⟨{ρ.lookup v},rfl,by intro x hx; cases Set.mem_singleton_iff.mp hx; exact hρ.2 _ v⟩
