@@ -34,7 +34,11 @@ authorize these interpretations. The behavioral paper §§6.1–6.2, p.2:32 defi
 `final` child-set stability and nested lifetime limits; it does **not** define
 `finalref` or `finaltarget`. Their precise distinction is an explicit completion
 of T8/CheatSheet's separate modifiers, not a recovered paper equation. These
-choices do not certify compatibility with the pinned compiler.
+choices do not certify compatibility with the pinned compiler. The
+[revision comparison](sources.md#pr113-modifier-and-pattern-revisions) identifies
+these discrepancies at the historical pin and their corrections in `b2875f3`;
+`8a12ae7` separately retains all reference modifiers. These source inspections
+neither replace the pin nor supply a new Haskell execution receipt.
 
 ## Modifiers and anchors
 
@@ -56,10 +60,28 @@ Finality is shallow: descendants are not recursively frozen. In a continuous
 parent life, final heads cannot disappear, so final references stay fixed there.
 Reference-free declarations have empty reference views. An inherited modifier
 accumulates along the super chain (`Effective`); refinements can add modifiers,
-not remove inherited ones. `Holds` combines every effective modifier.
+not remove inherited ones. `Holds` combines every effective modifier. Effective `finalref`
+and `finaltarget` impose both obligations. Their conjunction allows a departing
+head to be replaced by a new head at an existing target; `final` rejects that
+change of head identity. The image in `finaltarget` is a **set**, not a multiset
+of reference occurrences. Three bag heads may change {A,A,B} to {A,B,B} while
+the image stays {A,B}; losing A or adding C during one parent life changes it.
+The structural head and group counts continue to count all three occurrences.
 `enumLiteral true` adds finality to each dynamic enum literal; the static case
 adds no temporal modifier. Parsing and enum declaration construction remain
 frontend responsibilities.
+
+[ModifierBoundaryExamples](../Clafer/Behavioral/ModifierBoundaryExamples.lean)
+uses a model with exactly three heads per live parent for direct and inherited
+references. Its
+`replacement_both` / `replacement_not_final`, `swap_target_only` and
+`loses_target_only` / `adds_target_only` separate the three obligations; combined effective annotations
+are checked through `Holds`. The bag fixture preserves all head identities and
+counts. A head can change its target after its own gap while its parent and
+target image persist; a parent gap permits a new target image. Every fixture has
+full structural admission, including its repeating last state. Existing
+`ModifierExamples` swap, inherited-owner, shallow-finality and birth witnesses
+remain in place.
 
 `expand` produces resolved placement/formula pairs. Initial attaches to parent
 instances. Head/target equality attaches to live identities and has empty views
@@ -157,6 +179,12 @@ Additional named fixtures cover first/repeated q and r, no opener/closer,
 unfinished scopes, simultaneous boundaries, events at opening/closing, context
 loss, parent cancellation and reappearance. The two pinned-expansion mutants
 are retained as kernel-checked regressions, not as an external compiler run.
+`root_attachment_not_initially` checks the assertion attachment API on q@0,2,
+s@0 and p@3 (persisting thereafter). The first scope has its precedent at 0;
+the later opener has no subsequent s. Initially accepts the first evaluation,
+whereas implicit always rejects the later obligation. The distinction preserves
+each evaluation's first opener rather than collapsing all openers into a single
+global scope.
 
 ## Models, assertions and scenarios
 

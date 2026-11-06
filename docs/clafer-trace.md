@@ -2041,6 +2041,17 @@ establish the modifier rules; the observation/lowering theorems require
 `inherited_shallow_final`, `inherited_initial`, `fixed_inherited_valid` and
 `fixed_inherited_final`, `cycle_finalref` and `initial_every_birth` /
 `initial_rebirth_missing`. `gap_resets` / `no_gap_rejects` isolate lifetime equality.
+[ModifierBoundaryExamples.lean](../Clafer/Behavioral/ModifierBoundaryExamples.lean)
+adds `admitted` for every direct/inherited exact-three-head fixture.
+`effective_both`, `combined_fixed`, `combined_replacement` and
+`neither_modifier_can_be_dropped` exercise the actual effective `Holds` contract.
+`replacement_both` / `replacement_not_final` separates conjunction from finality;
+`swap_target_only`, `loses_target_only` and `adds_target_only` distinguish each
+obligation. `bag_multiplicity` and `bag_image` retain the occurrence multiset, unchanged head
+identities and exact target set; `head_gap_resets` and `parent_gap_resets` state the relevant lifetimes
+and actual changing references/images. `combined_fixed` reuses
+`final_implies_finalTarget`. These witnesses use the accepted D5 meaning and
+require no parser or compiler preservation assumption.
 [AnchorExamples.lean](../Clafer/Behavioral/AnchorExamples.lean) checks first/second
 birth, observation before death and vacuity for a permanent root.
 
@@ -2093,6 +2104,9 @@ checks all thirty positive/negative pairs, both signs and named boundary mutatio
 `trace_valid`, `observations_agree` and `source_agrees` relate their kernel-computed
 finite values to independent infinite source meanings. The two pinned-expansion
 mutants distinguish corrected response and first-opener precedence.
+`attachment_evaluations` and `root_attachment_not_initially` reuse the admitted
+lasso and total observations to distinguish the actual root constraint API from
+initially anchoring the same precedence-after body, with repeated openers.
 
 Covers:
 - `req~behavioral-patterns~1`

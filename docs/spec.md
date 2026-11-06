@@ -793,6 +793,12 @@ unattributed equation from the paper.
 
 Provide admitted stable and changing inherited-reference witnesses, target swaps,
 shallow finality, inherited initial presence, repeated births and lifetime gaps.
+Conjoin all effective reference modifiers, whether supplied directly or inherited;
+retain witnesses where each fails independently. Their conjunction permits head
+replacement at an existing target, which final rejects. Finaltarget fixes a set
+image, not a multiset: retain a bag changing {A,A,B} to {A,B,B} with the same
+head identities and exact cardinality, alongside target-loss rejection. Test
+head-only gaps separately from parent gaps, including inherited references.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -827,9 +833,12 @@ scopes against independent signed interval meaning. Prove every expansion for
 both polarities, including temporal scope premises and lifetime cancellation;
 compose signed normalization/lowering while retaining partial definedness.
 Adopt D2's corrected response throughout between intervals and first-opener
-after-precedence. Keep those compiler mismatches explicit. Characterize implicit
-always recurrence versus initially anchored existence. Check all thirty cells
-with positive/negative infinite-trace witnesses and both signs, plus missing,
+after-precedence. Identify the compiler revisions containing and correcting each
+mismatch, retaining historical mutants and pins. Characterize implicit always
+recurrence versus initially anchored existence; distinguish root attachment of
+after-precedence from its initially anchored evaluation with repeated openers.
+Check all thirty cells with positive/negative infinite-trace witnesses and both
+signs, plus missing,
 repeated and simultaneous boundaries, events at opening/closing, contiguous
 versus separated episodes, context loss, parent gaps and reappearance. Follow
 the [surface contract](behavioral-surface.md) and T2/T9, not compiler equality.
@@ -851,6 +860,8 @@ source negation is not its replacement. Prove counterexample/assertion duality,
 scenario extension and normalization with the original partial domain. Check
 multiple valid traces and multiple nested instances, cancellation's two source
 polarities and the distinct negative-scenario conjunction/implication forms.
+Exercise implicit root attachment versus initially through the assertion's
+actual constraint-satisfaction API, including repeated pattern openers.
 The [surface contract](behavioral-surface.md) fixes the scope of T5/T6/T9/T12
 and the downstream parser/elaboration boundary.
 

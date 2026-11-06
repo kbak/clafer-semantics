@@ -138,11 +138,11 @@ acceptance and downstream frontend/encoding qualification.
 | B06 | `SetExpr.eval`, `Structural.observed`, `InheritedReference.Owner.unique`, full `StructuralBinding.Resolution` | `absent_this_and_parent`, `captured_deref`, inherited owner witnesses / dead-head and conflicting-refinement rejection; resolved views, no name resolution theorem |
 | B07–B08 | `Environment.push`, `CapturedStatic.agrees`, `Formula.extension_agrees`, `PrimitiveExpression` | `capture_survives_absence`, `current_reference_not_snapshot`, `captured_bag_heads`, `nested_capture` / strict partial and wrong-domain witnesses; D1/D3 are explicit departures |
 | B09–B14 | `Formula.denote`, `normalize_agrees`, `normalize_lower_agrees`, `persistent_eventually_consistent` | `FormulaExamples` next/F/G/U/W, both signs, counting barriers and Boolean cases / late-negation, source-death and persistent-parent rejection; no classical complement claim for source signs |
-| B15 | `Formula.PartialAttached`, `Constraint.Finite.holds_iff`, `Anchors.root_recurrence` | Full replaceable cancellation model / stable-parent rejection; anchored existence versus recurrence in `AnchorExamples` |
-| B16–B19 | `Modifiers.Effective`, `Initial`, `Final`, `FinalRef`, `FinalTarget`, `expand_agrees`, `enumLiteral` | Inherited initial/final references, fixed heads, target swaps and dynamic enum / missing rebirth, per-head swap and inherited-reference mutation; D5 distinguishes reference and target images |
+| B15 | `Formula.PartialAttached`, `Constraint.Finite.holds_iff`, `Anchors.root_recurrence` | Full replaceable cancellation model / stable-parent rejection; anchored existence versus recurrence in `AnchorExamples`, plus `PatternExamples.root_attachment_not_initially` |
+| B16–B19 | `Modifiers.Effective`, `Initial`, `Final`, `FinalRef`, `FinalTarget`, `expand_agrees`, `enumLiteral` | Inherited initial/final references, fixed heads, target swaps and dynamic enum / missing rebirth, per-head swap and inherited-reference mutation; `ModifierBoundaryExamples` adds combined direct/inherited obligations, independent failures, head replacement, exact-three-head target multiplicities and lifetime resets. D5 image semantics is corrected after the historical pin by `b2875f3`; all modifiers are retained by `8a12ae7` ([revision comparison](sources.md#pr113-modifier-and-pattern-revisions)) |
 | B20–B21 | `Anchors.AtBirths`, `AtDeaths`, `initially_at_births`, `finally_at_deaths` | Time zero, repeated birth and never-ending finality / second-birth omission and post-death event; finite clock retains first-visit history |
 | B22–B25 | `Transitions.Chain.meaning`, `required`, `expand_agrees`, `finite_agrees` | Three-state guarded chains, parent cancellation, reappearance / missing middle, subsequent guard, source disappearance and nested-implication bug; first source alone is conditional |
-| B26 | `Patterns.meaning`, `expand_agrees`, `response_interval`, `first_opener`, `finite_agrees` | `all_thirty_positive`, `all_thirty_negative`, `all_thirty_opposite_signs`, boundary witnesses / pinned response-between and later-opener regressions; both D2 corrections retained |
+| B26 | `Patterns.meaning`, `expand_agrees`, `response_interval`, `first_opener`, `finite_agrees` | `all_thirty_positive`, `all_thirty_negative`, `all_thirty_opposite_signs`, boundary witnesses / pinned response-between and later-opener regressions; both D2 regressions retained, plus root attachment versus initially. Errors at `af858ec` are corrected by `b2875f3` ([revision comparison](sources.md#pr113-modifier-and-pattern-revisions)) |
 | B27–B28 | `Model.Asserts`, `Counterexample`, `Possible`, `withScenario`, `counterexample_iff`, `possible_iff` | Two valid traces separate possible from universal; nested sibling and negative-scenario witnesses reject vacuous alternatives; failure negates the whole interpreted judgment |
 | B29 | Resolved `Formula`, `Chain`, `Pattern`/`Scope`, source expansion and normalization interfaces | Source alias/attachment meaning is explicit; production parsing, precedence, resolution and source-position preservation remain compiler C7 obligations, not a claimed upstream parser |
 | B30 | `Lasso.unfold`, `valid_iff_unfold`, `Core.finite_agrees`, `Program.check_satisfied` | Nonzero prefix, loop-edge birth, first-entry history, capture and cancellation / invalid loop, empty trace, metadata switch; exact supplied lassos only |
@@ -167,6 +167,16 @@ The immutable profile remains `behavioral-0.5.7-candidate/v1` at
 dispositions. The [source ledger](sources.md#behavioral-profile-sources) supplies
 exact blob hashes and licenses. This is an independently defined source profile,
 not a claim that the Haskell compiler implements all accepted corrections.
+
+The [PR113 modifier/pattern comparison](sources.md#pr113-modifier-and-pattern-revisions)
+records corrections after that historical pin: `b2875f3` corrects response-between,
+first-opener precedence-after and parent-scoped finaltarget; `8a12ae7` retains all
+reference modifiers. The exact-three-head witnesses retain direct/inherited
+conjunctions, independent failures, multiplicities, replacement and lifetime
+resets. The root assertion witness distinguishes implicit always from initially.
+The later singleton fixture and temporal explicit-output patches are comparison
+context; reading them supplies no new Haskell execution or toolchain adoption.
+Historical mutants, pins and receipts remain unchanged.
 
 The compared later candidate
 [`b6c38617b203c17f57b994546172801ddaaf88c2`](https://github.com/gsdlab/clafer/commit/b6c38617b203c17f57b994546172801ddaaf88c2)
