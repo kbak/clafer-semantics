@@ -38,7 +38,8 @@ Browse requirements by topic:
   [structural boundary](#behavioral-structural-and-repository-boundary),
   [formula meaning](#behavioral-formula-meaning-and-attachment),
   [signed normalization](#behavioral-signed-normalization) and
-  [environments](#behavioral-time-spanning-environments).
+  [environments](#behavioral-time-spanning-environments),
+  [lassos](#behavioral-finite-lassos) and [evaluation](#behavioral-finite-evaluation).
 - **Worked models:** [walkthrough](#small-lean-model-walkthrough),
   [representative integration](#representative-compilation-and-gluing) and
   [complete telematics model](#complete-resolved-appendix-6-integration).
@@ -698,6 +699,61 @@ Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged
 environment and definedness conditions. Full structural/partial-atom integration
 remains owned by the structural-atom task and arithmetic decision D3.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite lassos
+
+`req~behavioral-lassos~1`
+
+Represent an exact finite identity inventory and a nonempty finite state sequence
+with a checked loop index, shared direct types/actual parents, and changing live
+and reference observations. Define its infinite unfolding independently of formula
+evaluation. State finite well-formedness and prove equivalence with infinite trace
+validity in the existing guarded structural fragment. Preserve reference occurrence
+identities, root/parent presence, multiplicities and groups across the loop edge.
+Reject malformed loops, empty input and inconsistent repeated type/parent metadata.
+
+Preserve time-zero birth and first-entry history separately from later loop visits;
+prove finite initial/final and parent-presence observations agree at every absolute
+time. Permit reappearance with fixed identities and parents. Follow the
+[verification contract](behavioral-verification.md), paper §5 Definitions 2–5 / §6.2
+and T1/T7/T13. Exercise self-loops, nonzero prefixes, loop-edge births/deaths,
+parent/type switches and duplicate-reference-target mutations.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite evaluation
+
+`req~behavioral-finite-checker~1`
+
+Implement every accepted normalized `Core` constructor over a supplied finite
+lasso, retaining captured identity sets and original attachment through binders.
+Justify temporal search by a proved finite-state bound, not an arbitrary prefix
+cutoff. Prove all-constructor agreement with independent infinite `Core.eval` and
+composition with signed normalization/lowering and attached constraint meaning.
+Preserve parent cancellation without resumption after reappearance and the
+one/lone classical barriers inherited from the core translation.
+
+Require finite total atom/domain observations and explicit independent source
+agreement over every environment and absolute time. Supply the accepted total
+set-grammar adapter with an agreement proof. Separate malformed, unsupported,
+violated and satisfied outcomes; missing finite observation/range evidence is
+unsupported, and no undefined partial primitive value becomes a Boolean verdict.
+The [verification contract](behavioral-verification.md) retains S4/D3 ownership of
+partial atoms and the exact guarded structural boundary. Provide an API for
+normalized surface reductions and downstream exact-candidate comparisons.
+
+Kernel-check the correspondence and boundary fixtures; exhaustively compare small
+lassos to an independent temporal oracle while preserving static checker regressions.
+Claim only the admitted exact-lasso correspondence, never completeness over all
+infinite traces or unrestricted consequences from bounded UNSAT.
 
 Covers:
 - `intent~formalization-foundation~1`

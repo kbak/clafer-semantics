@@ -30,8 +30,12 @@ checked witnesses. The [formula contract](behavioral-formulas.md) adds
 operators, `Normalization`, and `Lowering` into ordinary temporal `Core`.
 `FormulaExamples` reuses the valid trace fixture to distinguish source signs,
 classical counting barriers, attachment and identity capture. Observations are
-total; full static/partial-atom agreement, surface meaning and lasso analysis
-remain separate work. Existing structural entry points and the dependency direction
+total. The separate [finite verification API](behavioral-verification.md) adds
+`Lasso`/`Orbit`, `FiniteEvaluation`, `LassoValidation`, `FiniteSets` and
+`Verification`, with `LassoExamples` as checked fixtures. Its imports may reuse
+the guarded structural checker; `Clafer.Behavioral` retains source independence.
+Full static/partial-atom agreement and surface meaning remain separate work.
+Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
 The [structural prerequisite audit](behavioral-structure.md) distinguishes the
