@@ -196,8 +196,14 @@ The helper accepts `track --status ready` using the Project's live Ready option
 ID, and fails if that option is unavailable. It does not infer dependencies or
 change other tickets automatically. Use Todo → Ready → In Progress → Done:
 Ready is actionable work with accepted hard prerequisites across both repositories;
-selection and actual work move it to In Progress. Done requires acceptance, not
-merely a closed PR or successful automation. Closed-as-not-planned prerequisites
+selection and actual work move it to In Progress. A maintainer's merge
+of a PR delivering the acceptance criteria communicates approval and acceptance
+unless the maintainer explicitly leaves it pending. Agents must record the merged SHA, close
+the completed issue and mark Done without seeking a second confirmation or a
+separate review submission, following the
+[acceptance policy](maintenance.md#maintainer-acceptance). Retain automation and
+review evidence with their original meanings. An unmerged closed PR or successful
+automation alone is not acceptance. Closed-as-not-planned prerequisites
 are not accepted completion. Roadmap containers do not enter Ready. Manually
 reconcile affected unstarted tickets after accepted closure, reopening, dependency
 edits or scope decisions, without silently resetting active work.
@@ -397,9 +403,10 @@ oracle baselines. The initial slice does not reduce the completion scope.
 Feature PRs target `behavioral`; downstream uses immutable accepted upstream
 pins. CI on behavioral PRs and pushes must retain full build, tests, kernel,
 layer/axiom and traceability gates. Review actual branch-protection settings
-without weakening main. Require independent semantic acceptance, explicit issue
-closure after accepted non-default-branch integration, and the ordered final
-S7/C10/S8/C11 gates. This requirement delivers a contract and workflow, not
+without weakening main. Require independent semantic review before merge,
+recognize [maintainer merge acceptance](maintenance.md#maintainer-acceptance),
+explicitly close completed issues after non-default-branch integration, and retain
+the ordered final S7/C10/S8/C11 gates. This requirement delivers a contract and workflow, not
 behavioral implementation or authorization to merge main.
 
 Covers:
