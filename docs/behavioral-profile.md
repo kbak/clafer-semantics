@@ -48,7 +48,7 @@ moving meaning across a repository or layer requires contract review.
 | [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Lifetime.lean`, `Normalization.lean`, `Lowering.lean` | Independent signed source satisfaction, interval meaning, normalization and ordinary temporal core; no compiler IR or target imports |
 | [Structural atom compatibility (S4)][S4] | `Structural.lean`, `StructuralCompatibility`, `StructuralObservation`, `StructuralSnapshot`, `StructuralBinding`, `CapturedStatic`, `PrimitiveExpression`, `StaticObservation`, `PartialObservation`, `PartialCompatibility`, `Initializers` | Independent richer admission, full current bindings, captured static agreement and strict partial temporal composition; reviewed initializer profile |
 | [Surface meaning (S5)][S5] | `Surface.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
-| [Lasso checking (S6)][S6] | `Lasso.lean`, `Evaluation.lean` | Finite representation, infinite unfolding and exact-candidate evaluation theorem over the normalized core |
+| [Lasso checking (S6)][S6] | `Lasso.lean`, `Orbit.lean`, `FiniteEvaluation.lean`, `LassoValidation.lean`, `FiniteSets.lean`, `Verification.lean` | [Finite representation, unfolding and exact-candidate evaluation](behavioral-verification.md) over the normalized core |
 | [Compiler contract (C1)][C1], [IR (C4)][C4] | Downstream executable behavioral IR and interpretation | Pins an accepted upstream SHA; representation correctness is proved, not an assumed preservation predicate |
 | [Target semantics (C3)][C3], [encoding (C5)][C5]/[full encoding (C8)][C8] | Downstream independent Alloy temporal meaning, encoder, serializer | Source meaning must not be defined by the generator or target evaluator |
 | [Structural frontend (C6)][C6], [behavioral frontend (C7)][C7] | Downstream parsing, resolution and elaboration | Names become resolved IDs and explicit head/target views; source positions and attachment survive |
@@ -98,7 +98,8 @@ for lifetime-bounded source negation would change the profile.
 
 Finite lassos are a separate analysis representation: a nonempty finite state
 sequence, valid loop index, fixed identity/type/parent data and well-formed loop
-edge. S6 must relate evaluation to the infinite unfolding, including time zero,
+edge. The [finite verification contract](behavioral-verification.md) relates
+evaluation to the infinite unfolding, including time zero,
 birth/death at the loop edge and repeated lifetimes. A cancelled obligation does
 not restart when its parent identity reappears. Internal past operators require
 an initial-history argument, not assumed first-loop periodicity. Finite observation

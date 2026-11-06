@@ -1615,7 +1615,8 @@ correspondence. It does not establish existence of those witnesses for every
 structural model. Definition 5.4 (constraints), richer inherited references,
 primitive atoms and lasso correctness have separate owning contracts; the
 [structural atom contract](behavioral-structure.md) supplies the richer admission
-and partial-atom bridges.
+and partial-atom bridges, and the separate
+[finite correspondence](#behavioral-finite-correspondence) supplies lasso correctness.
 No source pin, historical SoSyM checkpoint or static oracle is changed.
 
 ## Empty-collection language extension
@@ -1662,3 +1663,28 @@ on absent contexts or arbitrary raw ASTs is asserted.
 preservation theorem for the pinned Haskell compiler, source surface sugar,
 partial atoms or a finite lasso checker. The normalizer's source dualities do not
 turn source negation into classical complement after lifetime cancellation.
+
+## Behavioral finite correspondence
+
+The [finite verification contract](behavioral-verification.md) implements an
+analysis representation for the independent source definitions: behavioral
+paper §5 Definitions 2–5 (pp. 2:25–28) and §6.2 (p. 2:32), amended by pinned
+T1/T2/T7/T13 in the [source ledger](#behavioral-profile-sources). T1 fixes identity
+and parent information across lifetimes; T7 requires initial history and the
+last-live endpoint; T2 cancellation is inherited through the independently
+proved source normalization/lowering. The proof covers the accepted total
+observation core and its D1 set adapter, with explicit finite evidence for any
+additional atom adapter. It does not yet integrate the reviewed
+[D3 partial-arithmetic interface](behavioral-structure.md#mathematical-arithmetic).
+
+The [Alloy 6 reference](https://alloytools.org/alloy6.html), sections “Instances
+are traces”, “Time horizon” and “Meaning of temporal connectives”, provides the
+comparison interpretation of a finite sequence with a final-to-earlier loop and
+ordinary future operators. The implementation and finite-orbit proof are original;
+no solver output or Haskell generator supplies the definition of truth. A finite
+clock retains the previous position, so the first visit and repeated loop visits
+need not share `Starts`. The [proof index](clafer-trace.md#behavioral-finite-verification)
+identifies the kernel-checked correspondence and actual finite checks.
+T13's analysis limit remains: exact-lasso agreement is not completeness over
+all infinite traces or an inferred-scope guarantee. Static oracle/source pins
+and the independent structural checker profile are unchanged.

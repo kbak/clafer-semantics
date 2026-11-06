@@ -6,11 +6,14 @@ logic. The [trace foundation](behavioral-traces.md) supplies identities, presenc
 structural validity and lifetime boundaries. This contract implements the signed
 temporal part of the [behavioral profile](behavioral-profile.md), with the
 [approved identity-observation decision](https://github.com/kbak/clafer-semantics/issues/125#issuecomment-6684850305).
-Structural atom integration, surface reductions and lasso evaluation retain their
-separate owners. No compiler, finite checker or Alloy outcome defines truth here.
+Structural atom integration and surface reductions retain their separate owners.
+The [finite verification contract](behavioral-verification.md) provides lasso
+evaluation and its agreement with this independent meaning. No compiler, finite
+checker or Alloy outcome defines truth here.
 The recursive denotations and syntax translations are noncomputable mathematical
-definitions, reducible and checked by Lean's kernel. Executable lasso evaluation
-and its agreement proof remain with [S6](https://github.com/kbak/clafer-semantics/issues/128).
+definitions, reducible and checked by Lean's kernel. The separate executable
+lasso API consumes the normalized `Core`; its
+composition theorem relates that evaluation to signed source meaning.
 
 ## Formula and observation domain
 

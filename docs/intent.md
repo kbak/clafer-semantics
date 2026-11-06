@@ -96,8 +96,11 @@ parent-bounded evaluation, identity-capturing environments and proved normalizat
 and lowering over total observations. The [structural and atom contract](behavioral-structure.md)
 adds nested/refined structural admission, inherited references, full current-state
 bindings, captured static expressions and strict partial temporal observations,
-with exact common-fragment agreement. Surface modifiers/patterns and lasso
-checking remain separate work.
+with exact common-fragment agreement. The [finite behavioral checker](behavioral-verification.md)
+adds history-aware lassos, executable normalized-core evaluation and agreement
+with infinite meaning, including a proved total set-observation adapter. Finite
+adapters for richer structural/partial observations and surface modifiers/patterns
+remain separate work.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 Feature integration uses `behavioral`; the existing structural imports and
 historical static profiles remain supported.
@@ -147,7 +150,7 @@ numbers and ticket chains must not substitute for an explanation.
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
-| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md) and [formulas](behavioral-formulas.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, remaining feature obligations and integration gates |
+| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
 | [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |

@@ -32,7 +32,12 @@ operators, `Normalization`, and `Lowering` into ordinary temporal `Core`.
 classical counting barriers, attachment and identity capture. The original
 observation interface remains total. `PartialObservation` and `PartialCompatibility`
 add strict definedness, completion-independent signed satisfaction and exact total
-compatibility. Surface meaning and lasso analysis remain separate work.
+compatibility. The separate [finite verification API](behavioral-verification.md) adds
+`Lasso`/`Orbit`, `FiniteEvaluation`, `LassoValidation`, `FiniteSets` and
+`Verification`, with `LassoExamples` as checked fixtures. Its imports may reuse
+the guarded structural checker; `Clafer.Behavioral` retains source independence.
+Finite adapters for richer structural/partial observations and surface meaning
+remain separate work.
 Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 

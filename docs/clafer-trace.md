@@ -1609,7 +1609,7 @@ Covers:
 `constantEquiv`. The [contract](behavioral-traces.md) retains the source locators,
 root policy, guarded domain and exact converse witness assumptions. Formula
 meaning is supplied by the [signed formula contract](behavioral-formulas.md);
-lasso checking remains a separate obligation.
+lasso checking is supplied by the separate [finite verification API](behavioral-verification.md).
 
 Covers:
 - `req~behavioral-identities~1`
@@ -1693,6 +1693,62 @@ Covers:
 - `req~behavioral-formula-denotation~1`
 - `req~behavioral-signed-normalization~1`
 - `req~behavioral-environments~1`
+
+## Behavioral finite verification
+
+`impl~behavioral-finite-verification~1`
+
+[Lasso](../Clafer/Behavioral/Lasso.lean) defines finite inventories/state tables,
+`next`, the predecessor-bearing `clock`, `unfold`, `starts`, `ends`,
+`parentPresent` and finite `Valid`. [LassoValidation](../Clafer/Behavioral/LassoValidation.lean)
+implements `identityChecks`, `stateChecks`, `checks` and `RawLasso.admit`.
+[FiniteEvaluation](../Clafer/Behavioral/FiniteEvaluation.lean) implements finite
+captured environments, observations, quantification and all-constructor
+`Core.finite`, using [Orbit](../Clafer/Behavioral/Orbit.lean)'s finite searches.
+[FiniteSets](../Clafer/Behavioral/FiniteSets.lean) supplies the complete accepted
+total set-observation adapter. [Verification](../Clafer/Behavioral/Verification.lean)
+packages source agreement in `FiniteAdapter`, separates four `Result` outcomes,
+and exposes `checkAt`, `checkRaw` and `Core.attachedFinite`.
+The [contract](behavioral-verification.md) owns the guarded structural domain,
+finite/range evidence obligations, initial history and exact-candidate limits.
+
+Covers:
+- `req~behavioral-lassos~1`
+- `req~behavioral-finite-checker~1`
+
+`proof~behavioral-finite-verification~1`
+
+`clock_first` visits every stored state. `valid_iff_unfold` and `checks_iff`
+relate finite checks to independent infinite structural validity.
+`starts_agrees`, `ends_agrees` and `parentPresent_agrees` retain actual history
+and loop-edge behavior. `RawLasso.admit_none` characterizes invalid loop/metadata
+rejection. `Orbit.representative`, `some_iff`, `every_iff` and `until_iff` justify
+searching at most the finite clock cardinality; shortening an endpoint never
+skips a required earlier until operand.
+
+`Core.finite_agrees` assumes total atom equivalence and exact finite domain
+agreement for every environment/time, and proves all-constructor equality with
+independent infinite meaning. `normalized_finite_agrees` composes source signs
+and lifetime lowering. `attachedFinite_agrees` and `normalized_attached_agrees`
+cover implicit always over explicitly supplied applicable contexts.
+`Step.finite_agrees`, `SetExpr.finite_agrees`, `SetAtom.finite_agrees` and
+`FiniteObservation.sets_agrees` discharge the concrete D1 set adapter.
+`Verification.checkAt_correct` characterizes satisfaction under checked
+core/support certificates and a certified adapter; `missing_adapter` preserves
+unsupported results. None of these results asserts general infinite-trace
+completeness, partial arithmetic agreement or a compiler/solver theorem.
+
+[LassoExamples](../Clafer/Behavioral/LassoExamples.lean) proves its cyclic fixture
+valid and kernel-checks time zero, first-loop history, last-live boundaries,
+cancellation/reappearance, captured sets/current references, all quantifiers
+and malformed loop/metadata/reference mutations. The
+[exhaustive executable test](../tests/behavioral_lasso.lean) compares up to three
+states against an independent arithmetic-index oracle, including nested future
+operators and lifetime anchors.
+
+Covers:
+- `req~behavioral-lassos~1`
+- `req~behavioral-finite-checker~1`
 
 ## Behavioral current observations
 
