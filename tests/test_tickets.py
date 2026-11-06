@@ -52,31 +52,41 @@ class TicketTests(unittest.TestCase):
         tracking.assert_not_called()
 
     def test_track_uses_live_field_and_option_ids(self):
-        with (
-            patch.object(
-                tickets,
-                "gh",
-                side_effect=[
-                    {"url": "https://github.com/kbak/clafer-semantics/issues/7"},
-                    {"id": "ITEM"},
-                    {
-                        "fields": [
-                            {
-                                "id": "FIELD",
-                                "name": "Status",
-                                "options": [{"id": "OPTION", "name": "In Progress"}],
-                            }
-                        ]
-                    },
-                    "",
-                ],
-            ) as gh,
-            contextlib.redirect_stdout(io.StringIO()),
-        ):
-            tickets.track(7, "in-progress")
-        self.assertIn("--single-select-option-id", gh.call_args.args)
-        self.assertEqual(gh.call_args.args[-1], "OPTION")
-        self.assertEqual(gh.call_args.args[3], "ITEM")
+        for status, display in (("todo", "Todo"), ("ready", "Ready"),
+                                ("in-progress", "In Progress"), ("done", "Done")):
+            with (
+                self.subTest(status=status),
+                patch.object(
+                    tickets,
+                    "gh",
+                    side_effect=[
+                        {"url": "https://github.com/kbak/clafer-semantics/issues/7"},
+                        {"id": "ITEM"},
+                        {"fields": [{
+                            "id": "FIELD", "name": "Status",
+                            "options": [{"id": "WRONG", "name": "Unrelated"},
+                                        {"id": "OPTION", "name": display}],
+                        }]},
+                        "",
+                    ],
+                ) as gh,
+                contextlib.redirect_stdout(io.StringIO()) as output,
+            ):
+                tickets.main(["track", "7", "--status", status])
+            self.assertIn("--single-select-option-id", gh.call_args.args)
+            self.assertEqual(gh.call_args.args[-1], "OPTION")
+            self.assertEqual(gh.call_args.args[3], "ITEM")
+            self.assertIn(display, output.getvalue())
+
+    def test_ready_requires_an_existing_project_option(self):
+        with patch.object(tickets, "gh", side_effect=[
+            {"url": "url"}, {"id": "ITEM"},
+            {"fields": [{"id": "FIELD", "name": "Status",
+                         "options": [{"id": "TODO", "name": "Todo"}]}]},
+        ]) as gh:
+            with self.assertRaises(StopIteration):
+                tickets.main(["track", "7", "--status", "ready"])
+        self.assertEqual(gh.call_count, 3)  # Never silently fall back to Todo.
 
     def test_creation_retains_url_when_project_fails(self):
         output = io.StringIO()

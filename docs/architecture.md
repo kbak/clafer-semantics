@@ -15,6 +15,31 @@ public roots. Imports flow `Clafer -> FormalCD -> DPGraph -> Mathlib`.
 | `FormalCD` | Class-diagram metadata, morphisms, metamodel disciplines, restricted realization and bounded self-instantiation | [FormalCD](../FormalCD.lean), built on `DPGraph` |
 | `Clafer` | Resolved syntax, Shapes, MCS, Compile/gluing, constraint meanings and finite structural verification | [Clafer](../Clafer.lean), built on `FormalCD` |
 
+## Behavioral extension boundary
+
+The [behavioral contract candidate](behavioral-profile.md) reserves an optional
+`Clafer.Behavioral` entry point and modules under `Clafer/Behavioral` in the existing
+package. Trace/snapshot, signed formula/environment, structural atom, surface and
+lasso modules have separate responsibilities; their exact proposed split and
+implementation owners are listed in the contract. No behavioral declarations
+are delivered yet. Existing structural entry points and the dependency direction
+remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
+
+Source meaning is independent of executable IR and target semantics. The upstream
+extension owns infinite traces, stable identity/parent data, lifetime meaning,
+normalization proofs and a justified finite-lasso checker. The downstream compiler
+owns parsing/resolution/elaboration, executable IR, independent Alloy temporal
+semantics, code generation and trace decoding. It imports accepted upstream SHA
+pins. Snapshot projection uses the live carrier because `Configuration.Rooted`
+covers its ambient carrier; constant-trace embedding applies only to the contract's
+explicit common structural fragment. Static pointwise agreement alone establishes
+neither temporal preservation nor trace completeness.
+
+The [feature matrix](behavioral-profile.md#feature-disposition-matrix) records
+required future proofs and fixtures, separately from the delivered theorem table
+below. Its [integration gates](behavioral-profile.md#integration-and-acceptance)
+require both repositories' complete accepted candidates before main integration.
+
 ## DPGraph core and models
 
 [Signature.lean](../DPGraph/Signature.lean), [Formula.lean](../DPGraph/Formula.lean)

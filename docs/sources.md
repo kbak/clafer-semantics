@@ -1439,3 +1439,63 @@ domain and the accepted Appendix 4 partial-singleton bridge. Its extraction erro
 API remains a selected library contract, not a verbatim paper definition. The
 Figure 21 guarded VC meaning and Clafer expression meanings retain their separate
 source obligations. No source correction, supported fragment or comparison pin changes.
+
+## Behavioral profile sources
+
+`impl~behavioral-profile-sources~1`
+
+The [behavioral contract](behavioral-profile.md) proposes the versioned
+`behavioral-0.5.7-candidate/v1` profile. Its source candidate is
+`gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`, the unmerged candidate
+of [release PR 113](https://github.com/gsdlab/clafer/pull/113).
+A later release must be compared against these exact bytes, with semantic,
+fixture and dependency changes reviewed before replacing the pin. No static
+oracle or historical SoSyM identity is changed by this profile.
+
+The behavioral primary reference is Juodisius, Sarkar, Mukkamala, Antkiewicz,
+Czarnecki and Wąsowski, *Clafer: Lightweight Modeling of Structure, Behaviour,
+and Variability*, The Art, Science, and Engineering of Programming 3(1), article
+2 (2019), [DOI](https://doi.org/10.22152/programming-journal.org/2019/3/2),
+[arXiv 1807.08576v1](https://arxiv.org/abs/1807.08576v1). Locators use its printed
+`2:n` article pages: §5 Definitions 1–5 and expression equations, pp. 2:23–28;
+§6.1 defaults/sugar, pp. 2:29–32; §6.2 historical implementation, p. 2:32.
+Sections 8–9 supply design/related-work context. This is a focused audit, not a
+claim to have reviewed the entire paper or its entire model collection.
+The paper is CC BY 4.0 (license notice on its first page). Its file remains
+external; the contract gives attributed paraphrases and mathematical obligations.
+SoSyM remains the structural primary reference; this paper does not supersede
+its recorded corrections or the static comparison contract.
+
+All compiler paths below are at the immutable candidate above. The source is
+MIT licensed; preserve its copyright/license notice if incorporating code or
+substantial documentation. The profile is independently authored, and compiler
+implementations supply comparison evidence rather than definitions by fiat.
+
+| Source | SHA-256 of inspected bytes | Role |
+| --- | --- | --- |
+| [Behavioral paper PDF](https://arxiv.org/pdf/1807.08576v1) | `b5c03f295e490e7c97878cdb3b9f2ec6aa3f6b667de19988a48c59faba76bb06` | Primary behavioral definitions and source-sugar account |
+| [Temporal errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md) | `fd7913d82304ddc39765b5e67451cf19802c5cc13798b1ecb64fed00699d6a32` | T1–T13, including deliberate changes and correction classifications |
+| [Static errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/static-semantics-errata.md) | `3d9e5f6bbee631529fcc00c15b862d1102e77c4609b812bd0e44d31046ad442e` | S1–S12 prerequisites, differences and unresolved resolution order |
+| [CheatSheet](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md) | `eb26986a92ff8832d8757328c7d2abc9686ba98687dfa941efb05c76cfd23559` | Behavioral surface inventory and aliases |
+| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs) | `b49938b19f5ae64ae5a6557d6b5328aac521b8956981322098f028b3262d473d` | `pushNegations`, `genPExp'`, `thisAlive`, `parentRel`, `genIFunExp`, finality and scope comparison |
+| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs) | `8fbe866a70521a25dfe75ad191dc0737887376877ccfb37921c26a4901e68ad7` | `desugarClaferTrans`, `desugarTrans'`, `desugarSequence`, `translateTmpPatterns`, `desugarInit` |
+| [Compiler LICENSE](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/LICENSE) | `7ce5f2392d821cff6ad1021a9cfc4132a7c37aff2658d7f62d6a7e4b4aa59e0d` | MIT terms for compiler and associated documentation |
+
+The following public decisions explain the candidate; their corresponding
+immutable source text above controls reproducibility:
+
+- [Parent-lifetime transition qualification](https://github.com/gsdlab/clafer/issues/107#issuecomment-6636750785): stable and replaceable machines need different properties.
+- [Inherited reference modifiers](https://github.com/gsdlab/clafer/issues/109#issuecomment-6641695619): final/finalref/finaltarget must apply to inherited references too.
+- [Signed temporal normalization](https://github.com/gsdlab/clafer/issues/110#issuecomment-6636751499): normalize negations before lifetime bounds, retaining one/lone barriers.
+- [Errata review dispositions](https://github.com/gsdlab/clafer/issues/111#issuecomment-6636751998): trace-wide scopes, fixed parent across lifetimes, transition attachment and effective-group change.
+- [Root and parent correction](https://github.com/gsdlab/clafer/issues/112#issuecomment-6641299178): synthetic static root versus temporal root, actual parents of abstract instances and explicit backend limits.
+
+These decisions do not resolve every environment, pattern or arithmetic question.
+The [contract decision register](behavioral-profile.md#decisions-requiring-contract-review)
+keeps those differences visible before any new definition. The existing
+[structural comparison](resolved-ir-comparison.md) and historical SoSyM checkpoint
+remain separate profiles with their original source identities.
+
+Covers:
+- `req~behavioral-profile~1`
+- `req~formalization-roadmap~1`
