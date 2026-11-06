@@ -1696,7 +1696,7 @@ image and binary–binary join. Both joins require matching middle classes. Incl
 Boolean/integer literals, typed empty unary/binary collections, and explicit
 no/one/lone/some helpers for resolved input. Empty collection instantiation is
 element-bottom typing: it requires no class instance or inheritance edge, retains
-arity, and does not introduce Boolean/scalar integer coercions. The `none`
+arity, and does not introduce Boolean/scalar integer coercions. The `noclafer`
 source literal is unary; binary empties retain separate endpoint annotations.
 Follow the [Q3 source disposition](sources.md#appendix-d-rule-dispositions-q3):
 intersection is ordinary common-element intersection, already printed as ∩;

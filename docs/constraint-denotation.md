@@ -67,7 +67,7 @@ comparison holds.
 
 The adopted [empty-set extension](https://github.com/kbak/clafer-semantics/issues/134)
 adds `Expr.empty` at any unary or binary collection shape. It denotes `Option.some ∅`;
-`Option.none` continues to mean undefined. The surface `none` has bottom element
+`Option.none` continues to mean undefined. The surface `noclafer` has bottom element
 type and arity one. A resolved type annotation instantiates that bottom at a
 chosen element class without creating a declaration, inheritance edge, or value
 dependency on the class extent. Binary empties retain both endpoint annotations.
@@ -81,6 +81,11 @@ observe no extents or maps. General environment, support and renaming invariance
 cover the new constructor. This extension leaves structural Compile's positive-map
 support requirement unchanged; generic constraint denotation permits constant-only
 bodies. General source conditionals remain outside this core.
+
+`noclafer` is reserved in the source language to avoid taking the useful existing
+model name `none`. Alloy generation still uses its native `none` spelling. The
+name complements the universal-collection spelling `clafer`; adding a universal
+source literal is a separate frontend concern.
 
 ## Occurrence counts and inherited navigation
 
