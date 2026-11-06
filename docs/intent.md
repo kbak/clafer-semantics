@@ -91,7 +91,10 @@ and signed temporal obligations, surface reductions and justified lasso checking
 Its complete feature/disposition matrix and two-repository ownership contract
 require explicit acceptance. The [trace foundation](behavioral-traces.md) supplies
 shared identities, lifetime boundaries and the guarded structural snapshot/constant
-bridge; signed formulas, surface meaning and lasso checking remain future work.
+bridge. The [signed formula contract](behavioral-formulas.md) supplies independent
+parent-bounded evaluation, identity-capturing environments and proved normalization
+and lowering over total observations. Full structural/partial-atom integration,
+surface meaning and lasso checking remain separate work.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 Feature integration uses `behavioral`; the existing structural imports and
 historical static profiles remain supported.
@@ -141,7 +144,7 @@ numbers and ticket chains must not substitute for an explanation.
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
-| [Behavioral profile](behavioral-profile.md) and [traces](behavioral-traces.md) | Versioned 0.5.7 contract, delivered identity/snapshot foundation, remaining feature obligations and integration gates |
+| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md) and [formulas](behavioral-formulas.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, remaining feature obligations and integration gates |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |

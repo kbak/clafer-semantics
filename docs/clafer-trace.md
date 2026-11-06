@@ -1605,7 +1605,8 @@ Covers:
 `snapshot`, `fiberEquiv`, `childEquiv`, `StaticCorrespondence`, `constant` and
 `constantEquiv`. The [contract](behavioral-traces.md) retains the source locators,
 root policy, guarded domain and exact converse witness assumptions. Formula
-meaning and lasso checking are separate obligations.
+meaning is supplied by the [signed formula contract](behavioral-formulas.md);
+lasso checking remains a separate obligation.
 
 Covers:
 - `req~behavioral-identities~1`
@@ -1632,3 +1633,60 @@ Covers:
 - `req~behavioral-identities~1`
 - `req~behavioral-traces~1`
 - `req~behavioral-snapshot-bridge~1`
+
+## Behavioral formulas and signed normalization
+
+`impl~behavioral-formula-core~1`
+
+[Formula](../Clafer/Behavioral/Formula.lean) supplies depth-indexed `Formula`,
+`Quantifier.eval` and the total `Observation` interface.
+[Environment](../Clafer/Behavioral/Environment.lean) supplies captured set values,
+`push`, `Trace.ParentPresent`, `SetExpr.eval`, `Step.relation` and total
+`SetAtom.eval`. [Denotation](../Clafer/Behavioral/Denotation.lean) independently
+states signed `Formula.denote`, classical-barrier `Formula.raw` and `Attached`.
+[Lifetime](../Clafer/Behavioral/Lifetime.lean) states interval meanings and ordinary
+operators separately. [Normalization](../Clafer/Behavioral/Normalization.lean)
+and [Lowering](../Clafer/Behavioral/Lowering.lean) produce a normal form and an
+ordinary temporal `Core`. The [contract](behavioral-formulas.md) retains total
+observation/partial-atom boundaries, D1's deliberate paper departure and T2/T3/T7
+correspondence. No static evaluator or compiler outcome is imported as meaning.
+
+Covers:
+- `req~behavioral-formula-denotation~1`
+- `req~behavioral-signed-normalization~1`
+- `req~behavioral-environments~1`
+
+`proof~behavioral-formula-core~1`
+
+`Formula.normalize_normal`, `normalize_agrees`, `lower_agrees` and
+`normalize_lower_agrees` cover every constructor and both signs; attachment
+agreement is `attached_lower_agrees`. `temporalFree_polarity` recovers classical
+signs on total temporal-free formulas; `double_negation` handles source signs.
+`persistent_eventually_consistent` excludes both F polarities for a total atom
+when the original attachment's parent persists at every future time.
+
+`Lifetime.next_lower`, `eventually_lower`, `always_lower` and `until_lower`
+justify the inserted guards. `not_through_after_end`, `always_before_end`,
+`until_witness_before_end` and `eventually_cancel` retain cancellation across a
+later reappearance. `next_true`, `eventually_true`, `always_true`, `until_true` and `weakUntil_true`
+recover ordinary operators under a permanent bound. `Trace.parentPresent_iff`
+and `context_parent_present` distinguish fixed attachment from source presence.
+`Environment.push_this`, `push_zero`, `push_succ`, `SetExpr.captured_set`,
+`captured_deref`, `this_absent`, `this_live` and `direct_parent` state the
+identity-capture/current-navigation rules.
+
+[FormulaExamples](../Clafer/Behavioral/FormulaExamples.lean) uses the independently
+valid `Examples.cycling` trace. `both_polarities`, `late_negation_rejected`,
+`persistent_no_both`, `attachment_matters`, `source_death_does_not_cancel`,
+`root_eventually_false` and `no_resumption` distinguish the lifetime boundaries.
+`quantified_cancellation`, `one_barrier`, `lone_barrier`, `boolean_expansions`,
+`until_and_weak_boundaries` and `anchor_boundaries` exercise the signed rules.
+`absent_this_and_parent`, `capture_survives_absence`,
+`current_reference_not_snapshot` and `captured_bag_heads` exercise D1.
+These are kernel-checked assertions, not semantic acceptance or general
+compiler, partial-static-atom or finite-evaluator agreement.
+
+Covers:
+- `req~behavioral-formula-denotation~1`
+- `req~behavioral-signed-normalization~1`
+- `req~behavioral-environments~1`
