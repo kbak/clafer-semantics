@@ -17,6 +17,9 @@ adds richer admission, inherited-reference bindings, captured static agreement a
 strict partial temporal composition, with explicit downstream obligations. The
 [surface contract](behavioral-surface.md) specifies modifiers, anchors, transitions,
 all thirty scoped patterns and model/assertion/scenario meanings, including D2/D5.
+The [qualification contract](behavioral-qualification.md) supplies full source/core
+composition, strict partial finite checking and the complete source-side proof
+and witness inventory, retaining explicit acceptance and downstream boundaries.
 
 Profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
@@ -150,7 +153,9 @@ final profile unless explicitly marked **review decision**. The S5 rows below
 name source APIs and checked witnesses; their hypotheses and
 links are in the [surface contract](behavioral-surface.md) and
 [proof index](clafer-trace.md#behavioral-surface). Other rows retain their separate
-owner obligations until those owners supply evidence. Backend witnesses alone
+owner obligations, reconciled against actual declarations in the
+[complete qualification inventory](behavioral-qualification.md#complete-source-and-witness-inventory).
+Backend witnesses alone
 do not discharge source proofs.
 
 | ID / semantic rule | Source locator | Owner | Proof obligation | Positive / negative fixture |

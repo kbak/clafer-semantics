@@ -1674,8 +1674,11 @@ and parent information across lifetimes; T7 requires initial history and the
 last-live endpoint; T2 cancellation is inherited through the independently
 proved source normalization/lowering. The proof covers the accepted total
 observation core and its D1 set adapter, with explicit finite evidence for any
-additional atom adapter. It does not yet integrate the reviewed
-[D3 partial-arithmetic interface](behavioral-structure.md#mathematical-arithmetic).
+additional atom adapter. The
+[qualification composition](behavioral-qualification.md#finite-composition-and-its-boundaries)
+adds the reviewed strict D3 partial domain through independently proved domain
+translation and optional finite observations. It preserves undefined outcomes;
+concrete richer primitive adapters retain explicit finite-carrier/range limits.
 
 The [Alloy 6 reference](https://alloytools.org/alloy6.html), sections “Instances
 are traces”, “Time horizon” and “Meaning of temporal connectives”, provides the
@@ -1727,3 +1730,26 @@ They do not execute Haskell, prove source parsing, cover every possible temporal
 valuation by enumeration, or establish bounded-search completeness. Modifier
 reduction assumes richer structural validity and total set observations; partial
 transition/pattern/property reduction retains the original source domain.
+
+## Behavioral qualification correspondence
+
+`impl~behavioral-qualification-sources~1`
+
+The [qualification inventory](behavioral-qualification.md#complete-source-and-witness-inventory)
+accounts for all B01–B32/T1–T13 source obligations at the immutable
+[behavioral source pin](#behavioral-profile-sources). Composition follows
+behavioral §5 Definitions 3–5 and §6.1, with the accepted D1–D5 dispositions:
+shared identities, current observations, strict partial definedness, signed
+parent-lifetime truth and effective surface modifiers. The added core-domain
+translation is an original proof of the accepted D3 contract, not a newly
+attributed paper equation. Full-model and finite-composition theorems retain
+structural, context, inventory and finite-observation assumptions.
+
+The [source disposition](behavioral-qualification.md#source-disposition-and-acceptance)
+records the exact comparison to the later immutable compiler candidate
+`b6c38617b203c17f57b994546172801ddaaf88c2`. It does not replace the adopted
+`af858ec0fe3ce2ceacb7fd120947c058233086d6` pin, qualify a final release or claim
+compiler preservation. Historical static and SoSyM identities remain unchanged.
+
+Covers:
+- `req~behavioral-source-correspondence~1`

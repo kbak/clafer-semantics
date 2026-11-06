@@ -103,6 +103,9 @@ each actual parent, and conjoin additional outgoing constraints. The generic
 formula; it does not resolve names or silently change the attachment identity.
 `entry`, `advance`, `required` and `meaning` interpret the sequence directly.
 Their agreement proofs cover both source polarities and arbitrary temporal guards.
+The [qualification composition](behavioral-qualification.md) connects these
+expansions and every pattern/scope case to finite checking with the original
+strict partial domain, exact context selectors and complete model inventories.
 
 Every constraint is checked at every live applicable attachment/time, through
 `Constraint.Holds` / `Formula.PartialAttached`. At a persistent root, unanchored
