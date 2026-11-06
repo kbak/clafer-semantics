@@ -1594,3 +1594,41 @@ Covers:
 - `req~clafer-core-typing~1`
 - `req~clafer-constraint-denotation~1`
 - `req~clafer-constraint-semantic-laws~1`
+
+## Behavioral traces and snapshot bridge
+
+`impl~behavioral-trace-foundation~1`
+
+[Trace.lean](../Clafer/Behavioral/Trace.lean): `Identities`, `Identities.Valid`,
+`Trace`, `Live`, `embedding`, `ParentAt`, `Starts`, `Ends`, `raw`, `StateValid`,
+`Valid` and `Admissible`. [Snapshot.lean](../Clafer/Behavioral/Snapshot.lean):
+`snapshot`, `fiberEquiv`, `childEquiv`, `StaticCorrespondence`, `constant` and
+`constantEquiv`. The [contract](behavioral-traces.md) retains the source locators,
+root policy, guarded domain and exact converse witness assumptions. Formula
+meaning and lasso checking are separate obligations.
+
+Covers:
+- `req~behavioral-identities~1`
+- `req~behavioral-traces~1`
+- `req~behavioral-snapshot-bridge~1`
+
+`proof~behavioral-trace-foundation~1`
+
+`Trace.parent_stable` and `snapshot_parent_stable` retain actual ownership at any
+two times; `type_stable`, `top_level_parent` and `snapshot_distinct` retain type,
+root ownership and occurrence identity. `starts_zero`, `starts_succ`,
+`end_then_start`, `root_starts`, `root_never_ends`, `constant_starts` and
+`constant_never_ends` establish lifetime boundaries. `snapshot_structural` transports all structural clauses to the live
+carrier; `admissible_projection` exposes the guarded domain. `constant_valid`,
+`constant_admissible`, `constant_raw` and `constant_snapshot` give the converse
+and exact recovery under `StaticCorrespondence`, whose existence is not assumed
+to follow from arbitrary structural satisfaction.
+[Examples](../Clafer/Behavioral/Examples.lean) checks repeated lifetimes, replacement,
+orphan rejection, changing targets, unused atoms, repeated-target bag heads and
+concrete constant correspondences. Its checker imports are confined to fixtures;
+[dependency tests](../tests/behavioral_dependencies.lean) enforce the API boundary.
+
+Covers:
+- `req~behavioral-identities~1`
+- `req~behavioral-traces~1`
+- `req~behavioral-snapshot-bridge~1`
