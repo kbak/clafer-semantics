@@ -4,6 +4,11 @@ public import Clafer.Constraints.DenotationDefined
 public import Clafer.Constraints.DenotationInvariance
 public import Clafer.Constraints.IntegerExamples
 
+/-!
+[proof->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Sensitive kernel-checked denotation examples
 
 SoSyM D.4/Figure 28 and Appendix 6. Assertions exercise the actual typed

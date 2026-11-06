@@ -2,6 +2,8 @@ module
 
 public import Clafer.Compile.GroupExamples
 
+-- [proof->req~clafer-compile-groups~1]
+
 /-! # The same object visible in an own and an inherited head counts once
 
 This exercises group interpretation on typed relations. Realizing the abstract

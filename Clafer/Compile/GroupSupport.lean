@@ -5,6 +5,12 @@ public import Clafer.Compile.Basic
 public import Clafer.Semantics.Interpretation
 
 /-!
+[impl->req~clafer-compile-formulas~1]
+[impl->req~clafer-compile-groups~1]
+[proof->req~clafer-compile-groups~1]
+-/
+
+/-!
 # Group arities and meanings
 
 SoSyM §4.2.1, §6.2.2, B.4 Definition 8 and Appendix 3; D6 as recorded in

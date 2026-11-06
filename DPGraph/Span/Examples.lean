@@ -3,6 +3,12 @@ module
 public import DPGraph.Span
 
 /-!
+[impl->req~span-examples~1]
+[proof->req~span-examples~1]
+[proof->req~span-representation~1]
+-/
+
+/-!
 # Span witnesses
 
 Kernel-checked boundary cases for SoSyM B.1–B.2. The two-path example explains

@@ -2,6 +2,8 @@ module
 
 public import Clafer.Semantics.Structural
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Abstract coverage in the existing common-target interpretation
 

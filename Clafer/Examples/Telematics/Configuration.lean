@@ -3,6 +3,11 @@ module
 public import Clafer.Examples.Telematics.Input
 
 /-!
+[impl->req~clafer-appendix-f-complete~1]
+[proof->req~clafer-appendix-f-complete~1]
+-/
+
+/-!
 # Concrete telematics configuration
 
 SoSyM Appendix 6 PDF p.34. Two ECUs each own two displays; versions are 2 for

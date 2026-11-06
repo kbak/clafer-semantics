@@ -2,6 +2,8 @@ module
 
 public import FormalCD.Metamodel.Interpretation
 
+-- [impl->req~formalcd-metamodel-realization~1]
+
 /-!
 # Canonical reification of a CD's syntax
 

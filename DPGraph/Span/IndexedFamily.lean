@@ -3,6 +3,11 @@ module
 public import DPGraph.Span.Basic
 
 /-!
+[impl->req~span-family-correspondence~1]
+[proof->req~span-family-correspondence~1]
+-/
+
+/-!
 # Indexed mappings and spans
 
 SoSyM B.1, Definitions 1–5 and Theorem 1. A family-to-span head has universe

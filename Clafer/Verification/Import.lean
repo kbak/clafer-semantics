@@ -3,6 +3,8 @@ module
 public import Clafer.Verification.ProtocolProofs
 public import Mathlib.Lean.Json
 
+-- [impl->req~clafer-resolved-import~1]
+
 /-!
 # Checked effective-IR import
 

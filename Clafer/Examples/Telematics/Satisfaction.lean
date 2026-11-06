@@ -4,6 +4,8 @@ public import Clafer.Examples.Telematics.Configuration
 public import Clafer.Examples.Telematics.Definedness
 public import Clafer.Constraints.DenotationInvariance
 
+-- [proof->req~clafer-appendix-f-complete~1]
+
 /-! # Satisfaction of all twelve telematics conjuncts
 
 SoSyM Appendix 6 (PDF p.34).

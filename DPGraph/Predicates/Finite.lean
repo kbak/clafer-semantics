@@ -3,6 +3,11 @@ module
 public import DPGraph.Predicates.Meaning
 public import Mathlib.Data.Fintype.EquivFin
 
+/-!
+[impl->req~reusable-span-laws~1]
+[proof->req~reusable-span-laws~1]
+-/
+
 /-! # Finite specialization of cardinal ranges
 
 SoSyM Table 3/Appendix 1. Finiteness is local to the counted fiber;

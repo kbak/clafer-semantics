@@ -2,6 +2,13 @@ module
 
 public import FormalCD.Metamodel.Interpretation
 
+/-!
+[impl->req~formalcd-metamodel-examples~1]
+[proof->req~formalcd-formula-identity~1]
+[proof->req~formalcd-metamodel-disciplines~1]
+[proof->req~formalcd-metamodel-examples~1]
+-/
+
 /-! # Checked identity and projection boundaries (B.4 Definition 8)
 These are finite formula/fiber witnesses, not a universal metamodel instance
 construction. `ordered` has total args and fails the literal key; `repeated`

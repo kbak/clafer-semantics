@@ -3,6 +3,12 @@ module
 public import DPGraph.Signature
 
 /-!
+[impl->req~predicate-arities~1]
+[impl->req~predicate-disjointness~1]
+[proof->req~predicate-arities~1]
+-/
+
+/-!
 # Typed predicate vocabulary
 
 SoSyM Table 3 (PDF p.13), A.1 (PDF p.28), §6.1.1–2/Figure 21 (PDF pp.18–20).

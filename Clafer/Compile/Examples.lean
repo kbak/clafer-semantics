@@ -3,6 +3,13 @@ module
 public import Clafer.Compile.Basic
 public import Clafer.Constraints.Examples
 
+/-!
+[proof->req~clafer-compile-contract~1]
+[proof->req~clafer-compile-formulas~1]
+[proof->req~clafer-compile-group-data~1]
+[proof->req~clafer-compile-structure~1]
+-/
+
 /-! # Compile acceptance examples: identity, sharing, bindings and rejected inputs -/
 
 @[expose] public section

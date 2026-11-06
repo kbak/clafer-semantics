@@ -4,6 +4,15 @@ public import Clafer.MCS.Laws
 public import Clafer.Constraints.Typing
 
 /-!
+[impl->req~clafer-compile-contract~1]
+[impl->req~clafer-compile-group-data~1]
+[impl->req~clafer-compile-structure~1]
+[proof->req~clafer-compile-contract~1]
+[proof->req~clafer-compile-group-data~1]
+[proof->req~clafer-compile-structure~1]
+-/
+
+/-!
 # Structural compilation of resolved declarations
 
 SoSyM §6.2.4 and Tables 5–8 (see Appendix 5). Containment is traversed in preorder;

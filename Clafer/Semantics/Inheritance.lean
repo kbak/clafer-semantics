@@ -5,6 +5,11 @@ public import Mathlib.Logic.Function.Iterate
 public import Mathlib.Data.Nat.Find
 
 /-!
+[impl->req~clafer-structural-satisfaction~1]
+[proof->req~clafer-structural-satisfaction~1]
+-/
+
+/-!
 # Declaration ancestry
 
 SoSyM §5.5 and Appendix 5 supply identity-preserving super edges. The global

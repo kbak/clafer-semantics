@@ -2,6 +2,15 @@ module
 
 public import Clafer.Constraints.DenotationLaws
 
+/-!
+[impl->req~clafer-constraint-denotation~1]
+[impl->req~clafer-constraint-environments~1]
+[impl->req~clafer-constraint-semantic-laws~1]
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Observable support and environment invariance
 
 SoSyM D.2–D.4 and B.1. Display names and link labels cannot change

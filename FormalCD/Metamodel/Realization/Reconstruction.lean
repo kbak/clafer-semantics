@@ -2,6 +2,11 @@ module
 
 public import FormalCD.Metamodel.Realization.Context
 
+/-!
+[impl->req~formalcd-metamodel-realization~1]
+[proof->req~formalcd-metamodel-realization~1]
+-/
+
 /-! # Reconstruction from the explicit semantic representation
 SoSyM B.4 Definition 8. Decode the effective declaration set, names, identifiers
 and the separately retained mode data. The bare drawing cannot recover modes

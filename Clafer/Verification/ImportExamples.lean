@@ -2,6 +2,11 @@ module
 
 public import Clafer.Verification.ImportProofs
 
+/-!
+[utest->req~clafer-compiler-capture~1]
+[utest->req~clafer-resolved-import~1]
+-/
+
 /-! Kernel and native witnesses for the pinned effective import boundary.
 The fixtures are typed decoded data; the separate Python suite exercises actual
 compiler JSON/capture. SoSyM §5.3 reference occurrences and §5.5 shared identity. -/

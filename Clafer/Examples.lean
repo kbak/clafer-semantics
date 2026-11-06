@@ -2,6 +2,14 @@ module
 
 public import Clafer.Shape.Diagram
 
+/-!
+[proof->req~clafer-constraint-boundary~1]
+[proof->req~clafer-finite-traversal~1]
+[proof->req~clafer-individual-shapes~1]
+[proof->req~clafer-input-wellformedness~1]
+[proof->req~clafer-resolved-syntax~1]
+-/
+
 /-! # Constructible and rejected witnesses for the selected 2014 syntax/Shapes -/
 
 @[expose] public section

@@ -3,6 +3,8 @@ module
 public import Clafer.Compile.ConstraintMeaning
 public import Clafer.Compile.Examples
 
+-- [proof->req~clafer-constraint-preservation-witnesses~1]
+
 /-!
 # Full binding and isolated-vertex acceptance boundary
 

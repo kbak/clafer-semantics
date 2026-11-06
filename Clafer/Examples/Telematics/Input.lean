@@ -4,6 +4,11 @@ public import Clafer.Examples.Telematics.Expressions
 public import Clafer.Compile.ConstraintMeaning
 
 /-!
+[impl->req~clafer-appendix-f-complete~1]
+[proof->req~clafer-appendix-f-complete~1]
+-/
+
+/-!
 # Complete resolved telematics input
 
 SoSyM Appendix 6 PDF p.34, Appendix 3 and §6.2.4–5. The source map is manual:

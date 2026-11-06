@@ -2,6 +2,11 @@ module
 
 public import Clafer.Constraints.DenotationExamples
 
+/-!
+[proof->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Distinct support occurrences of the same resolved maps
 
 SoSyM D.2–D.4, §6.2.2. Duplicate graph occurrences retain the very same

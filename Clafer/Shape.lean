@@ -3,6 +3,13 @@ module
 public import Clafer.Syntax
 
 /-!
+[impl->req~clafer-finite-traversal~1]
+[impl->req~clafer-individual-shapes~1]
+[proof->req~clafer-finite-traversal~1]
+[proof->req~clafer-individual-shapes~1]
+-/
+
+/-!
 # Individual Clafer Shapes
 
 SoSyM §5.2/Figure 16, §5.3/Table 4, §5.5/Figure 18, §6.2.3/Figure 23.

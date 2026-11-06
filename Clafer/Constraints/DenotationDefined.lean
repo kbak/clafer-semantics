@@ -3,6 +3,12 @@ module
 public import Clafer.Constraints.DenotationLaws
 public import Clafer.Constraints.IntegerNavigation
 
+/-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Structural definedness of numeric navigation
 
 SoSyM Appendix 6 PDF p.34, D.3–D.4. Head multiplicities and total functional

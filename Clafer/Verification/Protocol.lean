@@ -3,6 +3,11 @@ module
 public import Clafer.Verification.Finite
 
 /-!
+[impl->req~clafer-finite-checker~1]
+[proof->req~clafer-finite-checker~1]
+-/
+
+/-!
 # Deterministic finite table protocol
 
 This is an in-memory supplied-candidate interface, not a production parser.

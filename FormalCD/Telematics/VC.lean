@@ -5,6 +5,12 @@ public import FormalCD.Integer
 public import DPGraph.Predicates.Relational
 
 /-!
+[impl->req~formalcd-vc-semantics~1]
+[proof->req~formalcd-figure21-example~1]
+[proof->req~formalcd-vc-semantics~1]
+-/
+
+/-!
 # Corrected, guarded VC interpretation
 
 SoSyM Figure 8 line 9, its §4.2.3 discussion (and §4.3 configuration context),

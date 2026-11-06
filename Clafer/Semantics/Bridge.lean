@@ -4,6 +4,12 @@ public import Clafer.Compile.EffectiveCore
 public import Clafer.Semantics.Relational
 
 /-!
+[impl->req~clafer-structural-satisfaction~1]
+[proof->req~clafer-effective-core~1]
+[proof->req~clafer-structural-satisfaction~1]
+-/
+
+/-!
 # Correspondence with the selected compiled structural diagram
 
 SoSyM §6.2.4–5, B.4–B.5. The local bank is exactly `Compile.localFormulas`,

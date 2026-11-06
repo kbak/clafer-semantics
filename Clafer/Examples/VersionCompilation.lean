@@ -4,6 +4,11 @@ public import Clafer.Compile.Groups
 public import Clafer.Constraints.IntegerExamples
 
 /-!
+[impl->req~clafer-representative-integration~1]
+[proof->req~clafer-representative-integration~1]
+-/
+
+/-!
 # Appendix 6's mandatory version comparison through Compile and gluing
 
 SoSyM Appendix 6 PDF p.34 (c02 in docs/inherited-realization.md), §6.2.4–5.

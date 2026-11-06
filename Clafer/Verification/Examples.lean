@@ -5,6 +5,13 @@ public import Clafer.Semantics.Bridge
 public import Clafer.Semantics.Reachability
 
 /-!
+[impl->req~clafer-checker-witnesses~1]
+[proof->req~clafer-checker-witnesses~1]
+[utest->req~clafer-checker-witnesses~1]
+[utest->req~clafer-finite-checker~1]
+-/
+
+/-!
 # Whole-model finite witnesses
 
 Independent finite inputs for the selected 2014 semantics. Theorem witnesses

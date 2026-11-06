@@ -5,6 +5,22 @@ public import DPGraph.Span.Examples
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
+[impl->req~predicate-examples~1]
+[proof->req~predicate-arities~1]
+[proof->req~predicate-commutation~1]
+[proof->req~predicate-cover~1]
+[proof->req~predicate-disjointness~1]
+[proof->req~predicate-examples~1]
+[proof->req~predicate-interpretation~1]
+[proof->req~predicate-inverse~1]
+[proof->req~predicate-key-functional~1]
+[proof->req~predicate-key~1]
+[proof->req~predicate-multiplicity~1]
+[proof->req~predicate-unary-maps~1]
+[proof->req~setmap-semantic-graph~1]
+-/
+
+/-!
 # Checked predicate boundaries
 
 Table 3/A.1/§6.1.1–2 and the accepted Q1/Q8 corrections. These witnesses

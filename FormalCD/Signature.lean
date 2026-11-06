@@ -3,6 +3,11 @@ module
 public import DPGraph
 
 /-!
+[impl->req~formalcd-signature-extension~1]
+[proof->req~formalcd-signature-extension~1]
+-/
+
+/-!
 # Supported signatures
 
 SoSyM B.4 Definitions 7–8. A vocabulary contains the built-in predicates with

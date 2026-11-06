@@ -2,6 +2,12 @@ module
 
 public import Clafer.MCS.Metamodel
 
+/-!
+[proof->req~clafer-mcs-disciplines~1]
+[proof->req~clafer-mcs-formulas~1]
+[proof->req~clafer-mcs-metamodel~1]
+-/
+
 /-! # Nonempty MCS witnesses and rejected structural boundaries (Appendix 5) -/
 
 @[expose] public section

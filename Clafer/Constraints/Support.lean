@@ -3,6 +3,14 @@ module
 public import Clafer.Syntax
 
 /-!
+[impl->req~clafer-core-binding~1]
+[impl->req~clafer-core-support~1]
+[impl->req~clafer-core-typing~1]
+[impl->req~clafer-integer-extraction~1]
+[proof->req~clafer-core-support~1]
+-/
+
+/-!
 # Resolved constraint support
 
 SoSyM §6.2.2/Figure 22 and D.2–D.3.2. A finite occurrence graph supplies

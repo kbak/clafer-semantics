@@ -2,6 +2,12 @@ module
 
 public import DPGraph.Signature
 
+/-!
+[impl->req~dpgraph-core~1]
+[impl->req~formula-translation~1]
+[proof->req~formula-translation~1]
+-/
+
 /-! # Formulas and translation (SoSyM B.4, Definitions 8 and 10) -/
 
 @[expose] public section

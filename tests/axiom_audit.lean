@@ -4,6 +4,8 @@ module
 public meta import Lean.Elab.Command
 public meta import Lean.Util.CollectAxioms
 
+-- [itest->req~lean-validation~1]
+
 /-!
 Audit every declaration originating in the project, including generated/private
 ones. Reject new axioms, unsafe/partial declarations and transitive dependencies

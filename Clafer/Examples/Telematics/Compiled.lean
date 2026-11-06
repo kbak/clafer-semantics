@@ -3,6 +3,11 @@ module
 public import Clafer.Examples.Telematics.Satisfaction
 
 /-!
+[impl->req~clafer-appendix-f-complete~1]
+[proof->req~clafer-appendix-f-complete~1]
+-/
+
+/-!
 # The actual compiled and glued telematics model
 
 SoSyM Appendix 6 (PDF p.34).

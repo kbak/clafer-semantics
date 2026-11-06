@@ -2,6 +2,11 @@ module
 
 public import DPGraph.Predicates.Relational
 
+/-!
+[impl->req~reusable-span-laws~1]
+[proof->req~reusable-span-laws~1]
+-/
+
 /-! # Ambient navigation and relational reduction
 
 SoSyM Appendix 2 mapping reduction and composition (accepted Q1), Table 3,

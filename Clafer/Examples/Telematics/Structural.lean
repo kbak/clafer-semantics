@@ -6,6 +6,12 @@ public import Mathlib.Tactic.FinCases
 public import Mathlib.Data.Fin.VecNotation
 
 /-!
+[impl->req~clafer-inherited-witnesses~1]
+[proof->req~clafer-inherited-witnesses~1]
+[proof->req~clafer-representative-coverage~1]
+-/
+
+/-!
 # Telematics structural realization witness
 
 SoSyM Appendix 6 (PDF p.34).

@@ -4,6 +4,13 @@ public import FormalCD.Metamodel.Basic
 public import FormalCD.Metamodel.Binding
 
 /-!
+[impl->req~formalcd-formula-identity~1]
+[impl->req~formalcd-metamodel-disciplines~1]
+[proof->req~formalcd-formula-identity~1]
+[proof->req~formalcd-metamodel-disciplines~1]
+-/
+
+/-!
 # Name and arity discipline meanings
 
 SoSyM §6.1.3 PDF p.21 and B.4 Definition 8 PDF p.31. The context explicitly supplies

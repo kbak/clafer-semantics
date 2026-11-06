@@ -4,6 +4,12 @@ public import Mathlib.Data.Fintype.Basic
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
+[impl->req~clafer-constraint-boundary~1]
+[impl->req~clafer-resolved-syntax~1]
+[proof->req~clafer-constraint-boundary~1]
+-/
+
+/-!
 # Resolved constraint boundary
 
 SoSyM §6.2.2, Figure 22 (PDF p.21), Appendix D.2 (PDF pp.32–33).

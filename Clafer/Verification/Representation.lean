@@ -4,6 +4,8 @@ public import Clafer.Verification.Finite
 public import Clafer.Semantics.Renaming
 public import Clafer.Semantics.Normalization
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Completeness of the finite relational candidate domain
 

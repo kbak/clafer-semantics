@@ -4,6 +4,11 @@ public import Mathlib.Data.Set.Function
 public import Mathlib.Data.Int.Basic
 public import Mathlib.Logic.Embedding.Basic
 
+/-!
+[impl->req~formalcd-integer-realization~1]
+[proof->req~formalcd-integer-realization~1]
+-/
+
 /-! # Explicit integer realization and partial singleton extraction
 
 SoSyM §6.1/Figure 21 and Appendix 4 semantics. The interpretation embeds all

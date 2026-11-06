@@ -3,6 +3,13 @@ module
 public import FormalCD.Metamodel.Discipline
 public import FormalCD.Semantics
 
+/-!
+[impl->req~formalcd-formula-identity~1]
+[impl->req~formalcd-metamodel-disciplines~1]
+[proof->req~formalcd-formula-identity~1]
+[proof->req~formalcd-metamodel-disciplines~1]
+-/
+
 /-! # Extended interpretation: built-in meanings plus nd/ad
 The exact domain is bounded subsets/spans over U, with the explicit context
 below. Arbitrary raw diagrams do not recover vertex/index/registry information.

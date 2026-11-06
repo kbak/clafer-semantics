@@ -3,6 +3,8 @@ module
 public import Clafer.Examples.Telematics.Expressions
 public import Clafer.Constraints.DenotationInvariance
 
+-- [impl->req~clafer-appendix-f-expressions~1]
+
 /-!
 # Expression environments on the inherited structural fixture
 

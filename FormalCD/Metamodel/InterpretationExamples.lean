@@ -3,6 +3,13 @@ module
 public import FormalCD.Metamodel.Examples
 
 /-!
+[impl->req~formalcd-metamodel-examples~1]
+[proof->req~formalcd-formula-identity~1]
+[proof->req~formalcd-metamodel-disciplines~1]
+[proof->req~formalcd-metamodel-examples~1]
+-/
+
+/-!
 # Finite discipline interpretations
 
 The repeated-argument fragment is an actual model of ad, literal key and total

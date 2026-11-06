@@ -4,6 +4,11 @@ public import DPGraph.Semantics
 public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.PullbackCone
 
 /-!
+[impl->req~dpgraph-pushout-data~1]
+[proof->req~dpgraph-pushout-data~1]
+-/
+
+/-!
 # Declaration unions on carrier cocones
 
 Derived constructions over SoSyM B.4 Definitions 9–10 and the abstract B.5

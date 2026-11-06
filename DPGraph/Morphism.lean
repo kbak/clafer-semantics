@@ -2,6 +2,12 @@ module
 
 public import DPGraph.Basic
 
+/-!
+[impl->req~dpgraph-morphisms~1]
+[proof->req~dpgraph-category~1]
+[proof->req~dpgraph-morphisms~1]
+-/
+
 /-! # Declaration-preserving morphisms (SoSyM B.4, Definition 10) -/
 
 @[expose] public section

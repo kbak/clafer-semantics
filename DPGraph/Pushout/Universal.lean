@@ -3,6 +3,11 @@ module
 public import DPGraph.Pushout.Basic
 
 /-!
+[impl->req~dpgraph-pushout-universal~1]
+[proof->req~dpgraph-pushout-universal~1]
+-/
+
+/-!
 # Universal property of declaration unions
 
 The declaration union on a carrier pushout is a pushout of DP-graphs. This is a

@@ -3,6 +3,11 @@ module
 public import Clafer.Verification.ImportProofs
 public meta import Clafer.Verification.ImportProofs
 
+/-!
+[impl->req~clafer-bounded-comparison~1]
+[impl->req~clafer-resolved-import~1]
+-/
+
 /-! Internal adapter for canonical JSON emitted by capture.py after strict
 external decoding (including duplicate-key rejection). Lean.Json.parse alone
 does not enforce that lexical boundary. Parsing and runtime execution are outside

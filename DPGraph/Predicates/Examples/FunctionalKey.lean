@@ -3,6 +3,11 @@ module
 public import DPGraph.Predicates.FunctionalKey
 
 /-!
+[impl->req~predicate-key-functional~1]
+[proof->req~predicate-key-functional~1]
+-/
+
+/-!
 # Functional-key boundaries and repeated marriages
 
 Finite witness motivated by Diskin et al. (2000), §3.3 pp. 353–354 / Figure 1

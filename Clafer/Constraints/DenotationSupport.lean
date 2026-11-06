@@ -2,6 +2,12 @@ module
 
 public import Clafer.Constraints.DenotationInvariance
 
+/-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Independence from unobserved support occurrences
 
 SoSyM D.2–D.4. Complete support graphs may contain isolated vertices and

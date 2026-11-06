@@ -3,6 +3,8 @@ module
 public import Clafer.Semantics.Realization
 public import Clafer.Verification.Finite
 
+-- [proof->req~clafer-inherited-realization~1]
+
 /-! # Compatibility with #50's supported structural checker
 
 The guarded fragment has no inherited field bodies. In that fragment the two

@@ -2,6 +2,12 @@ module
 
 public import Clafer.Constraints.DenotationInvariance
 
+/-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Lexical alpha-renaming
 
 SoSyM D.2–D.4: binder names are metadata; positions, fresh IDs and

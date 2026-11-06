@@ -3,6 +3,13 @@ module
 public import FormalCD.Basic
 
 /-!
+[impl->req~formalcd-morphisms~1]
+[impl->req~formalcd-signature-extension~1]
+[proof->req~formalcd-morphisms~1]
+[proof->req~formalcd-signature-extension~1]
+-/
+
+/-!
 # Name-preserving FormalCD morphisms
 
 An adopted library specialization of SoSyM B.4 Definition 10. The additional

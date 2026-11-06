@@ -3,6 +3,11 @@ module
 public import DPGraph.Span.IndexedFamily
 
 /-!
+[impl->req~span-composition~1]
+[proof->req~span-composition~1]
+-/
+
+/-!
 # Pullback composition
 
 SoSyM B.2.1: composition is in source-to-target order and retains all compatible

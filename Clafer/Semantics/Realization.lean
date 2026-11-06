@@ -5,6 +5,11 @@ public import Clafer.Semantics.Abstracts
 public import Clafer.Semantics.Bridge
 
 /-!
+[impl->req~clafer-inherited-realization~1]
+[proof->req~clafer-inherited-realization~1]
+-/
+
+/-!
 # Selected inherited realization
 
 SoSyM §5.3.4–5, §5.5 and Appendix 6, with the D2/D4/D6 clarification in

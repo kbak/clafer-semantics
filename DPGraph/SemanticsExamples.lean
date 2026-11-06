@@ -3,6 +3,13 @@ module
 public import DPGraph.Examples
 
 /-!
+[impl->req~dpgraph-semantics-examples~1]
+[proof->req~dpgraph-category~1]
+[proof->req~dpgraph-declaration-image~1]
+[proof->req~dpgraph-semantics-examples~1]
+-/
+
+/-!
 # Nonvacuous examples of abstract satisfaction
 
 These give `Examples.signature` an illustrative equality-of-parallel-arrows

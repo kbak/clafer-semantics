@@ -4,6 +4,13 @@ public import Clafer.Shape.Diagram
 public import FormalCD.Metamodel.Binding
 
 /-!
+[impl->req~clafer-compile-group-data~1]
+[impl->req~clafer-mcs-disciplines~1]
+[impl->req~clafer-mcs-formulas~1]
+[impl->req~clafer-mcs-metamodel~1]
+-/
+
+/-!
 # Multi-Clafer Shapes: structural data
 
 SoSyM §6.2.3/Figure 23 and Tables 5–8 (see Appendix 5). Local slots are

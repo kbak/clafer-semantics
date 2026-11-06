@@ -4,6 +4,15 @@ public import FormalCD
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
+[impl->req~formalcd-examples~1]
+[proof->req~formalcd-declarations~1]
+[proof->req~formalcd-examples~1]
+[proof->req~formalcd-morphisms~1]
+[proof->req~formalcd-naming~1]
+[proof->req~formalcd-structure~1]
+-/
+
+/-!
 # Checked boundaries for the first FormalCD increment
 
 Finite syntax inspired by SoSyM §6.1.1–3, without encoding Figure 21c.

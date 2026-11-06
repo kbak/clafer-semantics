@@ -5,6 +5,23 @@ public import DPGraph.Span
 public import Mathlib.Data.Fintype.Basic
 
 /-!
+[impl->req~predicate-commutation~1]
+[impl->req~predicate-cover~1]
+[impl->req~predicate-disjointness~1]
+[impl->req~predicate-inverse~1]
+[impl->req~predicate-key~1]
+[impl->req~predicate-multiplicity~1]
+[impl->req~predicate-unary-maps~1]
+[proof->req~predicate-commutation~1]
+[proof->req~predicate-cover~1]
+[proof->req~predicate-disjointness~1]
+[proof->req~predicate-inverse~1]
+[proof->req~predicate-key~1]
+[proof->req~predicate-multiplicity~1]
+[proof->req~predicate-unary-maps~1]
+-/
+
+/-!
 # Link-sensitive predicate meanings
 
 SoSyM Table 3 (PDF p.13), §6.1.1–2/Figure 21 (PDF pp.18–20), A.1 and B.1–3

@@ -5,6 +5,11 @@ public import Mathlib.Data.Fin.VecNotation
 public import Mathlib.Tactic.FinCases
 
 /-!
+[impl->req~clafer-version-navigation~1]
+[proof->req~clafer-version-navigation~1]
+-/
+
+/-!
 # Appendix 6 version navigation
 
 SoSyM Appendix 6 PDF p.34, D.3–D.4, §5.3 and §5.5. The selected fragment keeps

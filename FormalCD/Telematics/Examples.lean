@@ -3,6 +3,11 @@ module
 public import FormalCD.Telematics.VC
 
 /-!
+[impl->req~formalcd-vc-witnesses~1]
+[proof->req~formalcd-vc-witnesses~1]
+-/
+
+/-!
 # Nonempty models and the four VC boundary witnesses
 
 SoSyM Figure 21a–b, §6.1.1–3, corrected Q7. Only these example component/link

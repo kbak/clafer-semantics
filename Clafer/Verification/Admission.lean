@@ -3,6 +3,13 @@ module
 public import Clafer.Verification.Protocol
 
 /-!
+[impl->req~clafer-effective-core~1]
+[impl->req~clafer-finite-checker~1]
+[proof->req~clafer-effective-core~1]
+[proof->req~clafer-finite-checker~1]
+-/
+
+/-!
 # Executable core admission with checked structural certificates
 
 Ranks witness acyclicity without reconstructing source syntax. The unused

@@ -4,6 +4,8 @@ public import Clafer.Examples.VersionCompilation
 public import Clafer.Constraints.Predicate
 public import Clafer.Constraints.DenotationDefined
 
+-- [proof->req~clafer-constraint-preservation~1]
+
 /-!
 # Actual generated/glued Appendix 6 version predicate
 

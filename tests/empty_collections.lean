@@ -1,5 +1,7 @@
 import Clafer.Constraints.Empty
 
+-- [proof->req~clafer-core-typing~1]
+
 open Clafer.Constraints
 
 -- Contextual instantiation works for every element class and both core arities.

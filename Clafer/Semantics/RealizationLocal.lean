@@ -2,6 +2,8 @@ module
 
 public import Clafer.Semantics.Realization
 
+-- [proof->req~clafer-compile-realization~1]
+
 /-! # Local-bank correspondence beyond the guarded leaf-super fragment
 
 SoSyM §6.2.4–5 and Appendix 5. Only parentless basic super targets and

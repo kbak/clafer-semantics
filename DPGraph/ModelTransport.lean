@@ -3,6 +3,13 @@ module
 public import DPGraph.Semantics
 
 /-!
+[impl->req~model-reduct-injective~1]
+[impl->req~model-reduct-surjective~1]
+[proof->req~model-reduct-injective~1]
+[proof->req~model-reduct-surjective~1]
+-/
+
+/-!
 # Injectivity and surjectivity of model reducts
 
 Derived library consequences of the abstract model reduct and its laws, grounded

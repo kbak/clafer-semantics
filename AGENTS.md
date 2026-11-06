@@ -23,7 +23,7 @@ realization, constraint meanings and finite verification.
 Every agent must use [IntentBond](https://github.com/kbak/intentbond) for planning,
 implementation, and review. Read the development skill and its relevant references
 from the revision pinned in [requirements/intentbond.txt](requirements/intentbond.txt):
-[IntentBond skill](https://github.com/kbak/intentbond/blob/a430efa8d82e2a88ed2607bfe838066bb9d73f3c/intentbond/skills/intentbond/SKILL.md).
+[IntentBond skill](https://github.com/kbak/intentbond/blob/f9b4f9e40722dc6a83067ac9e62480159322dd09/intentbond/skills/intentbond/SKILL.md).
 Use the installed package's matching skill when available. If tooling is missing,
 follow [CONTRIBUTING.md](CONTRIBUTING.md); report a concrete blocker instead of
 silently skipping IntentBond.
@@ -34,8 +34,9 @@ affected requirements, source references, implementation, proofs/tests, and trac
 links together. Run `ib check` before handoff and retain its evidence. Exit 4
 means automated checks passed with semantic review pending; it is not approval.
 For Lean definitions and proofs, follow [the Lean trace-link convention](docs/traceability.md).
-The pinned OFT does not import `.lean` tags: declare linked implementation/proof
-artifacts in Markdown and review the actual Lean declarations they reference.
+The pinned IntentBond imports OFT tags from Lean comments with original source
+locations. Keep tags beside the relevant implementation/proofs/tests and retain
+Markdown explanations of their assumptions; review the actual declarations.
 Do not weaken scope or coverage to make a change pass. Scope changes need explicit
 review in the PR.
 

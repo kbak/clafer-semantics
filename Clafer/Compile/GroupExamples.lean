@@ -4,6 +4,8 @@ public import Clafer.Compile.GroupSemantics
 public import Clafer.Semantics.Relational
 public import Mathlib.Tactic.FinCases
 
+-- [proof->req~clafer-compile-groups~1]
+
 /-! # Compiled and glued group witnesses
 
 These tests exercise generated declarations and canonical gluing, with explicit

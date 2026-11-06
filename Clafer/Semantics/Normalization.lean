@@ -2,6 +2,8 @@ module
 
 public import Clafer.Semantics.Bridge
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Normalizing interpreted structural models
 

@@ -4,6 +4,11 @@ public import DPGraph
 public import Mathlib.Data.Fintype.Basic
 
 /-!
+[impl->req~dpgraph-examples~1]
+[proof->req~dpgraph-examples~1]
+-/
+
+/-!
 # Finite witnesses for the generic DP-graph definitions
 
 SoSyM B.4, Definitions 6–10: a syntax-only predicate with parallel arrows and

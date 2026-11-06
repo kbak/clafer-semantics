@@ -2,6 +2,11 @@ module
 
 public import Clafer.Compile.Structure
 
+/-!
+[impl->req~clafer-compile-formulas~1]
+[proof->req~clafer-compile-formulas~1]
+-/
+
 /-! # Complete constraint bindings into the compiled role graph (§6.2.2–4) -/
 
 @[expose] public section

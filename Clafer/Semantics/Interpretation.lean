@@ -4,6 +4,11 @@ public import Clafer.Semantics.Structural
 public import Clafer.MCS.Laws
 
 /-!
+[impl->req~clafer-structural-satisfaction~1]
+[proof->req~clafer-structural-satisfaction~1]
+-/
+
+/-!
 # Shared-object/span realization of structural roles
 
 SoSyM B.1–B.5, §6.2.3–5. Ordinary relation links have tuple identities;

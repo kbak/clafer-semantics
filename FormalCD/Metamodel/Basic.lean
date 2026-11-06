@@ -2,6 +2,11 @@ module
 
 public import FormalCD.Metamodel.Shape
 
+/-!
+[impl->req~formalcd-metamodel-shape~1]
+[proof->req~formalcd-metamodel-shape~1]
+-/
+
 /-! # The typed Figure 21c metamodel (SoSyM §6.1.3, PDF pp.19–21)
 
 All arrows and annotations are enumerated. Only the underlined SING metaclass

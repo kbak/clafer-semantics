@@ -3,6 +3,11 @@ module
 public import Clafer.Semantics.RealizationLocal
 
 /-!
+[impl->req~clafer-compile-realization~1]
+[proof->req~clafer-compile-realization~1]
+-/
+
+/-!
 # Telematics.Structural realization declarations and gluing
 
 SoSyM §5.5, §6.2.3–5, B.4–B.5, Appendices 5–6; selected D2/D4/D6.

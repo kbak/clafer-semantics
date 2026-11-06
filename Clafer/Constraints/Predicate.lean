@@ -3,6 +3,11 @@ module
 public import Clafer.Constraints.DenotationInvariance
 
 /-!
+[impl->req~clafer-constraint-predicates~1]
+[proof->req~clafer-constraint-predicates~1]
+-/
+
+/-!
 # Meanings of source-constraint symbols
 
 SoSyM §6.2.2, Appendix D.4 and B.5. A predicate interprets its complete

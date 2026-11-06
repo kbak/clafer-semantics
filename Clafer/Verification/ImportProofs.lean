@@ -2,6 +2,8 @@ module
 
 public import Clafer.Verification.Import
 
+-- [proof->req~clafer-resolved-import~1]
+
 /-!
 # Effective import representation and semantic preservation
 

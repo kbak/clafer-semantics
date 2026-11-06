@@ -3,6 +3,8 @@ module
 public import Clafer.Semantics.Interpretation
 public import DPGraph.Predicates.Relational
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Representation lemmas for ordinary maps and occurrence counts
 

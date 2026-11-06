@@ -3,6 +3,14 @@ module
 public import DPGraph.Span.Composition
 
 /-!
+[impl->req~span-relation-composition~1]
+[impl->req~span-set-valuedness~1]
+[proof->req~span-family-correspondence~1]
+[proof->req~span-relation-composition~1]
+[proof->req~span-set-valuedness~1]
+-/
+
+/-!
 # Relation reduction and the adopted composition correction
 
 SoSyM B.1 Theorems 1–2; B.2.1 as corrected in issue #4 (Q1). General pullback

@@ -6,6 +6,11 @@ public import Clafer.Examples.Telematics.Mutations
 public import Clafer.Examples.VersionCompilation
 
 /-!
+[impl->req~clafer-constraint-preservation-witnesses~1]
+[proof->req~clafer-constraint-preservation-witnesses~1]
+-/
+
+/-!
 # Truth-sensitive source predicate examples
 
 SoSyM Appendix 6 c02/c04/c06, D.4 and B.5. These exercise predicate

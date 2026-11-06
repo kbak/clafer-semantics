@@ -3,6 +3,8 @@ module
 public import Clafer.Examples.Telematics.Structural
 public import Clafer.Constraints.DenotationLaws
 
+-- [impl->req~clafer-appendix-f-expressions~1]
+
 /-!
 # Manual resolved telematics expressions
 

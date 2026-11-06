@@ -3,6 +3,11 @@ module
 public import Clafer.Shape
 
 /-!
+[impl->req~clafer-individual-shapes~1]
+[proof->req~clafer-individual-shapes~1]
+-/
+
+/-!
 # Local diagram predicates of an individual Shape
 
 SoSyM Figure 16/Table 4 (PDF pp.14–15). This local CD uses role labels for source/target;

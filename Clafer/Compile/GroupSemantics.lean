@@ -3,6 +3,11 @@ module
 public import Clafer.Compile.Groups
 public import DPGraph.Predicates.Finite
 
+/-!
+[proof->req~clafer-compile-groups~1]
+[proof->req~clafer-gluing-declarations~1]
+-/
+
 /-! # Group generation correspondence and its finite specialization
 
 The #50 configuration supplies head/containment relations. This module adds

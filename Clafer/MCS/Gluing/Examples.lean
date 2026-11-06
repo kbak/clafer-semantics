@@ -3,6 +3,11 @@ module
 public import Clafer.MCS.Gluing.Origins
 public import Clafer.MCS.Examples
 
+/-!
+[impl->req~clafer-gluing-examples~1]
+[proof->req~clafer-gluing-examples~1]
+-/
+
 /-! # Q4 acceptance witnesses for SoSyM §6.2.5
 
 These use actual role graphs and complete formula bindings. The positive family

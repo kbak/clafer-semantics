@@ -2,6 +2,11 @@ module
 
 public import Clafer.MCS.Gluing
 
+/-!
+[impl->req~clafer-gluing-formalcd~1]
+[proof->req~clafer-gluing-formalcd~1]
+-/
+
 /-! # Canonical MCS predefined annotations (SoSyM §6.1 and Table 8 (see Appendix 5))
 
 The semantic origins select registry entries. A string is never used to classify

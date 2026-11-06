@@ -2,6 +2,8 @@ module
 
 public import FormalCD.Metamodel.Realization.Context
 
+-- [proof->req~formalcd-metamodel-realization~1]
+
 /-! # The exact restricted realization theorem
 SoSyM Figure 21c: total args and the literal bag key are independent restrictions.
 All other declarations follow from the canonical encoding and source metadata.

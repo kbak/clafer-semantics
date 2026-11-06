@@ -5,6 +5,11 @@ public import FormalCD.Integer
 public import DPGraph.Predicates.Navigation
 
 /-!
+[impl->req~clafer-integer-extraction~1]
+[proof->req~clafer-integer-extraction~1]
+-/
+
+/-!
 # Integer operands from navigation
 
 SoSyM D.3–D.4 and Appendix 6, PDF p.34. This supplies the partial meaning of

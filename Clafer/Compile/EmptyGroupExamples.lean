@@ -2,6 +2,8 @@ module
 
 public import Clafer.Compile.GroupExamples
 
+-- [proof->req~clafer-compile-groups~1]
+
 /-! # Zero-arrow group supports retain literal empty-inventory semantics -/
 
 @[expose] public section

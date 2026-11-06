@@ -4,6 +4,15 @@ public import Clafer.MCS.Laws
 public import FormalCD.Gluing
 
 /-!
+[impl->req~clafer-gluing-declarations~1]
+[impl->req~clafer-gluing-formalcd~1]
+[impl->req~clafer-gluing-identity~1]
+[proof->req~clafer-gluing-declarations~1]
+[proof->req~clafer-gluing-formalcd~1]
+[proof->req~clafer-gluing-identity~1]
+-/
+
+/-!
 # Gluing resolved MCS roles
 
 SoSyM §6.2.5 and Appendix B.4 Definition 10, with the approved Q4 rule:

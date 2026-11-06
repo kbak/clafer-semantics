@@ -2,6 +2,12 @@ module
 
 public import Clafer.Constraints.IntegerNavigation
 
+/-!
+[proof->req~clafer-integer-extraction~1]
+[proof->req~clafer-representative-coverage~1]
+[proof->req~clafer-version-navigation~1]
+-/
+
 /-! # Integer extraction and Appendix 6 navigation witnesses
 
 SoSyM Appendix 6 PDF p.34; these realize the selected navigation fragment, not all

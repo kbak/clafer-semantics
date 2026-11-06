@@ -7,6 +7,15 @@ public import Mathlib.Basic.Finite.Sigma
 public import Mathlib.Basic.Finite.Sum
 
 /-!
+[impl->req~clafer-compile-contract~1]
+[impl->req~clafer-compile-formulas~1]
+[impl->req~clafer-compile-structure~1]
+[proof->req~clafer-compile-contract~1]
+[proof->req~clafer-compile-formulas~1]
+[proof->req~clafer-compile-structure~1]
+-/
+
+/-!
 # Compile: resolved AST to a well-formed MCS
 
 SoSyM §6.2.4, Figure 23 and Tables 5–8 (see Appendix 5). The disjoint signature

@@ -3,6 +3,11 @@ module
 public import DPGraph.Predicates.FunctionalKey
 public import Mathlib.Tactic.FinCases
 
+/-!
+[impl->req~reusable-span-laws~1]
+[proof->req~reusable-span-laws~1]
+-/
+
 /-! # Relational representations of span predicates
 
 SoSyM Appendix 2, mappings (Definitions 1–5), mapping composition (Q1),

@@ -2,6 +2,11 @@ module
 
 public import DPGraph.Semantics
 
+/-!
+[impl->req~dpgraph-referent-image~1]
+[proof->req~dpgraph-referent-image~1]
+-/
+
 /-! # Graphs of used referents
 
 Derived from SoSyM Appendix 2 Definitions 6–10 and §6.2.5. A finite or infinite

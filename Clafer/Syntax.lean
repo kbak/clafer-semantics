@@ -4,6 +4,14 @@ public import Clafer.Context
 public import FormalCD.Basic
 
 /-!
+[impl->req~clafer-finite-traversal~1]
+[impl->req~clafer-input-wellformedness~1]
+[impl->req~clafer-resolved-syntax~1]
+[proof->req~clafer-finite-traversal~1]
+[proof->req~clafer-input-wellformedness~1]
+-/
+
+/-!
 # Finite, resolved 2014 syntax
 
 SoSyM §5.3.1–5, §5.4–5 (PDF pp.14–17), §6.2.2/Figure 22 (PDF p.21),

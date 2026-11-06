@@ -4,6 +4,12 @@ public import Clafer.Examples.Telematics.Expressions
 public import Clafer.Constraints.CollectionMeaning
 public import Clafer.Constraints.DenotationDefined
 
+/-!
+[impl->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Definedness from admissible telematics environments
 
 SoSyM Appendix 6 (PDF p.34).

@@ -2,6 +2,12 @@ module
 
 public import Clafer.Constraints.Denotation
 
+/-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Constructor equations for SoSyM D.4 and resolved sugar -/
 
 @[expose] public section

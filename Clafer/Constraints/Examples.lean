@@ -5,6 +5,12 @@ public import Clafer.Examples
 public import Mathlib.Data.Fin.VecNotation
 public import Mathlib.Tactic.FinCases
 
+/-!
+[proof->req~clafer-core-binding~1]
+[proof->req~clafer-core-support~1]
+[proof->req~clafer-core-typing~1]
+-/
+
 /-! # Positive and rejected core typing examples (SoSyM D.1–D.3)
 
 The `fail_if_success` assertions exercise Lean's elaboration of the actual

@@ -2,6 +2,13 @@ module
 
 public import Clafer.MCS.Basic
 
+/-!
+[impl->req~clafer-mcs-formulas~1]
+[proof->req~clafer-mcs-disciplines~1]
+[proof->req~clafer-mcs-formulas~1]
+[proof->req~clafer-mcs-metamodel~1]
+-/
+
 /-! # Appendix 5 boundary laws and composition of typed local Shapes -/
 
 @[expose] public section

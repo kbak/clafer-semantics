@@ -2,6 +2,12 @@ module
 
 public import Clafer.Constraints.DenotationLaws
 
+/-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Typed collection meaning and local cardinality obligations
 
 SoSyM D.3–D.4. Collections have total set meanings even when their extents

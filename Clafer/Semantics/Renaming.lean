@@ -2,6 +2,8 @@ module
 
 public import Clafer.Semantics.Structural
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Object renaming
 

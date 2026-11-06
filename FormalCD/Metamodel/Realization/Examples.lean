@@ -3,6 +3,11 @@ module
 public import FormalCD.Metamodel.Realization.Correctness
 public import FormalCD.Metamodel.Realization.Reconstruction
 
+/-!
+[impl->req~formalcd-realization-boundaries~1]
+[proof->req~formalcd-realization-boundaries~1]
+-/
+
 /-! # Canonical realization boundaries
 Actual whole-model acceptance and rejection, retaining isolated vertices,
 repeated argument occurrences, repeated names, and parallel map identities.

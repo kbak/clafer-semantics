@@ -4,6 +4,11 @@ public import Clafer.Compile.Realization
 public import Clafer.Constraints.Predicate
 
 /-!
+[impl->req~clafer-constraint-preservation~1]
+[proof->req~clafer-constraint-preservation~1]
+-/
+
+/-!
 # Resolved constraint meaning through Compile and gluing
 
 SoSyM §6.2.2–5, B.4 Definition 10, B.5 and Appendix D.4.

@@ -3,6 +3,12 @@ module
 public import FormalCD.Examples
 
 /-!
+[impl->req~formalcd-examples~1]
+[proof->req~formalcd-examples~1]
+[proof->req~formalcd-structure~1]
+-/
+
+/-!
 # Concrete models and their restriction
 
 Use the delivered span interpretation, with genuine inclusion and set-valued

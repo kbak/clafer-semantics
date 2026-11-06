@@ -5,6 +5,11 @@ public import DPGraph.Predicates.Interpretation
 public import DPGraph.Predicates.FunctionalKey
 
 /-!
+[impl->req~clafer-structural-satisfaction~1]
+[proof->req~clafer-structural-satisfaction~1]
+-/
+
+/-!
 # Whole-model structural satisfaction
 
 SoSyM §5.3–5.5, §6.1–6.2, Table 3/A.1 and Appendix 5, with Q1/Q8.

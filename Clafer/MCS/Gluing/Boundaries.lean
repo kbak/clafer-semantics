@@ -2,6 +2,11 @@ module
 
 public import Clafer.MCS.Gluing.Examples
 
+/-!
+[impl->req~clafer-gluing-examples~1]
+[proof->req~clafer-gluing-examples~1]
+-/
+
 /-! # Repeated names, bag modes and complete-binding boundaries for Q4 -/
 
 @[expose] public section

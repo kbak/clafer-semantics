@@ -3,6 +3,12 @@ module
 import Clafer.Compile.GroupSemantics
 public meta import Lean.Elab.Command
 
+/-!
+[itest->req~clafer-compile-groups~1]
+[itest->req~clafer-effective-core~1]
+[itest->req~clafer-integer-extraction~1]
+-/
+
 /-! Group mathematics uses the generic finite-range specialization, with no
 reverse dependency on candidate tables, checker algorithms or protocols. -/
 open Lean in

@@ -4,6 +4,11 @@ public import Clafer.Examples.Telematics.ExpressionEnvironment
 public import Clafer.Constraints.DenotationDefined
 public import Clafer.Constraints.CollectionMeaning
 
+/-!
+[proof->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
 /-! # Telematics operator-combination witnesses
 
 SoSyM Appendix 6 (PDF p.34).

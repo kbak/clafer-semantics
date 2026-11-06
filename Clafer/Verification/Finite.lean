@@ -4,6 +4,11 @@ public import Clafer.Semantics.Structural
 public import DPGraph.Predicates.Finite
 
 /-!
+[impl->req~clafer-finite-checker~1]
+[proof->req~clafer-finite-checker~1]
+-/
+
+/-!
 # Finite candidates and structural decision procedure
 
 Finite carriers are local to this boundary. Semantic cardinalities use the

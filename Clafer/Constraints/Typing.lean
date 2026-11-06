@@ -4,6 +4,15 @@ public import Clafer.Constraints.Support
 public import DPGraph.Formula
 
 /-!
+[impl->req~clafer-core-binding~1]
+[impl->req~clafer-core-support~1]
+[impl->req~clafer-core-typing~1]
+[impl->req~clafer-integer-extraction~1]
+[proof->req~clafer-core-binding~1]
+[proof->req~clafer-core-support~1]
+-/
+
+/-!
 # Typed resolved core constraints
 
 SoSyM D.1/Figure 28, D.2, D.3.1–2; the Q3 disposition is in docs/sources.md.

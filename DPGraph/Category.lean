@@ -3,6 +3,11 @@ module
 public import DPGraph.Morphism
 
 /-!
+[impl->req~dpgraph-category~1]
+[proof->req~dpgraph-category~1]
+-/
+
+/-!
 # The category of DP-graphs over a fixed signature
 
 SoSyM B.4, Definitions 9–10. Objects in each category have fixed carrier

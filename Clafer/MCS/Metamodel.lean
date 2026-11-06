@@ -4,6 +4,11 @@ public import Clafer.MCS.Laws
 public import FormalCD.Metamodel.Shape
 
 /-!
+[impl->req~clafer-mcs-metamodel~1]
+[proof->req~clafer-mcs-metamodel~1]
+-/
+
+/-!
 # Figure 23 as a typed formal class diagram
 
 SoSyM §6.2.3, Figure 23. The seven map/inclusion source bounds use the

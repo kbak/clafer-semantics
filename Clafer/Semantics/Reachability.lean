@@ -3,6 +3,8 @@ module
 public import Clafer.Semantics.Structural
 public import Mathlib.Data.Finset.Max
 
+-- [proof->req~clafer-structural-satisfaction~1]
+
 /-!
 # Derived containment reachability
 

@@ -4,6 +4,11 @@ public import FormalCD.Metamodel.Realization.Correctness
 public import FormalCD.Metamodel.Realization.Reconstruction
 public import Mathlib.Data.Fintype.BigOperators
 
+/-!
+[impl->req~formalcd-metamodel-self-instance~1]
+[proof->req~formalcd-metamodel-self-instance~1]
+-/
+
 /-! # A model of the metamodel obtained by reifying its own syntax
 SoSyM §6.1.3 Figure 21c. This is bounded, context-dependent self-instantiation
 in the existing DP semantics, not a universe fixed point.

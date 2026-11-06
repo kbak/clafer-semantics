@@ -5,6 +5,11 @@ public import Mathlib.Data.Fintype.EquivFin
 public import Mathlib.Tactic.FinCases
 
 /-!
+[impl->req~formalcd-figure21-example~1]
+[proof->req~formalcd-figure21-example~1]
+-/
+
+/-!
 # Telematics formal class diagram
 
 SoSyM §2 (telematics example), §6.1.1–3, Figure 21a–b (PDF p.19),

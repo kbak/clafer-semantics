@@ -3,6 +3,11 @@ module
 public import DPGraph.Pushout.Basic
 
 /-!
+[impl->req~dpgraph-model-amalgamation~1]
+[proof->req~dpgraph-model-amalgamation~1]
+-/
+
+/-!
 # Models on a carrier pushout
 
 Derived results over SoSyM B.4 Definitions 9–10 and the abstract B.5 Theorem 3.

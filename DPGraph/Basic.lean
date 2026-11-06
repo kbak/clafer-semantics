@@ -3,6 +3,8 @@ module
 public import DPGraph.Formula
 public import Mathlib.Data.Set.Defs
 
+-- [impl->req~dpgraph-core~1]
+
 /-! # DP-graphs (SoSyM B.4, Definition 9) -/
 
 @[expose] public section

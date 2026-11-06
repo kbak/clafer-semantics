@@ -3,6 +3,11 @@ module
 public import DPGraph.Predicates.Meaning
 
 /-!
+[impl->req~predicate-key-functional~1]
+[proof->req~predicate-key-functional~1]
+-/
+
+/-!
 # Ordinary keys as a specialization of bag-sensitive keys
 
 Derived from SoSyM B.1 Definitions 1–5 / Theorems 1–2 and Table 3 key /

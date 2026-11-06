@@ -3,6 +3,13 @@ module
 public import FormalCD.Morphism
 
 /-!
+[impl->req~formalcd-morphisms~1]
+[impl->req~formalcd-signature-extension~1]
+[proof->req~formalcd-morphisms~1]
+[proof->req~formalcd-signature-extension~1]
+-/
+
+/-!
 # Reusing the DPGraph reduct
 
 SoSyM B.5's contravariant restriction applies after forgetting metadata.

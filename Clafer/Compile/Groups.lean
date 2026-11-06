@@ -3,6 +3,15 @@ module
 public import Clafer.Compile.GroupSupport
 public import Clafer.MCS.Gluing.Origins
 
+/-!
+[impl->req~clafer-compile-formulas~1]
+[impl->req~clafer-compile-groups~1]
+[impl->req~clafer-gluing-declarations~1]
+[proof->req~clafer-compile-groups~1]
+[proof->req~clafer-gluing-declarations~1]
+[proof->req~clafer-gluing-formalcd~1]
+-/
+
 /-! # Augmented Compile and exact gluing (SoSyM B.4 Definitions 8–10, §6.2.5)
 
 The original MCS bank retains its total-args/key proof. The additional component

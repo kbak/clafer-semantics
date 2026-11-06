@@ -2,6 +2,8 @@ module
 
 public import Clafer.Examples.Telematics.Structural
 
+-- [proof->req~clafer-inherited-witnesses~1]
+
 /-! # Rejected inherited realizations (telematics, selected D2/D4/D6)
 
 SoSyM Appendix 6 (PDF p.34).

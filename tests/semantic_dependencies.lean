@@ -4,6 +4,13 @@ import Clafer.Semantics.Structural
 import Clafer.Constraints.Denotation
 public meta import Lean.Elab.Command
 
+/-!
+[itest->req~clafer-compile-groups~1]
+[itest->req~clafer-effective-core~1]
+[itest->req~clafer-integer-extraction~1]
+[proof->req~formalcd-integer-realization~1]
+-/
+
 /-! Independent structural and expression meanings must not pull in Compile,
 the finite checker, or the Figure 21 example to obtain integer infrastructure. -/
 open Lean in

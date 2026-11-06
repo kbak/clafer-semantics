@@ -3,6 +3,14 @@ module
 public import Mathlib.Logic.Equiv.Basic
 
 /-!
+[impl->req~span-inversion~1]
+[impl->req~span-representation~1]
+[impl->req~span-set-valuedness~1]
+[proof->req~span-inversion~1]
+[proof->req~span-representation~1]
+-/
+
+/-!
 # Spans and head isomorphisms
 
 SoSyM Appendix B.1, Definitions 1–5. Links carry identity independently of

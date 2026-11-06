@@ -4,6 +4,15 @@ public import Clafer.Constraints.Integer
 public import Mathlib.Data.Set.Card
 
 /-!
+[impl->req~clafer-constraint-denotation~1]
+[impl->req~clafer-constraint-environments~1]
+[impl->req~clafer-constraint-semantic-laws~1]
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-environments~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
+/-!
 # Independent meaning of resolved constraints
 
 SoSyM D.1–D.4/Figure 28, with Q3 ordinary intersection. These are

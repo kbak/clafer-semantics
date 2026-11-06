@@ -4,6 +4,12 @@ public import Clafer.Constraints.DenotationLaws
 public import Clafer.Constraints.DenotationSupport
 
 /-!
+[proof->req~clafer-constraint-denotation~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+[proof->req~clafer-core-typing~1]
+-/
+
+/-!
 # Empty collections
 
 Adopted language extension #134 to SoSyM Appendix 4/Figure 28. Alloy's

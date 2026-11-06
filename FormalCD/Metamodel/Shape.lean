@@ -5,6 +5,11 @@ public import Mathlib.Data.Fintype.EquivFin
 public import Mathlib.Tactic.FinCases
 
 /-!
+[impl->req~formalcd-metamodel-shape~1]
+[proof->req~formalcd-metamodel-shape~1]
+-/
+
+/-!
 # Figure 21c carrier and the inferred discipline arities
 
 SoSyM §6.1.1–3, Figure 21c (PDF p.19), explanation PDF p.21. The dashed attachments

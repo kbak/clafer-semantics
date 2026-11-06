@@ -3,6 +3,11 @@ module
 public import DPGraph.Gluing
 public import FormalCD.Morphism
 
+/-!
+[impl->req~formalcd-referent-descent~1]
+[proof->req~formalcd-referent-descent~1]
+-/
+
 /-! # Metadata and effective defaults on a referent graph
 
 SoSyM §6.1.1–3 and §6.2.5, using Appendix 2 Definition 10. Metadata must be

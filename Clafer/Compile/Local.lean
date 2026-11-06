@@ -3,6 +3,11 @@ module
 public import Clafer.MCS.Laws
 
 /-!
+[impl->req~clafer-compile-formulas~1]
+[proof->req~clafer-compile-formulas~1]
+-/
+
+/-!
 # Generated local declarations
 
 SoSyM Figure 16/Table 4, §5.5 and §6.2.4. One canonical occurrence is generated

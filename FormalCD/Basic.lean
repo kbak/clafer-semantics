@@ -3,6 +3,14 @@ module
 public import FormalCD.Signature
 
 /-!
+[impl->req~formalcd-declarations~1]
+[impl->req~formalcd-naming~1]
+[impl->req~formalcd-signature-extension~1]
+[impl->req~formalcd-structure~1]
+[proof->req~formalcd-declarations~1]
+-/
+
+/-!
 # Formal class diagrams
 
 SoSyM §6.1.1–3 and Figure 21b–c, over B.4 Definitions 6–9.

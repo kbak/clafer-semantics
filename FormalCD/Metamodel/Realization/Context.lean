@@ -2,6 +2,11 @@ module
 
 public import FormalCD.Metamodel.Realization.Encoding
 
+/-!
+[impl->req~formalcd-metamodel-realization~1]
+[proof->req~formalcd-metamodel-realization~1]
+-/
+
 /-! # Canonical nd/ad context and their validity
 SoSyM §6.1.3 and B.4 Definition 8. The context contains data, never a model proof.
 -/

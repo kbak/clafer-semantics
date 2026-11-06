@@ -3,6 +3,13 @@ module
 public import FormalCD.Signature
 
 /-!
+[impl->req~formalcd-formula-identity~1]
+[impl->req~formalcd-metamodel-disciplines~1]
+[proof->req~formalcd-formula-identity~1]
+[proof->req~formalcd-metamodel-disciplines~1]
+-/
+
+/-!
 # Full graph-binding data and its validation
 
 SoSyM B.4 Definition 8 (PDF p.31). Candidate data can be malformed; validity is an

@@ -3,6 +3,11 @@ module
 public import Clafer.Examples.Telematics.ExpressionExamples
 
 /-!
+[proof->req~clafer-appendix-f-expressions~1]
+[proof->req~clafer-constraint-semantic-laws~1]
+-/
+
+/-!
 # Sensitive telematics constraint candidates
 
 SoSyM Appendix 6 (PDF p.34).

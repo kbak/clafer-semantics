@@ -3,6 +3,11 @@ module
 public import Clafer.Compile.Basic
 public import Clafer.Semantics.EffectiveCore
 
+/-!
+[impl->req~clafer-effective-core~1]
+[proof->req~clafer-effective-core~1]
+-/
+
 /-! # Effective erasure of resolved Compile inputs
 
 SoSyM §§6.2.2–5. This adapter projects supplied effective fields; it does not

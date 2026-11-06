@@ -2,6 +2,8 @@ module
 
 public import Clafer.Verification.Admission
 
+-- [proof->req~clafer-finite-checker~1]
+
 /-!
 # Raw-table fidelity and entrypoint correctness
 

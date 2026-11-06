@@ -2,6 +2,8 @@ module
 
 public import Mathlib.CategoryTheory.Category.Quiv
 
+-- [impl->req~dpgraph-core~1]
+
 /-!
 # Signatures for diagram predicates
 

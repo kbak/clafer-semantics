@@ -3,6 +3,15 @@ module
 public import DPGraph.Category
 
 /-!
+[impl->req~dpgraph-declaration-image~1]
+[impl->req~dpgraph-interpretation~1]
+[impl->req~dpgraph-model-reduct~1]
+[proof->req~dpgraph-declaration-image~1]
+[proof->req~dpgraph-interpretation~1]
+[proof->req~dpgraph-model-reduct~1]
+-/
+
+/-!
 # Abstract interpretation and contravariant model restriction
 
 SoSyM B.5, Theorem 3, abstracted over a semantic graph and predicate meanings.

@@ -4,6 +4,11 @@ public import Clafer.Examples.Telematics.Compiled
 public import Clafer.Examples.Telematics.Mutations
 
 /-!
+[impl->req~clafer-appendix-f-rejections~1]
+[proof->req~clafer-appendix-f-rejections~1]
+-/
+
+/-!
 # Focused rejection obligations of the complete telematics input
 
 SoSyM Appendix 6 (PDF p.34).

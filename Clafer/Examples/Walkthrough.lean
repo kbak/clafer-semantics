@@ -3,6 +3,11 @@ module
 public import Clafer.Verification.Admission
 
 /-!
+[impl->req~lean-walkthrough~1]
+[proof->req~lean-walkthrough~1]
+-/
+
+/-!
 # A phone with an optional camera
 
 Small manually resolved example for docs/getting-started.md. Nesting and local

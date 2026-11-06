@@ -3,6 +3,8 @@ module
 public import Clafer.MCS.Basic
 public import Mathlib.Data.Fintype.Card
 
+-- [impl->req~clafer-effective-core~1]
+
 /-!
 # Effective structural input
 

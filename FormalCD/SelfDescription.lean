@@ -4,6 +4,11 @@ public import FormalCD.Metamodel.Basic
 public import FormalCD.Metamodel.Binding
 
 /-!
+[impl->req~formalcd-bounded-self-description~1]
+[proof->req~formalcd-bounded-self-description~1]
+-/
+
+/-!
 # Bounded syntactic self-description
 
 SoSyM §6.1.3 / Figure 21c says MCD is itself a formal CD. The checked statement
