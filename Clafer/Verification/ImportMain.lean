@@ -36,6 +36,7 @@ def failedPredicates {n : Nat} (m : Semantics.EffectiveCore n) (c : Candidate n)
      ("groups", decide (groupChecks m c)) ] : List (String × Bool)).filterMap
        (fun (name, passed) => if passed then none else some name)
 
+-- [impl->req~clafer-bounded-comparison~1]
 def execute (json : Json) : Except String Json := do
   strictKeys json ["schema", "declarations", "candidate"]
   let schema ← json.getObjValAs? String "schema"
@@ -65,6 +66,7 @@ def execute (json : Json) : Except String Json := do
 
 end Clafer.Verification.Import
 
+-- [impl->req~clafer-resolved-import~1]
 public def main (args : List String) : IO Unit := do
   let stdin ← IO.getStdin
   let stdout ← IO.getStdout

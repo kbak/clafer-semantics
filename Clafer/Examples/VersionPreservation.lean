@@ -31,6 +31,7 @@ theorem coherent (m : glued.carrier ⥤q semanticGraph U) (hm : LocalHolds m)
   subst f
   exact ⟨⟨Equiv.refl _, fun _ => rfl, fun _ => rfl⟩⟩
 
+-- [proof->req~clafer-constraint-preservation~1]
 /-- This is the exact attached c02 formula, translated along its generated
 label, with local multiplicities/inclusions extracted by `versionModel`. -/
 theorem generated_version_iff (m : glued.carrier ⥤q semanticGraph U)

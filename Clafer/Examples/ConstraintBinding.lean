@@ -56,6 +56,7 @@ theorem complete_binding_accepted : emptyModel.model ∈ meaning.meaning () := b
   intro x hx
   exact False.elim hx
 
+-- [proof->req~clafer-constraint-preservation-witnesses~1]
 /-- Full support admissibility rejects a changed isolated occurrence even
 though no argument arrow, body, occurrence symbol or context was changed. -/
 theorem wrong_binding_rejected : wrongBinding ∉ meaning.meaning () := by

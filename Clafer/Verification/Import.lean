@@ -132,6 +132,7 @@ structure Accepted (r : Input) : Type where
   core : coreChecks r.normalize r.certificate
   support : supportChecks r.normalize r.certificate
 
+-- [impl->req~clafer-resolved-import~1]
 def admit (r : Input) : Except Error (Accepted r) :=
   if hb : r.bindingChecks then
     if hc : coreChecks r.normalize r.certificate then

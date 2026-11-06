@@ -62,6 +62,7 @@ noncomputable def Expr.rename {s Γ t} (f : String → String) (e : Expr s Γ t)
         exact fresh previous hprevious)
       (domain.rename f) (body.rename f)
 
+-- [proof->req~clafer-constraint-environments~1]
 theorem Environment.rename_lookup {s U Γ x} (f : String → String)
     (ρ : Environment s U Γ) (v : Var Γ x) :
     (ρ.rename f).lookup (v.rename f) = ρ.lookup v := by
@@ -81,6 +82,8 @@ theorem Environment.rename_push {s U Γ} (f : String → String)
   · funext y v
     cases v <;> rfl
 
+-- [proof->req~clafer-constraint-denotation~1]
+-- [proof->req~clafer-constraint-semantic-laws~1]
 /-- All constructors, including nested shadowing, preserve meaning under
 arbitrary display-name changes. IDs and domain types remain fixed. -/
 theorem Expr.denote_rename {s U Γ t} (f : String → String) (e : Expr s Γ t)

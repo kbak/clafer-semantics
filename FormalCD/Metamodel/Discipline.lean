@@ -58,6 +58,7 @@ structure ArityContext (σ : Signature.{s,va,ua}) (G : Quiv.{v,u}) (U : Type z) 
   vertex : G ↪ U
   arrow : ArrowData G ↪ U
 
+-- [impl->req~formalcd-formula-identity~1]
 /-- Data may be missing or malformed, including missing/duplicate occurrence
 indices. Optional values make this meaningful even for an empty signature or
 zero-arrow arities and arbitrary candidate span diagrams. -/
@@ -89,6 +90,7 @@ def ValidAt {d : arityShape ⥤q semanticGraph.{z,w} U}
 
 end ArityDescriptor
 
+-- [impl->req~formalcd-metamodel-disciplines~1]
 structure ArityDiscipline {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}} {U : Type z}
     (C : ArityContext σ G U) (d : arityShape ⥤q semanticGraph.{z,w} U)
     (D : ArityDescriptor (σ := σ) (G := G) d) : Prop where
@@ -103,6 +105,7 @@ structure ArityDiscipline {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}} {U : Type 
     ((d.map ArityEdge.ta).target l).val = C.vertex e.2.1
   formulas : ∀ f, D.ValidAt C f
 
+-- [proof->req~formalcd-formula-identity~1]
 /-- Any accepted descriptor yields the existing typed Formula, by validation. -/
 theorem represented_formula {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}} {U : Type z}
     {C : ArityContext σ G U} {d : arityShape ⥤q semanticGraph.{z,w} U}
@@ -111,6 +114,7 @@ theorem represented_formula {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}} {U : Typ
   rcases h with ⟨c, hc, hv, _⟩
   exact ⟨c.toFormula hv, by simpa using hc⟩
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 /-- The empty-arity boundary follows from complete indexing; generic formulas
 remain legal, but the printed total args declaration rules out such a fiber. -/
 theorem zero_arrow_not_total {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}} {U : Type z}

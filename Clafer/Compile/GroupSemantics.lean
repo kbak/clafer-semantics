@@ -49,6 +49,7 @@ theorem objects_interpret (typed : s.Typed m) (p : Fin n) (x y : U) :
     let k : Child m.family p := ⟨⟨a, ha⟩, ⟨c, hc⟩⟩
     exact ⟨k, (head_relation m s typed (by simp [k, Family.shape, hc]) x y (headArrow m.family k) rfl).mpr h⟩
 
+-- [proof->req~clafer-compile-groups~1]
 theorem satisfies_iff (typed : s.Typed m) (p : Id m.family) :
     (interpretation m.family U).Satisfies (s.interpret m) (formula m.family p) ↔
       Holds m.family s p.val := by
@@ -137,6 +138,7 @@ theorem descended_group_iff (s : Configuration a.Occurrence U)
       ((generatedGroup i p).translate (groupLabel i)) ↔ Groups.Holds (family i) s p.val :=
   glued_group_iff i authored s typed _ (descendGroups_reduct i s) p
 
+-- [proof->req~clafer-gluing-declarations~1]
 theorem descended_model_iff (s : Configuration a.Occurrence U)
     (typed : s.Typed (EffectiveCore.erase i)) :
     (groupInterpretation i U authored).IsModel (gluedGroups i).toDPGraph (descendGroups i s) ↔

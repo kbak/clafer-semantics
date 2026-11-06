@@ -48,6 +48,7 @@ abbrev ConstraintId (a : AST) := Σ c : a.Occurrence,
 noncomputable def boundary (a : AST) (i : ConstraintId a) : ConstraintBoundary :=
   (a.at i.1).declaration.constraints[i.2]
 
+-- [impl->req~clafer-compile-contract~1]
 /-- Prevalidation required in addition to the existing AST and typing contracts.
 The positive-support condition is Compile-specific; generic formulas and
 Constraint.Input continue to allow zero-map supports. -/
@@ -123,6 +124,7 @@ noncomputable def reference (a : AST) (r : Reference)
     (reference a r h).target.map (sourceId a) = r.target := by
   cases r <;> simp [reference, ReferenceTo.target, Reference.target, sourceId]
 
+-- [impl->req~clafer-compile-group-data~1]
 noncomputable def family (i : Input a) : Family a.Occurrence where
   parent c := resolveOption a (a.at c).parent
     (i.ast.parent_exists _ (List.getElem_mem _))
@@ -137,6 +139,7 @@ noncomputable def family (i : Input a) : Family a.Occurrence where
   root := resolve a a.root i.ast.root_exists
   group c := (a.at c).declaration.group
 
+-- [proof->req~clafer-compile-group-data~1]
 /-- Appendix 3 provenance and effective bounds are carried without defaulting
 again. This is data preservation, not a group satisfaction theorem. -/
 @[simp] theorem group_preserved (i : Input a) (c) :
@@ -191,6 +194,7 @@ theorem directChildHead_injective (i : Input a) (p : a.Occurrence) :
   intro c d h
   exact Subtype.ext (congrArg Family.MapId.owner h)
 
+-- [proof->req~clafer-compile-contract~1]
 theorem family_wellFormed (i : Input a) : (family i).WellFormed where
   root_origin c := by
     change (a.at c).declaration.origin = .syntheticRoot ↔ c = resolve a a.root _
@@ -241,6 +245,7 @@ theorem family_wellFormed (i : Input a) : (family i).WellFormed where
       hr _ (List.getElem_mem _) _ ((super_eq i c s).mp hs)⟩
   valid_bounds c := (i.ast.valid_bounds _ (List.getElem_mem _)).1
 
+-- [impl->req~clafer-compile-structure~1]
 noncomputable def roles (i : Input a) := (family i).canonicalRoles
 
 noncomputable def labels (i : Input a) : Labels (V := a.Occurrence) (family i) where
@@ -318,6 +323,7 @@ theorem entry_unique (h : a.WellFormed) {d e : Located}
     apply Option.map_injective (sourceId_injective i.ast)
     simp [he]
 
+-- [proof->req~clafer-compile-structure~1]
 theorem shape_preserved (i : Input a) (c : a.Occurrence) :
     (family i).shape c = (a.at c).shape := by
   simp only [Family.shape, family, Located.shape, reference_kind]

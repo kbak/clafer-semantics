@@ -54,6 +54,7 @@ theorem guarded_flags (selected : m.Selected) (supported : m.toEffectiveCore.Sup
     | false => rfl
     | true => have hh := (selected.1 d he).1; simp [ha] at hh
 
+-- [proof->req~clafer-inherited-realization~1]
 /-- Explicit metadata equality, not a caller-supplied satisfaction equivalence.
 For an AST the extension reads its original authored flag; #50 has no such data. -/
 theorem guarded_compatibility (supported : m.toEffectiveCore.Supported)

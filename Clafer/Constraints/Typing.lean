@@ -62,6 +62,7 @@ inductive SetOp where | union | difference | intersection
 inductive Arithmetic where | add | subtract
   deriving DecidableEq, Repr
 
+-- [impl->req~clafer-core-typing~1]
 /-- Intrinsically typed deep syntax. A quantifier's variable denotes a singleton
 of its domain's element class in the intended interpretation. That interpretation
 is not supplied by the constructor. Names may shadow; resolved IDs are fresh. -/
@@ -84,6 +85,7 @@ inductive Expr (s : Support) : List (Local s) → Ty s → Type where
   | equal {Γ t} : Expr s Γ t → Expr s Γ t → Expr s Γ .boolean
   | less {Γ} : Expr s Γ .integer → Expr s Γ .integer → Expr s Γ .boolean
   | arithmetic {Γ} : Arithmetic → Expr s Γ .integer → Expr s Γ .integer → Expr s Γ .integer
+  -- [impl->req~clafer-integer-extraction~1]
   /-- D.3–D.4 bridge: typing identifies the primitive class; runtime
   singleton/domain validity remains a separate obligation. -/
   | integerOf {Γ x} (primitive : s.integer x = true) :
@@ -158,6 +160,7 @@ inductive Domains (s : Support) : List (Local s) → Type where
       (fresh : ∀ old ∈ Γ, old.id ≠ b.id)
       (domain : Expr s Γ (.collection (.objects b.element))) : Domains s (b :: Γ)
 
+-- [impl->req~clafer-core-support~1]
 /-- Explicit compiler input assumptions: resolved/defaulted AST, actual map
 incidence, matching context/scope bags, and the outer lexical environment.
 External binder domains are supplied by the caller, as in the #3 boundary. -/
@@ -182,10 +185,12 @@ def signature {ι : Type} (constraints : ι → Constraint) : DPGraph.Signature 
   Symbol := ι
   arity i := (constraints i).support.graph
 
+-- [impl->req~clafer-core-binding~1]
 def Constraint.formula {ι : Type} (constraints : ι → Constraint) (i : ι)
     {G : Quiv} (binding : (constraints i).support.graph ⥤q G) :
     DPGraph.Formula (signature constraints) G := ⟨i, binding⟩
 
+-- [proof->req~clafer-core-binding~1]
 theorem Constraint.formula_binding {ι : Type} (constraints : ι → Constraint) (i : ι)
     {G : Quiv} (binding : (constraints i).support.graph ⥤q G) :
     (Constraint.formula constraints i binding).binding = binding := rfl

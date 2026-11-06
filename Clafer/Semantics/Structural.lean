@@ -51,6 +51,7 @@ are restrictions of these declarations, not additional heads. -/
 def DeclarationDisjoint : Prop :=
   ∀ d e x, x ∈ s.head d → x ∈ s.head e → m.Ancestor d e ∨ m.Ancestor e d
 
+-- [proof->req~clafer-structural-satisfaction~1]
 /-- Pairwise disjointness of inheritance-incomparable declaration extents. -/
 theorem declarationDisjoint_iff : s.DeclarationDisjoint m ↔
     ∀ d e, ¬ m.Ancestor d e → ¬ m.Ancestor e d →
@@ -105,6 +106,7 @@ def Reaches (x : U) : Prop :=
 
 end Configuration
 
+-- [impl->req~clafer-structural-satisfaction~1]
 /-- Global structural meaning of the guarded fragment. `Typed` is separated
 for raw-input diagnostics; this mathematical relation includes it as an
 obligation. Root reachability is derived from these clauses and core validity. -/

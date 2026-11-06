@@ -43,6 +43,7 @@ def inclusionMap (r : m.family.InclusionSlot) :
       (s.head (m.family.canonicalRoles.target (.inclusion r))) :=
   Span.ofRelation (fun a b => a.val = b.val)
 
+-- [impl->req~clafer-structural-satisfaction~1]
 /-- Every structural role has a concrete interpretation, with shared class
 objects inherited from the canonical cojoining rather than cloned by role. -/
 def interpret : m.family.canonicalRoles.graph ⥤q semanticGraph U where
@@ -101,6 +102,7 @@ theorem head_multiplicity_iff (typed : s.Typed m) (d p : Fin n)
 
 end Configuration
 
+-- [proof->req~clafer-structural-satisfaction~1]
 /-- Ordinary maps can always be represented by their relation tuples under
 set-valuedness; reference composite links are transported, never collapsed. -/
 theorem ordinary_representation {A B C : Type}

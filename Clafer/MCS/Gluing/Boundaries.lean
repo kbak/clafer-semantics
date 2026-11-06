@@ -48,6 +48,7 @@ theorem bag_mode_preserved :
       ((label roles labels compatible.toIncidence).map (roleArrow roles bagTarget)) = .bag :=
   mode_label (W := FormalCD.Vocabulary.builtins) compatible formulas (roleArrow roles bagTarget)
 
+-- [proof->req~clafer-gluing-examples~1]
 /-- A nonempty, structurally valid bank still lacks the ordinary defaults. -/
 theorem missing_default_rejected :
     ¬(raw (W := FormalCD.Vocabulary.builtins) roles labels predef compatible formulas).WellFormed := by
@@ -102,6 +103,7 @@ theorem primitive_identity_preserved :
       (classLabel labels .int) = some (.primitive .int) :=
   predefined_label (W := FormalCD.Vocabulary.builtins) compatible formulas .int
 
+-- [impl->req~clafer-gluing-examples~1]
 /-- An explicitly supplied complete bank. Here the author also elects to declare
 setValued on the bag target; gluing does not add this declaration. -/
 def completeBank : Formulas roles signature where

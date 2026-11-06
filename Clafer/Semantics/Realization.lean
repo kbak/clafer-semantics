@@ -59,6 +59,7 @@ def Abstracts : Prop :=
 resolved group. Explicit abstract groups retain #65's template/override policy. -/
 def Groups : Prop := ∀ d, m.explicitAbstract d = false → Compile.Groups.Holds m.family s d
 
+-- [impl->req~clafer-inherited-realization~1]
 def Satisfies : Prop :=
   s.Typed m.toEffectiveCore ∧ s.Rooted m.toEffectiveCore ∧
   s.LocalConditions m.toEffectiveCore ∧ Abstracts m s ∧ Groups m s ∧
@@ -118,6 +119,7 @@ theorem disjoint_views (parents : s.Parents m.toEffectiveCore)
   have he := (parents f p hf x hx).unique ha hb
   exact disj hqa (he.symm ▸ hrb)
 
+-- [proof->req~clafer-inherited-realization~1]
 /-- Actual coverage of the parent's objects yields coverage of its fields.
 No independent field-cover equivalence is accepted as an input. -/
 theorem view_cover (typed : s.Typed m.toEffectiveCore)

@@ -21,6 +21,7 @@ def registry : FormalCD.Registry where
   name | .sing => "Sing" | .primitive d => d.name
   kind | .sing => .singleton | .primitive _ => .primitive
 
+-- [impl->req~clafer-gluing-formalcd~1]
 def originAnnotation : Origin → Option registry.Id
   | .syntheticRoot => some .sing
   | .primitive d => some (.primitive d)
@@ -43,6 +44,7 @@ noncomputable def annotations (hc : r.Cojoining) (v : V) : Option registry.Id :=
     ((Equiv.ofBijective r.head hc.head_bijective) c))) = _
   rw [Equiv.symm_apply_apply]
 
+-- [proof->req~clafer-gluing-formalcd~1]
 /-- Canonical naming and predefined uniqueness follow from the source disciplines;
 default completeness is still a separate hypothesis. -/
 theorem naming_of_valid {σ : DPGraph.Signature.{0,0,0}} {d : Formulas r σ}

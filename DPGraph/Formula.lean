@@ -12,6 +12,7 @@ namespace DPGraph
 
 open CategoryTheory
 
+-- [impl->req~dpgraph-core~1]
 /-- A well-typed formula retains its entire arity graph, including isolated
 vertices and distinct arrows that may bind to the same carrier arrow. -/
 structure Formula (σ : Signature.{s, va, ua}) (G : Quiv.{v₁, u₁}) where
@@ -23,10 +24,12 @@ namespace Formula
 variable {σ : Signature.{s, va, ua}}
 variable {G : Quiv.{v₁, u₁}} {H : Quiv.{v₂, u₂}} {K : Quiv.{v₃, u₃}}
 
+-- [impl->req~formula-translation~1]
 /-- Translate by postcomposition, with the signature fixed (Definition 10). -/
 def translate (f : Formula σ G) (F : G ⥤q H) : Formula σ H :=
   ⟨f.symbol, f.binding.comp F⟩
 
+-- [proof->req~formula-translation~1]
 @[simp] theorem translate_id (f : Formula σ G) :
     f.translate (Prefunctor.id G) = f := by
   cases f

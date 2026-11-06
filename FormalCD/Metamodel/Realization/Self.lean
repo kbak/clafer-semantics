@@ -145,11 +145,13 @@ theorem forty_six_argument_links : Fintype.card (((encode diagram).map Edge.args
   rw [← Fintype.card_congr argumentLinksEquiv, Fintype.card_sigma]
   decide
 
+-- [proof->req~formalcd-metamodel-self-instance~1]
 /-- All thirty formulas, including nd/ad, key and total args, are satisfied. -/
 theorem self_instantiation :
     (interpretation (context diagram)).IsModel diagram.toDPGraph (encode diagram) :=
   (model_iff diagram).mpr ⟨metamodel_supported, metamodel_separated⟩
 
+-- [impl->req~formalcd-metamodel-self-instance~1]
 noncomputable def selfModel : (interpretation (context diagram)).Model diagram.toDPGraph :=
   model diagram metamodel_supported metamodel_separated
 

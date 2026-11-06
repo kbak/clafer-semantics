@@ -46,6 +46,7 @@ def declarations : Set (DPGraph.Formula signature graph) :=
   {φ | φ = inclusionFormula Arrow.leftIn ∨ φ = inclusionFormula Arrow.rightIn ∨
     φ = setValuedFormula Arrow.values ∨ φ = totalFormula}
 
+-- [impl->req~formalcd-examples~1]
 def raw : Raw registry where
   carrier := graph
   declarations := declarations
@@ -54,6 +55,7 @@ def raw : Raw registry where
   predefined | .one => some .one | _ => none
   mode | .leftIn | .rightIn => .inclusion | .values => .ordinary | .bag => .bag
 
+-- [proof->req~formalcd-examples~1]
 theorem wellFormed : raw.WellFormed where
   predefined_name := by intro c i h; cases c <;> cases h; rfl
   user_name := by
@@ -107,6 +109,7 @@ theorem shared_inclusion_name :
     diagram.mapName Arrow.leftIn = "isA" ∧ diagram.mapName Arrow.rightIn = "isA" :=
   ⟨rfl, rfl⟩
 
+-- [proof->req~formalcd-structure~1]
 theorem inclusion_endpoints :
     (inclusionFormula (G := graph) Arrow.leftIn).binding.obj .source = Class.left ∧
     (inclusionFormula (G := graph) Arrow.rightIn).binding.obj .source = Class.right ∧
@@ -114,6 +117,7 @@ theorem inclusion_endpoints :
     (inclusionFormula (G := graph) Arrow.rightIn).binding.obj .target = Class.top :=
   ⟨rfl, rfl, rfl, rfl⟩
 
+-- [proof->req~formalcd-declarations~1]
 theorem required_inclusions :
     inclusionFormula Arrow.leftIn ∈ diagram.declarations ∧
     inclusionFormula Arrow.rightIn ∈ diagram.declarations :=
@@ -143,6 +147,7 @@ theorem optional_primitives : ∀ c, diagram.predefined c ≠ some Builtin.int :
   intro c h; cases c <;> cases h
 
 def reservedUser : Raw registry := { raw with className := fun _ => "Int" }
+-- [proof->req~formalcd-naming~1]
 theorem reserved_user_invalid : ¬ reservedUser.WellFormed := by
   intro h
   exact h.user_name .left rfl ⟨.int, rfl⟩
@@ -246,6 +251,7 @@ theorem collapse_identifies : collapse.obj .left = collapse.obj .right := rfl
 theorem explicit_composite :
     (collapseHom.comp swapHom).toDPHom.toPrefunctor.obj .right = Class.right := rfl
 
+-- [proof->req~formalcd-morphisms~1]
 theorem composition_law :
     (collapseHom.comp swapHom).comp collapseHom =
       collapseHom.comp (swapHom.comp collapseHom) := Hom.comp_assoc _ _ _

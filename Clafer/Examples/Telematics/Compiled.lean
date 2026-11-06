@@ -181,9 +181,11 @@ theorem source_holds : ConstraintMeaning.SourceHolds input domains integers
     subst x
     exact Meaning.c12_holds
 
+-- [impl->req~clafer-appendix-f-complete~1]
 noncomputable def interpretation := Compile.Realization.interpretation input U
   (ConstraintMeaning.authored input domains integers)
 
+-- [proof->req~clafer-appendix-f-complete~1]
 /-- The full generated/glued bank is satisfied by this same nonempty
 configuration, with the authored meanings derived from all twelve bodies. -/
 theorem compiled_glued_model : interpretation.IsModel

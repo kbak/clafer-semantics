@@ -12,6 +12,7 @@ namespace DPGraph
 
 variable {σ : Signature.{s, va, ua}}
 
+-- [impl->req~dpgraph-morphisms~1]
 /-- Preservation concerns declared formulas, without adding inference closure. -/
 structure Hom (G : DPGraph.{s, va, ua, v₁, u₁} σ)
     (H : DPGraph.{s, va, ua, v₂, u₂} σ) where
@@ -50,11 +51,13 @@ def comp (F : Hom G H) (J : Hom H K) : Hom G K where
     rw [← Formula.translate_comp]
     exact J.preserves (F.preserves hf)
 
+-- [proof->req~dpgraph-morphisms~1]
 theorem comp_preserves (F : Hom G H) (J : Hom H K) {f : Formula σ G.carrier}
     (hf : f ∈ G.declarations) :
     f.translate (F.toPrefunctor.comp J.toPrefunctor) ∈ K.declarations :=
   (F.comp J).preserves hf
 
+-- [proof->req~dpgraph-category~1]
 @[simp] theorem id_comp (F : Hom G H) : (id G).comp F = F :=
   ext (Prefunctor.id_comp F.toPrefunctor)
 

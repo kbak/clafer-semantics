@@ -98,6 +98,7 @@ theorem support_resolved : support.Resolved fragment := by
 def displayWiden : Widen support 0 2 := .inclusion 0 rfl
 def ecuWiden : Widen support 1 2 := .inclusion 1 rfl
 
+-- [impl->req~clafer-version-navigation~1]
 def version {Γ} (c : Expr support Γ (.collection (.objects 2))) :
     Expr support Γ .integer := .integerOf rfl (.image (.image c (.map 2)) (.map 3))
 
@@ -191,6 +192,7 @@ theorem compareVersions_not_less {U : Type u} (R : IntegerRealization U) (d e : 
   · simp [h, not_lt.mpr h]
   · simp [h, lt_of_not_ge h]
 
+-- [proof->req~clafer-version-navigation~1]
 /-- Definedness is independent of whether the comparison is true or false. -/
 theorem Model.comparison_defined {U} (m : Model.{u,w} U) (d : Subtype (m.model.obj (0 : support.Vertex))) :
     ∃ result, compareVersions m.realization (m.versionObjects {d.val})

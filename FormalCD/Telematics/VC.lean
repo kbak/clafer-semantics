@@ -38,6 +38,7 @@ def InheritedVersion {U : Type u} (R : IntegerRealization U) {A C B : Set U}
   ∃ i v, inc.source i = a ∧ version.source v = inc.target i ∧
     R.decode (version.target v).val = n
 
+-- [impl->req~formalcd-vc-semantics~1]
 /-- Quantify over actual server links. An empty server fiber imposes no comparison. -/
 def VCMeaning {U : Type u} (R : IntegerRealization U)
     (d : vcShape ⥤q semanticGraph.{u,w} U) : Prop :=
@@ -116,6 +117,7 @@ def GuardedComparison {U : Type u} (m : graph ⥤q semanticGraph.{u,w} U)
   ∀ d e, (m.map Edge.server).red d e →
     value (asComponent h1 e) ≤ value (asComponent h2 d)
 
+-- [proof->req~formalcd-vc-semantics~1]
 /-- Under the actual inclusion/version declarations, VC is exactly the guarded
 integer comparison. No inverse, cover or server-totality assumption is needed. -/
 theorem satisfies_vc_iff_guarded {U : Type u} (R : IntegerRealization U)
@@ -142,6 +144,7 @@ theorem satisfies_vc_iff_guarded {U : Type u} (R : IntegerRealization U)
       (inherited_iff_value R _ _ h1 ht hs _ _).mp he]
     exact h _ _ ⟨s,rfl,rfl⟩
 
+-- [proof->req~formalcd-figure21-example~1]
 /-- The same correspondence stated directly in terms of the example's typed
 inclusion and multiplicity declarations. -/
 theorem declared_vc_iff_guarded {U : Type u} (R : IntegerRealization U)

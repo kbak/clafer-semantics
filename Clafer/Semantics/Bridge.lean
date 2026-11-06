@@ -221,6 +221,7 @@ theorem local_model_iff (wf : m.WellFormed) (support : m.Supported) (typed : s.T
     exact (s.head_multiplicity_iff m typed d p hp).mp
       (holds (.multiplicity d ⟨.head, hd⟩))
 
+-- [proof->req~clafer-structural-satisfaction~1]
 /-- Both directions, with global completeness obligations explicit. The local
 bank is exactly the existing Compile bank, including every ordinary default,
 effective bound, inverse, triangle, key and guarded inclusion. -/
@@ -246,6 +247,7 @@ theorem constraintId_empty {a : AST} (h : ConstraintFree a) : IsEmpty (Constrain
   have he := h (a.at d) (List.getElem_mem d.isLt)
   simp only [he, List.length_nil, Nat.not_lt_zero] at hq
 
+-- [impl->req~clafer-structural-satisfaction~1]
 noncomputable def structuralInterpretation {a : AST} (i : Input a)
     (h : ConstraintFree a) (U : Type) :
     Interpretation (vocabulary i).signature (semanticGraph U) :=
@@ -279,6 +281,7 @@ def SatisfiesAST {a : AST} (i : Input a) (h : ConstraintFree a)
   (structuralInterpretation i h U).IsModel (compile i).formulas.diagram
     (s.interpret (EffectiveCore.erase i))
 
+-- [proof->req~clafer-effective-core~1]
 theorem erasure_correspondence {a : AST} (i : Input a) (h : ConstraintFree a)
     (support : (EffectiveCore.erase i).Supported) {U : Type}
     (s : Configuration a.Occurrence U) :

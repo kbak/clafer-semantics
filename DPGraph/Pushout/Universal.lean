@@ -21,6 +21,8 @@ open CategoryTheory CategoryTheory.Limits
 variable {σ : Signature.{s, va, ua}}
 variable {S T U : DPGraph.{s, va, ua, v, u} σ}
 
+-- [impl->req~dpgraph-pushout-universal~1]
+-- [proof->req~dpgraph-pushout-universal~1]
 /-- A supplied carrier colimit lifts to the DP-graph cocone whose declarations
 are exactly the translated component declarations. -/
 noncomputable def isColimit (F : Hom S T) (J : Hom S U) (c : CarrierCocone F J)

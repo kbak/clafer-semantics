@@ -26,6 +26,7 @@ noncomputable def vocabulary (i : Input a) : FormalCD.Vocabulary :=
 
 abbrev FormulaId (i : Input a) := LocalId (family i) ⊕ ConstraintId a
 
+-- [impl->req~clafer-compile-formulas~1]
 noncomputable def formula (i : Input a) : FormulaId i →
     DPGraph.Formula (vocabulary i).signature (roles i).graph
   | .inl l => (vocabulary i).embed l.formula
@@ -56,6 +57,8 @@ theorem formulas_wellFormed (i : Input a) : (formulas i).WellFormed where
       | inl y => cases hs
       | inr y => exact congrArg Sum.inr (Sum.inr.inj hs)
 
+-- [impl->req~clafer-compile-contract~1]
+-- [impl->req~clafer-compile-structure~1]
 /-- The structural Compile transformation. All output disciplines are derived;
 no MCS well-formedness proof is assumed by the input. -/
 noncomputable def compile (i : Input a) :
@@ -67,6 +70,7 @@ noncomputable def compile (i : Input a) :
   valid := ⟨family_wellFormed i, (family i).canonical_cojoining,
     naming i, formulas_wellFormed i⟩
 
+-- [proof->req~clafer-compile-contract~1]
 theorem wellFormed (i : Input a) : Valid (compile i).labels (compile i).formulas :=
   (compile i).valid
 
@@ -83,6 +87,7 @@ theorem inclusion_declared (i : Input a) (s : (family i).InclusionSlot) :
     (vocabulary i).embed (LocalId.formula (.inclusion s)) ∈
       (compile i).formulas.diagram.declarations := ⟨.inl (.inclusion s), rfl⟩
 
+-- [proof->req~clafer-compile-formulas~1]
 /-- Completeness for authored constraints is indexed by the attached occurrence. -/
 theorem constraint_declared (i : Input a) (q : ConstraintId a) :
     (⟨.inr q, binding i q⟩ : DPGraph.Formula (vocabulary i).signature (roles i).graph) ∈
@@ -94,6 +99,7 @@ theorem constraint_owner (i : Input a) (q : ConstraintId a) :
 theorem constraint_binding (i : Input a) (q : ConstraintId a) :
     ((compile i).formulas.formula (.inr q)).binding = binding i q := rfl
 
+-- [proof->req~clafer-compile-structure~1]
 /-- Distinct generated heads remain distinct even if their display names agree. -/
 theorem fresh_heads (i : Input a) {c d : a.Occurrence} (h : c ≠ d) :
     (compile i).roles.head c ≠ (compile i).roles.head d :=

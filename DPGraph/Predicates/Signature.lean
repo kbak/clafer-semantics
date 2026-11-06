@@ -60,6 +60,7 @@ inductive InEdge (n : Nat) : FanIn n → FanIn n → Type where
 instance (n : Nat) : Quiver (FanIn n) := ⟨InEdge n⟩
 def fanIn (n : Nat) : CategoryTheory.Quiv := CategoryTheory.Quiv.of (FanIn n)
 
+-- [proof->req~predicate-arities~1]
 /-- Even an empty family has a central vertex. -/
 theorem fanOut_zero_nonempty : Nonempty (fanOut 0) := ⟨.center⟩
 theorem fanIn_zero_nonempty : Nonempty (fanIn 0) := ⟨.center⟩
@@ -76,6 +77,7 @@ inductive Symbol where
   | setValued | total | singleValued | inclusion
   | targetMultiplicity (range : Range) | sourceMultiplicity (range : Range)
 
+-- [impl->req~predicate-arities~1]
 def signature : DPGraph.Signature where
   Symbol := Symbol
   arity

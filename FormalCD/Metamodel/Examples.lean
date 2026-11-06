@@ -26,6 +26,7 @@ def loopBinding (f : Bool → Bool) : loops ⥤q loops where
   obj _ := .point
   map e := f e
 
+-- [impl->req~formalcd-metamodel-examples~1]
 def ordered (b : Bool) : Formula loopSignature loops :=
   ⟨false, loopBinding (fun i => if b then !i else i)⟩
 
@@ -46,6 +47,7 @@ theorem changed_symbol :
     repeated ≠ (⟨true, repeated.binding⟩ : Formula loopSignature loops) := by
   intro h; cases congrArg Formula.symbol h
 
+-- [proof->req~formalcd-formula-identity~1]
 theorem reconstructed_identity :
     (Candidate.ofFormula (ordered false)).toFormula (Candidate.ofFormula_valid _) = ordered false :=
   Candidate.to_ofFormula _
@@ -56,6 +58,7 @@ def badIncidence : Candidate DPGraph.Predicates.signature Arity.unary where
   vertex _ := .target
   argument _ := ⟨.source, .target, Arity.UnaryEdge.arrow⟩
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 theorem bad_incidence_rejected : ¬ badIncidence.Valid := by
   intro h
   have hs := h.source ⟨.source, .target, Arity.UnaryEdge.arrow⟩
@@ -107,6 +110,7 @@ theorem unindexed_bag_forgets_position :
     ordered false ≠ ordered true ∧ Nonempty (BagEquiv orderedArgs false true) :=
   ⟨changed_position, ⟨orderedArgsBag⟩⟩
 
+-- [proof->req~formalcd-metamodel-examples~1]
 theorem ordered_literal_key_fails : ¬ Key orderedKeyFamily := by
   intro h
   have he := h false true (by

@@ -43,6 +43,7 @@ def arrowBinding {G : Quiv.{v,u}} {a b : G} (e : a ⟶ b) : Arity.unary ⥤q G w
   obj | .source => a | .target => b
   map | .arrow => e
 
+-- [impl->req~formalcd-declarations~1]
 def inclusionFormula {G : Quiv.{v,u}} {a b : G} (e : a ⟶ b) :
     DPGraph.Formula signature G := ⟨.inclusion, arrowBinding e⟩
 
@@ -55,6 +56,7 @@ theorem arrowBinding_comp {G : Quiv.{v,u}} {H : Quiv.{v',u'}}
   exact Prefunctor.ext (by intro x; cases x <;> rfl)
     (by intro x y f; cases f; rfl)
 
+-- [proof->req~formalcd-declarations~1]
 @[simp] theorem inclusionFormula_translate {G : Quiv.{v,u}} {H : Quiv.{v',u'}}
     {a b : G} (e : a ⟶ b) (F : G ⥤q H) :
     (inclusionFormula e).translate F = inclusionFormula (F.map e) :=
@@ -65,6 +67,7 @@ theorem arrowBinding_comp {G : Quiv.{v,u}} {H : Quiv.{v',u'}}
     (setValuedFormula e).translate F = setValuedFormula (F.map e) :=
   congrArg (DPGraph.Formula.mk (σ := signature) .setValued) (arrowBinding_comp e F)
 
+-- [impl->req~formalcd-signature-extension~1]
 /-- Inspectable raw data, including invalid diagrams. `declarations` is the
 single effective set: authored formulas and required defaults live together. -/
 structure RawOver (V : Vocabulary.{s,va,ua}) (R : Registry.{p})
@@ -74,6 +77,7 @@ structure RawOver (V : Vocabulary.{s,va,ua}) (R : Registry.{p})
   predefined : carrier → Option R.Id
   mode : ∀ {a b : carrier}, (a ⟶ b) → MapMode
 
+-- [impl->req~formalcd-naming~1]
 /-- §6.1 naming/default disciplines. Typed Formula bindings already enforce
 arity and incidence. No global name injectivity or inheritance acyclicity. -/
 structure RawOver.WellFormed {V : Vocabulary.{s,va,ua}} {R : Registry.{p}}
@@ -88,6 +92,7 @@ structure RawOver.WellFormed {V : Vocabulary.{s,va,ua}} {R : Registry.{p}}
   ordinary_decl : ∀ {a b} (e : a ⟶ b), D.mode e = .ordinary →
     V.embed (setValuedFormula e) ∈ D.declarations
 
+-- [impl->req~formalcd-structure~1]
 /-- A syntactically valid CD. This proof asserts no existence of a model. -/
 structure CDOver (V : Vocabulary.{s,va,ua}) (R : Registry.{p})
     extends RawOver.{s,va,ua,p,v,u} V R where

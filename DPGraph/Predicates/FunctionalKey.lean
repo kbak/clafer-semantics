@@ -74,6 +74,7 @@ theorem red_iff_targetValue_eq (q : Span.{u,v,w} A B)
     exact ⟨(Equiv.ofBijective q.source ⟨hs, ht⟩).symm a,
       (Equiv.ofBijective q.source ⟨hs, ht⟩).apply_symm_apply a, h⟩
 
+-- [impl->req~predicate-key-functional~1]
 /-- Link-preserving, even when the original head and source universes differ. -/
 noncomputable def functionalSpanIso (q : Span.{u,v,w} A B)
     (ht : Total q) (hs : SingleValued q) :
@@ -82,6 +83,7 @@ noncomputable def functionalSpanIso (q : Span.{u,v,w} A B)
   source_eq _ := rfl
   target_eq l := targetValue_eq_of_source q ht hs l rfl
 
+-- [proof->req~predicate-key-functional~1]
 /-- The ordinary tuple criterion for arbitrary componentwise total, single-valued spans. -/
 theorem key_total_singleValued_iff {n : Nat} {B : Fin n → Type v}
     (q : ∀ i, Span.{u,v,w} A (B i))

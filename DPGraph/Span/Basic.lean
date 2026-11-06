@@ -16,6 +16,7 @@ universe u v w w' w''
 
 namespace DPGraph
 
+-- [impl->req~span-representation~1]
 /-- A mapping with individually identifiable links (SoSyM B.1). -/
 structure Span (A : Type u) (B : Type v) where
   Link : Type w
@@ -64,10 +65,12 @@ end Iso
 def red (q : Span.{u, v, w} A B) (a : A) (b : B) : Prop :=
   ∃ l, q.source l = a ∧ q.target l = b
 
+-- [impl->req~span-set-valuedness~1]
 /-- Set-valuedness means joint injectivity, not injectivity of either leg. -/
 def JointlyInjective (q : Span.{u, v, w} A B) : Prop :=
   Function.Injective (fun l => (q.source l, q.target l))
 
+-- [proof->req~span-representation~1]
 theorem Iso.red_eq {q : Span.{u, v, w} A B} {r : Span.{u, v, w'} A B}
     (e : Iso q r) : q.red = r.red := by
   funext a b
@@ -79,12 +82,14 @@ theorem Iso.red_eq {q : Span.{u, v, w} A B} {r : Span.{u, v, w'} A B}
     exact ⟨e.equiv.symm l, (e.symm.source_eq l).trans hs,
       (e.symm.target_eq l).trans ht⟩
 
+-- [impl->req~span-inversion~1]
 /-- Inversion retains every link (SoSyM B.2.2). -/
 def inverse (q : Span.{u, v, w} A B) : Span.{v, u, w} B A where
   Link := q.Link
   source := q.target
   target := q.source
 
+-- [proof->req~span-inversion~1]
 @[simp] theorem inverse_inverse (q : Span.{u, v, w} A B) :
     q.inverse.inverse = q := rfl
 

@@ -1,40 +1,57 @@
 # Tracing Lean definitions and proofs
 
-The pinned IntentBond/OpenFastTrace combination imports Markdown requirements
-and artifacts, but OpenFastTrace 4.9.0 does not import `.lean` source tags.
-Do not put OFT coverage annotations directly in Lean files and assume they are
-checked. Lean files remain in `scope.json`: their contents are captured, their
-modules are built and kernel checked, and their changes require review.
+The pinned IntentBond imports OFT coverage tags from actual Lean line, nested
+block and documentation comments. Its temporary comment view lets OpenFastTrace
+4.9.0 parse the tags while retaining original `.lean` paths and physical line
+numbers. Strings and escaped identifiers do not supply coverage. Lean source
+remains captured by `scope.json`, built, kernel checked and selected for review.
 
 ## Lean artifacts
 
-Until native Lean tag support is adopted, declare named implementation and proof
-artifacts in Markdown under `docs/`, beside explicit links to the corresponding
-Lean file and declaration names. For example, when a real requirement exists:
+Put implementation tags immediately before the relevant definitions, proof tags
+before the actual theorems, and test tags before assertions or test entry points.
+Use ordinary `--` line comments, including when one declaration supports several
+requirements. Place tags before an existing declaration doc comment so that its
+attachment is preserved. Do not collect a file's links in its module header.
 
-```markdown
-## Representation of model shape
-`impl~model-shape-representation~1`
+One tag can introduce a contiguous group of declarations for the same requirement,
+such as the unary predicate definitions. Repeat it for a separate group only when
+that gives a useful source location; helpers need no tag merely because they share
+a file with an implementation. Keep implementation and proof links at their
+respective declarations. For example:
 
-The `ModelShape` declaration in Clafer/Syntax.lean represents the selected
-abstract syntax. Link the source file and explain the correspondence here.
+```lean
+-- [impl->req~formula-translation~1]
+def translate ... := ...
 
-Covers:
-- `req~model-shape~1`
+-- [proof->req~formula-translation~1]
+theorem translate_id ... := ...
 ```
 
-Proof artifacts can use the same structure with type `proof`, naming the actual
-theorem and its source. State `Needs: impl, proof` on requirements that require
-both, rather than labeling documentation as proof. Use `utest` for actual tests.
-Maintain these artifact declarations, source links, theorem statements, and
-requirements together. Keep source references precise as declarations move.
+Only add a link when the declaration or group supplies evidence for that contract.
+Do not infer every link from a Markdown artifact's file list: an explanatory
+artifact may discuss several requirements and modules together.
 
-These are checked OFT artifacts whose locations are in Markdown. Review must
-follow their links into the Lean implementation and proofs. Neither a source
-link nor an artifact named `proof` establishes the theorem; Lean checks the
-declaration, and review assesses whether its statement matches the requirement
-and the cited paper. Command-level evidence records the configured check's
-result; it does not associate individual theorem executions with artifacts.
+Keep the named Markdown artifacts in [DPGraph](dpgraph-trace.md),
+[FormalCD](formalcd-trace.md) and [Clafer](clafer-trace.md) as readable accounts of
+source correspondence, declaration names and theorem assumptions. Their stable
+IDs and existing links remain useful; inline tags add direct source locations.
+Use `Needs: impl, proof` on requirements that require both. Use `utest` or `itest`
+for actual checks rather than labeling executable test code as a proof.
+Maintain requirements, source tags, these explanations and assertions together.
+Pure import aggregators and unrelated helper declarations need no arbitrary tags.
+
+OFT checks the declared links, including requirement revisions. A tag or artifact
+named `proof` does not establish a theorem: Lean checks the declaration, and
+review assesses whether its statement matches the requirement and paper. The
+configured command still supplies command-level evidence rather than individual
+theorem-execution associations. Markdown artifacts do not replace source tags
+when the corresponding implementation or proof lives in Lean.
+
+The source-import regression checks a real annotated Lean module through the
+installed IntentBond importer, so a future pin that silently drops Lean artifacts
+fails the repository check. Parser tests and broken-reference regressions belong
+to IntentBond; build, kernel, axiom and semantic checks remain here.
 
 ## Scope selection
 

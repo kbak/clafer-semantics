@@ -36,6 +36,7 @@ structure Compatible : Prop extends Incidence ends vertices arrows where
 
 variable {W : FormalCD.Vocabulary.{0,0,0}} {ι : Sort*}
 
+-- [impl->req~formalcd-referent-descent~1]
 noncomputable def raw (h : Compatible ends vertices arrows metadata)
     (d : ι → DPGraph.Formula W.signature (origin ends)) :
     FormalCD.RawOver W R where
@@ -101,6 +102,7 @@ structure Defaults (d : ι → DPGraph.Formula W.signature (origin ends)) : Prop
 
 variable {ends vertices arrows metadata}
 
+-- [proof->req~formalcd-referent-descent~1]
 theorem raw_wellFormed (h : Compatible ends vertices arrows metadata)
     (d : ι → DPGraph.Formula W.signature (origin ends))
     (hn : Naming vertices metadata) (hd : Defaults ends metadata d) :

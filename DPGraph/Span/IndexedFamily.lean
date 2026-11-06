@@ -52,6 +52,7 @@ namespace Span
 
 variable {A : Type u} {B : Type v}
 
+-- [impl->req~span-family-correspondence~1]
 def toFamily (q : Span.{u, v, w} A B) : IndexedFamily.{u, v, w} A B where
   Index a := { l : q.Link // q.source l = a }
   eval _ l := q.target l.1
@@ -94,6 +95,7 @@ namespace IndexedFamily
 
 variable {A : Type u} {B : Type v}
 
+-- [proof->req~span-family-correspondence~1]
 /-- The family roundtrip allows index universes `max u w` and `w`. -/
 def spanFamilyEquivalence (f : IndexedFamily.{u, v, w} A B) :
     Equivalence f.toSpan.toFamily f where

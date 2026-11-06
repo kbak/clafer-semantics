@@ -92,6 +92,7 @@ noncomputable def Accepted (b : Bool) : Prop :=
     (descendGroups (input g valid) (config b))
     ((generatedGroup (input g valid) ⟨0, rfl⟩).translate (groupLabel (input g valid)))
 
+-- [proof->req~clafer-compile-groups~1]
 theorem accepted_iff (b : Bool) : Accepted g valid b ↔
     (b = true → DPGraph.Predicates.CountInRange g.range 0) := by
   unfold Accepted

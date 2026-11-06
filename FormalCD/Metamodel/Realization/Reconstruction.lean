@@ -18,6 +18,7 @@ open CategoryTheory DPGraph
 structure ModeData (G : Quiv.{v,u}) where
   mode : ArrowData G → MapMode
 
+-- [impl->req~formalcd-metamodel-realization~1]
 /-- Decode on the represented carrier using context embeddings, full candidates
 and mode side data. This operation also makes sense for malformed representations. -/
 def decodeRaw {V : Vocabulary.{s,va,ua}} {R : Registry.{p}} {G : Quiv.{v,u}} {U : Type z}
@@ -59,6 +60,7 @@ theorem decoded_declarations :
   · intro h
     exact ⟨formulas D ⟨φ, h⟩, candidate_roundtrip D ⟨φ, h⟩⟩
 
+-- [proof->req~formalcd-metamodel-realization~1]
 /-- Exact reconstruction of the whole raw syntax on its original carrier;
 the source itself is not an argument of decodeRaw. -/
 theorem decode_encode : decodeRaw (encode D) (context D) (modes D) = D.toRawOver := by

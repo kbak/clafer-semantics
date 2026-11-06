@@ -1,7 +1,8 @@
 # DP-graph trace artifacts
 
 Follow [the Lean trace convention](traceability.md): these are named Markdown
-artifacts; their evidence is the linked Lean declarations, not inline Lean tags.
+artifacts explaining the linked Lean declarations. Inline Lean tags also enter
+the checked trace graph; neither kind of link replaces kernel checking or review.
 The [source map](sources.md) records SoSyM B.1–B.2 spans, the adopted [Q1](sources.md#span-composition-q1-research-for-4)
 correction, B.4 Definitions 6–10 and the abstract restriction argument of
 B.5 Theorem 3, and the selected Table 3/A.1 meanings with the [common-target disjointness correction (Q8)](sources.md#predicate-contracts-and-the-accepted-q8-correction).

@@ -64,6 +64,7 @@ theorem zero_rank_rejected :
 def expect (name : String) (actual : Bool) : IO Unit :=
   unless actual do throw (IO.userError name)
 
+-- [utest->req~clafer-resolved-import~1]
 def executableTests : IO Unit := do
   expect "repeated names admitted" (decide (repeated "bag").bindingChecks)
   expect "bag keeps repeated targets" (verify (repeated "bag").normalize repeatedCandidate == .satisfies)

@@ -24,6 +24,7 @@ variable {S T U : DPGraph.{s, va, ua, v, u} σ}
 variable (F : Hom S T) (J : Hom S U) (c : CarrierCocone F J)
 variable {Ω : Quiv.{v, u}} (I : Interpretation σ Ω)
 
+-- [impl->req~dpgraph-model-amalgamation~1]
 private noncomputable def amalgamate (hc : IsColimit c) (p : CompatibleModels I F J) :
     I.Model (obj F J c) := by
   let w : F.toPrefunctor.comp p.val.1.val = J.toPrefunctor.comp p.val.2.val :=
@@ -52,6 +53,7 @@ private theorem amalgamate_inr (hc : IsColimit c) (p : CompatibleModels I F J) :
   apply Subtype.ext
   exact PushoutCocone.IsColimit.inr_desc (C := Quiv.{v, u}) hc _ _ _
 
+-- [proof->req~dpgraph-model-amalgamation~1]
 /-- Models on the declaration union are equivalent to compatible component models,
 using the supplied carrier colimit. The forward map is the pair of reducts. -/
 noncomputable def modelEquiv (hc : IsColimit c) :

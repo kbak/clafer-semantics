@@ -73,6 +73,7 @@ def collapse : arity ⥤q arity where
 /-- Explicit target binding: both arguments are the first arrow. -/
 def targetFormula : Formula signature arity := ⟨.mark, collapse⟩
 
+-- [impl->req~dpgraph-examples~1]
 def sourceGraph : DPGraph signature where
   carrier := arity
   declarations := {sourceFormula}
@@ -105,6 +106,7 @@ theorem collapse_ne_id : collapse ≠ Prefunctor.id arity := by
   have hm := Prefunctor.congr_hom h secondArrow
   exact parallel_distinct hm
 
+-- [proof->req~dpgraph-examples~1]
 theorem collapse_preserves : sourceFormula.translate collapse ∈ targetGraph.declarations :=
   collapseHom.preserves source_declared
 

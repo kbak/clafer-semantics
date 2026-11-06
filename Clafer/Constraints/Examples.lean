@@ -30,6 +30,7 @@ abbrev support : Support where
     ⟨⟨7⟩, .dereference, 1, 3, "dref"⟩]
   context := 1
 
+-- [proof->req~clafer-core-support~1]
 theorem support_resolved : support.Resolved sample := by
   constructor
   · intro v
@@ -161,6 +162,7 @@ def externalDomains : Domains support [inner, b] :=
 def formula : DPGraph.Formula (signature (fun _ : Unit => constraint)) support.graph :=
   Constraint.formula (fun _ : Unit => constraint) () (Prefunctor.id support.graph)
 
+-- [proof->req~clafer-core-binding~1]
 theorem full_graph_binding : formula.binding = Prefunctor.id support.graph := rfl
 
 theorem repeated_maps_retained : support.mapRef 1 = support.mapRef 6 ∧
@@ -171,6 +173,7 @@ theorem repeated_maps_retained : support.mapRef 1 = support.mapRef 6 ∧
     have he := congrArg Subtype.val h
     exact (by decide : (1 : support.Edge) ≠ 6) he
 
+-- [proof->req~clafer-core-typing~1]
 theorem wrong_image_rejected : True := by
   fail_if_success
     have _ : Expr support [] (.collection (.objects 1)) := .image .this (.map 0)

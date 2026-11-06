@@ -20,6 +20,7 @@ namespace DPGraph.Predicates
 
 open CategoryTheory Arity
 
+-- [impl->req~predicate-interpretation~1]
 /-- All symbols have explicit meanings in the bounded graph. -/
 def interpretation (U : Type u) : Interpretation signature (semanticGraph.{u,w} U) where
   meaning

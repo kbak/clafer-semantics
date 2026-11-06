@@ -61,6 +61,7 @@ def mapTarget {k : Kind} {p : Bool} (m : Map k p) : Class k p :=
 def arrow {k : Kind} {p : Bool} (m : Map k p) : mapSource m ⟶ mapTarget m :=
   ⟨m.val, m.property, rfl, rfl⟩
 
+-- [proof->req~clafer-individual-shapes~1]
 theorem incidence {k : Kind} {p : Bool} {a b : Class k p} (e : a ⟶ b) :
     source e.val = a.val ∧ target e.val = b.val := ⟨e.property.2.1, e.property.2.2⟩
 
@@ -93,6 +94,7 @@ theorem root_no_maps : IsEmpty (Map .basic false) := by
   rintro ⟨r, hr⟩
   cases r <;> simp_all [mapPresent]
 
+-- [proof->req~clafer-finite-traversal~1]
 theorem classes_finite (k : Kind) (p : Bool) : Finite (Class k p) := inferInstance
 theorem arrows_finite (k : Kind) (p : Bool) :
     Finite (Σ a b : Class k p, (a ⟶ b)) := by
@@ -118,6 +120,7 @@ def needsReferenceKey (k : Kind) (p : Bool) : Bool := k == .referenceSet && p
 
 end Roles
 
+-- [impl->req~clafer-individual-shapes~1]
 /-- An individual shape recipe with typed optional roles. Abstractness is an
 AST property; the presence of a parent determines its local topology. -/
 structure Shape where

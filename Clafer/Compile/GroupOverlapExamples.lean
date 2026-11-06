@@ -60,6 +60,7 @@ theorem two_head_paths_one_object :
     overlap.contains 2 (.inl 1) (.inr 0) ∧
     overlap.contains 6 (.inl 1) (.inr 0) := ⟨Or.inl (by simp [base, config]), Or.inr ⟨rfl, rfl, rfl⟩⟩
 
+-- [proof->req~clafer-compile-groups~1]
 theorem compiled_overlap_xor :
     (groupInterpretation (input none (by decide)) (Objects 1) (authored none (by decide) _)).Satisfies
       (overlap.interpret (core none (by decide)))

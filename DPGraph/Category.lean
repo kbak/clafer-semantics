@@ -16,6 +16,8 @@ universe s va ua v u
 
 namespace DPGraph
 
+-- [impl->req~dpgraph-category~1]
+-- [proof->req~dpgraph-category~1]
 /-- The category operations are exactly the declaration-preserving maps and
 operations of Definition 10. Extensionality is `Hom.ext` / `Hom.ext_of_obj_map`. -/
 instance category (σ : Signature.{s, va, ua}) :

@@ -18,6 +18,7 @@ bindings justified by the constraints, not additional arrows in the figure.
 namespace FormalCD.Metamodel
 open CategoryTheory DPGraph.Predicates
 
+-- [impl->req~formalcd-metamodel-shape~1]
 inductive Node where
   | classifier | class | map | incl | predef | sing | dom | string | predefStr | formula | signature
   deriving DecidableEq
@@ -123,6 +124,7 @@ def modeledSing : SingletonClass := .sing
 def singObject : SingletonObject := .star
 def objectClass : SingletonObject → SingletonClass := fun _ => .sing
 
+-- [proof->req~formalcd-metamodel-shape~1]
 theorem star_has_sing_class : objectClass singObject = modeledSing := rfl
 
 end FormalCD.Metamodel
