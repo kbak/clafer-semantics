@@ -1688,3 +1688,42 @@ identifies the kernel-checked correspondence and actual finite checks.
 T13's analysis limit remains: exact-lasso agreement is not completeness over
 all infinite traces or an inferred-scope guarantee. Static oracle/source pins
 and the independent structural checker profile are unchanged.
+
+## Behavioral surface correspondence
+
+The [surface contract](behavioral-surface.md) and
+[proof index](clafer-trace.md#behavioral-surface) cover B15–B29's source semantics;
+parsing, resolution and target preservation retain their separate owners.
+All comparison sources use the immutable [behavioral ledger](#behavioral-profile-sources).
+
+- Behavioral §§4.1–4.2 and §6.1 pp.2:30–32 supply attachment, anchors,
+  transition/pattern sugar and finality; §§4.5/6.1 concern assertions/scenarios.
+  T2–T9 and T12 amend polarity, chaining, scenario quantification, births,
+  inherited reference modifiers, pattern attachment and syntax.
+- Pinned `Desugarer.hs` lines 214–252 (`desugarClaferTrans`, `desugarTrans'`,
+  `desugarSequence`, `precondition`, `step`) distinguishes declaration attachment,
+  entry guards and required suffixes. Lines 414–457 (`translateTmpPatterns`)
+  supply the complete comparison inventory, not an assumed correctness oracle.
+- D2's [response-between correction](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093)
+  moves the p implication inside the interval obligation. The
+  [after-precedence correction](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689399331)
+  prevents selecting a later q to discard a violation. `Patterns.response_interval`
+  and `first_opener` give event-level characterizations; `PatternExamples`
+  reproduces the distinguishing behavior of both pinned expansion shapes.
+- Behavioral §§6.1–6.2 p.2:32 supplies `final` child equality and lifetime scope.
+  It does not define `finalref` or `finaltarget`. T8/CheatSheet introduces their
+  distinction and inherited-reference application without complete equations.
+  D5 explicitly completes it: per-head reference stability versus parent target
+  image stability. Pinned `AlloyLtl.hs` lines 303–313 (`finalConsts`) emits
+  per-head equality for both reference modifiers, including inherited lookup.
+  `ModifierExamples.swap_finaltarget` / `swap_not_finalref` separates the meanings;
+  `inherited_ref_mutation` and `inherited_shallow_final` retain owner and depth
+  boundaries. This is a documented compiler mismatch, not paper equivalence.
+
+The direct interval/sequence meanings and syntax expansions are separately defined
+and proved equal for both source signs. The complete thirty-cell finite witnesses
+are transported to infinite source meaning through the accepted lasso theorem.
+They do not execute Haskell, prove source parsing, cover every possible temporal
+valuation by enumeration, or establish bounded-search completeness. Modifier
+reduction assumes richer structural validity and total set observations; partial
+transition/pattern/property reduction retains the original source domain.

@@ -14,4 +14,10 @@ public import Clafer.Behavioral.StructuralSnapshot
 public import Clafer.Behavioral.StaticObservation
 public import Clafer.Behavioral.Initializers
 
+public import Clafer.Behavioral.Anchors
+public import Clafer.Behavioral.Modifiers
+public import Clafer.Behavioral.Transitions
+public import Clafer.Behavioral.Patterns
+public import Clafer.Behavioral.Properties
+
 /-! Optional behavioral source semantics. Structural `import Clafer` stays independent. -/
