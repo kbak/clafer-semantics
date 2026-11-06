@@ -235,6 +235,12 @@ selected work has actually started. Done requires fulfilled acceptance criteria,
 required review and accepted integration. A prerequisite closed as not planned is
 not accepted completion.
 
+A maintainer's merge of the completing PR communicates approval and acceptance.
+Reconcile its issue and Project status immediately; do not ask for acceptance
+again or wait for a separate GitHub review submission. Follow the
+[maintainer acceptance policy](docs/maintenance.md#maintainer-acceptance) for the
+merge record, retained evidence and dependent readiness.
+
 ```sh
 python3 scripts/tickets.py track 123 --status ready
 python3 scripts/tickets.py track 123 --status in-progress
@@ -266,8 +272,9 @@ a moving upstream branch or successful CI for semantic acceptance. Preserve the
 static oracle and historical source profiles. Reconcile changes from main
 deliberately and refresh affected evidence.
 
-Require independent semantic review of the concrete diff and explicit acceptance
-of profile/scope changes. Review the actual [branch controls](docs/maintenance.md#behavioral-integration-controls);
+Require independent semantic review of the concrete diff before merge and explicit
+acceptance of profile/scope changes. The maintainer's merge communicates that
+acceptance under the policy above. Review the actual [branch controls](docs/maintenance.md#behavioral-integration-controls);
 CI configuration does not install protection. After an accepted feature PR lands
 on this non-default branch, close its issue explicitly with the ticket helper and
 mark Done; do not assume `Closes` performed closure. Refresh affected readiness

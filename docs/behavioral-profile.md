@@ -290,8 +290,10 @@ all assumptions, positive/negative fixtures, source locators, retained validatio
 and independent semantic review. Downstream pins that SHA, never `behavioral`
 or an unaccepted PR head. New gaps go to public issues before choosing a meaning.
 For non-default-branch PRs, explicitly close the issue and mark Done **after** the
-accepted merge; `Closes` alone may not close it. Refresh affected unstarted
-statuses in both repositories manually.
+accepted merge; `Closes` alone may not close it. A maintainer's merge
+communicates approval and acceptance under the [acceptance policy](maintenance.md#maintainer-acceptance);
+do not wait for a second confirmation or a separate review submission. Refresh
+affected unstarted statuses in both repositories manually.
 
 PR and push CI on `behavioral` run full validation, even for a contract-only diff:
 module discovery, build, all tests, independent imports, axiom/layer audits, kernel
