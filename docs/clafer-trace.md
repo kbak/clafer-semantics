@@ -854,6 +854,9 @@ Covers:
 
 [GroupSupport.lean](../Clafer/Compile/GroupSupport.lean): `Ancestor`, `Child`,
 `arity`, `binding`, `Id`, `Objects`, `interpretation`, `ChildObjects`, `Holds`.
+`Ancestor`, `ChildObjects` and `Holds` are definitionally equal aliases of
+[Semantics/Groups.lean](../Clafer/Semantics/Groups.lean), making the independent
+meaning reusable without a Compile dependency.
 [Groups.lean](../Clafer/Compile/Groups.lean): `groupBank`, `groupVocabulary`,
 `promote`, `generatedGroup`, `completeBank`, `Augmented`, `compileAugmented`,
 `gluedGroups`, `groupInterpretation`. The complete union keeps the original
@@ -1690,3 +1693,132 @@ Covers:
 - `req~behavioral-formula-denotation~1`
 - `req~behavioral-signed-normalization~1`
 - `req~behavioral-environments~1`
+
+## Behavioral current observations
+
+`impl~behavioral-reference-observation~1`
+
+[ReferenceObservation.lean](../Clafer/Behavioral/ReferenceObservation.lean)
+defines `heads`, `assignments` and `targets` separately. The
+[contract](behavioral-structure.md#distinguishing-cases) records their intended
+use by later modifiers without asserting any finality predicate.
+
+Covers:
+- `req~behavioral-snapshot-bridge~1`
+
+`proof~behavioral-reference-observation~1`
+
+`snapshot_heads`, `snapshot_assignments` and `snapshot_targets` prove exact image
+agreement under guarded trace validity and a live parent. `target_live`,
+`absent_head_no_deref` and `absent_parent_heads` expose the current live boundary.
+`finite_targets` assumes finite observed heads and a functional reference;
+`valid_finite_targets` and `valid_target_cardinality` derive the corresponding
+results under guarded trace validity and a declared reference target. No finite
+primitive domain is assumed. The
+[examples](../Clafer/Behavioral/ReferenceObservationExamples.lean) distinguish
+swapped assignments, repeated-target bag counts and an infinite integer carrier.
+
+Covers:
+- `req~behavioral-snapshot-bridge~1`
+
+## Behavioral integer-set conversion
+
+`impl~behavioral-integer-coercion~1`
+
+[IntegerObservation.lean](../Clafer/Behavioral/IntegerObservation.lean): `coerce`
+and `operand` implement the explicit finite-set-sum conversion from the
+[reviewed contract](behavioral-structure.md#integer-set-conversion). This does not
+replace strict extraction or relational equality and is not yet an integrated
+temporal expression evaluator.
+
+Covers:
+- `req~behavioral-integer-coercion~1`
+
+`proof~behavioral-integer-coercion~1`
+
+`coerce_defined_iff` characterizes the exact finite/integer-domain assumptions;
+`coerce_finite`, `coerce_empty`, `coerce_singleton`, `coerce_infinite` and
+`coerce_wrong_domain` give successful and rejected cases. `agrees_with_extract`
+uses only the existing extraction's success equation, and `operand_missing`
+distinguishes undefined from empty. The
+[examples](../Clafer/Behavioral/IntegerObservationExamples.lean) check the
+absence/zero distinction, multiple values, repeated targets, arbitrary integers,
+infinite-domain rejection and an intentionally arbitrary off-domain decoder.
+
+Covers:
+- `req~behavioral-integer-coercion~1`
+
+## Behavioral mathematical arithmetic
+
+`impl~behavioral-integer-arithmetic~1`
+
+[Arithmetic.lean](../Clafer/Behavioral/Arithmetic.lean) defines `Binary.apply`,
+`Binary.eval` and `negate` according to the [reviewed scalar contract](behavioral-structure.md#mathematical-arithmetic).
+Scalar operations use mathematical `Int`; undefined operands propagate and
+zero divisors are rejected before calling Lean's truncating division/remainder.
+
+Covers:
+- `req~behavioral-integer-arithmetic~1`
+
+`proof~behavioral-integer-arithmetic~1`
+
+`defined_iff`, `divide_zero`, `remainder_zero`, `divide_nonzero`,
+`remainder_nonzero`, `division_remainder`, `missing_left`, `missing_right`
+and `static_arithmetic_agrees` establish the operator domain and historical
+scalar agreement. [ArithmeticExamples.lean](../Clafer/Behavioral/ArithmeticExamples.lean)
+checks signed operands, zero divisors, empty observations, strict propagation
+and values beyond machine range. No backend encoding theorem is claimed.
+
+Covers:
+- `req~behavioral-integer-arithmetic~1`
+
+## Behavioral aggregates and extrema
+
+`impl~behavioral-integer-aggregates~1`
+
+[Aggregate.lean](../Clafer/Behavioral/Aggregate.lean) supplies `Fold.eval` over
+occurrence indices and `Extreme.select` over integer objects. The
+[contract](behavioral-structure.md#aggregates-and-extrema) distinguishes these
+operations from implicit set coercion and leaves frontend occurrence construction
+explicit.
+
+Covers:
+- `req~behavioral-integer-aggregates~1`
+
+`proof~behavioral-integer-aggregates~1`
+
+`fold_defined_iff`, `fold_finite`, `sum_empty`, `product_empty`, `fold_missing`
+and `fold_infinite` characterize folds. `select_defined_iff`, `select_subset`,
+`select_singleton`, `select_empty` and `empty_extreme_operand` retain selector
+identity, domain and empty conversion. [AggregateExamples.lean](../Clafer/Behavioral/AggregateExamples.lean)
+checks repeated head values against distinct-target coercion, empty folds, missing
+and infinite observations, signed extrema, empty presence/equality and off-domain
+values.
+
+Covers:
+- `req~behavioral-integer-aggregates~1`
+
+## Behavioral inherited-reference observations
+
+`impl~behavioral-inherited-reference-observation~1`
+
+[InheritedReference.lean](../Clafer/Behavioral/InheritedReference.lean) defines
+`Owner` and `deref` over declaration reference annotations and the owner's current
+relation, retaining the head identity. It does not flatten declarations or infer
+names, and it does not redefine historical trace admission.
+
+Covers:
+- `req~behavioral-inherited-reference-observation~1`
+
+`proof~behavioral-inherited-reference-observation~1`
+
+`Owner.unique`, `ancestor`, `has_reference`, `target` and `no_owner` characterize
+lookup. `deref_owner`, `own_reference`, `declared_agreement`, `shared_head`, `target_live`, `absent_head`
+and `functional` establish the view laws with their stated owner/validity
+hypotheses. [InheritedReferenceExamples.lean](../Clafer/Behavioral/InheritedReferenceExamples.lean)
+checks nearest declarations, owner/target distinction, repeated bag targets,
+current target changes and head disappearance. These observation fixtures do
+not certify a complete richer structural model.
+
+Covers:
+- `req~behavioral-inherited-reference-observation~1`

@@ -418,6 +418,113 @@ Covers:
 
 Needs: impl
 
+## Behavioral inherited-reference observation
+
+`req~behavioral-inherited-reference-observation~1`
+
+Resolve the nearest declared reference along a super chain: a declaration's own
+reference stops lookup, while a basic declaration follows its super. Keep this
+lookup separate from name resolution, a preflattened effective-reference table,
+and reference-target identity. Prove uniqueness and ancestry of the owner, with
+an actual target at every successful owner. Raw cyclic/all-basic inputs must not
+invent an owner; existence on admitted richer models remains a separate obligation.
+
+Observe an inherited dereference by restricting the owner's current relation to
+the subtype's existing head extent. Prove agreement between views sharing an
+owner on shared head identities, own-reference agreement, functionality and live
+target validity under the existing trace-validity hypotheses, and emptiness at
+an absent head. Check nearest ownership, two bag heads at one target, changing
+targets and disappearance. These observations do not assert richer structural
+admission or agreement between distinct redeclared reference owners; those are
+separate structural compatibility obligations in the [audit](behavioral-structure.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral integer-set conversion
+
+`req~behavioral-integer-coercion~1`
+
+Provide the reviewed D3 arithmetic conversion of a finite observed set of
+integer objects to the sum of its distinct values. Empty observations contribute
+zero; singleton observations agree with the existing exact extraction. Preserve
+all mathematical integers without introducing a backend bit width. Require
+finiteness of the observed set and membership of every object in the explicit
+integer realization; infinite or off-domain observations remain undefined.
+An undefined expression is not a defined empty set and must not become zero.
+
+Keep relational presence and equality unchanged, so an empty collection remains
+different from a present zero. Keep `IntegerRealization.extract`, `Expr.integerOf`
+and the historical static denotation unchanged. The new conversion is explicit
+in the behavioral interface; source elaboration must choose the right operation.
+Sum each distinct target once in this conversion. Aggregation over reference
+heads retains occurrences and is a separate operation. Prove finite/domain
+definedness, empty/singleton equations, and agreement on the entire defined
+domain of strict extraction; check multiple values, repeated targets, arbitrary
+integers and rejected observations. See the
+[structural and arithmetic contract](behavioral-structure.md#integer-set-conversion).
+Operator definedness, extrema and explicit occurrence-sensitive aggregates are
+specified separately below.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral mathematical arithmetic
+
+`req~behavioral-integer-arithmetic~1`
+
+Provide the reviewed D3 scalar operations on mathematical integers: addition,
+subtraction, multiplication and unary negation, together with division truncating
+toward zero and its matching signed remainder. Division and remainder are
+undefined at a zero divisor, including zero divided by zero. Undefined operands
+propagate through every operation, including multiplication by zero. A defined
+empty collection contributes zero through the separate integer-set conversion;
+it does not make division by that value defined.
+
+Do not introduce bounded wraparound or machine overflow into source meaning.
+Backend agreement needs separate domain and range hypotheses. Prove the exact
+operator domain, the quotient/remainder identity, missing-operand propagation
+and agreement with the unchanged historical scalar addition/subtraction.
+Check signed operands, every zero-divisor case, empty numerator/denominator and
+values beyond machine range. See the [arithmetic contract](behavioral-structure.md#mathematical-arithmetic).
+This scalar interface does not itself provide a temporal expression grammar,
+aggregate semantics or an Alloy/Choco encoding-correctness theorem.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite integer aggregates
+
+`req~behavioral-integer-aggregates~1`
+
+Provide explicit sum and product over finite occurrence-indexed observations.
+Separate reference heads contribute separately at equal integer targets; implicit
+integer-set coercion retains its distinct-target meaning. Empty sum is zero and
+empty product is one. Require every contributing value defined, and reject an
+infinite occurrence collection even if its values coincide or contain zero.
+Frontend expansion of aggregate operands must preserve the intended occurrences;
+a syntactic union split into separate aggregates is not a deduplicated head union.
+
+Provide minimum/maximum as selectors of integer objects in finite observations.
+The empty observation yields a defined empty collection, so presence/equality
+remain empty while arithmetic conversion gives zero. A nonempty finite integer
+observation selects exactly one observed object with the extremal value. Reject
+infinite or noninteger observations. Prove domain, selection, singleton and
+empty-conversion laws, with positive/negative witnesses for repeated targets,
+missing values, infinity, nonintegers and the empty-versus-zero distinction.
+See the [aggregate contract](behavioral-structure.md#aggregates-and-extrema).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
 ## Behavioral structural and repository boundary
 
 `req~behavioral-structural-boundary~1`
