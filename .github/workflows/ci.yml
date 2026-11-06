@@ -99,6 +99,24 @@ jobs:
           key: lean-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
           restore-keys: |
             lean-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+      - name: Check Lean cache migration
+        id: lean-cache
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if [ -d "$RUNNER_TEMP/lean-dependencies/lake" ]; then
+            echo 'restored=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Restore previous Lean cache layout
+        if: steps.selection.outputs.mode != 'docs' && steps.lean-cache.outputs.restored != 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/lean-dependencies/lake
+            ${{ runner.temp }}/lean-dependencies/mathlib
+          key: lean-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lean-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+            lean-deps-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
       - name: Cache Mathlib downloads
         if: steps.selection.outputs.mode != 'docs'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

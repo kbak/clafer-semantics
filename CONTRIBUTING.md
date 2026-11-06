@@ -157,6 +157,10 @@ Changed or missing exporter inputs take the pinned build path. Cache keys includ
 the exporter, builder, runtime and protocol sources and runner platform. All live
 compiler/solver comparisons still execute and produce new evidence.
 
+On a miss in the separate Lake cache, CI also tries the previous combined cache
+layout. This seeds the new caches during rollout; Lake still validates every
+restored artifact, and missing artifacts take the normal build path.
+
 Set `CLAFER_TEST_JOBS=2` to run the discovered Python suite in two isolated
 processes, as CI does; the default is sequential and the maximum is four.
 `scripts/run_tests.py` partitions test identities and requires every assigned test
