@@ -6,11 +6,6 @@ public import Clafer.Examples.Telematics.Mutations
 public import Clafer.Examples.VersionCompilation
 
 /-!
-[impl->req~clafer-constraint-preservation-witnesses~1]
-[proof->req~clafer-constraint-preservation-witnesses~1]
--/
-
-/-!
 # Truth-sensitive source predicate examples
 
 SoSyM Appendix 6 c02/c04/c06, D.4 and B.5. These exercise predicate
@@ -29,6 +24,7 @@ set_option maxRecDepth 4096
 def single (s : Support) (body : Expr s [] .boolean) (_ : Unit) : Constraint :=
   ⟨s, [], body⟩
 
+-- [impl->req~clafer-constraint-preservation-witnesses~1]
 noncomputable def interpreted (s : Support) (body : Expr s [] .boolean) :=
   predicateInterpretation (single s body) (fun _ => Domains.nil) integers
 
@@ -238,6 +234,7 @@ theorem inventory_observes_map (q : Fin 12) : (inventory q).body.maps.Nonempty :
     head20, head22, head23, head24, head25, head26, dereference9, dereference12,
     parent15]
 
+-- [proof->req~clafer-constraint-preservation-witnesses~1]
 theorem structural_success_does_not_discharge_constraints :
     MCS.Valid (Compile.compile VersionCompilation.input).labels
       (Compile.compile VersionCompilation.input).formulas ∧

@@ -2,11 +2,6 @@ module
 
 public import Clafer.Compile.Structure
 
-/-!
-[impl->req~clafer-compile-formulas~1]
-[proof->req~clafer-compile-formulas~1]
--/
-
 /-! # Complete constraint bindings into the compiled role graph (§6.2.2–4) -/
 
 @[expose] public section
@@ -109,6 +104,7 @@ noncomputable def boundArrow (e : (support i q).Edge) : (roles i).Arrow
     have hsup : (family i).super c = some y := (super_eq i c y).mpr (by simpa [y] using hs.2)
     exact ⟨.inclusion ⟨c, y, Shape.headInclusion _ _, hsup⟩, hc, rfl⟩
 
+-- [impl->req~clafer-compile-formulas~1]
 noncomputable def binding : (support i q).graph ⥤q (roles i).graph where
   obj := vertex i q
   map e := ⟨(boundArrow i q e.val).val, by
@@ -119,6 +115,7 @@ noncomputable def binding : (support i q).graph ⥤q (roles i).graph where
 theorem binding_vertices (v) : sourceId a ((binding i q).obj v) =
     (support i q).classId v := vertex_id i q v
 
+-- [proof->req~clafer-compile-formulas~1]
 theorem binding_maps (e : (support i q).Edge) :
     ((binding i q).map ((support i q).arrow e)).val = (boundArrow i q e).val := rfl
 

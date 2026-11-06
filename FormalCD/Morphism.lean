@@ -3,13 +3,6 @@ module
 public import FormalCD.Basic
 
 /-!
-[impl->req~formalcd-morphisms~1]
-[impl->req~formalcd-signature-extension~1]
-[proof->req~formalcd-morphisms~1]
-[proof->req~formalcd-signature-extension~1]
--/
-
-/-!
 # Name-preserving FormalCD morphisms
 
 An adopted library specialization of SoSyM B.4 Definition 10. The additional
@@ -25,6 +18,7 @@ namespace FormalCD
 
 variable {Vocab : Vocabulary.{s,va,ua}} {R : Registry.{p}}
 
+-- [impl->req~formalcd-morphisms~1]
 /-- Declaration preservation plus equality of all metadata at mapped identities.
 No carrier injectivity or reflection of extra target declarations is required. -/
 structure HomOver (S : CDOver.{s,va,ua,p,v₁,u₁} Vocab R) (T : CDOver.{s,va,ua,p,v₂,u₂} Vocab R) where
@@ -67,6 +61,7 @@ def comp (F : HomOver S T) (J : HomOver T U) : HomOver S U where
 @[simp] theorem toDPHom_comp (F : HomOver S T) (J : HomOver T U) :
     (F.comp J).toDPHom = F.toDPHom.comp J.toDPHom := rfl
 
+-- [proof->req~formalcd-morphisms~1]
 @[simp] theorem id_comp (F : HomOver S T) : (id S).comp F = F :=
   ext (DPGraph.Hom.id_comp F.toDPHom)
 

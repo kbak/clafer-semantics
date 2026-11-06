@@ -3,13 +3,6 @@ module
 public import FormalCD.Metamodel.Discipline
 public import FormalCD.Semantics
 
-/-!
-[impl->req~formalcd-formula-identity~1]
-[impl->req~formalcd-metamodel-disciplines~1]
-[proof->req~formalcd-formula-identity~1]
-[proof->req~formalcd-metamodel-disciplines~1]
--/
-
 /-! # Extended interpretation: built-in meanings plus nd/ad
 The exact domain is bounded subsets/spans over U, with the explicit context
 below. Arbitrary raw diagrams do not recover vertex/index/registry information.
@@ -28,6 +21,7 @@ structure Context (R : Registry.{p}) (σ : Signature.{s,va,ua}) (G : Quiv.{v,u})
   describe : ∀ d : arityShape ⥤q semanticGraph.{z,w} U,
     ArityDescriptor (σ := σ) (G := G) d
 
+-- [impl->req~formalcd-metamodel-disciplines~1]
 def interpretation {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}}
     {U : Type z} (C : Context.{p,s,va,ua,v,u,z,w} R σ G U) :
     Interpretation vocabulary.signature (semanticGraph.{z,w} U) :=
@@ -40,6 +34,7 @@ theorem builtins_unchanged {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Qu
     {U : Type z} (C : Context.{p,s,va,ua,v,u,z,w} R σ G U) :
     vocabulary.restrict (interpretation C) = Predicates.interpretation U := rfl
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 theorem satisfies_nd {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}}
     {U : Type z} (C : Context.{p,s,va,ua,v,u,z,w} R σ G U)
     (m : graph ⥤q semanticGraph.{z,w} U) :
@@ -51,6 +46,7 @@ theorem satisfies_ad {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,
     (interpretation C).Satisfies m ad ↔
       ArityDiscipline C.arities (arityBinding.comp m) (C.describe (arityBinding.comp m)) := Iff.rfl
 
+-- [proof->req~formalcd-formula-identity~1]
 theorem satisfies_literalKey {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}}
     {U : Type z} (C : Context.{p,s,va,ua,v,u,z,w} R σ G U)
     (m : graph ⥤q semanticGraph.{z,w} U) :

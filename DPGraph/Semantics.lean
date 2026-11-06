@@ -3,15 +3,6 @@ module
 public import DPGraph.Category
 
 /-!
-[impl->req~dpgraph-declaration-image~1]
-[impl->req~dpgraph-interpretation~1]
-[impl->req~dpgraph-model-reduct~1]
-[proof->req~dpgraph-declaration-image~1]
-[proof->req~dpgraph-interpretation~1]
-[proof->req~dpgraph-model-reduct~1]
--/
-
-/-!
 # Abstract interpretation and contravariant model restriction
 
 SoSyM B.5, Theorem 3, abstracted over a semantic graph and predicate meanings.
@@ -33,6 +24,7 @@ namespace DPGraph
 
 open CategoryTheory
 
+-- [impl->req~dpgraph-interpretation~1]
 /-- Meaning of each predicate on diagrams of its arity in the chosen semantic
 graph. This data does not assume the model restriction theorem. -/
 structure Interpretation (σ : Signature.{s, va, ua}) (Ω : Quiv.{vm, um}) where
@@ -51,6 +43,7 @@ variable {U : DPGraph.{s, va, ua, v₃, u₃} σ}
 def Satisfies (m : G ⥤q Ω) (φ : Formula σ G) : Prop :=
   φ.binding.comp m ∈ I.meaning φ.symbol
 
+-- [proof->req~dpgraph-interpretation~1]
 /-- Satisfaction commutes with translation along any graph map. This is an
 equivalence about one formula, not reflection of whole-model satisfaction. -/
 theorem satisfies_translate (φ : Formula σ G) (F : G ⥤q H) (m : H ⥤q Ω) :
@@ -62,6 +55,7 @@ theorem satisfies_translate (φ : Formula σ G) (F : G ⥤q H) (m : H ⥤q Ω) :
 def IsModel (S : DPGraph.{s, va, ua, v₁, u₁} σ) (m : S.carrier ⥤q Ω) : Prop :=
   ∀ φ ∈ S.declarations, I.Satisfies m φ
 
+-- [proof->req~dpgraph-declaration-image~1]
 /-- An exact declaration image reflects model satisfaction as well as preserving
 it. This derived B.5 law requires equality of the declaration sets; an arbitrary
 declaration-preserving morphism can have extra target obligations. -/
@@ -98,6 +92,7 @@ theorem isModel_range_translate {ι : Sort*} (φ : ι → Formula σ G)
   · rintro ⟨i, rfl⟩; exact ⟨φ i, ⟨i, rfl⟩, rfl⟩
   · rintro ⟨_, ⟨i, rfl⟩, rfl⟩; exact ⟨i, rfl⟩
 
+-- [proof->req~dpgraph-model-reduct~1]
 /-- B.5 Theorem 3 in its generic form: a target model restricts to a source
 model along a declaration-preserving DP morphism. The only hypotheses are the
 fixed interpretation, the DP morphism and the target's model proof. -/
@@ -110,6 +105,7 @@ theorem isModel_reduct (F : Hom S T) (m : T.carrier ⥤q Ω) (hm : I.IsModel T m
 def Model (S : DPGraph.{s, va, ua, v₁, u₁} σ) :=
   {m : S.carrier ⥤q Ω // I.IsModel S m}
 
+-- [impl->req~dpgraph-model-reduct~1]
 /-- Contravariant restriction by precomposition. -/
 def reduct (F : Hom S T) (m : I.Model T) : I.Model S :=
   ⟨F.toPrefunctor.comp m.val, I.isModel_reduct F m.val m.property⟩

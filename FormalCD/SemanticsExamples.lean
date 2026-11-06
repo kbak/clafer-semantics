@@ -3,12 +3,6 @@ module
 public import FormalCD.Examples
 
 /-!
-[impl->req~formalcd-examples~1]
-[proof->req~formalcd-examples~1]
-[proof->req~formalcd-structure~1]
--/
-
-/-!
 # Concrete models and their restriction
 
 Use the delivered span interpretation, with genuine inclusion and set-valued
@@ -52,11 +46,13 @@ theorem model_condition : (interpretation Unit).IsModel diagram.toDPGraph modelM
   · change Total (DPGraph.Span.identity objects)
     exact Function.surjective_id
 
+-- [impl->req~formalcd-examples~1]
 def model : (interpretation Unit).Model diagram.toDPGraph := ⟨modelMap, model_condition⟩
 
 def restrictedModel : (interpretation Unit).Model diagram.toDPGraph :=
   collapseHom.reduct (interpretation Unit) model
 
+-- [proof->req~formalcd-examples~1]
 theorem restricted_model :
     (interpretation Unit).IsModel diagram.toDPGraph restrictedModel.val :=
   restrictedModel.property
@@ -94,6 +90,7 @@ theorem failing_satisfaction :
     ¬ (interpretation Unit).Satisfies failingMap (setValuedFormula Arrow.values) :=
   duplicateLinks_not_setValued
 
+-- [proof->req~formalcd-structure~1]
 theorem wellFormed_does_not_certify_satisfaction : diagram.toRaw.WellFormed ∧
     ¬ (interpretation Unit).IsModel diagram.toDPGraph failingMap :=
   ⟨wellFormed, fun h => failing_satisfaction (h _ ordinary_default)⟩

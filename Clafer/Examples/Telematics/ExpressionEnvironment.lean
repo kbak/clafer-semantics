@@ -3,8 +3,6 @@ module
 public import Clafer.Examples.Telematics.Expressions
 public import Clafer.Constraints.DenotationInvariance
 
--- [impl->req~clafer-appendix-f-expressions~1]
-
 /-!
 # Expression environments on the inherited structural fixture
 
@@ -77,6 +75,7 @@ theorem inclusion_subset (i : Fin 34) (h : (maps i).kind = .inclusion) :
   all_goals simp [objects,maps,position,Telematics.Structural.config,Telematics.Structural.heads,
     Set.subset_def]
 
+-- [impl->req~clafer-appendix-f-expressions~1]
 def model (c : Fin 28) (e d : Int) : IntegerBinding (support c) U where
   realization := integers
   model := graphMap c e d

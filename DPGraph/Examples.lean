@@ -4,11 +4,6 @@ public import DPGraph
 public import Mathlib.Data.Fintype.Basic
 
 /-!
-[impl->req~dpgraph-examples~1]
-[proof->req~dpgraph-examples~1]
--/
-
-/-!
 # Finite witnesses for the generic DP-graph definitions
 
 SoSyM B.4, Definitions 6–10: a syntax-only predicate with parallel arrows and
@@ -78,6 +73,7 @@ def collapse : arity ⥤q arity where
 /-- Explicit target binding: both arguments are the first arrow. -/
 def targetFormula : Formula signature arity := ⟨.mark, collapse⟩
 
+-- [impl->req~dpgraph-examples~1]
 def sourceGraph : DPGraph signature where
   carrier := arity
   declarations := {sourceFormula}
@@ -110,6 +106,7 @@ theorem collapse_ne_id : collapse ≠ Prefunctor.id arity := by
   have hm := Prefunctor.congr_hom h secondArrow
   exact parallel_distinct hm
 
+-- [proof->req~dpgraph-examples~1]
 theorem collapse_preserves : sourceFormula.translate collapse ∈ targetGraph.declarations :=
   collapseHom.preserves source_declared
 

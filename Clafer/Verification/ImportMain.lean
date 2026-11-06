@@ -3,11 +3,6 @@ module
 public import Clafer.Verification.ImportProofs
 public meta import Clafer.Verification.ImportProofs
 
-/-!
-[impl->req~clafer-bounded-comparison~1]
-[impl->req~clafer-resolved-import~1]
--/
-
 /-! Internal adapter for canonical JSON emitted by capture.py after strict
 external decoding (including duplicate-key rejection). Lean.Json.parse alone
 does not enforce that lexical boundary. Parsing and runtime execution are outside
@@ -41,6 +36,7 @@ def failedPredicates {n : Nat} (m : Semantics.EffectiveCore n) (c : Candidate n)
      ("groups", decide (groupChecks m c)) ] : List (String × Bool)).filterMap
        (fun (name, passed) => if passed then none else some name)
 
+-- [impl->req~clafer-bounded-comparison~1]
 def execute (json : Json) : Except String Json := do
   strictKeys json ["schema", "declarations", "candidate"]
   let schema ← json.getObjValAs? String "schema"
@@ -70,6 +66,7 @@ def execute (json : Json) : Except String Json := do
 
 end Clafer.Verification.Import
 
+-- [impl->req~clafer-resolved-import~1]
 public def main (args : List String) : IO Unit := do
   let stdin ← IO.getStdin
   let stdout ← IO.getStdout

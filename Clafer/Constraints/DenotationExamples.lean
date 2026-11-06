@@ -4,11 +4,6 @@ public import Clafer.Constraints.DenotationDefined
 public import Clafer.Constraints.DenotationInvariance
 public import Clafer.Constraints.IntegerExamples
 
-/-!
-[proof->req~clafer-appendix-f-expressions~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Sensitive kernel-checked denotation examples
 
 SoSyM D.4/Figure 28 and Appendix 6. Assertions exercise the actual typed
@@ -34,6 +29,7 @@ theorem difference_other :
     (Expr.setOp .difference comp self).denote m env = Option.some {atom 0} := by
   simp [Expr.denote, comp,self,env,m,model,modelMap,objects,lift₂,collectionOp,display,Environment.closed,atom]
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem intersection_is_not_difference :
     (Expr.setOp .intersection comp self).denote m env ≠
       (Expr.setOp .difference comp self).denote m env := by
@@ -59,6 +55,7 @@ theorem some_empty_fails : ¬ empty.some.Holds m env := by
 def joinedServer : Expr support [] (.collection (.objects 1)) :=
   .image .this (.join (.map 4) (.map 5))
 
+-- [proof->req~clafer-appendix-f-expressions~1]
 theorem joined_server : joinedServer.denote m env = Option.some {ecu.val} := by
   change Option.some (relationalImage {display.val}
     (relationalJoin (ambientRelation (maps 2 3 4)) (ambientRelation (maps 2 3 5)))) = _

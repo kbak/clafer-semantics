@@ -2,8 +2,6 @@ module
 
 public import Clafer.Semantics.Bridge
 
--- [proof->req~clafer-structural-satisfaction~1]
-
 /-!
 # Normalizing interpreted structural models
 
@@ -215,6 +213,7 @@ theorem local_conditions (wf : m.WellFormed) (support : m.Supported) :
     exact holds m g model (.multiplicity d ⟨.head, hh⟩)
 
 include model in
+-- [proof->req~clafer-structural-satisfaction~1]
 /-- Global obligations are explicit additions to the exact local Compile bank.
 This normalization theorem covers arbitrary link carriers, not just candidates. -/
 theorem normalize_satisfies (wf : m.WellFormed) (support : m.Supported)

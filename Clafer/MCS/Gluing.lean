@@ -4,15 +4,6 @@ public import Clafer.MCS.Laws
 public import FormalCD.Gluing
 
 /-!
-[impl->req~clafer-gluing-declarations~1]
-[impl->req~clafer-gluing-formalcd~1]
-[impl->req~clafer-gluing-identity~1]
-[proof->req~clafer-gluing-declarations~1]
-[proof->req~clafer-gluing-formalcd~1]
-[proof->req~clafer-gluing-identity~1]
--/
-
-/-!
 # Gluing resolved MCS roles
 
 SoSyM §6.2.5 and Appendix B.4 Definition 10, with the approved Q4 rule:
@@ -41,12 +32,14 @@ theorem incidence (h : Incidence r l) :
     DPGraph.Gluing.Incidence (endpoints r) l.classReferent l.mapReferent :=
   ⟨h.source, h.target⟩
 
+-- [impl->req~clafer-gluing-identity~1]
 abbrev Class := {x // x ∈ Set.range l.classReferent}
 abbrev Map := {x // x ∈ Set.range l.mapReferent}
 
 def classLabel (v : V) : Class l := ⟨l.classReferent v, ⟨v, rfl⟩⟩
 def mapLabel (m : f.MapId) : Map l := ⟨l.mapReferent m, ⟨m, rfl⟩⟩
 
+-- [proof->req~clafer-gluing-identity~1]
 @[simp] theorem classLabel_eq_iff (v w : V) :
     classLabel l v = classLabel l w ↔ l.classReferent v = l.classReferent w :=
   Subtype.ext_iff
@@ -117,10 +110,12 @@ theorem label_obj_surjective (h : Incidence r l) : Function.Surjective (label r 
 
 variable {σ : DPGraph.Signature.{0,0,0}}
 
+-- [impl->req~clafer-gluing-declarations~1]
 /-- Full bindings, including isolated vertices and repeated arrows, postcompose unchanged. -/
 noncomputable def diagram (h : Incidence r l) (d : Formulas r σ) : DPGraph σ :=
   DPGraph.Gluing.diagram (endpoints r) l.classReferent l.mapReferent (incidence r l h) d.formula
 
+-- [proof->req~clafer-gluing-declarations~1]
 theorem declared_iff (h : Incidence r l) (d : Formulas r σ) (φ) :
     φ ∈ (diagram r l h d).declarations ↔
       ∃ i, (d.formula i).translate (label r l h) = φ := Iff.rfl
@@ -161,6 +156,7 @@ theorem compatible (h : Compatible r l p) :
 
 variable {W : FormalCD.Vocabulary.{0,0,0}}
 
+-- [impl->req~clafer-gluing-formalcd~1]
 noncomputable def raw (h : Compatible r l p) (d : Formulas r W.signature) :
     FormalCD.RawOver W R :=
   FormalCD.Gluing.raw (endpoints r) l.classReferent l.mapReferent (metadata l p)
@@ -211,6 +207,7 @@ structure Defaults (d : Formulas r W.signature) : Prop where
 
 variable {r l p}
 
+-- [proof->req~clafer-gluing-formalcd~1]
 theorem raw_wellFormed (h : Compatible r l p) (d : Formulas r W.signature)
     (hn : Naming l p) (hd : Defaults r d) : (raw r l p h d).WellFormed :=
   FormalCD.Gluing.raw_wellFormed (compatible r l p h) d.formula

@@ -5,22 +5,6 @@ public import DPGraph.Span.Examples
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
-[impl->req~predicate-examples~1]
-[proof->req~predicate-arities~1]
-[proof->req~predicate-commutation~1]
-[proof->req~predicate-cover~1]
-[proof->req~predicate-disjointness~1]
-[proof->req~predicate-examples~1]
-[proof->req~predicate-interpretation~1]
-[proof->req~predicate-inverse~1]
-[proof->req~predicate-key-functional~1]
-[proof->req~predicate-key~1]
-[proof->req~predicate-multiplicity~1]
-[proof->req~predicate-unary-maps~1]
-[proof->req~setmap-semantic-graph~1]
--/
-
-/-!
 # Checked predicate boundaries
 
 Table 3/A.1/§6.1.1–2 and the accepted Q1/Q8 corrections. These witnesses
@@ -46,14 +30,17 @@ def copiesFiber (F : Type) (a : Unit) : (copies F).toFamily.Index a ≃ F where
   left_inv _ := rfl
   right_inv _ := rfl
 
+-- [impl->req~predicate-examples~1]
 def two : Span Unit Unit := copies (Fin 2)
 def one : Span Unit Unit := copies (Fin 1)
 
+-- [proof->req~predicate-multiplicity~1]
 theorem two_range : TargetMultiplicity ⟨2, .finite 2⟩ two := by
   intro a
   apply (inRange_iff _ (copiesFiber (Fin 2) a)).mpr
   exact ⟨⟨Function.Embedding.refl _⟩, ⟨Function.Embedding.refl _⟩⟩
 
+-- [proof->req~predicate-unary-maps~1]
 theorem two_not_setValued : ¬ SetValued two := by
   intro h
   have he : (0 : Fin 2) = 1 := h (show ((), ()) = ((), ()) from rfl)
@@ -148,8 +135,10 @@ def twoRelabel : Span.Iso two liftedTwo where
   source_eq _ := rfl
   target_eq _ := rfl
 
+-- [proof->req~predicate-inverse~1]
 theorem relabeled_inverse : Inverse two liftedTwo.inverse :=
   ⟨twoRelabel.inverse⟩
+-- [proof->req~predicate-commutation~1]
 theorem relabeled_commutation : Commutation two (Span.identity Unit) liftedTwo :=
   ⟨(Span.rightUnit two).trans twoRelabel⟩
 theorem relabeled_range : TargetMultiplicity ⟨2, .finite 2⟩ liftedTwo :=
@@ -185,6 +174,7 @@ theorem bags_differ : ¬ Nonempty (BagEquiv bagKey false true) := by
   have hh : some false = some true := congrArg Subtype.val he
   cases hh
 
+-- [proof->req~predicate-key~1]
 theorem bagKey_key : Key (fun _ : Fin 1 => bagKey) := by
   intro a a' h
   cases a <;> cases a'
@@ -234,12 +224,14 @@ def singletonImage (b : Bool) : Span Unit Bool where
 
 def partition (i : Fin 2) : Span Unit Bool := singletonImage (i.val == 1)
 
+-- [proof->req~predicate-cover~1]
 theorem partition_cover : Cover partition := by
   intro b
   cases b
   · exact ⟨0, (), rfl⟩
   · exact ⟨1, (), rfl⟩
 
+-- [proof->req~predicate-disjointness~1]
 theorem partition_disjoint : Disjoint partition := by
   intro i j hij l m h
   apply hij
@@ -333,6 +325,7 @@ theorem duplicate_identity_not_inclusion : ¬ Inclusion duplicatedIdentity :=
   fun h => Bool.false_ne_true (h.1.1 (show duplicatedIdentity.source false =
     duplicatedIdentity.source true from rfl))
 
+-- [proof->req~predicate-arities~1]
 /-- Empty-family consequences keep a nonempty, isolated central arity vertex. -/
 theorem zero_centers_nonempty : Nonempty (fanOut 0) ∧ Nonempty (fanIn 0) :=
   ⟨fanOut_zero_nonempty, fanIn_zero_nonempty⟩
@@ -358,6 +351,7 @@ def zeroInDiagram : fanIn 0 ⥤q semanticGraph Unit :=
 theorem zero_binding_nonempty : (zeroOutDiagram.obj .center : Set Unit).Nonempty ∧
     (zeroInDiagram.obj .center : Set Unit).Nonempty := ⟨⟨(), trivial⟩, ⟨(), trivial⟩⟩
 
+-- [proof->req~predicate-interpretation~1]
 theorem zero_diagram_key : zeroOutDiagram ∈ (interpretation Unit).meaning (.key 0) := by
   apply (key_zero _).mpr
   exact ⟨fun a b => Subtype.ext (Subsingleton.elim a.val b.val)⟩
@@ -411,6 +405,7 @@ def targetModel : (interpretation Unit).Model targetGraph :=
 def restrictedModel : (interpretation Unit).Model sourceGraph :=
   (interpretation Unit).reduct collapseHom targetModel
 
+-- [proof->req~predicate-examples~1]
 theorem restricted_model : (interpretation Unit).IsModel sourceGraph restrictedModel.val :=
   restrictedModel.property
 

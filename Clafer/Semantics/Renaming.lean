@@ -2,8 +2,6 @@ module
 
 public import Clafer.Semantics.Structural
 
--- [proof->req~clafer-structural-satisfaction~1]
-
 /-!
 # Object renaming
 
@@ -36,6 +34,7 @@ theorem inRange_renamed (r : Range) (e : U ≃ V) (P : U → Prop) :
     InRange r {x : V // P (e.symm x)} ↔ InRange r {x : U // P x} :=
   inRange_iff r (renamedFiber e P)
 
+-- [proof->req~clafer-structural-satisfaction~1]
 theorem structural_rename (m : EffectiveCore n) (s : Configuration (Fin n) U)
     (e : U ≃ V) : StructuralSatisfies m (s.rename e) ↔ StructuralSatisfies m s := by
   have hg (r : Range) (d : Fin n) (p : U) :

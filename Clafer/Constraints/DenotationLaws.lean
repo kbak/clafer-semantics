@@ -2,12 +2,6 @@ module
 
 public import Clafer.Constraints.Denotation
 
-/-!
-[proof->req~clafer-constraint-denotation~1]
-[proof->req~clafer-constraint-environments~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Constructor equations for SoSyM D.4 and resolved sugar -/
 
 @[expose] public section
@@ -16,12 +10,14 @@ namespace Clafer.Constraints
 variable {s : Support} {U : Type u} {Γ : List (Local s)}
 variable (m : IntegerBinding.{u,w} s U) (ρ : Environment s U Γ)
 
+-- [proof->req~clafer-constraint-denotation~1]
 @[simp] theorem denote_boolean (b : Bool) :
     (Expr.boolean b : Expr s Γ _).denote m ρ = Option.some ⟨b = true⟩ := rfl
 @[simp] theorem denote_integer (n : Int) :
     (Expr.integer n : Expr s Γ _).denote m ρ = Option.some ⟨n⟩ := rfl
 @[simp] theorem denote_empty (k : Collection s) :
     (Expr.empty k : Expr s Γ _).denote m ρ = Option.some ∅ := rfl
+-- [proof->req~clafer-constraint-environments~1]
 @[simp] theorem denote_this :
     (Expr.this : Expr s Γ _).denote m ρ = Option.some {ρ.this} := rfl
 @[simp] theorem denote_extent (x : s.Vertex) :
@@ -80,6 +76,7 @@ variable (m : IntegerBinding.{u,w} s U) (ρ : Environment s U Γ)
 @[simp] theorem finiteCard_infinite {A : Type u} (S : Set A) (h : S.Infinite) :
     finiteCard S = none := by simp [finiteCard,h]
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 @[simp] theorem universal_empty (body : U → Option (ULift.{u} Prop)) :
     universal ∅ body = Option.some ⟨True⟩ := by simp [universal]
 

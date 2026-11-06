@@ -4,11 +4,6 @@ public import Clafer.Semantics.Structural
 public import DPGraph.Predicates.Finite
 
 /-!
-[impl->req~clafer-finite-checker~1]
-[proof->req~clafer-finite-checker~1]
--/
-
-/-!
 # Finite candidates and structural decision procedure
 
 Finite carriers are local to this boundary. Semantic cardinalities use the
@@ -107,6 +102,7 @@ instance (m : EffectiveCore n) (c : Candidate n) : Decidable (Checks m c) := by
   unfold Checks
   infer_instance
 
+-- [impl->req~clafer-finite-checker~1]
 /-- Terminating finite decision procedure. Core validity and the supported
 fragment are explicit hypotheses of the public correctness theorem below. -/
 def check (m : EffectiveCore n) (c : Candidate n) : Bool := decide (Checks m c)
@@ -118,6 +114,7 @@ theorem checks_iff (m : EffectiveCore n) (c : Candidate n) :
     Configuration.Child realize
   simp only [inRange_card, Set.mem_ofPred_eq]
 
+-- [proof->req~clafer-finite-checker~1]
 /-- The theorem's domain is a valid, supported core and a supplied finite
 candidate. Ill-typed candidates are handled by `malformed_rejected` separately;
 no caller-supplied equivalence between algorithms and semantics is assumed. -/

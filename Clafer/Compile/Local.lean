@@ -3,11 +3,6 @@ module
 public import Clafer.MCS.Laws
 
 /-!
-[impl->req~clafer-compile-formulas~1]
-[proof->req~clafer-compile-formulas~1]
--/
-
-/-!
 # Generated local declarations
 
 SoSyM Figure 16/Table 4, §5.5 and §6.2.4. One canonical occurrence is generated
@@ -48,6 +43,7 @@ def range (c : C) (m : Map (f.shape c).kind (f.shape c).hasParent) : Range :=
   | .head | .target => f.multiplicity c
   | .parent | .dereference => Clafer.one
 
+-- [impl->req~clafer-compile-formulas~1]
 def formula : LocalId f → DPGraph.Formula signature f.canonicalRoles.graph
   | .setValued c m _ => FormalCD.setValuedFormula
       (G := f.canonicalRoles.graph) (edge (.ordinary c m))
@@ -128,6 +124,7 @@ theorem localFormulas_wellFormed : (localFormulas f).WellFormed where
   total_args i := ⟨i.arg⟩
   literal_key := LocalId.key_unique
 
+-- [proof->req~clafer-compile-formulas~1]
 /-- No local Shape predicate is dropped by canonical formula generation. -/
 theorem local_complete (c : C) (φ : DPGraph.Formula signature (f.shape c).carrier)
     (h : φ ∈ Shape.declarations (f.shape c)) :

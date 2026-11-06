@@ -2,13 +2,6 @@ module
 
 public import FormalCD.Metamodel.InterpretationExamples
 
-/-!
-[impl->req~formalcd-metamodel-examples~1]
-[proof->req~formalcd-formula-identity~1]
-[proof->req~formalcd-metamodel-disciplines~1]
-[proof->req~formalcd-metamodel-examples~1]
--/
-
 /-! # Valid and invalid interpreted names (SoSyM §6.1.3 PDF pp.20–21)
 A singleton carrier can be a realized predefined class or a user class. Both
 cases are checked against actual name spans and the predefined inclusion square.
@@ -40,6 +33,7 @@ def toText (b : Bool) (_ : one "#C") : (Set.univ : Set String) :=
 def predefText (b : Bool) (_ : predefSet b) : one "SING" := point "SING"
 def textIn (s : one "SING") : (Set.univ : Set String) := ⟨s.val,trivial⟩
 
+-- [impl->req~formalcd-metamodel-examples~1]
 def nameDiagram (b : Bool) : nameShape ⥤q semanticGraph String where
   obj | .class | .classifier => one "#C"
       | .predef | .sing => predefSet b
@@ -73,6 +67,7 @@ theorem name_square (b : Bool) : Nonempty (Span.Iso
     ((functionComp (id ∘ predefToClass b) (toText b)).trans
       (h ▸ (functionComp (predefText b) textIn).symm))⟩
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 theorem names_valid (b : Bool) : NameDiscipline (nameContext b) (nameDiagram b) where
   names _ := rfl
   predefined_names := by
@@ -111,6 +106,7 @@ theorem valid_predefined_name : (nameContext true).name "#C" = registry.name Met
 def reservedUser : NameContext registry String :=
   { nameContext false with name := fun _ => "SING" }
 
+-- [proof->req~formalcd-metamodel-examples~1]
 theorem reserved_user_rejected : ¬ NameDiscipline reservedUser (nameDiagram false) := by
   intro h
   exact h.user_names "#C" rfl rfl ⟨.sing,rfl⟩

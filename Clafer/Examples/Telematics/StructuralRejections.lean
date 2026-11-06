@@ -2,8 +2,6 @@ module
 
 public import Clafer.Examples.Telematics.Structural
 
--- [proof->req~clafer-inherited-witnesses~1]
-
 /-! # Rejected inherited realizations (telematics, selected D2/D4/D6)
 
 SoSyM Appendix 6 (PDF p.34).
@@ -30,6 +28,7 @@ theorem inconsistent_context_reference :
 def sharedOwner : Configuration (Fin 28) (Fin 25) :=
   { config with contains := fun d p x => config.contains d p x ∨ (d = 21 ∧ p = 3 ∧ x = 6) }
 
+-- [proof->req~clafer-inherited-witnesses~1]
 theorem shared_owner_rejected : ¬ sharedOwner.Parents core.toEffectiveCore := by
   intro h
   have he := (h 21 20 rfl 6 (by dsimp [sharedOwner]; decide)).unique

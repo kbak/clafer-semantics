@@ -4,11 +4,6 @@ public import Clafer.MCS.Laws
 public import FormalCD.Metamodel.Shape
 
 /-!
-[impl->req~clafer-mcs-metamodel~1]
-[proof->req~clafer-mcs-metamodel~1]
--/
-
-/-!
 # Figure 23 as a typed formal class diagram
 
 SoSyM §6.2.3, Figure 23. The seven map/inclusion source bounds use the
@@ -175,6 +170,7 @@ def declarations : Set (DPGraph.Formula vocabulary.signature graph) :=
     φ = vocabulary.embed ⟨.key 2, keyBinding⟩ ∨
     φ = discipline .nd ∨ φ = discipline .ad}
 
+-- [impl->req~clafer-mcs-metamodel~1]
 def raw : RawOver vocabulary Shape.roleRegistry where
   carrier := graph
   declarations := declarations
@@ -183,6 +179,7 @@ def raw : RawOver vocabulary Shape.roleRegistry where
   mode := edgeMode
   predefined _ := none
 
+-- [proof->req~clafer-mcs-metamodel~1]
 theorem wellFormed : raw.WellFormed where
   predefined_name := by intro c i; exact Empty.elim i
   user_name := by intro c _ ⟨i, _⟩; exact Empty.elim i

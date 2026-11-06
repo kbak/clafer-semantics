@@ -3,8 +3,6 @@ module
 public import Clafer.Semantics.Structural
 public import Mathlib.Data.Finset.Max
 
--- [proof->req~clafer-structural-satisfaction~1]
-
 /-!
 # Derived containment reachability
 
@@ -110,6 +108,7 @@ theorem concrete_reaches (wf : m.WellFormed) (support : m.Supported)
 
 end Configuration
 
+-- [proof->req~clafer-structural-satisfaction~1]
 theorem structural_reaches {n : Nat} {U : Type} {m : EffectiveCore n}
     {s : Configuration (Fin n) U} (wf : m.WellFormed) (support : m.Supported)
     (h : StructuralSatisfies m s) (x : U) : s.Reaches x := by

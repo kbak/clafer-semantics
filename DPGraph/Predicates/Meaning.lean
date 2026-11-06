@@ -5,23 +5,6 @@ public import DPGraph.Span
 public import Mathlib.Data.Fintype.Basic
 
 /-!
-[impl->req~predicate-commutation~1]
-[impl->req~predicate-cover~1]
-[impl->req~predicate-disjointness~1]
-[impl->req~predicate-inverse~1]
-[impl->req~predicate-key~1]
-[impl->req~predicate-multiplicity~1]
-[impl->req~predicate-unary-maps~1]
-[proof->req~predicate-commutation~1]
-[proof->req~predicate-cover~1]
-[proof->req~predicate-disjointness~1]
-[proof->req~predicate-inverse~1]
-[proof->req~predicate-key~1]
-[proof->req~predicate-multiplicity~1]
-[proof->req~predicate-unary-maps~1]
--/
-
-/-!
 # Link-sensitive predicate meanings
 
 SoSyM Table 3 (PDF p.13), §6.1.1–2/Figure 21 (PDF pp.18–20), A.1 and B.1–3
@@ -38,10 +21,12 @@ namespace DPGraph.Predicates
 
 variable {A : Type u} {B : Type v} {C : Type z}
 
+-- [impl->req~predicate-inverse~1]
 /-- Opposite maps agree after leg swapping, not categorical inversion. -/
 def Inverse (q : Span.{u,v,w} A B) (r : Span.{v,u,w'} B A) : Prop :=
   Nonempty (Span.Iso q.inverse r)
 
+-- [impl->req~predicate-commutation~1]
 /-- Every composable link pair is retained (accepted Q1). -/
 def Commutation (q : Span.{u,v,w} A B) (r : Span.{v,z,w'} B C)
     (s : Span.{u,z,w''} A C) : Prop := Nonempty (Span.Iso (q.comp r) s)
@@ -51,16 +36,20 @@ structure BagEquiv (q : Span.{u,v,w} A B) (a a' : A) where
   equiv : q.toFamily.Index a ≃ q.toFamily.Index a'
   target_eq : ∀ l, q.target (equiv l).1 = q.target l.1
 
+-- [impl->req~predicate-key~1]
 def Key {n : Nat} {B : Fin n → Type v} (q : ∀ i, Span.{u,v,w} A (B i)) : Prop :=
   ∀ a a', (∀ i, Nonempty (BagEquiv (q i) a a')) → a = a'
 
+-- [impl->req~predicate-cover~1]
 def Cover {n : Nat} {A : Fin n → Type u} (q : ∀ i, Span.{u,v,w} (A i) B) : Prop :=
   ∀ b, ∃ i, ∃ l : (q i).Link, (q i).target l = b
 
+-- [impl->req~predicate-disjointness~1]
 /-- Accepted Q8: different members have disjoint images in the common target. -/
 def Disjoint {n : Nat} {A : Fin n → Type u} (q : ∀ i, Span.{u,v,w} (A i) B) : Prop :=
   ∀ i j, i ≠ j → ∀ (l : (q i).Link) (m : (q j).Link), (q i).target l ≠ (q j).target m
 
+-- [impl->req~predicate-unary-maps~1]
 def SetValued (q : Span.{u,v,w} A B) : Prop := q.JointlyInjective
 def Total (q : Span.{u,v,w} A B) : Prop := Function.Surjective q.source
 def SingleValued (q : Span.{u,v,w} A B) : Prop := Function.Injective q.source
@@ -69,6 +58,7 @@ def SingleValued (q : Span.{u,v,w} A B) : Prop := Function.Injective q.source
 def Inclusion {U : Type u} {A B : Set U} (q : Span.{u,u,w} A B) : Prop :=
   Function.Bijective q.source ∧ ∀ l, (q.target l).val = (q.source l).val
 
+-- [impl->req~predicate-multiplicity~1]
 /-- Cardinal bounds on a type, without assigning zero cardinality to infinity. -/
 def InRange (range : Range) (F : Type w) : Prop :=
   Nonempty (Fin range.lower ↪ F) ∧ match range.upper with
@@ -81,6 +71,7 @@ def TargetMultiplicity (range : Range) (q : Span.{u,v,w} A B) : Prop :=
 def SourceMultiplicity (range : Range) (q : Span.{u,v,w} A B) : Prop :=
   TargetMultiplicity range q.inverse
 
+-- [proof->req~predicate-inverse~1]
 theorem inverse_symmetry (q : Span.{u,v,w} A B) (r : Span.{v,u,w'} B A) :
     Inverse q r ↔ Inverse r q :=
   ⟨fun ⟨e⟩ => ⟨e.inverse.symm⟩, fun ⟨e⟩ => ⟨e.inverse.symm⟩⟩
@@ -91,6 +82,7 @@ theorem inverse_iff {q : Span.{u,v,w} A B} {q' : Span.{u,v,w₁} A B}
   ⟨fun ⟨h⟩ => ⟨e.inverse.symm.trans (h.trans f)⟩,
    fun ⟨h⟩ => ⟨e.inverse.trans (h.trans f.symm)⟩⟩
 
+-- [proof->req~predicate-commutation~1]
 theorem commutation_iff {q : Span.{u,v,w} A B} {q' : Span.{u,v,w₁} A B}
     {r : Span.{v,z,w'} B C} {r' : Span.{v,z,w₂} B C}
     {s : Span.{u,z,w''} A C} {s' : Span.{u,z,w₃} A C}
@@ -106,6 +98,7 @@ def BagEquiv.transport {q : Span.{u,v,w} A B} {r : Span.{u,v,w'} A B}
     change r.target (e.fiberEquiv a' (h.equiv (e.symm.fiberEquiv a l))).val = _
     rw [e.fiberEquiv_target, h.target_eq, e.symm.fiberEquiv_target]
 
+-- [proof->req~predicate-key~1]
 theorem key_iff {n : Nat} {B : Fin n → Type v}
     {q : ∀ i, Span.{u,v,w} A (B i)} {r : ∀ i, Span.{u,v,w'} A (B i)}
     (e : ∀ i, Span.Iso (q i) (r i)) : Key q ↔ Key r := by
@@ -115,6 +108,7 @@ theorem key_iff {n : Nat} {B : Fin n → Type v}
   · intro h a a' hh
     exact h a a' (fun i => (hh i).map (BagEquiv.transport (e i)))
 
+-- [proof->req~predicate-cover~1]
 theorem cover_iff {n : Nat} {A : Fin n → Type u}
     {q : ∀ i, Span.{u,v,w} (A i) B} {r : ∀ i, Span.{u,v,w'} (A i) B}
     (e : ∀ i, Span.Iso (q i) (r i)) : Cover q ↔ Cover r := by
@@ -126,6 +120,7 @@ theorem cover_iff {n : Nat} {A : Fin n → Type u}
     obtain ⟨i, l, hl⟩ := h b
     exact ⟨i, (e i).equiv.symm l, ((e i).symm.target_eq l).trans hl⟩
 
+-- [proof->req~predicate-disjointness~1]
 theorem disjoint_iff {n : Nat} {A : Fin n → Type u}
     {q : ∀ i, Span.{u,v,w} (A i) B} {r : ∀ i, Span.{u,v,w'} (A i) B}
     (e : ∀ i, Span.Iso (q i) (r i)) : Disjoint q ↔ Disjoint r := by
@@ -137,6 +132,7 @@ theorem disjoint_iff {n : Nat} {A : Fin n → Type u}
     apply h i j hij ((e i).equiv l) ((e j).equiv m)
     exact ((e i).target_eq l).trans (he.trans ((e j).target_eq m).symm)
 
+-- [proof->req~predicate-unary-maps~1]
 theorem setValued_iff {q : Span.{u,v,w} A B} {r : Span.{u,v,w'} A B}
     (e : Span.Iso q r) : SetValued q ↔ SetValued r :=
   ⟨Span.jointlyInjective_of_iso e.symm, Span.jointlyInjective_of_iso e⟩
@@ -204,6 +200,7 @@ theorem inclusion_identity {U : Type u} {A B : Set U} {q : Span.{u,u,w} A B}
   exact ⟨l, ⟨hl, (h.2 l).trans (congrArg Subtype.val hl)⟩,
     fun m hm => h.1.1 (hm.1.trans hl.symm)⟩
 
+-- [proof->req~predicate-multiplicity~1]
 theorem inRange_iff (range : Range) {F : Type w} {G : Type w'} (e : F ≃ G) :
     InRange range F ↔ InRange range G := by
   constructor

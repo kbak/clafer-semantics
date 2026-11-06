@@ -3,11 +3,6 @@ module
 public import Clafer.Examples.Telematics.ExpressionExamples
 
 /-!
-[proof->req~clafer-appendix-f-expressions~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
-/-!
 # Sensitive telematics constraint candidates
 
 SoSyM Appendix 6 (PDF p.34).
@@ -104,6 +99,7 @@ theorem extra_present :
   simp [movedLinks,links,maps,objects,position,Telematics.Structural.config,Telematics.Structural.heads,
     Telematics.Structural.ownership,Environment.closed]
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem c06_accepts_two : c06.Holds (movedModel 19) (.closed (atom 19)) := by
   have he := denotes_some _ _ _ _ extra_present (Set.finite_singleton _)
   have hc : (exactlyTwo displays1).denote (movedModel 19) (.closed (atom 19)) = some ⟨True⟩ := by
@@ -111,6 +107,7 @@ theorem c06_accepts_two : c06.Holds (movedModel 19) (.closed (atom 19)) := by
   have h := denotes_iff _ _ _ _ _ _ he hc
   simpa [Expr.Holds,c06] using h
 
+-- [proof->req~clafer-appendix-f-expressions~1]
 /-- A false equality is detected on the actual server=parent expansion. -/
 theorem c04_rejects_wrong_owner : ¬ c04.Holds (movedModel 15) (.closed (atom 5)) := by
   simp only [c04,parent15,dereference12,head12,Expr.Holds,Expr.denote,lift₂,

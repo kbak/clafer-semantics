@@ -3,13 +3,6 @@ module
 public import Clafer.Verification.Protocol
 
 /-!
-[impl->req~clafer-effective-core~1]
-[impl->req~clafer-finite-checker~1]
-[proof->req~clafer-effective-core~1]
-[proof->req~clafer-finite-checker~1]
--/
-
-/-!
 # Executable core admission with checked structural certificates
 
 Ranks witness acyclicity without reconstructing source syntax. The unused
@@ -33,6 +26,7 @@ instance (a b : Kind) : Decidable (a.CanExtend b) := by
   unfold Kind.CanExtend
   infer_instance
 
+-- [impl->req~clafer-effective-core~1]
 structure CoreCertificate (n : Nat) where
   parentRank : Fin n → Nat
   superRank : Fin n → Nat
@@ -93,6 +87,7 @@ theorem admitted_supported (m : EffectiveCore n) (k : CoreCertificate n)
     have hh := h.2.2.2.2.2.1 c (unused_propagates m k h path hk)
     simp [hcon] at hh
 
+-- [proof->req~clafer-effective-core~1]
 theorem admitted_wellFormed (m : EffectiveCore n) (k : CoreCertificate n)
     (h : coreChecks m k) (g : supportChecks m k) : m.WellFormed := by
   refine ⟨?_, h.1, fun d => (h.2.2.2.2.2.1 d).2⟩
@@ -160,6 +155,7 @@ inductive RunResult where
   | candidate (result : Result)
   deriving DecidableEq, Repr
 
+-- [impl->req~clafer-finite-checker~1]
 /-- Deterministic entrypoint: check core/rank data, then fragment/unused data,
 then candidate tables. No unsupported model receives a satisfaction verdict. -/
 def run (m : EffectiveCore n) (k : CoreCertificate n) (c : RawCandidate) : RunResult :=
@@ -167,6 +163,7 @@ def run (m : EffectiveCore n) (k : CoreCertificate n) (c : RawCandidate) : RunRe
   else if ¬ supportChecks m k then .unsupportedOrInvalidCertificate
   else .candidate (verify m c)
 
+-- [proof->req~clafer-finite-checker~1]
 theorem unsupported_rejected (m : EffectiveCore n) (k : CoreCertificate n)
     (c : RawCandidate) (hc : coreChecks m k) (hs : ¬ m.Supported) :
     run m k c = .unsupportedOrInvalidCertificate := by

@@ -3,8 +3,6 @@ module
 public import Clafer.Semantics.Realization
 public import Clafer.Verification.Finite
 
--- [proof->req~clafer-inherited-realization~1]
-
 /-! # Compatibility with #50's supported structural checker
 
 The guarded fragment has no inherited field bodies. In that fragment the two
@@ -56,6 +54,7 @@ theorem guarded_flags (selected : m.Selected) (supported : m.toEffectiveCore.Sup
     | false => rfl
     | true => have hh := (selected.1 d he).1; simp [ha] at hh
 
+-- [proof->req~clafer-inherited-realization~1]
 /-- Explicit metadata equality, not a caller-supplied satisfaction equivalence.
 For an AST the extension reads its original authored flag; #50 has no such data. -/
 theorem guarded_compatibility (supported : m.toEffectiveCore.Supported)

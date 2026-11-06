@@ -2,12 +2,6 @@ module
 
 public import Clafer.MCS.Metamodel
 
-/-!
-[proof->req~clafer-mcs-disciplines~1]
-[proof->req~clafer-mcs-formulas~1]
-[proof->req~clafer-mcs-metamodel~1]
--/
-
 /-! # Nonempty MCS witnesses and rejected structural boundaries (Appendix 5) -/
 
 @[expose] public section
@@ -76,6 +70,7 @@ def labels : Labels (V := Owner) family where
       | .target => family.name c ++ "*"
     | .inclusion _ => "isA"
 
+-- [proof->req~clafer-mcs-disciplines~1]
 theorem labels_valid : labels.WellFormed roles where
   head_name _ := rfl
   ordinary_name _ _ := rfl
@@ -113,6 +108,7 @@ theorem argument_id (m : family.MapId) (a : formulas.Arg m) :
   cases m <;> rcases a with ⟨a, b, e⟩ <;>
     change Arity.UnaryEdge a b at e <;> cases e <;> rfl
 
+-- [proof->req~clafer-mcs-formulas~1]
 theorem formulas_valid : formulas.WellFormed where
   total_args m := ⟨arg m⟩
   literal_key i j _ h := by
@@ -122,6 +118,7 @@ theorem formulas_valid : formulas.WellFormed where
     exact (argument_id i (arg i)).symm.trans
       (hid.symm.trans (argument_id j (e (arg i))))
 
+-- [proof->req~clafer-mcs-metamodel~1]
 theorem sample_valid : Valid labels formulas :=
   ⟨family_valid, family.canonical_cojoining, labels_valid, formulas_valid⟩
 

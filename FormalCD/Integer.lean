@@ -4,11 +4,6 @@ public import Mathlib.Data.Set.Function
 public import Mathlib.Data.Int.Basic
 public import Mathlib.Logic.Embedding.Basic
 
-/-!
-[impl->req~formalcd-integer-realization~1]
-[proof->req~formalcd-integer-realization~1]
--/
-
 /-! # Explicit integer realization and partial singleton extraction
 
 SoSyM §6.1/Figure 21 and Appendix 4 semantics. The interpretation embeds all
@@ -20,6 +15,7 @@ this does not give registry annotations an implicit primitive-domain meaning.
 universe u
 namespace FormalCD
 
+-- [impl->req~formalcd-integer-realization~1]
 structure IntegerRealization (U : Type u) where
   encode : Int ↪ U
   decode : U → Int
@@ -61,6 +57,7 @@ noncomputable def extract (values : Set U) : Option Int := by
   classical
   exact if h : ∃ n, R.Extracts values n then some (Classical.choose h) else none
 
+-- [proof->req~formalcd-integer-realization~1]
 theorem extract_eq_some_iff (values : Set U) (n : Int) :
     R.extract values = some n ↔ R.Extracts values n := by
   classical

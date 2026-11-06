@@ -8,16 +8,29 @@ remains captured by `scope.json`, built, kernel checked and selected for review.
 
 ## Lean artifacts
 
-Put implementation tags beside the relevant definitions, proof tags beside the
-actual theorems, and test tags beside assertions or witnesses. Use a line comment
-for a single tag; reserve block comments for groups of tags. A module comment may
-group tags when its declarations jointly implement the linked contract.
-For example, an existing requirement can have these source links:
+Put implementation tags immediately before the relevant definitions, proof tags
+before the actual theorems, and test tags before assertions or test entry points.
+Use ordinary `--` line comments, including when one declaration supports several
+requirements. Place tags before an existing declaration doc comment so that its
+attachment is preserved. Do not collect a file's links in its module header.
+
+One tag can introduce a contiguous group of declarations for the same requirement,
+such as the unary predicate definitions. Repeat it for a separate group only when
+that gives a useful source location; helpers need no tag merely because they share
+a file with an implementation. Keep implementation and proof links at their
+respective declarations. For example:
 
 ```lean
 -- [impl->req~formula-translation~1]
+def translate ... := ...
+
 -- [proof->req~formula-translation~1]
+theorem translate_id ... := ...
 ```
+
+Only add a link when the declaration or group supplies evidence for that contract.
+Do not infer every link from a Markdown artifact's file list: an explanatory
+artifact may discuss several requirements and modules together.
 
 Keep the named Markdown artifacts in [DPGraph](dpgraph-trace.md),
 [FormalCD](formalcd-trace.md) and [Clafer](clafer-trace.md) as readable accounts of

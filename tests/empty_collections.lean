@@ -1,10 +1,9 @@
 import Clafer.Constraints.Empty
 
--- [proof->req~clafer-core-typing~1]
-
 open Clafer.Constraints
 
 -- Contextual instantiation works for every element class and both core arities.
+-- [proof->req~clafer-core-typing~1]
 example {s : Support} {Γ} (x y : s.Vertex) :
     Expr s Γ (.collection (.relation x y)) := .empty (.relation x y)
 

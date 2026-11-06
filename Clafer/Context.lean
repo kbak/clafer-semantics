@@ -4,12 +4,6 @@ public import Mathlib.Data.Fintype.Basic
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
-[impl->req~clafer-constraint-boundary~1]
-[impl->req~clafer-resolved-syntax~1]
-[proof->req~clafer-constraint-boundary~1]
--/
-
-/-!
 # Resolved constraint boundary
 
 SoSyM §6.2.2, Figure 22 (PDF p.21), Appendix D.2 (PDF pp.32–33).
@@ -21,6 +15,7 @@ Lists index occurrences: repeated declaration references are retained.
 @[expose] public section
 namespace Clafer
 
+-- [impl->req~clafer-resolved-syntax~1]
 structure DeclId where
   value : Nat
   deriving DecidableEq, Repr
@@ -36,6 +31,7 @@ structure Binder where
   domainOccurrences : List DeclId
   deriving DecidableEq, Repr
 
+-- [impl->req~clafer-constraint-boundary~1]
 /-- An opaque constraint occurrence with the enclosing declaration and scope bag.
 The expression implementation attaches a body to `id` without a dependency
 from this module to that implementation. Binder order is outermost first. -/
@@ -59,6 +55,7 @@ def ConstraintBoundary.Resolved (c : ConstraintBoundary) (known : DeclId → Pro
     (c.binders.map Binder.id).Nodup ∧
     ∀ b ∈ c.binders, ∀ i ∈ b.domainOccurrences, known i
 
+-- [proof->req~clafer-constraint-boundary~1]
 theorem ConstraintBoundary.occurrences_finite (c : ConstraintBoundary) :
     Finite c.Occurrence := inferInstance
 

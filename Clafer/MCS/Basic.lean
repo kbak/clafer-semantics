@@ -4,13 +4,6 @@ public import Clafer.Shape.Diagram
 public import FormalCD.Metamodel.Binding
 
 /-!
-[impl->req~clafer-compile-group-data~1]
-[impl->req~clafer-mcs-disciplines~1]
-[impl->req~clafer-mcs-formulas~1]
-[impl->req~clafer-mcs-metamodel~1]
--/
-
-/-!
 # Multi-Clafer Shapes: structural data
 
 SoSyM §6.2.3/Figure 23 and Tables 5–8 (see Appendix 5). Local slots are
@@ -34,6 +27,7 @@ def ReferenceTo.kind {C : Type} : ReferenceTo C → Kind
 def ReferenceTo.target {C : Type} : ReferenceTo C → Option C
   | .basic => none | .set t | .bag t => some t
 
+-- [impl->req~clafer-compile-group-data~1]
 /-- The resolved structural interface of an MCS; AST conversion belongs to #22.
 Multiplicity and abstractness here are effective values, not another defaulting pass. -/
 structure Family (C : Type) where
@@ -149,6 +143,7 @@ def Labels.label {C V : Type} {f : Family C} (l : Labels (V := V) f) : Role C V 
 
 def predefinedStrings : Set String := {s | s = "Sing" ∨ ∃ d : PrimitiveDomain, s = d.name}
 
+-- [impl->req~clafer-mcs-disciplines~1]
 /-- Table 8, including both directions of each reserved-name equivalence. -/
 structure Labels.WellFormed {C V : Type} {f : Family C}
     (l : Labels (V := V) f) (r : Roles C V f) : Prop where
@@ -162,6 +157,7 @@ structure Labels.WellFormed {C V : Type} {f : Family C}
   sing_iff : ∀ c, f.origin c = .syntheticRoot ↔ l.className (r.head c) = "Sing"
   primitive_iff : ∀ c d, f.origin c = .primitive d ↔ l.className (r.head c) = d.name
 
+-- [impl->req~clafer-mcs-formulas~1]
 /-- Formula objects retain complete graph maps and exactly one owner. Formula
 generation/completeness is Compile's obligation; this is structural validity. -/
 structure Formulas {C V : Type} {f : Family C} (r : Roles C V f)
@@ -203,6 +199,7 @@ structure Valid {C V : Type} {f : Family C} {r : Roles C V f}
   naming : l.WellFormed r
   formulas : d.WellFormed
 
+-- [impl->req~clafer-mcs-metamodel~1]
 structure Model (C V : Type) (σ : DPGraph.Signature.{0,0,0}) where
   family : Family C
   roles : Roles C V family

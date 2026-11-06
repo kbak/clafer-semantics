@@ -5,11 +5,6 @@ public import Mathlib.Data.Fintype.EquivFin
 public import Mathlib.Tactic.FinCases
 
 /-!
-[impl->req~formalcd-metamodel-shape~1]
-[proof->req~formalcd-metamodel-shape~1]
--/
-
-/-!
 # Figure 21c carrier and the inferred discipline arities
 
 SoSyM §6.1.1–3, Figure 21c (PDF p.19), explanation PDF p.21. The dashed attachments
@@ -23,6 +18,7 @@ bindings justified by the constraints, not additional arrows in the figure.
 namespace FormalCD.Metamodel
 open CategoryTheory DPGraph.Predicates
 
+-- [impl->req~formalcd-metamodel-shape~1]
 inductive Node where
   | classifier | class | map | incl | predef | sing | dom | string | predefStr | formula | signature
   deriving DecidableEq
@@ -128,6 +124,7 @@ def modeledSing : SingletonClass := .sing
 def singObject : SingletonObject := .star
 def objectClass : SingletonObject → SingletonClass := fun _ => .sing
 
+-- [proof->req~formalcd-metamodel-shape~1]
 theorem star_has_sing_class : objectClass singObject = modeledSing := rfl
 
 end FormalCD.Metamodel

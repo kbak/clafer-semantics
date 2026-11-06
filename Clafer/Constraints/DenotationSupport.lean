@@ -2,12 +2,6 @@ module
 
 public import Clafer.Constraints.DenotationInvariance
 
-/-!
-[proof->req~clafer-constraint-denotation~1]
-[proof->req~clafer-constraint-environments~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Independence from unobserved support occurrences
 
 SoSyM D.2–D.4. Complete support graphs may contain isolated vertices and
@@ -42,6 +36,9 @@ noncomputable def Expr.maps {s Γ t} (e : Expr s Γ t) : Set s.Edge :=
   | .all _ _ a b => a.maps ∪ b.maps
   | _ => ∅
 
+-- [proof->req~clafer-constraint-denotation~1]
+-- [proof->req~clafer-constraint-environments~1]
+-- [proof->req~clafer-constraint-semantic-laws~1]
 /-- Changes to unobserved extents or maps leave the meaning unchanged.
 The explicit environment and primitive realization remain fixed. -/
 theorem Expr.denote_support_congr {s : Support} {U : Type u} {Γ t}

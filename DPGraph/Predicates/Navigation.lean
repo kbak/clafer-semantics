@@ -2,11 +2,6 @@ module
 
 public import DPGraph.Predicates.Relational
 
-/-!
-[impl->req~reusable-span-laws~1]
-[proof->req~reusable-span-laws~1]
--/
-
 /-! # Ambient navigation and relational reduction
 
 SoSyM Appendix 2 mapping reduction and composition (accepted Q1), Table 3,
@@ -18,6 +13,7 @@ all original links. Singleton images require single-valued/total link fibers.
 universe u w
 namespace DPGraph.Predicates
 
+-- [impl->req~reusable-span-laws~1]
 /-- Relational image of ambient objects, retaining witnesses of traversed links.
 Duplicate links to one object do not become distinct elements of a set. -/
 def navigationImage {U : Type u} {A B : Set U}
@@ -81,6 +77,7 @@ def relationalImage {U : Type u} (A : Set U) (R : Set (U × U)) : Set U :=
 def relationalJoin {U : Type u} (R S : Set (U × U)) : Set (U × U) :=
   {p | ∃ y, (p.1,y) ∈ R ∧ (y,p.2) ∈ S}
 
+-- [proof->req~reusable-span-laws~1]
 theorem image_span {U : Type u} {A B : Set U}
     (q : DPGraph.Span.{u,u,max u w} A B) (S : Set U) :
     relationalImage S (ambientRelation q) = navigationImage q S := by

@@ -2,8 +2,6 @@ module
 
 public import Clafer.Semantics.Structural
 
--- [proof->req~clafer-structural-satisfaction~1]
-
 /-!
 # Abstract coverage in the existing common-target interpretation
 
@@ -49,6 +47,7 @@ theorem abstract_disjoint_iff (inh : s.Inherits m) (d : Fin n) :
     exact h c e l.property.2 k.property.2 hce l.val
       ⟨l.property.1, hx ▸ k.property.1⟩
 
+-- [proof->req~clafer-structural-satisfaction~1]
 theorem abstracts_iff (inh : s.Inherits m) : s.Abstracts m ↔
     ∀ d, m.family.isAbstract d = true →
       Cover (s.abstractFan m inh d) ∧ Disjoint (s.abstractFan m inh d) := by

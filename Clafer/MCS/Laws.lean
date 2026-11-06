@@ -2,13 +2,6 @@ module
 
 public import Clafer.MCS.Basic
 
-/-!
-[impl->req~clafer-mcs-formulas~1]
-[proof->req~clafer-mcs-disciplines~1]
-[proof->req~clafer-mcs-formulas~1]
-[proof->req~clafer-mcs-metamodel~1]
--/
-
 /-! # Appendix 5 boundary laws and composition of typed local Shapes -/
 
 @[expose] public section
@@ -17,6 +10,7 @@ open CategoryTheory Clafer.Roles
 
 variable {C V : Type} {f : Family C}
 
+-- [proof->req~clafer-mcs-metamodel~1]
 theorem role_cover (x : Role C V f) :
     (∃ c, x = Sum.inl c) ∨ (∃ m, x = Sum.inr m) := by
   cases x with
@@ -61,6 +55,7 @@ theorem Roles.arrowData_ext (r : Roles C V f)
   cases ht'
   rfl
 
+-- [proof->req~clafer-mcs-formulas~1]
 theorem Formulas.sameBag_iff_map_roles {r : Roles C V f}
     {σ : DPGraph.Signature.{0,0,0}} (d : Formulas r σ) (i j : d.Id) :
     d.SameBag i j ↔ ∃ e : d.Arg i ≃ d.Arg j,
@@ -159,6 +154,7 @@ theorem target_name_via_head {r : Roles C V f} {l : Labels (V := V) f}
       l.mapName (.ordinary c ⟨.head, hp⟩) ++ "*" := by
   rw [h.ordinary_name, h.ordinary_name]
 
+-- [proof->req~clafer-mcs-disciplines~1]
 theorem reserved_names_exclude_users {r : Roles C V f} {l : Labels (V := V) f}
     (h : l.WellFormed r) {c : C} (hc : f.origin c = .user) :
     l.className (r.head c) ≠ "Sing" ∧
@@ -190,6 +186,7 @@ theorem Formulas.formula_injective {r : Roles C V f} {σ : DPGraph.Signature.{0,
   exact h.literal_key i j (congrArg DPGraph.Formula.symbol he)
     (formula_bag_of_eq (d.formula i) (d.formula j) he)
 
+-- [impl->req~clafer-mcs-formulas~1]
 /-- Existing local predicates can be transported without losing any binding data.
 Their generation and inclusion in a chosen formula bank are separate from shape validity. -/
 def Roles.localDiagram (r : Roles C V f) (c : C) : DPGraph DPGraph.Predicates.signature :=

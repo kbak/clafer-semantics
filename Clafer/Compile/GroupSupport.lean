@@ -5,12 +5,6 @@ public import Clafer.Compile.Basic
 public import Clafer.Semantics.Interpretation
 
 /-!
-[impl->req~clafer-compile-formulas~1]
-[impl->req~clafer-compile-groups~1]
-[proof->req~clafer-compile-groups~1]
--/
-
-/-!
 # Group arities and meanings
 
 SoSyM §4.2.1, §6.2.2, B.4 Definition 8 and Appendix 3; D6 as recorded in
@@ -64,6 +58,7 @@ def binding (p : C) : arity f p ⥤q f.canonicalRoles.graph where
 
 @[simp] theorem binding_context (p : C) : (binding f p).obj (context f p) = p := rfl
 
+-- [proof->req~clafer-compile-groups~1]
 theorem child_iff (p c : C) :
     (∃ k : Child f p, k.2.val = c) ↔ ∃ s, Ancestor f p s ∧ f.parent c = some s := by
   constructor
@@ -77,6 +72,7 @@ abbrev Id := {p : C // f.isAbstract p = false}
 
 def signature : DPGraph.Signature := ⟨Id f, fun p => arity f p.val⟩
 
+-- [impl->req~clafer-compile-formulas~1]
 def formula (p : Id f) : Formula (signature f) f.canonicalRoles.graph :=
   ⟨p, binding f p.val⟩
 
@@ -88,6 +84,7 @@ def Objects {U : Type} {p : C} (d : arity f p ⥤q semanticGraph U)
     ((d.map (.head c)).source l).val = x ∧
     ((d.map (.head c)).target l).val = y
 
+-- [impl->req~clafer-compile-groups~1]
 def meaning {U : Type} (p : Id f) (d : arity f p.val ⥤q semanticGraph U) : Prop :=
   ∀ x : Subtype (d.obj (context f p.val)),
     InRange (f.group p.val).effective.range {y : U // Objects f d x.val y}

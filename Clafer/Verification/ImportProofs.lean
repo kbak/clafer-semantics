@@ -2,8 +2,6 @@ module
 
 public import Clafer.Verification.Import
 
--- [proof->req~clafer-resolved-import~1]
-
 /-!
 # Effective import representation and semantic preservation
 
@@ -73,6 +71,7 @@ theorem normalization_correspondence {r : Input} (a : Accepted r)
     StructuralSatisfies r.normalize s ↔ StructuralSatisfies m s := by
   rw [representation_unique a.bindings.1 a.represents hm]
 
+-- [proof->req~clafer-resolved-import~1]
 /-- Admission derives both semantic preconditions; the caller supplies neither
 well-formedness nor a desired semantic equivalence. -/
 theorem imported_check_correct {r : Input} (a : Accepted r)

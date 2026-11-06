@@ -4,11 +4,6 @@ public import Clafer.Examples.Telematics.Expressions
 public import Clafer.Compile.ConstraintMeaning
 
 /-!
-[impl->req~clafer-appendix-f-complete~1]
-[proof->req~clafer-appendix-f-complete~1]
--/
-
-/-!
 # Complete resolved telematics input
 
 SoSyM Appendix 6 PDF p.34, Appendix 3 and §6.2.4–5. The source map is manual:
@@ -271,6 +266,7 @@ theorem inventory_input (c : Fin 12) :
     domain := fun d => Fin.elim0 d
     domain_eq := fun d => Fin.elim0 d }
 
+-- [impl->req~clafer-appendix-f-complete~1]
 noncomputable def input : Input ast where
   ast := wf
   root_name := by
@@ -367,6 +363,7 @@ theorem effective_defaults : Gluing.Defaults (roles input) (Compile.Realization.
 theorem formalcd_valid : (Compile.Realization.glued input).toRawOver.WellFormed :=
   (Compile.Realization.glued input).wellFormed
 
+-- [proof->req~clafer-appendix-f-complete~1]
 theorem exact_declarations (φ) : φ ∈ (Compile.Realization.glued input).declarations ↔
     ∃ q, ((Compile.Realization.bank input).formula q).translate (groupLabel input) = φ :=
   Compile.Realization.glued_declarations input φ

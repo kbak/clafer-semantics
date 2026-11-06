@@ -2,11 +2,6 @@ module
 
 public import Clafer.Verification.ImportProofs
 
-/-!
-[utest->req~clafer-compiler-capture~1]
-[utest->req~clafer-resolved-import~1]
--/
-
 /-! Kernel and native witnesses for the pinned effective import boundary.
 The fixtures are typed decoded data; the separate Python suite exercises actual
 compiler JSON/capture. SoSyM §5.3 reference occurrences and §5.5 shared identity. -/
@@ -69,6 +64,7 @@ theorem zero_rank_rejected :
 def expect (name : String) (actual : Bool) : IO Unit :=
   unless actual do throw (IO.userError name)
 
+-- [utest->req~clafer-resolved-import~1]
 def executableTests : IO Unit := do
   expect "repeated names admitted" (decide (repeated "bag").bindingChecks)
   expect "bag keeps repeated targets" (verify (repeated "bag").normalize repeatedCandidate == .satisfies)

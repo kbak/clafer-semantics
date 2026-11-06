@@ -5,13 +5,6 @@ public import Clafer.Semantics.Bridge
 public import Clafer.Semantics.Reachability
 
 /-!
-[impl->req~clafer-checker-witnesses~1]
-[proof->req~clafer-checker-witnesses~1]
-[utest->req~clafer-checker-witnesses~1]
-[utest->req~clafer-finite-checker~1]
--/
-
-/-!
 # Whole-model finite witnesses
 
 Independent finite inputs for the selected 2014 semantics. Theorem witnesses
@@ -42,6 +35,7 @@ def refCertificate : CoreCertificate 3 where
   superRank _ := 0
   unused _ := false
 
+-- [impl->req~clafer-checker-witnesses~1]
 def bag : Candidate 3 where
   size := 4
   root := 0
@@ -57,6 +51,7 @@ theorem refs_supported : (refs false).Supported :=
   admitted_supported _ refCertificate (by decide)
 
 theorem bag_accepts : check (refs false) bag = true := by decide
+-- [proof->req~clafer-checker-witnesses~1]
 theorem bag_satisfies : StructuralSatisfies (refs false) (realize bag) :=
   (check_correct _ _ refs_valid refs_supported).mp bag_accepts
 
@@ -314,6 +309,7 @@ def upperBoundMutant (m : EffectiveCore n) (c : Candidate n) : Bool :=
   check {m with family := {m.family with multiplicity := fun d =>
     ⟨(m.family.multiplicity d).lower, .unbounded⟩}} c
 
+-- [utest->req~clafer-finite-checker~1]
 theorem collapse_mutant_killed : check (refs false optional) bag = false ∧
     collapseMutant (refs false optional) bag = true := by decide
 theorem upper_bound_mutant_killed : check (refs false optional) bag = false ∧
@@ -427,6 +423,7 @@ theorem missing_child_locally_valid : (realize missingChild).LocalConditions inh
   have hs := (checks_iff relaxedGroup missingChild).mp (of_decide_eq_true hc)
   exact ((realize missingChild).structural_split relaxedGroup).mp hs |>.2.2
 
+-- [utest->req~clafer-checker-witnesses~1]
 /-- Ordinary native assertions. These do not create fresh theorem certificates. -/
 def executableTests : IO Unit := do
   let tests := [

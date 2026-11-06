@@ -3,11 +3,10 @@ module
 import FormalCD
 public meta import Lean.Elab.Command
 
--- [itest->req~lean-validation~1]
-
 /-! FormalCD is reusable without Clafer or acceptance example imports.
 The existing public_imports test independently guards the DPGraph root. -/
 
+-- [itest->req~lean-validation~1]
 #check FormalCD.Registry
 #check FormalCD.Raw
 #check FormalCD.Raw.WellFormed

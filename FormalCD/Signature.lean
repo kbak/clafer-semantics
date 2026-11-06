@@ -3,11 +3,6 @@ module
 public import DPGraph
 
 /-!
-[impl->req~formalcd-signature-extension~1]
-[proof->req~formalcd-signature-extension~1]
--/
-
-/-!
 # Supported signatures
 
 SoSyM B.4 Definitions 7–8. A vocabulary contains the built-in predicates with
@@ -22,6 +17,7 @@ universe s va ua v u v' u' vm um
 namespace FormalCD
 open CategoryTheory
 
+-- [impl->req~formalcd-signature-extension~1]
 structure Vocabulary where
   signature : DPGraph.Signature.{s,va,ua}
   builtin : DPGraph.Predicates.Symbol ↪ signature.Symbol
@@ -91,6 +87,7 @@ def extendInterpretation {extra : DPGraph.Signature.{s,0,0}} {Ω : Quiv.{vm,um}}
     DPGraph.Interpretation (extend extra).signature Ω where
   meaning | .inl p => I.meaning p | .inr p => J.meaning p
 
+-- [proof->req~formalcd-signature-extension~1]
 theorem restrict_extend {extra : DPGraph.Signature.{s,0,0}} {Ω : Quiv.{vm,um}}
     (I : DPGraph.Interpretation DPGraph.Predicates.signature Ω)
     (J : DPGraph.Interpretation extra Ω) :

@@ -2,11 +2,6 @@ module
 
 public import DPGraph.Semantics
 
-/-!
-[impl->req~dpgraph-referent-image~1]
-[proof->req~dpgraph-referent-image~1]
--/
-
 /-! # Graphs of used referents
 
 Derived from SoSyM Appendix 2 Definitions 6–10 and §6.2.5. A finite or infinite
@@ -36,6 +31,7 @@ noncomputable def representative {A : Type*} {B : Type*} (f : A → B) (b : Used
 theorem representative_spec {A : Type*} {B : Type*} (f : A → B) (b : Used f) :
     f (representative f b) = b.val := b.property.choose_spec
 
+-- [proof->req~dpgraph-referent-image~1]
 @[simp] theorem identify_eq_iff {A : Type*} {B : Type*} (f : A → B) (a b : A) :
     identify f a = identify f b ↔ f a = f b := Subtype.ext_iff
 
@@ -52,6 +48,7 @@ noncomputable def target (e : Used arrows) : Used vertices :=
 
 abbrev Arrow (a b : Used vertices) :=
   {e : Used arrows // source ends vertices arrows e = a ∧ target ends vertices arrows e = b}
+-- [impl->req~dpgraph-referent-image~1]
 noncomputable def graph : Quiv := @Quiv.of (Used vertices) ⟨Arrow ends vertices arrows⟩
 
 variable {ends vertices arrows}

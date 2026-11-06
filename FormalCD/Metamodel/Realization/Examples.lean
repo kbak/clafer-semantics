@@ -3,11 +3,6 @@ module
 public import FormalCD.Metamodel.Realization.Correctness
 public import FormalCD.Metamodel.Realization.Reconstruction
 
-/-!
-[impl->req~formalcd-realization-boundaries~1]
-[proof->req~formalcd-realization-boundaries~1]
--/
-
 /-! # Canonical realization boundaries
 Actual whole-model acceptance and rejection, retaining isolated vertices,
 repeated argument occurrences, repeated names, and parallel map identities.
@@ -62,6 +57,7 @@ def binding (isolated : SourceNode) : positionGraph ⥤q sourceGraph where
 def repeated (isolated : SourceNode) : Formula vocab.signature sourceGraph :=
   ⟨.inr (), binding isolated⟩
 
+-- [impl->req~formalcd-realization-boundaries~1]
 def positive := fixture {repeated .right}
 
 theorem positive_supported : Supported positive := by
@@ -171,6 +167,7 @@ theorem collision_not_separated : ¬ Separated collision := by
     ⟨Equiv.refl _, by rintro ⟨_, _, a⟩; cases a <;> rfl⟩
   cases congrArg isolatedValue (congrArg Subtype.val he)
 
+-- [proof->req~formalcd-realization-boundaries~1]
 /-- Positive support cannot repair the literal key's loss of isolated vertices. -/
 theorem collision_not_model :
     ¬ (interpretation (context collision)).IsModel diagram.toDPGraph (encode collision) :=

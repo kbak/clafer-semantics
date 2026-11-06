@@ -2,12 +2,6 @@ module
 
 public import Clafer.Constraints.IntegerNavigation
 
-/-!
-[proof->req~clafer-integer-extraction~1]
-[proof->req~clafer-representative-coverage~1]
-[proof->req~clafer-version-navigation~1]
--/
-
 /-! # Integer extraction and Appendix 6 navigation witnesses
 
 SoSyM Appendix 6 PDF p.34; these realize the selected navigation fragment, not all
@@ -104,6 +98,7 @@ theorem server_objects (e d : Int) : (model e d).serverObjects display = {ecu.va
     (navigationImage (.ofFunction (fun _ : objects 0 => serverRef)) {display.val}) = _
   rw [navigationImage_function, navigationImage_function]
 
+-- [proof->req~clafer-version-navigation~1]
 theorem server_version_objects (e d : Int) :
     (model e d).versionObjects ((model e d).serverObjects display) = {integers.encode e} := by
   rw [server_objects]
@@ -112,6 +107,7 @@ theorem server_version_objects (e d : Int) :
   rw [navigationImage_function, navigationImage_function]
   rfl
 
+-- [proof->req~clafer-representative-coverage~1]
 /-- Actual head/dereference navigation followed by the integer comparison. -/
 theorem comparison_value (e d : Int) :
     compareVersions integers ((model e d).versionObjects {display.val})
@@ -137,6 +133,7 @@ theorem lower :
 theorem negative_unbounded (n : Int) : integers.extract {integers.encode (n - 1)} = some (n - 1) :=
   integers.extract_encoded _
 
+-- [proof->req~clafer-integer-extraction~1]
 theorem empty : integers.extract ∅ = none := integers.extract_empty
 
 theorem empty_navigation (e d : Int) :

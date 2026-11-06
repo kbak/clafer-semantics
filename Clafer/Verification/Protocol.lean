@@ -3,11 +3,6 @@ module
 public import Clafer.Verification.Finite
 
 /-!
-[impl->req~clafer-finite-checker~1]
-[proof->req~clafer-finite-checker~1]
--/
-
-/-!
 # Deterministic finite table protocol
 
 This is an in-memory supplied-candidate interface, not a production parser.
@@ -49,6 +44,7 @@ def RawCandidate.decode (r : RawCandidate) (m : EffectiveCore n)
   contains d p x := decide ((m.id d, r.objects[p], r.objects[x]) ∈ r.containment)
   deref d x t := decide ((m.id d, r.objects[x], r.objects[t]) ∈ r.references)
 
+-- [impl->req~clafer-finite-checker~1]
 /-- Error priority is fixed by this order, independent of table enumeration.
 The object and link checks precede membership-based normalization. -/
 def verify (m : EffectiveCore n) (r : RawCandidate) : Result :=
@@ -67,6 +63,7 @@ def verify (m : EffectiveCore n) (r : RawCandidate) : Result :=
     if ¬ (realize c).Typed m then .malformed .illTyped
     else if check m c then .satisfies else .violates
 
+-- [proof->req~clafer-finite-checker~1]
 theorem duplicate_objects_rejected (m : EffectiveCore n) (r : RawCandidate)
     (h : ¬ r.objects.Nodup) : verify m r = .malformed .duplicateObject := by
   simp [verify, h]

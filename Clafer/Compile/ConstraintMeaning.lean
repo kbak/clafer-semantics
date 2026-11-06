@@ -4,11 +4,6 @@ public import Clafer.Compile.Realization
 public import Clafer.Constraints.Predicate
 
 /-!
-[impl->req~clafer-constraint-preservation~1]
-[proof->req~clafer-constraint-preservation~1]
--/
-
-/-!
 # Resolved constraint meaning through Compile and gluing
 
 SoSyM §6.2.2–5, B.4 Definition 10, B.5 and Appendix D.4.
@@ -184,6 +179,7 @@ variable (domains : ∀ q, Domains (i.constraint q).support (i.constraint q).loc
 noncomputable def authored (R : IntegerRealization U) :=
   predicateInterpretation i.constraint domains R
 
+-- [impl->req~clafer-constraint-preservation~1]
 /-- The canonical meaning of the existing Compile vocabulary. Callers supply
 typed domain expressions and a primitive realization, never predicate truth. -/
 noncomputable def interpretation (R : IntegerRealization U) :
@@ -260,6 +256,7 @@ theorem authored_iff (R : IntegerRealization U)
   intro q
   exact constraint_iff i domains R _ h q
 
+-- [proof->req~clafer-constraint-preservation~1]
 /-- Selected whole-model correspondence. The target candidate is the canonical
 descent of a shared-object configuration; root/typing and primitive realization
 remain explicit. Local/group/inheritance/abstract formulas and their complete

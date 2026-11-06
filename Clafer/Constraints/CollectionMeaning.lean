@@ -2,12 +2,6 @@ module
 
 public import Clafer.Constraints.DenotationLaws
 
-/-!
-[proof->req~clafer-constraint-denotation~1]
-[proof->req~clafer-constraint-environments~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Typed collection meaning and local cardinality obligations
 
 SoSyM D.3–D.4. Collections have total set meanings even when their extents
@@ -85,12 +79,14 @@ private theorem collection_result {s : Support} {U : Type u}
     exact ⟨m.widen_subset h (hA p hp).1,m.widen_subset k (hA p hp).2⟩
   | _ => trivial
 
+-- [proof->req~clafer-constraint-denotation~1]
 theorem Expr.collection_meaning {s : Support} {U : Type u}
     (m : IntegerBinding.{u,w} s U) {Γ k} (e : Expr s Γ (.collection k))
     (ρ : Environment s U Γ) (hρ : ρ.Admissible m) :
     ∃ S, e.denote m ρ = Option.some S ∧ k.Typed m S :=
   collection_result m e ρ hρ
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 /-- Finiteness of the selected result's class suffices for cardinality.
 No finiteness of unrelated classes or the ambient universe is needed. -/
 theorem Expr.cardinality_objects_defined {s : Support} {U : Type u}

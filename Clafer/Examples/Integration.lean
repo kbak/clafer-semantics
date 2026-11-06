@@ -5,11 +5,6 @@ public import Clafer.Compile.GroupExamples
 public import Clafer.Examples.Telematics.Structural
 
 /-!
-[impl->req~clafer-representative-integration~1]
-[proof->req~clafer-representative-integration~1]
--/
-
-/-!
 # Representative compilation/gluing integration
 
 SoSyM §6.2.4–5, Figures 16, 22–23 and Appendix 6. These witnesses apply the
@@ -24,9 +19,11 @@ open CategoryTheory MCS Compile DPGraph DPGraph.Predicates
 namespace Small
 open Clafer.Compile.Examples
 
+-- [impl->req~clafer-representative-integration~1]
 noncomputable def glued := gluedGroups input
 noncomputable def label := groupLabel input
 
+-- [proof->req~clafer-representative-integration~1]
 /-- The concrete source bank supplies both the original MCS discipline and all
 FormalCD defaults; these are distinct obligations. -/
 theorem compilation_gluing_valid :

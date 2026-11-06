@@ -4,8 +4,6 @@ public import Clafer.Compile.GroupSemantics
 public import Clafer.Semantics.Relational
 public import Mathlib.Tactic.FinCases
 
--- [proof->req~clafer-compile-groups~1]
-
 /-! # Compiled and glued group witnesses
 
 These tests exercise generated declarations and canonical gluing, with explicit
@@ -225,6 +223,7 @@ theorem glued_emitted :
     (generatedGroup (input g valid) (parentId g valid)).translate (groupLabel (input g valid)) ∈
       (gluedGroups (input g valid)).declarations := glued_group_declared _ _
 
+-- [proof->req~clafer-compile-groups~1]
 theorem compiled_count {k} (which : Fin k → Fin 3) :
     (groupInterpretation (input g valid) (Objects k) (authored g valid _)).Satisfies
       ((config which).interpret (core g valid)) (generatedGroup (input g valid) (parentId g valid)) ↔

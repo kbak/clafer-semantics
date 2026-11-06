@@ -2,8 +2,6 @@ module
 
 public import FormalCD.Metamodel.Realization.Context
 
--- [proof->req~formalcd-metamodel-realization~1]
-
 /-! # The exact restricted realization theorem
 SoSyM Figure 21c: total args and the literal bag key are independent restrictions.
 All other declarations follow from the canonical encoding and source metadata.
@@ -169,6 +167,7 @@ theorem other_declarations (d : Declaration) (ht : d ≠ .argsTotal) (hk : d ≠
     | exact Function.surjective_id
     | exact fun _ _ h => congrArg Prod.fst h
 
+-- [proof->req~formalcd-metamodel-realization~1]
 /-- Canonical syntax realizes the unchanged Figure 21c iff its declared formulas
 have positive argument support and are separated by symbol plus argument bag. -/
 theorem model_iff : (interpretation (context D)).IsModel diagram.toDPGraph (encode D) ↔

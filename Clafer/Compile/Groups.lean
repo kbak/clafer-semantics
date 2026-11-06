@@ -3,15 +3,6 @@ module
 public import Clafer.Compile.GroupSupport
 public import Clafer.MCS.Gluing.Origins
 
-/-!
-[impl->req~clafer-compile-formulas~1]
-[impl->req~clafer-compile-groups~1]
-[impl->req~clafer-gluing-declarations~1]
-[proof->req~clafer-compile-groups~1]
-[proof->req~clafer-gluing-declarations~1]
-[proof->req~clafer-gluing-formalcd~1]
--/
-
 /-! # Augmented Compile and exact gluing (SoSyM B.4 Definitions 8–10, §6.2.5)
 
 The original MCS bank retains its total-args/key proof. The additional component
@@ -43,6 +34,7 @@ noncomputable def promote {G : Quiv} :
   | ⟨.inl p, b⟩ => ⟨.inl p, b⟩
   | ⟨.inr p, b⟩ => ⟨.inr (.inl p), b⟩
 
+-- [impl->req~clafer-compile-formulas~1]
 noncomputable def generatedGroup (p : Groups.Id (family i)) :
     Formula (groupVocabulary i).signature (roles i).graph :=
   ⟨.inr (.inr p), Groups.binding (family i) p.val⟩
@@ -60,6 +52,7 @@ structure Augmented where
   additional : Formulas (roles i) (Groups.signature (family i))
   complete : Formulas (roles i) (groupVocabulary i).signature
 
+-- [impl->req~clafer-compile-groups~1]
 noncomputable def compileAugmented : Augmented i :=
   ⟨compile i, groupBank i, completeBank i⟩
 
@@ -76,6 +69,7 @@ theorem complete_declarations (φ) :
     · exact ⟨.inl q, rfl⟩
     · exact ⟨.inr p, rfl⟩
 
+-- [proof->req~clafer-compile-groups~1]
 theorem group_declared (p : Groups.Id (family i)) :
     generatedGroup i p ∈ (compileAugmented i).complete.diagram.declarations :=
   ⟨.inr p, rfl⟩
@@ -90,6 +84,7 @@ theorem promote_embed (φ : Formula DPGraph.Predicates.signature (roles i).graph
     promote i ((vocabulary i).embed φ) = (groupVocabulary i).embed φ := by
   cases φ; rfl
 
+-- [proof->req~clafer-gluing-formalcd~1]
 /-- All effective defaults are retained in the complete source bank. -/
 theorem complete_defaults : Gluing.Defaults (roles i) (completeBank i) where
   inclusion m hm := by
@@ -149,10 +144,12 @@ theorem group_label_unlabel :
   apply Subtype.ext
   exact (arrow_transport_val i _ _ e).symm
 
+-- [impl->req~clafer-gluing-declarations~1]
 noncomputable def gluedGroups : FormalCD.CDOver (groupVocabulary i) Gluing.registry :=
   Gluing.cd (groupCompatible i) (completeBank i)
     (Gluing.naming_of_valid (compile i).valid) (complete_defaults i)
 
+-- [proof->req~clafer-gluing-declarations~1]
 /-- Exact translated union, not merely forward preservation. -/
 theorem glued_declarations (φ) :
     φ ∈ (gluedGroups i).declarations ↔

@@ -4,8 +4,6 @@ public import Clafer.Verification.Finite
 public import Clafer.Semantics.Renaming
 public import Clafer.Semantics.Normalization
 
--- [proof->req~clafer-structural-satisfaction~1]
-
 /-!
 # Completeness of the finite relational candidate domain
 
@@ -42,6 +40,7 @@ theorem representable [Fintype U] (m : EffectiveCore n) (s : Configuration (Fin 
   rw [realize_encode]
   exact structural_rename m s _
 
+-- [proof->req~clafer-structural-satisfaction~1]
 /-- Every finite interpreted whole-model configuration has a candidate with
 exactly its shared objects and tuple relations, up to the displayed bijection.
 The normalizer derives ordinary/parent/target/inclusion link isomorphisms from

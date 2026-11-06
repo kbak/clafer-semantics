@@ -4,11 +4,6 @@ public import Clafer.Examples.Telematics.ExpressionEnvironment
 public import Clafer.Constraints.DenotationDefined
 public import Clafer.Constraints.CollectionMeaning
 
-/-!
-[proof->req~clafer-appendix-f-expressions~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Telematics operator-combination witnesses
 
 SoSyM Appendix 6 (PDF p.34).
@@ -27,6 +22,7 @@ set_option maxHeartbeats 2000000
 set_option maxRecDepth 4096
 
 -- The ordinary head maps reuse precisely #66's shared containment tuples.
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem image_reduced (c : Fin 28) (e d : Int) (i : Fin 34) (S : Set U) :
     relationalImage S (ambientRelation ((model c e d).model.map ((support c).arrow i))) =
       {y | ∃ x, x ∈ S ∧ x ∈ objects (maps i).source ∧
@@ -84,6 +80,7 @@ theorem ecu2_value (c : Fin 28) (e d : Int) (ρ : Environment (support c) U []) 
     (Expr.extent 17).denote (model c e d) ρ = some {atom 3} := by
   simp [Expr.denote,objects,position,Telematics.Structural.config,Telematics.Structural.heads]
 
+-- [proof->req~clafer-appendix-f-expressions~1]
 theorem actual_c05 : c05.Holds (model 19 2 3) (.closed (atom 19)) := by
   unfold c05 Expr.Holds
   rw [denotes_iff _ _ _ _ _ _

@@ -4,8 +4,6 @@ public import Clafer.Examples.Telematics.Configuration
 public import Clafer.Examples.Telematics.Definedness
 public import Clafer.Constraints.DenotationInvariance
 
--- [proof->req~clafer-appendix-f-complete~1]
-
 /-! # Satisfaction of all twelve telematics conjuncts
 
 SoSyM Appendix 6 (PDF p.34).
@@ -228,6 +226,7 @@ theorem global_large_value  :
   simp [objects,maps,position,links,owner,config,heads,ownership,
     Set.ext_iff,Sum.exists,Sum.forall]
 
+-- [proof->req~clafer-appendix-f-complete~1]
 theorem c01_all (x : U) : c01.Holds (model 1) (.closed x) := by
   have hs := denotes_some _ _ _ _ (small_options_value x) Set.finite_empty
   have hc := denotes_some _ _ _ _ (cache_value x) Set.finite_empty

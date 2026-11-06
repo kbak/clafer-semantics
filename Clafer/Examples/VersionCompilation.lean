@@ -4,11 +4,6 @@ public import Clafer.Compile.Groups
 public import Clafer.Constraints.IntegerExamples
 
 /-!
-[impl->req~clafer-representative-integration~1]
-[proof->req~clafer-representative-integration~1]
--/
-
-/-!
 # Appendix 6's mandatory version comparison through Compile and gluing
 
 SoSyM Appendix 6 PDF p.34 (c02 in docs/inherited-realization.md), §6.2.4–5.
@@ -82,6 +77,7 @@ theorem constraint_typed (q : ConstraintId ast) : VersionNavigation.constraint.I
   simp [ConstraintBoundary.Resolved, AST.Known, entries, root, display,
     VersionNavigation.rootDecl, VersionNavigation.intDecl, VersionNavigation.compDecl, VersionNavigation.versionDecl, VersionNavigation.ecuDecl, VersionNavigation.displayDecl, VersionNavigation.serverDecl]
 
+-- [impl->req~clafer-representative-integration~1]
 noncomputable def input : Input ast where
   ast := wf
   root_name := by
@@ -174,6 +170,7 @@ theorem operands_defined (m : glued.carrier ⥤q semanticGraph U)
       ((versionModel m hm R hd).serverObjects d)) :=
   (versionModel m hm R hd).operands_defined d
 
+-- [proof->req~clafer-representative-integration~1]
 theorem comparison_defined (m : glued.carrier ⥤q semanticGraph U)
     (hm : LocalHolds m) (R : IntegerRealization U)
     (hd : (navigation m).obj (5 : VersionNavigation.support.Vertex) = R.domain)

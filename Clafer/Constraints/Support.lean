@@ -3,14 +3,6 @@ module
 public import Clafer.Syntax
 
 /-!
-[impl->req~clafer-core-binding~1]
-[impl->req~clafer-core-support~1]
-[impl->req~clafer-core-typing~1]
-[impl->req~clafer-integer-extraction~1]
-[proof->req~clafer-core-support~1]
--/
-
-/-!
 # Resolved constraint support
 
 SoSyM §6.2.2/Figure 22 and D.2–D.3.2. A finite occurrence graph supplies
@@ -33,6 +25,7 @@ structure MapRef (n : Nat) where
   target : Fin n
   name : String := ""
 
+-- [impl->req~clafer-core-support~1]
 /-- Positions are identities of support occurrences, even when their resolved
 IDs or display names repeat. No minimality or deduplication is assumed. -/
 structure Support where
@@ -41,6 +34,7 @@ structure Support where
   classId : Fin classCount → DeclId
   mapRef : Fin mapCount → MapRef classCount
   context : Fin classCount
+  -- [impl->req~clafer-integer-extraction~1]
   /-- Explicit primitive annotation, checked against the resolved AST. -/
   integer : Fin classCount → Bool := fun _ => false
 
@@ -57,6 +51,7 @@ abbrev Support.graph (s : Support) : Quiv := @Quiv.of s.Vertex ⟨s.Arrow⟩
 def Support.arrow (s : Support) (e : s.Edge) :
     s.Arrow (s.mapRef e).source (s.mapRef e).target := ⟨e, rfl, rfl⟩
 
+-- [proof->req~clafer-core-support~1]
 theorem Support.incidence (s : Support) {x y : s.Vertex} (e : s.Arrow x y) :
     (s.mapRef e.val).source = x ∧ (s.mapRef e.val).target = y := e.property
 
@@ -100,6 +95,7 @@ theorem Extends.preserves {a : AST} {p : DeclId → Prop}
   | direct h => exact step _ _ h
   | trans _ _ h₁ h₂ => exact fun hx => h₂ (h₁ hx)
 
+-- [impl->req~clafer-core-typing~1]
 /-- Explicit widening evidence; elaboration may insert these paths. Equal
 resolved IDs also permit movement between distinct support occurrences. -/
 inductive Widen (s : Support) : s.Vertex → s.Vertex → Type where
@@ -122,6 +118,7 @@ theorem Widen.resolved {s : Support} {a : AST} (h : s.Resolved a)
       exact .direct ⟨d, hd, hm⟩
   | trans _ _ h₁ h₂ => exact .trans h₁ h₂
 
+-- [impl->req~clafer-core-binding~1]
 /-- Every recorded boundary occurrence has its own position. The support may
 also contain intermediate navigation/inheritance vertices and unused vertices. -/
 structure Support.Boundary (s : Support) (c : ConstraintBoundary) where

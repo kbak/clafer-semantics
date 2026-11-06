@@ -3,11 +3,6 @@ module
 public import DPGraph.Predicates.FunctionalKey
 public import Mathlib.Tactic.FinCases
 
-/-!
-[impl->req~reusable-span-laws~1]
-[proof->req~reusable-span-laws~1]
--/
-
 /-! # Relational representations of span predicates
 
 SoSyM Appendix 2, mappings (Definitions 1–5), mapping composition (Q1),
@@ -83,6 +78,7 @@ theorem identity_inclusion_iff {U : Type u} (A B : Set U) :
     · intro l
       exact l.property.symm
 
+-- [impl->req~reusable-span-laws~1]
 /-- With one dereference link per head, composable target links and head
 links have exactly the same multiplicity, including repeated target values. -/
 noncomputable def compositeFiber {A : Type u} {B : Type v} {C : Type z}
@@ -103,6 +99,7 @@ noncomputable def compositeFiber {A : Type u} {B : Type v} {C : Type z}
       obtain ⟨r', hr⟩ := ht (q.target l.val)
       exact ⟨⟨⟨(l.val, r'), hr.symm⟩, l.property⟩, rfl⟩⟩
 
+-- [proof->req~reusable-span-laws~1]
 theorem composite_multiplicity {A : Type u} {B : Type v} {C : Type z}
     (q : Span.{u,v,w} A B) (r : Span.{v,z,w'} B C)
     (ht : Total r) (hs : SingleValued r) (range : Range) :

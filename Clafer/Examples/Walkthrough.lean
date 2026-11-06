@@ -3,11 +3,6 @@ module
 public import Clafer.Verification.Admission
 
 /-!
-[impl->req~lean-walkthrough~1]
-[proof->req~lean-walkthrough~1]
--/
-
-/-!
 # A phone with an optional camera
 
 Small manually resolved example for docs/getting-started.md. Nesting and local
@@ -44,6 +39,7 @@ theorem model_valid : model.WellFormed :=
 theorem model_supported : model.Supported :=
   admitted_supported _ certificate (by decide)
 
+-- [impl->req~lean-walkthrough~1]
 /-- Object IDs 0 and 1 denote the root and phone; each later ID is a camera. -/
 def configuration (cameras : Nat) : Candidate 3 where
   size := cameras + 2
@@ -54,6 +50,7 @@ def configuration (cameras : Nat) : Candidate 3 where
     (d == 2 && p.val == 1 && x.val >= 2)
   deref _ _ _ := false
 
+-- [proof->req~lean-walkthrough~1]
 theorem accepts_no_camera : check model (configuration 0) = true := by decide
 theorem accepts_one_camera : check model (configuration 1) = true := by decide
 theorem rejects_two_cameras : check model (configuration 2) = false := by decide

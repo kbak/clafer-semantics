@@ -4,14 +4,6 @@ public import Clafer.Context
 public import FormalCD.Basic
 
 /-!
-[impl->req~clafer-finite-traversal~1]
-[impl->req~clafer-input-wellformedness~1]
-[impl->req~clafer-resolved-syntax~1]
-[proof->req~clafer-finite-traversal~1]
-[proof->req~clafer-input-wellformedness~1]
--/
-
-/-!
 # Finite, resolved 2014 syntax
 
 SoSyM §5.3.1–5, §5.4–5 (PDF pp.14–17), §6.2.2/Figure 22 (PDF p.21),
@@ -88,6 +80,7 @@ inductive Origin where
   | syntheticRoot | primitive (domain : PrimitiveDomain) | user
   deriving DecidableEq, Repr
 
+-- [impl->req~clafer-resolved-syntax~1]
 /-- Metadata and resolved edges, not a shallow encoding in Lean predicates. -/
 structure Declaration where
   id : DeclId
@@ -119,6 +112,7 @@ def Tree.branch (d : Declaration) (children : List Tree) : Tree := .node d (Fore
 Neither target nor super IDs are followed by this traversal. Primitive recursors
 are kernel-reducible; `noncomputable` only suppresses unsupported native code
 generation for these recursors, without adding a choice or termination axiom. -/
+-- [impl->req~clafer-finite-traversal~1]
 noncomputable def Tree.fold {α : Type} (algebra : Declaration → List α → α) (t : Tree) : α :=
   Tree.rec (motive_1 := fun _ => α) (motive_2 := fun _ => List α)
     (fun d _ children => algebra d children) [] (fun _ _ x xs => x :: xs) t
@@ -171,6 +165,7 @@ theorem Tree.child_smaller (d : Declaration) (cs : List Tree) (t : Tree) (h : t 
   simp only [Tree.branch, Tree.node.sizeOf_spec]
   exact Nat.lt_of_lt_of_le hs (by omega)
 
+-- [proof->req~clafer-finite-traversal~1]
 theorem AST.occurrences_finite (a : AST) : Finite a.Occurrence := inferInstance
 
 theorem AST.every_entry_indexed (a : AST) (d : Located) (h : d ∈ a.entries) :
@@ -189,6 +184,7 @@ def Defaults (d : Declaration) (parent super : Option Declaration) : Prop :=
     (parent.map (·.group.effective.childDefault) |>.getD one) ∧
   d.isAbstract = (d.authoredAbstract || (parent.map (·.isAbstract)).getD false)
 
+-- [impl->req~clafer-input-wellformedness~1]
 /-- Explicit selected resolved-input conditions, local to Clafer. The rank
 witness rules out inheritance cycles; it is proof data, not another syntax edge.
 The depth check applies to the actual deep traversal and unique resolved IDs. -/
@@ -233,6 +229,7 @@ structure AST.WellFormed (a : AST) : Prop where
   constraints_resolved : ∀ d ∈ a.entries, ∀ c ∈ d.declaration.constraints,
     c.context = d.declaration.id ∧ c.Resolved a.Known
 
+-- [proof->req~clafer-input-wellformedness~1]
 theorem AST.WellFormed.no_self_parent {a : AST} (h : a.WellFormed)
     (d : Located) (hd : d ∈ a.entries) : d.parent ≠ some d.declaration.id := by
   intro hp

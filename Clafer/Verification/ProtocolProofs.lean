@@ -2,8 +2,6 @@ module
 
 public import Clafer.Verification.Admission
 
--- [proof->req~clafer-finite-checker~1]
-
 /-!
 # Raw-table fidelity and entrypoint correctness
 
@@ -122,6 +120,7 @@ theorem verify_valid (h : TablesValid m r)
     ite_eq_right (h.noUnknown m), ite_eq_right (h.noDangling m)]
   simp only [typed, not_true_eq_false, ite_false]
 
+-- [proof->req~clafer-finite-checker~1]
 theorem verify_correct (wf : m.WellFormed) (support : m.Supported)
     (h : TablesValid m r) (typed : (realize (r.decode m h.root)).Typed m) :
     verify m r = .satisfies ↔ StructuralSatisfies m (realize (r.decode m h.root)) := by

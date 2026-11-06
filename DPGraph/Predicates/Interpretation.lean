@@ -4,8 +4,6 @@ public import DPGraph.Predicates.SemanticGraph
 public import DPGraph.Predicates.Meaning
 public import DPGraph.Semantics
 
--- [impl->req~predicate-interpretation~1]
-
 /-!
 # The concrete interpretation
 
@@ -22,6 +20,7 @@ namespace DPGraph.Predicates
 
 open CategoryTheory Arity
 
+-- [impl->req~predicate-interpretation~1]
 /-- All symbols have explicit meanings in the bounded graph. -/
 def interpretation (U : Type u) : Interpretation signature (semanticGraph.{u,w} U) where
   meaning

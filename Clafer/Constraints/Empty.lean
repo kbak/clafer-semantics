@@ -4,12 +4,6 @@ public import Clafer.Constraints.DenotationLaws
 public import Clafer.Constraints.DenotationSupport
 
 /-!
-[proof->req~clafer-constraint-denotation~1]
-[proof->req~clafer-constraint-semantic-laws~1]
-[proof->req~clafer-core-typing~1]
--/
-
-/-!
 # Empty collections
 
 Adopted language extension #134 to SoSyM Appendix 4/Figure 28. Alloy's
@@ -23,6 +17,7 @@ namespace Clafer.Constraints
 variable {s : Support} {U : Type u} {Γ : List (Local s)}
 variable (m : IntegerBinding.{u,w} s U) (ρ : Environment s U Γ)
 
+-- [proof->req~clafer-constraint-denotation~1]
 theorem empty_defined (k : Collection s) : (Expr.empty k : Expr s Γ _).Defined m ρ :=
   ⟨∅, rfl⟩
 
@@ -48,6 +43,7 @@ theorem empty_defined (k : Collection s) : (Expr.empty k : Expr s Γ _).Defined 
     (Expr.one (.empty k) : Expr s Γ _).denote m ρ = Option.some ⟨False⟩ := by
   simp [Expr.one, lift₂]
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem union_empty {k} (a : Expr s Γ (.collection k)) :
     (Expr.setOp .union a (.empty k)).denote m ρ = a.denote m ρ := by
   simp [lift₂, collectionOp]

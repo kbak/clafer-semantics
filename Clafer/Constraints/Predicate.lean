@@ -3,11 +3,6 @@ module
 public import Clafer.Constraints.DenotationInvariance
 
 /-!
-[impl->req~clafer-constraint-predicates~1]
-[proof->req~clafer-constraint-predicates~1]
--/
-
-/-!
 # Meanings of source-constraint symbols
 
 SoSyM §6.2.2, Appendix D.4 and B.5. A predicate interprets its complete
@@ -48,6 +43,7 @@ theorem IntegerBinding.ext {s : Support} {U : Type u}
   cases hm
   rfl
 
+-- [impl->req~clafer-constraint-predicates~1]
 /-- Each occurrence's meaning is derived from its typed body and domains.
 The existential packages admissibility proofs for the supplied arity diagram;
 it cannot choose different object sets, spans or an integer encoding. -/
@@ -75,6 +71,7 @@ theorem predicate_meaning_iff {ι : Type} (qs : ι → Constraint)
   · intro h
     exact ⟨m, hr, rfl, hc, h⟩
 
+-- [proof->req~clafer-constraint-predicates~1]
 theorem closed_constraint_iff (s : Support) {U : Type u}
     (body : Expr s [] .boolean) (m : IntegerBinding.{u,w} s U) :
     (Constraint.mk s [] body).Holds .nil m ↔

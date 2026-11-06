@@ -3,11 +3,6 @@ module
 public import Clafer.MCS.Gluing.Origins
 public import Clafer.MCS.Examples
 
-/-!
-[impl->req~clafer-gluing-examples~1]
-[proof->req~clafer-gluing-examples~1]
--/
-
 /-! # Q4 acceptance witnesses for SoSyM §6.2.5
 
 These use actual role graphs and complete formula bindings. The positive family
@@ -139,9 +134,11 @@ theorem defaults : Defaults (W := FormalCD.Vocabulary.builtins) roles formulas w
     rcases maps_cases m with rfl | rfl | rfl | rfl <;> cases h
   ordinary m _ := ⟨m, rfl⟩
 
+-- [impl->req~clafer-gluing-examples~1]
 noncomputable def glued : FormalCD.CDOver FormalCD.Vocabulary.builtins registry :=
   cd compatible formulas naming defaults
 
+-- [proof->req~clafer-gluing-examples~1]
 theorem intentional_class_merge : Owner.left ≠ .right ∧
     (label roles labels compatible.toIncidence).obj .left =
       (label roles labels compatible.toIncidence).obj .right := ⟨by decide, rfl⟩

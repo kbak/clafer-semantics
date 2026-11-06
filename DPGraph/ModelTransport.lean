@@ -3,13 +3,6 @@ module
 public import DPGraph.Semantics
 
 /-!
-[impl->req~model-reduct-injective~1]
-[impl->req~model-reduct-surjective~1]
-[proof->req~model-reduct-injective~1]
-[proof->req~model-reduct-surjective~1]
--/
-
-/-!
 # Injectivity and surjectivity of model reducts
 
 Derived library consequences of the abstract model reduct and its laws, grounded
@@ -29,6 +22,7 @@ variable {S : DPGraph.{s, va, ua, v₁, u₁} σ}
 variable {T : DPGraph.{s, va, ua, v₂, u₂} σ}
 variable {F : Hom S T} {J : Hom T S}
 
+-- [proof->req~model-reduct-injective~1]
 /-- A composite equal to the target identity makes restriction injective. -/
 theorem reduct_injective_of_comp_eq_id (h : J.comp F = Hom.id T) :
     Function.Injective (I.reduct F) := by
@@ -36,6 +30,7 @@ theorem reduct_injective_of_comp_eq_id (h : J.comp F = Hom.id T) :
   have h' := congrArg (I.reduct J) hmn
   simpa only [← I.reduct_comp, h, I.reduct_id] using h'
 
+-- [proof->req~model-reduct-surjective~1]
 /-- A composite equal to the source identity supplies a preimage for every model. -/
 theorem reduct_surjective_of_comp_eq_id (h : F.comp J = Hom.id S) :
     Function.Surjective (I.reduct F) := by

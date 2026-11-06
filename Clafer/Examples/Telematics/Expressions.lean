@@ -3,8 +3,6 @@ module
 public import Clafer.Examples.Telematics.Structural
 public import Clafer.Constraints.DenotationLaws
 
--- [impl->req~clafer-appendix-f-expressions~1]
-
 /-!
 # Manual resolved telematics expressions
 
@@ -132,6 +130,7 @@ def parent15 {c Γ} (x : Expr (support c) Γ (.collection (.objects 15))) :
     Expr (support c) Γ (.collection (.objects 14)) := .image x (.map 33)
 
 -- Head selection is explicit: fixed belongs to cache.size before dereferencing.
+-- [impl->req~clafer-appendix-f-expressions~1]
 def c01 : Expr (support 1) [] .boolean :=
   (Expr.and (head3 (head2 .this)).some (head5 .this).some).implies
     (head7 (head6 (head5 .this))).some

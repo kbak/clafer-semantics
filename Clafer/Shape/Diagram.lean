@@ -3,11 +3,6 @@ module
 public import Clafer.Shape
 
 /-!
-[impl->req~clafer-individual-shapes~1]
-[proof->req~clafer-individual-shapes~1]
--/
-
-/-!
 # Local diagram predicates of an individual Shape
 
 SoSyM Figure 16/Table 4 (PDF pp.14–15). This local CD uses role labels for source/target;
@@ -58,6 +53,7 @@ def keyBinding (s : Shape) (hp : s.hasParent = true) (ht : s.kind ≠ .basic) :
       · simpa [hi] using parentArrow s hp
       · simpa [hi] using derefArrow s ht
 
+-- [impl->req~clafer-individual-shapes~1]
 /-- Effective local declarations, including the set-reference key only when
 both projections exist. A bag target receives no ordinary set-valued default. -/
 def declarations (s : Shape) : Set (DPGraph.Formula signature s.carrier) :=
@@ -88,6 +84,7 @@ def raw (s : Shape) : FormalCD.Raw roleRegistry where
   predefined _ := none
   mode e := mode s.kind e.val
 
+-- [proof->req~clafer-individual-shapes~1]
 theorem raw_wellFormed (s : Shape) : (raw s).WellFormed where
   predefined_name := by intro c i; exact Empty.elim i
   user_name := by rintro c _ ⟨i, _⟩; exact Empty.elim i

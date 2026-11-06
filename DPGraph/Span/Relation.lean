@@ -3,14 +3,6 @@ module
 public import DPGraph.Span.Composition
 
 /-!
-[impl->req~span-relation-composition~1]
-[impl->req~span-set-valuedness~1]
-[proof->req~span-family-correspondence~1]
-[proof->req~span-relation-composition~1]
-[proof->req~span-set-valuedness~1]
--/
-
-/-!
 # Relation reduction and the adopted composition correction
 
 SoSyM B.1 Theorems 1–2; B.2.1 as corrected in issue #4 (Q1). General pullback
@@ -25,6 +17,7 @@ universe u v z w w'
 
 namespace DPGraph
 
+-- [impl->req~span-relation-composition~1]
 /-- Existential relational composition in source-to-target order. -/
 def relationComp {A : Type u} {B : Type v} {C : Type z}
     (R : A → B → Prop) (S : B → C → Prop) (a : A) (c : C) : Prop :=
@@ -43,6 +36,7 @@ namespace Span
 
 variable {A : Type u} {B : Type v} {C : Type z}
 
+-- [impl->req~span-set-valuedness~1]
 /-- A relation has at most one link for each endpoint pair (SoSyM B.1). -/
 def ofRelation (R : A → B → Prop) : Span.{u, v, max u v} A B where
   Link := { p : A × B // R p.1 p.2 }
@@ -65,6 +59,7 @@ theorem ofRelation_jointlyInjective (R : A → B → Prop) :
   intro l m h
   exact Subtype.ext h
 
+-- [proof->req~span-family-correspondence~1]
 /-- B.1 Theorem 2: joint injectivity is precisely fiberwise injectivity. -/
 theorem jointlyInjective_iff_fiberwise (q : Span.{u, v, w} A B) :
     q.JointlyInjective ↔ ∀ a, Function.Injective (q.toFamily.eval a) := by
@@ -105,6 +100,7 @@ theorem jointlyInjective_of_iso {q : Span.{u, v, w} A B}
   · exact (e.source_eq l).trans ((congrArg Prod.fst he).trans (e.source_eq m).symm)
   · exact (e.target_eq l).trans ((congrArg Prod.snd he).trans (e.target_eq m).symm)
 
+-- [proof->req~span-set-valuedness~1]
 theorem jointlyInjective_iff_iso_relation (q : Span.{u, v, w} A B) :
     q.JointlyInjective ↔ Nonempty (Iso q (ofRelation q.red)) := by
   constructor
@@ -113,6 +109,7 @@ theorem jointlyInjective_iff_iso_relation (q : Span.{u, v, w} A B) :
   · rintro ⟨e⟩
     exact jointlyInjective_of_iso e (ofRelation_jointlyInjective q.red)
 
+-- [proof->req~span-relation-composition~1]
 /-- Adopted Q1 correction: no injectivity, finiteness or decidability assumptions. -/
 theorem red_comp (q : Span.{u, v, w} A B) (r : Span.{v, z, w'} B C) :
     (q.comp r).red = relationComp q.red r.red := by

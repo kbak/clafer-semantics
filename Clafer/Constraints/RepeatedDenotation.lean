@@ -2,11 +2,6 @@ module
 
 public import Clafer.Constraints.DenotationExamples
 
-/-!
-[proof->req~clafer-appendix-f-expressions~1]
-[proof->req~clafer-constraint-semantic-laws~1]
--/
-
 /-! # Distinct support occurrences of the same resolved maps
 
 SoSyM D.2–D.4, §6.2.2. Duplicate graph occurrences retain the very same
@@ -45,10 +40,12 @@ theorem same_links : Nonempty (LinkEquivalence
     (model.model.map (duplicatedSupport.arrow 1))) :=
   ⟨⟨Equiv.refl _,fun _ => rfl,fun _ => rfl⟩⟩
 
+-- [proof->req~clafer-appendix-f-expressions~1]
 theorem repeated_meaning :
     (Expr.map 0 : Expr duplicatedSupport [] _).denote model (.closed display.val) =
       (Expr.map 1 : Expr duplicatedSupport [] _).denote model (.closed display.val) := rfl
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem repeated_union :
     (Expr.setOp .union
       (Expr.map 0 : Expr duplicatedSupport [] (.collection (.relation 0 4)))

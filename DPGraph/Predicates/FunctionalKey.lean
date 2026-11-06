@@ -3,11 +3,6 @@ module
 public import DPGraph.Predicates.Meaning
 
 /-!
-[impl->req~predicate-key-functional~1]
-[proof->req~predicate-key-functional~1]
--/
-
-/-!
 # Ordinary keys as a specialization of bag-sensitive keys
 
 Derived from SoSyM B.1 Definitions 1–5 / Theorems 1–2 and Table 3 key /
@@ -79,6 +74,7 @@ theorem red_iff_targetValue_eq (q : Span.{u,v,w} A B)
     exact ⟨(Equiv.ofBijective q.source ⟨hs, ht⟩).symm a,
       (Equiv.ofBijective q.source ⟨hs, ht⟩).apply_symm_apply a, h⟩
 
+-- [impl->req~predicate-key-functional~1]
 /-- Link-preserving, even when the original head and source universes differ. -/
 noncomputable def functionalSpanIso (q : Span.{u,v,w} A B)
     (ht : Total q) (hs : SingleValued q) :
@@ -87,6 +83,7 @@ noncomputable def functionalSpanIso (q : Span.{u,v,w} A B)
   source_eq _ := rfl
   target_eq l := targetValue_eq_of_source q ht hs l rfl
 
+-- [proof->req~predicate-key-functional~1]
 /-- The ordinary tuple criterion for arbitrary componentwise total, single-valued spans. -/
 theorem key_total_singleValued_iff {n : Nat} {B : Fin n → Type v}
     (q : ∀ i, Span.{u,v,w} A (B i))

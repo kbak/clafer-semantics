@@ -4,11 +4,6 @@ public import FormalCD.Metamodel.Basic
 public import FormalCD.Metamodel.Binding
 
 /-!
-[impl->req~formalcd-bounded-self-description~1]
-[proof->req~formalcd-bounded-self-description~1]
--/
-
-/-!
 # Bounded syntactic self-description
 
 SoSyM §6.1.3 / Figure 21c says MCD is itself a formal CD. The checked statement
@@ -25,6 +20,7 @@ arities. No claim about literal-key or total-args satisfaction follows.
 
 namespace FormalCD
 
+-- [proof->req~formalcd-bounded-self-description~1]
 /-- Exact representation of the delivered metamodel, without rebuilding it. -/
 theorem bounded_self_description :
     ∃ D : CDOver.{0,0,0,0,0,0} Metamodel.vocabulary Metamodel.registry,
@@ -34,6 +30,7 @@ theorem bounded_self_description :
   ⟨Metamodel.diagram, rfl, rfl, Metamodel.wellFormed,
     Metamodel.eleven_nodes, Metamodel.thirteen_arrows⟩
 
+-- [impl->req~formalcd-bounded-self-description~1]
 /-- The representation keeps the existing full formula identity, not its bag projection. -/
 def metamodelFormulaRepresentation :
     {c : Metamodel.Candidate Metamodel.vocabulary.signature Metamodel.graph // c.Valid} ≃

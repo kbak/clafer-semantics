@@ -3,13 +3,6 @@ module
 public import FormalCD.Metamodel.Examples
 
 /-!
-[impl->req~formalcd-metamodel-examples~1]
-[proof->req~formalcd-formula-identity~1]
-[proof->req~formalcd-metamodel-disciplines~1]
-[proof->req~formalcd-metamodel-examples~1]
--/
-
-/-!
 # Finite discipline interpretations
 
 The repeated-argument fragment is an actual model of ad, literal key and total
@@ -58,6 +51,7 @@ def loopEdges : ArrowData loops ≃ Bool where
   left_inv := by rintro ⟨a,b,e⟩; cases a; cases b; rfl
   right_inv _ := rfl
 
+-- [impl->req~formalcd-metamodel-examples~1]
 def repeatDiagram : arityShape ⥤q semanticGraph String where
   obj | .formula => one "#F" | .signature => one "#P"
       | .map => one "#M" | .class => one "#C"
@@ -142,10 +136,12 @@ def fragment : DPGraph vocabulary.signature where
   carrier := arityShape
   declarations := {f | f = fragmentAd ∨ f = fragmentKey ∨ f = fragmentTotal}
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 theorem extended_ad_satisfied : (interpretation repeatContext).Satisfies repeatDiagram fragmentAd := by
   change ArityDiscipline repeatArityContext repeatDiagram (repeatContext.describe repeatDiagram)
   simpa [repeatContext] using repeat_discipline
 
+-- [proof->req~formalcd-formula-identity~1]
 theorem extended_key_satisfied : (interpretation repeatContext).Satisfies repeatDiagram fragmentKey := by
   change Key _
   intro a b _
@@ -163,6 +159,7 @@ def fragmentModel : (interpretation repeatContext).Model fragment :=
     · exact extended_key_satisfied
     · exact extended_total_satisfied⟩
 
+-- [proof->req~formalcd-metamodel-examples~1]
 theorem extended_args_not_setValued : ¬ SetValued (repeatDiagram.map ArityEdge.args) := by
   intro h
   have he := h (a₁ := false) (a₂ := true) rfl

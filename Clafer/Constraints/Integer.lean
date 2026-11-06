@@ -5,11 +5,6 @@ public import FormalCD.Integer
 public import DPGraph.Predicates.Navigation
 
 /-!
-[impl->req~clafer-integer-extraction~1]
-[proof->req~clafer-integer-extraction~1]
--/
-
-/-!
 # Integer operands from navigation
 
 SoSyM D.3–D.4 and Appendix 6, PDF p.34. This supplies the partial meaning of
@@ -31,6 +26,7 @@ export FormalCD.IntegerRealization (Extracts WellDefined encode_decode extracts_
   extract_multiple extract_wrong_domain objectEquiv)
 end IntegerRealization
 
+-- [impl->req~clafer-integer-extraction~1]
 /-- A semantic support binding preserves resolved identities and actual inheritance
 inclusions. Only vertices explicitly marked integer receive this realization. -/
 structure IntegerBinding (s : Support) (U : Type u) where
@@ -48,6 +44,7 @@ theorem IntegerBinding.widen_subset {s U} (b : IntegerBinding.{u,w} s U)
   | inclusion e he => exact inclusion_subset (b.inclusion e he)
   | trans _ _ h₁ h₂ => exact h₁.trans h₂
 
+-- [proof->req~clafer-integer-extraction~1]
 /-- A typed integer collection supplies the domain hypothesis, not uniqueness. -/
 theorem IntegerBinding.singleton_defined {s U} (b : IntegerBinding.{u,w} s U)
     {v} (primitive : s.integer v = true) {x : U} (hx : (b.model.obj v : Set U) x) :

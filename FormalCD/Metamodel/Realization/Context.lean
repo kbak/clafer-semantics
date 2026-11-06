@@ -2,11 +2,6 @@ module
 
 public import FormalCD.Metamodel.Realization.Encoding
 
-/-!
-[impl->req~formalcd-metamodel-realization~1]
-[proof->req~formalcd-metamodel-realization~1]
--/
-
 /-! # Canonical nd/ad context and their validity
 SoSyM §6.1.3 and B.4 Definition 8. The context contains data, never a model proof.
 -/
@@ -41,6 +36,7 @@ noncomputable def descriptor : ArityDescriptor (σ := V.signature) (G := D.carri
     exact if h : c.symbol = ((formulas D).symm f).val.symbol then
       some (h.symm ▸ argumentIndex D f l) else none
 
+-- [impl->req~formalcd-metamodel-realization~1]
 noncomputable def context : Context.{p,s,va,ua,v,u,max p s va ua v u,0} R V.signature D.carrier (Ambient D) where
   names := names D
   arities := arities D
@@ -53,6 +49,7 @@ noncomputable def context : Context.{p,s,va,ua,v,u,max p s va ua v u,0} R V.sign
     (context D).describe (arityBinding.comp (encode D)) = descriptor D := by
   simp [context]
 
+-- [proof->req~formalcd-metamodel-realization~1]
 theorem arity_discipline :
     ArityDiscipline.{s,va,ua,v,u,max p s va ua v u,0} (arities D) (arityBinding.comp (encode D)) (descriptor D) := by
   refine ⟨rfl, rfl, rfl, ?_, ?_, ?_⟩

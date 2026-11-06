@@ -3,13 +3,6 @@ module
 public import FormalCD.Signature
 
 /-!
-[impl->req~formalcd-formula-identity~1]
-[impl->req~formalcd-metamodel-disciplines~1]
-[proof->req~formalcd-formula-identity~1]
-[proof->req~formalcd-metamodel-disciplines~1]
--/
-
-/-!
 # Full graph-binding data and its validation
 
 SoSyM B.4 Definition 8 (PDF p.31). Candidate data can be malformed; validity is an
@@ -26,6 +19,7 @@ open CategoryTheory
 
 abbrev ArrowData (G : Quiv.{v,u}) := Σ a b : G, (a ⟶ b)
 
+-- [impl->req~formalcd-formula-identity~1]
 structure Candidate (σ : DPGraph.Signature.{s,va,ua}) (G : Quiv.{v,u}) where
   symbol : σ.Symbol
   vertex : σ.arity symbol → G
@@ -34,6 +28,7 @@ structure Candidate (σ : DPGraph.Signature.{s,va,ua}) (G : Quiv.{v,u}) where
 namespace Candidate
 variable {σ : DPGraph.Signature.{s,va,ua}} {G : Quiv.{v,u}}
 
+-- [impl->req~formalcd-metamodel-disciplines~1]
 structure Valid (c : Candidate σ G) : Prop where
   source : ∀ e, (c.argument e).1 = c.vertex e.1
   target : ∀ e, (c.argument e).2.1 = c.vertex e.2.1
@@ -78,6 +73,7 @@ def formulaEquiv : {c : Candidate σ G // c.Valid} ≃ DPGraph.Formula σ G wher
   left_inv c := Subtype.ext (of_toFormula c.val c.property)
   right_inv := to_ofFormula
 
+-- [proof->req~formalcd-metamodel-disciplines~1]
 theorem valid_iff_represents (c : Candidate σ G) :
     c.Valid ↔ ∃ f, ofFormula f = c := by
   constructor
@@ -98,6 +94,7 @@ theorem formula_binding_ext {σ : DPGraph.Signature.{s,va,ua}} {G : Quiv.{v,u}}
     (⟨p,b⟩ : DPGraph.Formula σ G) = ⟨p,c⟩ := by
   cases b; cases c; cases hv; cases ha; rfl
 
+-- [proof->req~formalcd-formula-identity~1]
 /-- Equality of the full raw representation reflects and preserves formula identity. -/
 theorem full_binding_identity {σ : DPGraph.Signature.{s,va,ua}} {G : Quiv.{v,u}}
     (f g : DPGraph.Formula σ G) : Candidate.ofFormula f = Candidate.ofFormula g ↔ f = g := by

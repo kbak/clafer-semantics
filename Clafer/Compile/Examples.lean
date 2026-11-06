@@ -3,13 +3,6 @@ module
 public import Clafer.Compile.Basic
 public import Clafer.Constraints.Examples
 
-/-!
-[proof->req~clafer-compile-contract~1]
-[proof->req~clafer-compile-formulas~1]
-[proof->req~clafer-compile-group-data~1]
-[proof->req~clafer-compile-structure~1]
--/
-
 /-! # Compile acceptance examples: identity, sharing, bindings and rejected inputs -/
 
 @[expose] public section
@@ -90,6 +83,7 @@ noncomputable def input : Input ast where
 
 noncomputable def result := compile input
 
+-- [proof->req~clafer-compile-contract~1]
 /-- Root, nine declarations, two constraint occurrences, and a reference cycle. -/
 theorem output_valid : MCS.Valid result.labels result.formulas := wellFormed input
 
@@ -100,6 +94,7 @@ def abstractRef : ast.Occurrence := ⟨9, by decide⟩
 def q0 : ConstraintId ast := ⟨derived, ⟨0, by decide⟩⟩
 def q1 : ConstraintId ast := ⟨derived, ⟨1, by decide⟩⟩
 
+-- [proof->req~clafer-compile-structure~1]
 theorem nested_repeated_names :
     result.labels.className (result.roles.head basic) = "same" ∧
     result.labels.className (result.roles.head nested) = "same" ∧
@@ -125,6 +120,7 @@ theorem shared_target_distinct_dereferences :
 
 theorem inheritance_preserved : result.family.super derived = some abstractRef := rfl
 
+-- [proof->req~clafer-compile-group-data~1]
 /-- A childless xor remains accepted structural input. The structural result alone
 retains metadata; the augmented result supplies the separate empty-group predicate. -/
 theorem empty_xor_metadata_preserved :
@@ -170,6 +166,7 @@ theorem repeated_constraint_boundaries : boundary ast q0 = boundary ast q1 ∧
   · decide
   · intro h; exact (by decide : q0 ≠ q1) (Sum.inr.inj h)
 
+-- [proof->req~clafer-compile-formulas~1]
 theorem compiled_constraint_present : formula input (.inr q0) ∈
     result.formulas.diagram.declarations := constraint_declared input q0
 

@@ -2,11 +2,6 @@ module
 
 public import FormalCD.Metamodel.Realization.Context
 
-/-!
-[impl->req~formalcd-metamodel-realization~1]
-[proof->req~formalcd-metamodel-realization~1]
--/
-
 /-! # Reconstruction from the explicit semantic representation
 SoSyM B.4 Definition 8. Decode the effective declaration set, names, identifiers
 and the separately retained mode data. The bare drawing cannot recover modes
@@ -23,6 +18,7 @@ open CategoryTheory DPGraph
 structure ModeData (G : Quiv.{v,u}) where
   mode : ArrowData G → MapMode
 
+-- [impl->req~formalcd-metamodel-realization~1]
 /-- Decode on the represented carrier using context embeddings, full candidates
 and mode side data. This operation also makes sense for malformed representations. -/
 def decodeRaw {V : Vocabulary.{s,va,ua}} {R : Registry.{p}} {G : Quiv.{v,u}} {U : Type z}
@@ -64,6 +60,7 @@ theorem decoded_declarations :
   · intro h
     exact ⟨formulas D ⟨φ, h⟩, candidate_roundtrip D ⟨φ, h⟩⟩
 
+-- [proof->req~formalcd-metamodel-realization~1]
 /-- Exact reconstruction of the whole raw syntax on its original carrier;
 the source itself is not an argument of decodeRaw. -/
 theorem decode_encode : decodeRaw (encode D) (context D) (modes D) = D.toRawOver := by

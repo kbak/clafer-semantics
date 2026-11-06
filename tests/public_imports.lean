@@ -3,9 +3,8 @@ module
 import DPGraph
 public meta import Lean.Elab.Command
 
--- [itest->req~lean-validation~1]
-
 /-! Public foundation smoke test: no upper layer or examples are imported. -/
+-- [itest->req~lean-validation~1]
 #check DPGraph
 #check DPGraph.Signature
 #check DPGraph.Formula

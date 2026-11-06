@@ -5,11 +5,6 @@ public import Mathlib.Logic.Function.Iterate
 public import Mathlib.Data.Nat.Find
 
 /-!
-[impl->req~clafer-structural-satisfaction~1]
-[proof->req~clafer-structural-satisfaction~1]
--/
-
-/-!
 # Declaration ancestry
 
 SoSyM §5.5 and Appendix 5 supply identity-preserving super edges. The global
@@ -22,6 +17,7 @@ namespace Clafer.Semantics.EffectiveCore
 
 variable {n : Nat} (m : EffectiveCore n)
 
+-- [impl->req~clafer-structural-satisfaction~1]
 def Ancestor (d e : Fin n) : Prop :=
   Relation.ReflTransGen (fun d e => m.family.super d = some e) d e
 
@@ -71,6 +67,7 @@ theorem iterate_bounded (f : Fin n → Fin n) (d e : Fin n)
   simp only [Fintype.card_fin] at bound
   exact ⟨⟨k, by omega⟩, hk⟩
 
+-- [proof->req~clafer-structural-satisfaction~1]
 theorem ancestor_iff_bounded (d e : Fin n) :
     m.Ancestor d e ↔ ∃ k : Fin n, m.next^[k.val] d = e := by
   rw [ancestor_iff_iterate]
