@@ -83,3 +83,23 @@ the baseline commit, source identities and reason; IntentBond's test log records
 the actual path and results. Keep both with the evidence. Documentation checks do
 not supply fresh Lean execution evidence or semantic approval. See
 [setup and checks](../CONTRIBUTING.md#setup-and-checks) for commands and prerequisites.
+
+## Behavioral contract and future proofs
+
+The [behavioral contract](behavioral-profile.md) and its
+[source ledger](sources.md#behavioral-profile-sources) are implementation artifacts
+for **documentation** requirements: the profile requirement
+(`req~behavioral-profile~1`) and structural boundary requirement
+(`req~behavioral-structural-boundary~1`). Feature-matrix rows, reserved module names
+and fixture recipes are obligations, not Lean declarations or proof artifacts.
+When an implementation ticket is accepted, link its actual definitions/theorems
+and positive/negative witnesses using the convention above, preserving exact
+source locators and all structural, environment, definedness and finite-bound
+assumptions. Record unresolved semantic choices publicly before implementing them.
+
+Feature validation uses the captured behavioral integration baseline and its
+trusted scope. Behavioral PR/push CI requires full validation; main keeps the
+manifest-selected path. Retain evidence outside source and verify each accepted
+commit against it before downstream pinning. Independent semantic review remains
+required even when all coverage/build/kernel gates pass. The final qualification
+must close every required feature row; checking the first slice is insufficient.

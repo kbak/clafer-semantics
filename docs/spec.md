@@ -34,6 +34,8 @@ Browse requirements by topic:
   [checker](#effective-structural-core-and-supported-fragment),
   [importer](#pinned-resolved-compiler-import) and
   [bounded comparison](#exact-bounded-candidate-comparison).
+- **Behavioral contract:** [profile](#behavioral-language-profile) and
+  [structural boundary](#behavioral-structural-and-repository-boundary).
 - **Worked models:** [walkthrough](#small-lean-model-walkthrough),
   [representative integration](#representative-compilation-and-gluing) and
   [complete telematics model](#complete-resolved-appendix-6-integration).
@@ -162,6 +164,15 @@ creates issues from body files, adds them to the Project, sets their status, and
 supports later edits, comments, and closure. GitHub operation failures must be
 reported as failures; if issue creation succeeds before Project tracking fails,
 the helper reports the created URL so tracking can be retried without recreation.
+The helper accepts `track --status ready` using the Project's live Ready option
+ID, and fails if that option is unavailable. It does not infer dependencies or
+change other tickets automatically. Use Todo → Ready → In Progress → Done:
+Ready is actionable work with accepted hard prerequisites across both repositories;
+selection and actual work move it to In Progress. Done requires acceptance, not
+merely a closed PR or successful automation. Closed-as-not-planned prerequisites
+are not accepted completion. Roadmap containers do not enter Ready. Manually
+reconcile affected unstarted tickets after accepted closure, reopening, dependency
+edits or scope decisions, without silently resetting active work.
 Planning tickets do not authorize starting semantic implementation.
 
 Covers:
@@ -295,7 +306,9 @@ Needs: impl
 Maintain the three reusable layers and explicit exclusions in [intent](intent.md),
 the source-to-construct mapping in the [source map](sources.md), and representation
 alternatives, dependencies and validation tasks in [architecture](architecture.md).
-SoSyM is the primary semantic authority; identify exact sections/definitions/figures,
+SoSyM is the primary structural semantic authority; the separate
+[behavioral profile](behavioral-profile.md) identifies its behavioral paper and
+reviewed departures. Identify exact sections/definitions/figures,
 the inspected publisher e-offprint hash, edition/page convention and Mathlib commit.
 Retain the preprint identity for historical provenance and free access.
 Compare edition differences before changing a source-based semantic claim; do not
@@ -331,6 +344,69 @@ have a separate [supporting-source assessment issue](https://github.com/kbak/cla
 Covers:
 - `intent~formalization-foundation~1`
 - `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral language profile
+
+`req~behavioral-profile~1`
+
+Maintain the versioned [behavioral contract](behavioral-profile.md), grounded in
+arXiv 1807.08576v1 §§5–6 and the immutable 0.5.7 candidate's T1–T13 errata,
+with source hashes, licenses and public decision locators. Keep an exhaustive
+disposition matrix for modifiers, transitions/guards/chains, X/F/G/U/W, anchors,
+all patterns/scopes, assertions/scenarios and their static prerequisites. Every
+required row needs an owner, proof obligation and positive/negative fixture plan.
+Separate proposed obligations from delivered declarations and accepted results.
+
+Explicitly record reappearance, parent identity across lifetimes, parent-bounded
+obligations and signed source negation, group counts, reference views and partial
+integer boundaries. Unresolved choices must have public dispositions before
+choosing definitions; deferral or scope reduction needs explicit review. A later
+release SHA needs a recorded delta review. Preserve historical SoSyM and static
+oracle baselines. The initial slice does not reduce the completion scope.
+
+Feature PRs target `behavioral`; downstream uses immutable accepted upstream
+pins. CI on behavioral PRs and pushes must retain full build, tests, kernel,
+layer/axiom and traceability gates. Review actual branch-protection settings
+without weakening main. Require independent semantic acceptance, explicit issue
+closure after accepted non-default-branch integration, and the ordered final
+S7/C10/S8/C11 gates. This requirement delivers a contract and workflow, not
+behavioral implementation or authorization to merge main.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral structural and repository boundary
+
+`req~behavioral-structural-boundary~1`
+
+Specify the behavioral extension under `Clafer/Behavioral`, with an optional
+`Clafer.Behavioral` entry point in the single `clafer` Lake package. Preserve
+structural imports and `Clafer -> FormalCD -> DPGraph -> Mathlib`; no generic
+temporal lower-layer framework is presumed. Keep independent source meaning,
+source normalization and lasso correctness upstream; executable IR, frontend,
+independent Alloy target meaning, encoding and compiler-specific proofs remain
+downstream, with one-way dependencies.
+
+Use infinite traces for meaning, finite lassos only through a separately justified
+unfolding/evaluation contract. Specify stable identity/type/parent data, live
+carriers, reference occurrence identity and loop-edge/lifetime obligations.
+State snapshot agreement and constant-trace embedding only for their actual
+common structural domain, with explicit environment/definedness hypotheses for
+atom reuse. Do not identify pointwise structural correctness with temporal
+preservation or bounded checking with unrestricted completeness. New meanings
+must not silently change the existing structural checker/importer profiles.
+
+The [contract](behavioral-profile.md) records the intended interfaces and theorem
+obligations; the owning implementation tickets must later introduce actual Lean
+artifacts and kernel-checked proofs. This documentation requirement claims none.
+
+Covers:
+- `intent~formalization-foundation~1`
 
 Needs: impl
 
@@ -1535,7 +1611,9 @@ interface for [core constraint typing](spec.md#resolved-core-constraint-typing),
 Constraint bodies and expression typing are supplied by the separate core
 constraint module below. Name resolution remains an upstream obligation; the separate
 [denotation extension](constraint-denotation.md) supplies Appendix 4 equations. The context module must not depend on the expression
-implementation. Check repeated-occurrence and dangling-reference examples.
+implementation. The behavioral extension retains a separate attachment and
+time-spanning environment contract; this static boundary does not supply source
+temporal negation or lifetime semantics. Check repeated-occurrence and dangling-reference examples.
 
 Covers:
 - `intent~formalization-foundation~1`

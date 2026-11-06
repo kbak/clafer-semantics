@@ -85,9 +85,19 @@ Compile/gluing preservation separate; the
 [original Alloy translation, compiler and Diskin assessment](sources.md#metamodel-realization-and-translational-semantics)
 retains their source differences and unresolved historical identities.
 
+The [behavioral profile candidate](behavioral-profile.md) scopes a separate
+extension under `Clafer/Behavioral`: independent infinite-trace meaning, lifetime
+and signed temporal obligations, surface reductions and justified lasso checking.
+Its complete feature/disposition matrix and two-repository ownership contract
+require explicit acceptance; behavioral definitions and proofs remain future work.
+The optional `Clafer.Behavioral` entry point stays within the same Lake package.
+Feature integration uses `behavioral`; the existing structural imports and
+historical static profiles remain supported.
+
 Exclude production instance generation, general Alloy/SMT/SAT integration,
-production runtime configuration management, Claferize, post-2014 extensions beyond the adopted child-default policy,
-a production parser and visualization. Keep the foundation reproducible and
+production runtime configuration management, Claferize, post-2014 extensions
+beyond the adopted child-default policy and the separately reviewed behavioral
+profile, a production parser and visualization. Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document
 owns the detailed scope; [requirements](spec.md) state the precise promises.
@@ -127,6 +137,7 @@ numbers and ticket chains must not substitute for an explanation.
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
+| [Behavioral profile](behavioral-profile.md) | Candidate 0.5.7 source contract, complete feature obligations, structural boundary and integration gates |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |
