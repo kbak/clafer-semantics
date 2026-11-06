@@ -39,6 +39,8 @@ Browse requirements by topic:
   [formula meaning](#behavioral-formula-meaning-and-attachment),
   [signed normalization](#behavioral-signed-normalization) and
   [environments](#behavioral-time-spanning-environments),
+  [modifiers](#behavioral-modifiers-and-anchors), [transitions](#behavioral-transition-sugar),
+  [patterns](#behavioral-scoped-patterns), [properties](#behavioral-models-and-properties),
   [lassos](#behavioral-finite-lassos) and [evaluation](#behavioral-finite-evaluation).
 - **Worked models:** [walkthrough](#small-lean-model-walkthrough),
   [representative integration](#representative-compilation-and-gluing) and
@@ -767,6 +769,90 @@ Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged
 environment and definedness conditions. The separate behavioral references and
 partial-atoms requirement owns that integration under the adopted D3 rules.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral modifiers and anchors
+
+`req~behavioral-modifiers~1`
+
+Define effective inherited initial/final/finalref/finaltarget and dynamic enum
+finality over admitted richer structural traces. Initial requires children at
+every parent birth; final fixes heads and references shallowly. Finalref fixes
+each head's reference during its uninterrupted life; finaltarget fixes the
+parent's target image during its uninterrupted life. Preserve inherited owner
+lookup, identity multiplicity and lifetime resets. Prove expansion into captured
+sets and temporal formulas, including attachment and signed lowering. Characterize
+initially at time zero and every context birth, finally at every last live state,
+and vacuity of finally for a never-ending life. Follow the explicit reference
+modifier completion in the [surface contract](behavioral-surface.md), not an
+unattributed equation from the paper.
+
+Provide admitted stable and changing inherited-reference witnesses, target swaps,
+shallow finality, inherited initial presence, repeated births and lifetime gaps.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral transition sugar
+
+`req~behavioral-transition-sugar~1`
+
+Define guarded and unguarded immediate/eventual transitions and declaration
+attachment under T2–T4 and behavioral §6.1 pp.2:31–32. The first link is
+conditional; later sources/guards are required sequentially. Eventual links
+require source/context persistence until target or parent cancellation; guards
+are entry tests. Prove both signed meanings and reduction/normalization,
+retaining the original strict partial domain. Supply the resolved presence
+adapter and record the generic caller's attachment obligation. Check valid
+chains and mutations with missing intermediate states/guards, context/source
+loss, cancellation and reappearance. See the [surface contract](behavioral-surface.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral scoped patterns
+
+`req~behavioral-patterns~1`
+
+Define never, sometime, lonce, always, precedence and response in all five
+scopes against independent signed interval meaning. Prove every expansion for
+both polarities, including temporal scope premises and lifetime cancellation;
+compose signed normalization/lowering while retaining partial definedness.
+Adopt D2's corrected response throughout between intervals and first-opener
+after-precedence. Keep those compiler mismatches explicit. Characterize implicit
+always recurrence versus initially anchored existence. Check all thirty cells
+with positive/negative infinite-trace witnesses and both signs, plus missing,
+repeated and simultaneous boundaries, events at opening/closing, contiguous
+versus separated episodes, context loss, parent gaps and reappearance. Follow
+the [surface contract](behavioral-surface.md) and T2/T9, not compiler equality.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral models and properties
+
+`req~behavioral-properties~1`
+
+Define model satisfaction from structural admission, effective modifiers and
+all attached constraints. Separate universal assertions from existential
+model-plus-scenario feasibility, for root and nested attachments. Counterexamples
+use classical failure of interpreted satisfaction, including definedness;
+source negation is not its replacement. Prove counterexample/assertion duality,
+scenario extension and normalization with the original partial domain. Check
+multiple valid traces and multiple nested instances, cancellation's two source
+polarities and the distinct negative-scenario conjunction/implication forms.
+The [surface contract](behavioral-surface.md) fixes the scope of T5/T6/T9/T12
+and the downstream parser/elaboration boundary.
 
 Covers:
 - `intent~formalization-foundation~1`

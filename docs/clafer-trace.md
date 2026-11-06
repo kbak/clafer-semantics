@@ -1966,3 +1966,109 @@ that must hold after birth. These are source bridges, not backend correctness.
 
 Covers:
 - `req~behavioral-reference-atoms~1`
+
+## Behavioral surface
+
+The [surface contract](behavioral-surface.md) records the independent meanings,
+reviewed D2/D5 source choices and downstream interface limits. All declarations
+below live in `Clafer.Behavioral`; no new axiom or finite-search completeness is
+assumed. Lean-local trace tags point to implementation, proof and witness bodies.
+
+`impl~behavioral-modifiers~1`
+
+[Modifiers.lean](../Clafer/Behavioral/Modifiers.lean) defines `Effective`,
+`enumLiteral`, `Stable`, `Initial`, `FinalHeads`, `FinalRef`, `FinalTarget`, `Final`,
+`Holds`, resolved `Placement` and `expand`. [Anchors.lean](../Clafer/Behavioral/Anchors.lean)
+defines strict `AtBirths` / `AtDeaths` independently of their expansions.
+
+Covers:
+- `req~behavioral-modifiers~1`
+
+`proof~behavioral-modifiers~1`
+
+`stable_iff_adjacent`, `effective_inherited`, `initial_agrees`, `expand_agrees`,
+`lower_agrees`, `final_assignments_adjacent` and `final_implies_finalTarget`
+establish the modifier rules; the observation/lowering theorems require
+`Structural.Valid`, while `initial_agrees` does not. `initially_at_births`,
+`finally_at_deaths` and `finally_vacuous` include partial definedness.
+[ModifierExamples.lean](../Clafer/Behavioral/ModifierExamples.lean) proves
+`swap_admitted`, `swap_finaltarget`, `swap_not_finalref`, `inherited_ref_mutation`,
+`inherited_shallow_final`, `inherited_initial`, `fixed_inherited_valid` and
+`fixed_inherited_final`, `cycle_finalref` and `initial_every_birth` /
+`initial_rebirth_missing`. `gap_resets` / `no_gap_rejects` isolate lifetime equality.
+[AnchorExamples.lean](../Clafer/Behavioral/AnchorExamples.lean) checks first/second
+birth, observation before death and vacuity for a permanent root.
+
+Covers:
+- `req~behavioral-modifiers~1`
+
+`impl~behavioral-transition-sugar~1`
+
+[Transitions.lean](../Clafer/Behavioral/Transitions.lean) defines `Chain.required`
+and `meaning`, separate `sequence` and `expand`, `declaration` and `presence`.
+Only the first link is conditional; generic callers supply the attachment's
+presence formula, while `declaration` supplies the resolved `this` test.
+
+Covers:
+- `req~behavioral-transition-sugar~1`
+
+`proof~behavioral-transition-sugar~1`
+
+`sequence_agrees`, `expand_agrees`, `normalize_agrees` and `lower_agrees`
+quantify over both signs, times, environments and arbitrary formula operands.
+`partial_agrees` additionally preserves original expanded-source definedness.
+[TransitionExamples.lean](../Clafer/Behavioral/TransitionExamples.lean) checks
+`three_states`, `missing_middle_rejected`, `nested_implication_bug`,
+`subsequent_guard_required`, `entry_guard_need_not_persist`,
+`source_death_not_cancellation`, `parent_death_cancels` and
+`reappearance_new_obligation` on an admitted infinite trace.
+
+Covers:
+- `req~behavioral-transition-sugar~1`
+
+`impl~behavioral-patterns~1`
+
+[Patterns.lean](../Clafer/Behavioral/Patterns.lean) defines signed `Interval`
+operators over times, the thirty-cell `meaning` and separate syntax `expand`.
+The [surface contract](behavioral-surface.md#patterns-and-scopes) specifies scope
+boundaries, nonclassical cancellation premises and the adopted D2 corrections.
+
+Covers:
+- `req~behavioral-patterns~1`
+
+`proof~behavioral-patterns~1`
+
+`expand_agrees` covers every row/column and both signs for arbitrary temporal
+operands; `lower_agrees` composes S3, and `partial_agrees` keeps the source domain.
+`response_interval` and `first_opener` characterize corrected event-level clauses
+assuming a persistent parent, classical events and an identified first boundary.
+`Anchors.root_recurrence` / `root_anchored_existence` assume a permanent root and
+total observations. [PatternExamples.lean](../Clafer/Behavioral/PatternExamples.lean)
+checks all thirty positive/negative pairs, both signs and named boundary mutations;
+`trace_valid`, `observations_agree` and `source_agrees` relate their kernel-computed
+finite values to independent infinite source meanings. The two pinned-expansion
+mutants distinguish corrected response and first-opener precedence.
+
+Covers:
+- `req~behavioral-patterns~1`
+
+`impl~behavioral-properties~1`
+
+[Properties.lean](../Clafer/Behavioral/Properties.lean) defines resolved
+`Constraint.root` / `nested`, strict `Holds`, `Model.behavioral`, `Satisfies`,
+`Asserts`, classical `Counterexample`, existential `Possible` and `withScenario`.
+
+Covers:
+- `req~behavioral-properties~1`
+
+`proof~behavioral-properties~1`
+
+`counterexample_iff`, `possible_iff`, `root_holds`, `nested_holds` and
+`Constraint.lowered` preserve quantification, attachment and original definedness.
+[PropertyExamples.lean](../Clafer/Behavioral/PropertyExamples.lean) supplies two
+structurally valid traces for `possible_not_universal`, a failing sibling for
+`nested_all_instances`, `source_not_is_not_failure` after cancellation, and
+`negative_scenario_conjunction` distinguishing the T6 formula forms.
+
+Covers:
+- `req~behavioral-properties~1`

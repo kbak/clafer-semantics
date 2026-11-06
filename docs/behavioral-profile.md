@@ -14,7 +14,9 @@ lifetime and structural bridge APIs and witnesses. The
 normalization/lowering and the adopted D1 environments over total observations;
 later feature obligations remain separate. The [structural and atom contract](behavioral-structure.md)
 adds richer admission, inherited-reference bindings, captured static agreement and
-strict partial temporal composition, with explicit downstream obligations.
+strict partial temporal composition, with explicit downstream obligations. The
+[surface contract](behavioral-surface.md) specifies modifiers, anchors, transitions,
+all thirty scoped patterns and model/assertion/scenario meanings, including D2/D5.
 
 Profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
@@ -47,7 +49,7 @@ moving meaning across a repository or layer requires contract review.
 | [Trace and snapshot semantics (S2)][S2] | `Clafer/Behavioral/Trace.lean`, `Snapshot.lean` | Shared identity/type/parent data, live states, lifetimes, structural projection and constant embedding |
 | [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Lifetime.lean`, `Normalization.lean`, `Lowering.lean` | Independent signed source satisfaction, interval meaning, normalization and ordinary temporal core; no compiler IR or target imports |
 | [Structural atom compatibility (S4)][S4] | `Structural.lean`, `StructuralCompatibility`, `StructuralObservation`, `StructuralSnapshot`, `StructuralBinding`, `CapturedStatic`, `PrimitiveExpression`, `StaticObservation`, `PartialObservation`, `PartialCompatibility`, `Initializers` | Independent richer admission, full current bindings, captured static agreement and strict partial temporal composition; reviewed initializer profile |
-| [Surface meaning (S5)][S5] | `Surface.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
+| [Surface meaning (S5)][S5] | `Anchors.lean`, `Modifiers.lean`, `Transitions.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
 | [Lasso checking (S6)][S6] | `Lasso.lean`, `Orbit.lean`, `FiniteEvaluation.lean`, `LassoValidation.lean`, `FiniteSets.lean`, `Verification.lean` | [Finite representation, unfolding and exact-candidate evaluation](behavioral-verification.md) over the normalized core |
 | [Compiler contract (C1)][C1], [IR (C4)][C4] | Downstream executable behavioral IR and interpretation | Pins an accepted upstream SHA; representation correctness is proved, not an assumed preservation predicate |
 | [Target semantics (C3)][C3], [encoding (C5)][C5]/[full encoding (C8)][C8] | Downstream independent Alloy temporal meaning, encoder, serializer | Source meaning must not be defined by the generator or target evaluator |
@@ -144,10 +146,11 @@ not satisfaction of its source-negated syntax.
 `P` below means the [behavioral paper][paper], with its printed article pages
 `2:n`. `Tn` and `Sn` refer to the pinned [temporal][temporal] and [static][static]
 errata. `CS` refers to the pinned [CheatSheet][cheat]. Each row is required in the
-final profile unless explicitly marked **review decision**. A fixture pair is a
-required future positive witness and negative mutation/countermodel, not a claim
-that executable fixtures already exist. S7 must replace each obligation with
-actual declarations, proof hypotheses and fixture links. Backend witnesses alone
+final profile unless explicitly marked **review decision**. The S5 rows below
+name source APIs and checked witnesses; their hypotheses and
+links are in the [surface contract](behavioral-surface.md) and
+[proof index](clafer-trace.md#behavioral-surface). Other rows retain their separate
+owner obligations until those owners supply evidence. Backend witnesses alone
 do not discharge source proofs.
 
 | ID / semantic rule | Source locator | Owner | Proof obligation | Positive / negative fixture |
@@ -166,21 +169,21 @@ do not discharge source proofs.
 | B12: `U` / `until` | P Def. 4, p. 2:28; T2 | [S3], [S6], [C5] | Strong until or cancellation, including immediate right operand | Left holds until right / left breaks early with parent live |
 | B13: `W` / `weakuntil` | P §6.1 p. 2:31; T2 | [S3], [S6], [C5] | Weak-until equation and signed duality | Left forever without right / neither left nor right before cancellation |
 | B14: source `!`, temporal Boolean expansions, quantifier polarity | P Def. 4 deliberately changed by T2; decision #110 | [S3], [C4], [C8] | Signed normalization, all/some/no duality and one/lone barrier | Both polarities cancelled / incorrectly allow both with persistent parent |
-| B15: implicit always and per-instance attachment | P §6.1 p. 2:30; T2, T9 | [S3], [S5], [C7] | Constraints start at every applicable state/context | Recurring `sometime` / only one occurrence on a permanent root trace |
-| B16: `initial` including inheritance | P §6.1 p. 2:32; T7–T8 | [S5], [C7] | Child presence at every parent birth, including time zero | Present at two births / absent only at reappearance |
-| B17: `final` including inheritance | P §6.1 p. 2:32; T8 | [S5], [C7], [C8] | Shallow stability of heads and references per parent lifetime | Stable parent interval with changing grandchildren / replace a final child within that interval |
-| B18: `finalref`, `finaltarget`, direct/inherited references and combined modifiers | T8; CS Temporal modifiers; decision #109 | [S4], [S5], [C6] | Distinguish reference stability from target-set stability; inherited modifier agreement | Inherited fixed reference / change its target while the relevant lifetime continues |
-| B19: dynamic enum literals are final | T8; CS Enum | [S5], [C7] | Enum expansion without turning static models dynamic | Same literal identity through a trace / replace a literal |
-| B20: `initially` | P §6.1 p. 2:31 corrected by T7 | [S3], [S5], [S6], [C7] | At time zero and each context birth; negative polarity anchors body | Body at first and second births / satisfy only the first |
-| B21: `finally` | P §6.1 p. 2:31; T7; T2 polarity | [S3], [S5], [S6], [C7] | Last live state, every lifetime; vacuous for no death | Body before death / body only after death |
-| B22: immediate `-->` and guarded `-[g]->` | P §6.1 pp. 2:31–32; T2–T3 | [S5], [C7], [C8] | Source (and guard) implies bounded next target | Guard fires to target / surviving parent but wrong next state |
-| B23: eventual `-->>` and guarded `-[g]->>` | P §6.1 pp. 2:31–32; T2–T3 | [S5], [C7], [C8] | Source/context persist until target or parent cancellation; guard tests entry | Guard need not persist / source dies before target with parent live |
-| B24: declaration transition and additional outgoing constraints | T3; CS Transitions; decision #107 | [S5], [C7] | Attach to the source clafer, not its parent | Nested source switch / accidentally cancel on source death or wait for grandparent death |
-| B25: mixed guarded transition chains | P §6.1 amended by T4 | [S5], [C7], [C8] | First condition, then required sequential states/guards | `a,b,c` / `a,not b,c` satisfying a nested-implication misreading |
-| B26: six patterns in all five scopes | P §§4.2, 6.1; T2, T9; CS Dwyer's patterns | [S5], [C7], [C8] | Every cell in the pattern matrix below; resolve D2 | Required scope fixtures / missing event or boundary mutation |
-| B27: universal top-level/nested assertions | P §§4.5, 6.1 corrected by T5–T6 | [S5], [C8], [C10] | All model traces and all applicable instances; classical counterexample | Property on all traces / one counterexample despite another good trace |
-| B28: possible and negative scenarios | P §4.5 corrected by T4–T6; T12 | [S5], [C7], [C10] | Existential model-plus-scenario feasibility; required start anchor | Anchored reachable sequence / impossible sequence or vacuous first condition |
-| B29: syntax/precedence and aliases | P §6.1; T12; CS Temporal logic/Transitions | [C7] with [S5] normalization | Parser/elaboration agreement; transitions bind weakest; `not` quantifier differs from `!` | `initially (a --> b)` / parse it as `(initially a) --> b`; following `xor` ambiguity |
+| B15: implicit always and per-instance attachment | P §6.1 p. 2:30; T2, T9 | [S3], [S5], [C7] | `Constraint.Holds`, `Anchors.root_recurrence`, `root_anchored_existence` | `AnchorExamples.once_is_not_recurrent` |
+| B16: `initial` including inheritance | P §6.1 p. 2:32; T7–T8 | [S5], [C7] | `Modifiers.Initial`, `Effective`, `initial_agrees` | `ModifierExamples.inherited_initial`, `initial_every_birth` / `initial_rebirth_missing` |
+| B17: `final` including inheritance | P §6.1 p. 2:32; T8 | [S5], [C7], [C8] | `Final`, `FinalHeads`, `expand_agrees`, `final_implies_finalTarget` | `inherited_shallow_final`, `fixed_inherited_final` / `swap_not_final` in `ModifierExamples` |
+| B18: `finalref`, `finaltarget`, direct/inherited references and combined modifiers | T8; CS Temporal modifiers; decision #109 | [S4], [S5], [C6] | `FinalRef`, `FinalTarget`, `finalRef_agrees`, `finalTarget_agrees`; adopted D5 | `swap_finaltarget`, `cycle_finalref` / `swap_not_finalref`, `inherited_ref_mutation` in `ModifierExamples` |
+| B19: dynamic enum literals are final | T8; CS Enum | [S5], [C7] | `Modifiers.enumLiteral`, `dynamic_enum_final`, `static_enum_no_modifier`; C7 constructs declarations | `dynamic_enum_final` / `static_enum_no_modifier`; finality witnesses share the generic modifier semantics |
+| B20: `initially` | P §6.1 p. 2:31 corrected by T7 | [S3], [S5], [S6], [C7] | `Anchors.initially_at_births`, `birth_zero`, `birth_again` | `time_zero_required`, `second_birth_required` in `AnchorExamples` |
+| B21: `finally` | P §6.1 p. 2:31; T7; T2 polarity | [S3], [S5], [S6], [C7] | `Anchors.finally_at_deaths`, `finally_vacuous` | `endless_final_is_vacuous` / `after_death_too_late` in `AnchorExamples` |
+| B22: immediate `-->` and guarded `-[g]->` | P §6.1 pp. 2:31–32; T2–T3 | [S5], [C7], [C8] | `Transitions.step`, `Chain.expand_agrees` and `lower_agrees` | `three_states`, `parent_death_cancels` / `source_death_not_cancellation` in `TransitionExamples` |
+| B23: eventual `-->>` and guarded `-[g]->>` | P §6.1 pp. 2:31–32; T2–T3 | [S5], [C7], [C8] | `Transitions.advance`, `Chain.required`, `sequence_agrees` | `entry_guard_need_not_persist` / `eventual_source_disappearance_rejected` |
+| B24: declaration transition and additional outgoing constraints | T3; CS Transitions; decision #107 | [S5], [C7] | `Transitions.declaration`, `presence_agrees`; C7 retains source attachment and conjoins outgoing constraints | `source_death_not_cancellation`, `parent_death_cancels`, `reappearance_new_obligation` |
+| B25: mixed guarded transition chains | P §6.1 amended by T4 | [S5], [C7], [C8] | `Chain.sequence`, `required`, `sequence_agrees`, `expand_agrees` | `three_states` / `missing_middle_rejected`, `nested_implication_bug`, `subsequent_guard_required` |
+| B26: six patterns in all five scopes | P §§4.2, 6.1; T2, T9; CS Dwyer's patterns | [S5], [C7], [C8] | `Patterns.meaning`, `expand_agrees`, `lower_agrees`, `response_interval`, `first_opener`; adopted D2 | `PatternExamples.all_thirty_positive`, `all_thirty_negative`, `all_thirty_opposite_signs` and boundary regressions |
+| B27: universal top-level/nested assertions | P §§4.5, 6.1 corrected by T5–T6 | [S5], [C8], [C10] | `Model.Asserts`, `Counterexample`, `counterexample_iff`, `Constraint.nested_holds` | `possible_not_universal`, `nested_all_instances`, `source_not_is_not_failure` in `PropertyExamples` |
+| B28: possible and negative scenarios | P §4.5 corrected by T4–T6; T12 | [S5], [C7], [C10] | `Model.Possible`, `withScenario`, `possible_iff`; explicit required sequence/anchor | `PropertyExamples.negative_scenario_conjunction`, `TransitionExamples.first_source_conditional` |
+| B29: syntax/precedence and aliases | P §6.1; T12; CS Temporal logic/Transitions | [C7] with [S5] normalization | C7 parser/elaboration obligation; S5 exposes `Chain.expand`/`sequence`/`declaration`, `Patterns.expand`, `Modifiers.expand` and reduction theorems | Parser fixtures remain C7-owned; source anchoring/negation witnesses are in `AnchorExamples`/`PropertyExamples` |
 | B30: lassos and bounded reporting | P §6.2; T13 | [S6], [C2], [C3], [C9] | Infinite unfolding/evaluation agreement; identity capacity assumptions | Nonzero prefix and loop-edge birth / invalid loop index or undersized identity pool |
 | B31: integer observations and operations | P §6.1 structural reuse; S11; current denotation; reviewed D3 conversion | [S4], [C6], [C8] | Explicit strict-singleton versus finite-set-sum conversion and arithmetic-domain/range conditions; complete D3 | Empty arithmetic operand contributes zero while presence stays false; defined arithmetic in range / wrong-domain or infinite observation, zero divisor; backend range overflow |
 | B32: declaration `=` / `:=`, numeric/group defaults | P §6.1 p. 2:29; T10; S1–S2 | [S4], [S5], [C6], [C7] | Constant equation at every live attachment state; explicit rejection of `:=`; effective defaults remain separate from temporal birth | Inherited opt and persistent `=` / accept `:=` silently or confuse `=` with `initially` |
@@ -195,14 +198,18 @@ and oracle contracts are not upgraded to temporal or 0.5.7 contracts by this doc
 
 ## Complete pattern and scope inventory
 
-All **30** cells below are required. IDs identify future fixture pairs and expansion
-proofs owned by [S5], frontend preservation by [C7], and encoding by [C8]. The
+All **30** cells below are implemented by `Patterns.meaning` / `expand` and
+`expand_agrees`. `PatternExamples.all_thirty_positive`, `all_thirty_negative`
+and `all_thirty_opposite_signs` instantiate each row/column ID. The
+[surface contract](behavioral-surface.md#patterns-and-scopes) gives their valuations
+and infinite-trace correspondence. Frontend preservation remains [C7]-owned and
+encoding [C8]-owned. The
 source locator for each row is the matching `TmpPat*` branch of pinned
 [`translateTmpPatterns`][desugarer], with each column selecting `PatScopeEmpty`,
 `PatScopeBefore`, `PatScopeAfter`, `PatScopeBetweenAnd`, or `PatScopeAfterUntil`.
 The paper supplies the pattern approach, not a complete expansion catalogue.
-The compiler is supplementary: D2 requires independent interval meanings and
-review of any mismatch before adopting its equations.
+The compiler is supplementary: adopted D2 corrects two expansions against the
+independent interval contract. Both mismatches have checked regression traces.
 
 | Pattern / local positive and negative witness | Whole suffix | Before r | After q | Between q and r | After q until r |
 | --- | --- | --- | --- | --- | --- |
@@ -223,9 +230,9 @@ fixtures. Evaluate both polarities, including temporal scope premises. T2's
 normalization means a negated `F r` premise cannot be naively replaced by a
 positive bounded eventuality that becomes true solely on cancellation.
 
-These witness recipes are acceptance obligations. They do not declare every
-pinned expansion correct. In particular, the pinned `TmpPatFollow` / between
-branch must be checked for responses to p **after** the opening q (D2).
+The checked `between_late_trigger_regression` and `first_opener_regression`
+retain the two pinned-expansion counterexamples. `response_interval` and
+`first_opener` characterize the corrected clauses independently of expansion.
 Implicit always still applies to a pattern's attachment: unanchored top-level
 `sometime p` requires recurrence; `initially (sometime p)` requires one future
 occurrence. `lonce` counts episodes, not individual adjacent p states.
@@ -269,9 +276,10 @@ features cannot disappear through an unsupported-input guard.
 | Decision | Evidence / conflict | Required resolution and owners |
 | --- | --- | --- |
 | D1: observations of stored identities — adopted | P §5 pp. 2:26–28 attaches snapshots to environment values; pinned `AlloyLtl.genPExp'` emits bound variables as stable identities and current-state navigation. `thisAlive` filters standalone `this`, whereas direct `this` navigation starts at the identity even after its disappearance. | [Approved disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831): capture identities/sets and use current relations, retaining standalone-this versus direct-navigation distinction. The [formula contract](behavioral-formulas.md#captured-values-and-current-navigation) and its witnesses give exact rules. [S4]/[C4] must preserve them in adapters; no full agreement with the paper's snapshot-pair evaluator is claimed. |
-| D2: independent scoped patterns | The paper lacks all 30 equations; pinned `TmpPatFollow` between q/r puts the p implication at the opener, unlike the after-until branch. | [S5]/[C7]/[C8]: evaluate a trace with q at 0, p later, r later still, and no response; record whether to correct the expansion or select that candidate behavior. Preserve the complete pattern scope while resolving the mismatch. |
+| D2: independent scoped patterns — adopted | The paper lacks all 30 equations. Pinned response-between tests p only at q; precedence-after can skip the first q. | [Response disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) requires every p before r to receive s before r. [First-opener disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689399331) starts after at the first q. [S5] supplies the complete signed interval table, general expansion proofs and regression traces in the [surface contract](behavioral-surface.md). [C7]/[C8] preserve these corrections, not the erroneous pinned expansions. |
 | D3: arithmetic and partial temporal domain — adopted | The [accepted behavioral conversion](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729) sums finite integer sets, including empty-to-zero, while preserving relational presence/equality and strict extraction. The [accepted scalar rule](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865) uses mathematical Int, truncation toward zero, matching remainder and undefined division/remainder at zero. The [extrema disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685652746) keeps empty selectors empty; explicit folds retain occurrences, with empty sum 0/product 1. Backend overflow does not change source meaning. The [strict temporal-domain disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) requires every operand/member and every active temporal observation defined. | [S4] supplies the [resolved expression and partial-domain interfaces](behavioral-structure.md#captured-static-atoms-and-partial-temporal-composition), finite-observation and agreement proofs. [C6]/[C8] preserve those rules during elaboration/encoding and establish sufficient intermediate ranges. Undefined expressions and wrong-domain/infinite observations must not silently become zero, false or true. |
 | D4: defaults and structural prerequisites — adopted | The [reviewed disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) supports `=` as a presence-guarded equation at every live attachment state and explicitly rejects `:=` in this profile. S6 nested abstracts/refined parents and S9 inherited references use the richer independent structural core. S10 concrete supers remain source-permitted. | [S4] supplies admission, common-fragment equivalence, full bindings and initializer disposition. [C6]/[C7] preserve effective defaults and instance identities, resolve views and diagnose unsupported `:=`; [S5] owns remaining surface modifiers. Neither initializer denotes temporal birth. |
+| D5: reference modifiers — adopted completion | P §§6.1–6.2 p.2:32 defines final child-set stability and nested lifetime limits, but does not name finalref/finaltarget. T8/CheatSheet distinguish them; the pinned generator uses per-head equality for both. | The [reviewed completion](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) fixes per-head references for finalref, parent target images for finaltarget, and heads plus references for final. Each rule resets at its relevant lifetime gap and includes inherited references. [S5] proves these independent meanings; [C7]/[C8] must retain their distinction. |
 
 The following broader nonbehavioral features are **proposed exclusions requiring
 S1/C1 review**, not silent omissions: decimal/double/real and string computation,

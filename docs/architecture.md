@@ -36,8 +36,12 @@ compatibility. The separate [finite verification API](behavioral-verification.md
 `Lasso`/`Orbit`, `FiniteEvaluation`, `LassoValidation`, `FiniteSets` and
 `Verification`, with `LassoExamples` as checked fixtures. Its imports may reuse
 the guarded structural checker; `Clafer.Behavioral` retains source independence.
-Finite adapters for richer structural/partial observations and surface meaning
-remain separate work.
+Finite adapters for richer structural/partial observations remain separate work.
+The [surface layer](behavioral-surface.md) adds `Anchors`, `Modifiers`,
+`Transitions`, `Patterns` and `Properties`. Independent meanings reduce to the
+signed formula core; partial adapters retain the expanded source domain. Only
+fixture modules import finite evaluation, and its agreement theorem transports
+their finite checks to infinite source meaning.
 Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
@@ -66,8 +70,8 @@ explicit common structural fragment. Static pointwise agreement alone establishe
 neither temporal preservation nor trace completeness.
 
 The [feature matrix](behavioral-profile.md#feature-disposition-matrix) records
-required future proofs and fixtures, separately from the delivered theorem table
-below. Its [integration gates](behavioral-profile.md#integration-and-acceptance)
+delivered surface APIs and remaining cross-repository obligations, alongside
+the theorem table below. Its [integration gates](behavioral-profile.md#integration-and-acceptance)
 require both repositories' complete accepted candidates before main integration.
 
 ## DPGraph core and models
