@@ -73,6 +73,16 @@ After building, run the declaration/axiom audit and Lean/Python regression tests
 before the more expensive kernel replay. Any failed gate stops later stages;
 successful full validation still requires the complete kernel check.
 
+Python tests may run in at most four isolated worker processes; CI uses two.
+Discover the complete suite before partitioning, assign every test exactly once,
+and require matching execution receipts and successful exits from every worker.
+Reject missing/duplicate execution, discovery/setup failures, skips and silent
+worker exits. Preserve per-worker logs and the aggregate inventory/result outside
+source. Each worker owns its writable Alloy runtime and comparison evidence;
+compiler/solver executions, candidate enumeration and assertions remain unchanged.
+Cancellation stops active workers. All workers finish successfully before the
+kernel stage may run; the default local command remains sequential.
+
 Local and CI validation may instead run source-inventory preflight, its Python
 regressions, document filename/link checks and validation-selection regressions when a
 complete file-content and mode comparison with a frozen Git baseline proves that

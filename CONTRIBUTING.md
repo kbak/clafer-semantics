@@ -157,6 +157,16 @@ Changed or missing exporter inputs take the pinned build path. Cache keys includ
 the exporter, builder, runtime and protocol sources and runner platform. All live
 compiler/solver comparisons still execute and produce new evidence.
 
+Set `CLAFER_TEST_JOBS=2` to run the discovered Python suite in two isolated
+processes, as CI does; the default is sequential and the maximum is four.
+`scripts/run_tests.py` partitions test identities and requires every assigned test
+to execute exactly once. Missing receipts, worker failures, skips and discovery
+errors fail the stage before kernel replay. Logs, assignments and aggregate
+execution receipts go beneath `CLAFER_TEST_EVIDENCE` (default system temporary
+directory), outside source; CI retains them with IntentBond evidence. Writable
+Alloy runtimes and comparison outputs are isolated per worker. This parallelizes
+execution without caching test verdicts or reducing candidate enumeration.
+
 ## Tickets and pull requests
 
 Public contributors can use the GitHub website throughout; private Project

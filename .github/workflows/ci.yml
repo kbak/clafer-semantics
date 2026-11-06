@@ -162,6 +162,8 @@ jobs:
           # Full checks retain all gates even when compiled artifacts are cached.
           LAKE_ARTIFACT_CACHE: 'true'
           LAKE_RESTORE_ARTIFACTS: 'true'
+          CLAFER_TEST_JOBS: '2'
+          CLAFER_TEST_EVIDENCE: ${{ runner.temp }}/python-tests
         run: |
           set +e
           ib check --repo "$GITHUB_WORKSPACE" --scope "$RUNNER_TEMP/trusted-scope.json" \
@@ -204,5 +206,6 @@ jobs:
             ${{ runner.temp }}/clafer-compiler/build.json
             ${{ runner.temp }}/clafer-compiler/build.log
             ${{ runner.temp }}/clafer-comparison-evidence/
+            ${{ runner.temp }}/python-tests/
           if-no-files-found: warn
           retention-days: 30
