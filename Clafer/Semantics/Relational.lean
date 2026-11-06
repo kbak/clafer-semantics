@@ -38,6 +38,7 @@ theorem setValued_one_iff {A B : Type} (q : Span A B) (hq : SetValued q) :
 namespace Configuration
 variable {n : Nat} {U : Type} (m : EffectiveCore n) (s : Configuration (Fin n) U)
 
+-- [proof->req~clafer-structural-satisfaction~1]
 theorem parent_one_iff (typed : s.Typed m) (d p : Fin n)
     (hp : m.family.parent d = some p) :
     TargetMultiplicity Clafer.one (s.headMap m d).inverse ↔

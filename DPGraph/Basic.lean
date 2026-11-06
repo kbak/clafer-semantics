@@ -9,6 +9,7 @@ public import Mathlib.Data.Set.Defs
 
 universe s va ua v u
 
+-- [impl->req~dpgraph-core~1]
 /-- A carrier graph with a set of declared well-typed formulas. Neither the
 carrier nor the declarations require finiteness or decidable equality. -/
 structure DPGraph (σ : DPGraph.Signature.{s, va, ua}) where

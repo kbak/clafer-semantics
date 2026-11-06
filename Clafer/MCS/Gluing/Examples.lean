@@ -134,9 +134,11 @@ theorem defaults : Defaults (W := FormalCD.Vocabulary.builtins) roles formulas w
     rcases maps_cases m with rfl | rfl | rfl | rfl <;> cases h
   ordinary m _ := ⟨m, rfl⟩
 
+-- [impl->req~clafer-gluing-examples~1]
 noncomputable def glued : FormalCD.CDOver FormalCD.Vocabulary.builtins registry :=
   cd compatible formulas naming defaults
 
+-- [proof->req~clafer-gluing-examples~1]
 theorem intentional_class_merge : Owner.left ≠ .right ∧
     (label roles labels compatible.toIncidence).obj .left =
       (label roles labels compatible.toIncidence).obj .right := ⟨by decide, rfl⟩

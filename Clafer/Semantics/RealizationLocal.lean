@@ -81,6 +81,7 @@ theorem local_model (selected : m.Selected) (typed : s.Typed m.toEffectiveCore)
   | key d hk hp =>
     exact (s.key_local_iff m.toEffectiveCore typed h.2.1 h.2.2.1 d hk hp).mpr (h.2.2.2.1 d hk)
 
+-- [proof->req~clafer-compile-realization~1]
 theorem local_model_iff (selected : m.Selected) (typed : s.Typed m.toEffectiveCore) :
     (interpretation U).IsModel (localFormulas m.family).diagram (s.interpret m.toEffectiveCore) ↔
       s.LocalConditions m.toEffectiveCore := by

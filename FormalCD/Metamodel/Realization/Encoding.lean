@@ -92,6 +92,7 @@ noncomputable def predefNameMap (x : extent D .predef) : extent D .predefStr :=
     rw [← hc] at hi ⊢
     exact congrArg (text D) (D.wellFormed.predefined_name c i hi).symm⟩
 
+-- [impl->req~formalcd-metamodel-realization~1]
 noncomputable def encode : graph ⥤q semanticGraph.{max p s va ua v u,0} (Ambient D) where
   obj := extent D
   map

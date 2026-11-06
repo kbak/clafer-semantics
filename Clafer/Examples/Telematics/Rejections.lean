@@ -31,6 +31,7 @@ theorem symbol_rejected {V : Type} (q : ConstraintId ast)
   intro h
   exact hf (h x hx)
 
+-- [proof->req~clafer-appendix-f-rejections~1]
 /-- This symbol is precisely the one in Compile's emitted full binding.
 Matching a complete arity reduct is sufficient; a bag of arrow names is not. -/
 theorem generated_rejected {V : Type} (q : ConstraintId ast)
@@ -218,6 +219,7 @@ theorem conflicting_large_options : ¬ (Probe.model 19 none).model ∈
 
 
 
+-- [impl->req~clafer-appendix-f-rejections~1]
 /-- A small typed candidate for the actual full model's channel group. Other
 obligations may fail; this is a focused zero/one/two group boundary witness. -/
 def xorConfig (k : Fin 3) : Semantics.Configuration (Fin 28) (Fin 3) where

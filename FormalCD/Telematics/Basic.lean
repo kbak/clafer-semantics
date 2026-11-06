@@ -101,6 +101,7 @@ def declaration : Declaration → DPGraph.Formula vocabulary.signature graph
   | .serverSet => vocabulary.embed (setValuedFormula Edge.server)
   | .displaySet => vocabulary.embed (setValuedFormula Edge.display)
 
+-- [impl->req~formalcd-figure21-example~1]
 def raw : RawOver vocabulary registry where
   carrier := graph
   declarations := Set.range declaration
@@ -111,6 +112,7 @@ def raw : RawOver vocabulary registry where
 
 theorem declared (d : Declaration) : declaration d ∈ raw.declarations := ⟨d, rfl⟩
 
+-- [proof->req~formalcd-figure21-example~1]
 theorem wellFormed : raw.WellFormed where
   predefined_name := by intro c i h; cases c <;> cases h; rfl
   user_name := by

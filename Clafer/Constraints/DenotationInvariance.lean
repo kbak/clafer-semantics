@@ -14,6 +14,7 @@ namespace Clafer.Constraints
 
 export DPGraph.Predicates (ambientRelation_iso)
 
+-- [impl->req~clafer-constraint-semantic-laws~1]
 /-- Equality of resolved map identity preserves the original link occurrences,
 including their ambient endpoints, even across repeated support vertices. -/
 structure LinkEquivalence {U : Type u} {A B C D : Set U}
@@ -34,6 +35,7 @@ theorem LinkEquivalence.reduction {U : Type u} {A B C D : Set U}
     · exact (h.source (h.equiv.symm l)).symm.trans (by simpa using hs)
     · exact (h.target (h.equiv.symm l)).symm.trans (by simpa using ht)
 
+-- [impl->req~clafer-constraint-environments~1]
 /-- Raw graph bindings become resolved model environments only when repeated
 map identities agree on links as well as classes. Names remain irrelevant. -/
 def IntegerBinding.Coherent {s : Support} {U : Type u} (m : IntegerBinding.{u,w} s U) : Prop :=
@@ -41,6 +43,7 @@ def IntegerBinding.Coherent {s : Support} {U : Type u} (m : IntegerBinding.{u,w}
     (s.mapRef e).kind = (s.mapRef f).kind →
     Nonempty (LinkEquivalence (m.model.map (s.arrow e)) (m.model.map (s.arrow f)))
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 theorem repeated_map_denotation {s : Support} {U : Type u} {Γ}
     (m : IntegerBinding.{u,w} s U) (h : m.Coherent) (ρ : Environment s U Γ)
     (e f : s.Edge) (ho : (s.mapRef e).owner = (s.mapRef f).owner)
@@ -49,6 +52,7 @@ theorem repeated_map_denotation {s : Support} {U : Type u} {Γ}
   obtain ⟨he⟩ := h e f ho hk
   exact congrArg Option.some he.reduction
 
+-- [proof->req~clafer-constraint-denotation~1]
 /-- Only the primitive realization and the support's observable object/relation
 assignments enter the equations. Proofs of admissibility are not observations. -/
 theorem Expr.denote_congr {s : Support} {U : Type u} {Γ t}
@@ -68,6 +72,7 @@ theorem Expr.denote_congr {s : Support} {U : Type u} {Γ t}
     exact ihb _
   | _ => simp_all [Expr.denote]
 
+-- [proof->req~clafer-constraint-environments~1]
 /-- Extensional environment agreement is enough, even when the environments
 carry distinct membership proofs or were built by different lexical extensions. -/
 theorem Expr.environment_congr {s : Support} {U : Type u} {Γ t}

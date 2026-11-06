@@ -13,6 +13,7 @@ this bridge does not restrict the generic span or model carriers.
 universe u
 namespace DPGraph.Predicates
 
+-- [impl->req~reusable-span-laws~1]
 def CountInRange (r : Range) (k : Nat) : Prop :=
   r.lower ≤ k ∧ match r.upper with
     | .finite hi => k ≤ hi
@@ -22,6 +23,7 @@ instance (r : Range) (k : Nat) : Decidable (CountInRange r k) := by
   unfold CountInRange
   cases r.upper <;> infer_instance
 
+-- [proof->req~reusable-span-laws~1]
 /-- Exact finite specialization of the existing cardinal semantics, in both
 directions, including empty fibers and an unbounded upper limit. -/
 theorem inRange_card (r : Range) (A : Type u) [Fintype A] :

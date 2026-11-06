@@ -16,10 +16,12 @@ namespace DPGraph.SemanticsExamples
 
 open CategoryTheory Examples
 
+-- [impl->req~dpgraph-semantics-examples~1]
 /-- The two parallel arrows of an arity diagram must have equal images. -/
 def equalArrows : Interpretation signature arity where
   meaning _ := {d | d.map firstArrow = d.map secondArrow}
 
+-- [proof->req~dpgraph-semantics-examples~1]
 theorem collapse_satisfies : equalArrows.Satisfies collapse sourceFormula := rfl
 
 theorem identity_fails : ¬ equalArrows.Satisfies (Prefunctor.id arity) sourceFormula :=
@@ -55,6 +57,7 @@ def finalModel : equalArrows.Model finalGraph :=
     subst φ
     rfl⟩
 
+-- [proof->req~dpgraph-category~1]
 /-- Category notation uses the original morphisms, and reduct reverses order. -/
 theorem category_reduct_comp :
     equalArrows.reduct (show sourceGraph ⟶ finalGraph from collapseHom ≫ swapHom) finalModel =
@@ -105,6 +108,7 @@ theorem collapsed_declaration_image :
     subst ψ
     exact collapse_preserves
 
+-- [proof->req~dpgraph-declaration-image~1]
 theorem collapse_model_iff (m : arity ⥤q arity) :
     equalArrows.IsModel targetGraph m ↔ equalArrows.IsModel sourceGraph (collapse.comp m) :=
   equalArrows.isModel_iff_of_declarations_image

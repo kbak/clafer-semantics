@@ -316,6 +316,7 @@ def ownership : Fin 28 → Finset (Fin 25 × Fin 25) := ![∅, {(0,2)}, {(0,3)},
 
 def targets : Fin 28 → Finset (Fin 25 × Fin 25) := ![∅, ∅, ∅, {(18,2)}, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, {(6,1), (7,1), (8,1), (9,1)}, ∅, ∅, {(10,2), (11,3)}, ∅, ∅, ∅]
 
+-- [impl->req~clafer-inherited-witnesses~1]
 def config : Configuration (Fin 28) (Fin 25) where
   root := 0
   head d := {x | x ∈ heads d}
@@ -527,6 +528,7 @@ theorem declaration_disjoint : config.DeclarationDisjoint core.toEffectiveCore :
   simp only [ancestor_iff]
   decide
 
+-- [proof->req~clafer-inherited-witnesses~1]
 theorem satisfies : Semantics.Realization.Satisfies core config :=
   ⟨typed, rooted, ⟨inherits, parents_hold, references_hold, keys, multiplicities⟩, abstracts, groups, declaration_disjoint⟩
 
@@ -555,6 +557,7 @@ theorem inherited_version :
   unfold Semantics.Realization.Contains
   decide
 
+-- [proof->req~clafer-representative-coverage~1]
 theorem inherited_options_and_displays :
     Semantics.Realization.Contains config 27 1 2 4 ∧
     Semantics.Realization.Contains config 27 2 3 5 ∧

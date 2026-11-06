@@ -59,6 +59,7 @@ def objects : Node → Set Universe
   | .display => singletonObjects true
   | .int => integers.domain
 
+-- [impl->req~formalcd-vc-witnesses~1]
 def modelMap (served : Bool) (ecuVersion displayVersion : Int) :
     graph ⥤q semanticGraph.{0,0} Universe where
   obj := objects
@@ -182,6 +183,7 @@ theorem vc_iff (s : Bool) (e d : Int) :
     rw [hd',he']
     exact h sl.property
 
+-- [proof->req~formalcd-vc-witnesses~1]
 theorem model_iff (s : Bool) (e d : Int) :
     (interpretation integers).IsModel diagram.toDPGraph (modelMap s e d) ↔
       (s = true → e ≤ d) := by

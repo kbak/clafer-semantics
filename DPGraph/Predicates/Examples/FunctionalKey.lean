@@ -91,6 +91,7 @@ def spouses (i : Fin 2) : Span Marriage Person := Span.ofFunction (spouseValue i
 def TripleTarget : Fin 3 → Type := Fin.cases Person (Fin.cases Person (fun _ => Date))
 def tripleValue : (i : Fin 3) → Marriage → TripleTarget i :=
   Fin.cases wife (Fin.cases husband (fun _ => date))
+-- [impl->req~predicate-key-functional~1]
 def spouseDate (i : Fin 3) : Span Marriage (TripleTarget i) :=
   Span.ofFunction (tripleValue i)
 
@@ -111,6 +112,7 @@ theorem date_injective : Function.Injective date := by
   intro a b h
   cases a <;> cases b <;> simp_all [date]
 
+-- [proof->req~predicate-key-functional~1]
 theorem spouseDate_key : Key spouseDate := by
   apply (key_ofFunction_iff tripleValue).mpr
   intro a b h

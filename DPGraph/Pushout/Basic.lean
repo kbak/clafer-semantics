@@ -36,6 +36,7 @@ abbrev CarrierCocone :=
   PushoutCocone (C := Quiv.{v, u}) (X := S.carrier) (Y := T.carrier)
     (Z := U.carrier) F.toPrefunctor J.toPrefunctor
 
+-- [impl->req~dpgraph-pushout-data~1]
 /-- The carrier cocone point with exactly the union of the two translated
 declaration sets. No injectivity or finiteness is required. -/
 def obj (c : CarrierCocone F J) :
@@ -55,6 +56,7 @@ def inr (c : CarrierCocone F J) : Hom U (obj F J c) where
   toPrefunctor := c.inr
   preserves hφ := Or.inr ⟨_, hφ, rfl⟩
 
+-- [proof->req~dpgraph-pushout-data~1]
 /-- The induced DP-graph cocone, using the supplied carrier commutation law. -/
 def cocone (c : CarrierCocone F J) :
     PushoutCocone (C := DPGraph.{s, va, ua, v, u} σ) (X := S) (Y := T) (Z := U) F J :=

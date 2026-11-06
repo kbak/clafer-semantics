@@ -22,12 +22,14 @@ variable {Vocab : Vocabulary.{s,va,ua}} {R : Registry.{p}} {Ω : Quiv.{vm,um}}
 variable (I : DPGraph.Interpretation Vocab.signature Ω)
 variable {S : CDOver.{s,va,ua,p,v₁,u₁} Vocab R} {T : CDOver.{s,va,ua,p,v₂,u₂} Vocab R} {U : CDOver.{s,va,ua,p,v₃,u₃} Vocab R}
 
+-- [impl->req~formalcd-signature-extension~1]
 def reduct (F : HomOver S T) (m : I.Model T.toDPGraph) : I.Model S.toDPGraph :=
   I.reduct F.toDPHom m
 
 @[simp] theorem reduct_val (F : HomOver S T) (m : I.Model T.toDPGraph) :
     (reduct I F m).val = F.toDPHom.toPrefunctor.comp m.val := rfl
 
+-- [proof->req~formalcd-signature-extension~1]
 @[simp] theorem reduct_id (m : I.Model S.toDPGraph) : reduct I (id S) m = m :=
   I.reduct_id m
 
@@ -45,12 +47,14 @@ variable {R : Registry.{p}} {Ω : Quiv.{vm,um}}
 variable (I : DPGraph.Interpretation signature Ω)
 variable {S : CD.{p,v₁,u₁} R} {T : CD.{p,v₂,u₂} R} {U : CD.{p,v₃,u₃} R}
 
+-- [impl->req~formalcd-morphisms~1]
 def reduct (F : Hom S T) (m : I.Model T.toDPGraph) : I.Model S.toDPGraph :=
   I.reduct F.toDPHom m
 
 @[simp] theorem reduct_val (F : Hom S T) (m : I.Model T.toDPGraph) :
     (reduct I F m).val = F.toDPHom.toPrefunctor.comp m.val := rfl
 
+-- [proof->req~formalcd-morphisms~1]
 @[simp] theorem reduct_id (m : I.Model S.toDPGraph) : reduct I (id S) m = m :=
   I.reduct_id m
 

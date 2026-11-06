@@ -53,6 +53,7 @@ namespace VersionNavigation
 variable {U : Type u} (m : Model.{u,w} U)
 variable (d : Subtype (m.model.obj (0 : support.Vertex)))
 
+-- [proof->req~clafer-constraint-denotation~1]
 /-- The general denotation follows the exact existing primitive bridge. -/
 theorem denote_version {Γ} (ρ : Environment support U Γ)
     (a : Expr support Γ (.collection (.objects 2))) (S : Set U)
@@ -81,6 +82,7 @@ theorem denote_serverVersion :
       (congrArg (navigationImage (m.model.map (support.arrow 5)))
         (image_span (m.model.map (support.arrow 4)) {d.val})))
 
+-- [proof->req~clafer-constraint-environments~1]
 /-- Well-definedness is derived from the four source map obligations in Model;
 no evaluator success, final singleton, or desired comparison is assumed. -/
 theorem denotation_defined :
@@ -93,6 +95,7 @@ theorem denotation_defined :
   refine ⟨⟨j ≤ i⟩, ?_⟩
   simp [comparison, denote_displayVersion m d, denote_serverVersion m d, ei,ej,lift₂]
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 /-- Agreement with the independently delivered partial comparison of #67.
 The proposition has its D.4 meaning even when the result is false. -/
 theorem comparison_agrees (i j : Int)

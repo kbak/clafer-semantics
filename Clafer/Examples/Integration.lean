@@ -19,9 +19,11 @@ open CategoryTheory MCS Compile DPGraph DPGraph.Predicates
 namespace Small
 open Clafer.Compile.Examples
 
+-- [impl->req~clafer-representative-integration~1]
 noncomputable def glued := gluedGroups input
 noncomputable def label := groupLabel input
 
+-- [proof->req~clafer-representative-integration~1]
 /-- The concrete source bank supplies both the original MCS discipline and all
 FormalCD defaults; these are distinct obligations. -/
 theorem compilation_gluing_valid :

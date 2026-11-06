@@ -19,6 +19,7 @@ namespace Span
 
 variable {A : Type u} {B : Type v} {C : Type z} {D : Type t}
 
+-- [impl->req~span-composition~1]
 def comp (q : Span.{u, v, w} A B) (r : Span.{v, z, w'} B C) :
     Span.{u, z, max w w'} A C where
   Link := { p : q.Link × r.Link // q.target p.1 = r.source p.2 }
@@ -63,6 +64,7 @@ def rightUnit (q : Span.{u, v, w} A B) : Iso (q.comp (identity B)) q where
   source_eq _ := rfl
   target_eq p := p.2
 
+-- [proof->req~span-composition~1]
 /-- The canonical reassociation `((l,m),n) ↦ (l,(m,n))`. -/
 def associator (q : Span.{u, v, w} A B) (r : Span.{v, z, w'} B C)
     (s : Span.{z, t, w''} C D) : Iso ((q.comp r).comp s) (q.comp (r.comp s)) where

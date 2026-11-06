@@ -15,6 +15,7 @@ constructed. The finite inventory retains resolved identities separately from na
 namespace Clafer.Semantics
 open MCS DPGraph.Predicates
 
+-- [impl->req~clafer-effective-core~1]
 structure EffectiveCore (n : Nat) where
   family : Family (Fin n)
   id : Fin n → DeclId

@@ -34,6 +34,7 @@ theorem sample_entries : sample.entries =
      ⟨abstractDecl, none, 0⟩, ⟨abstractChild, some ⟨5⟩, 1⟩, ⟨abstractRefDecl, none, 0⟩] := by
   simp [sample, AST.entries, Tree.branch, Tree.entries, Forest.ofList, rootDecl, abstractDecl]
 
+-- [proof->req~clafer-input-wellformedness~1]
 theorem sample_wellFormed : sample.WellFormed := by
   constructor
   all_goals try { simp [AST.Known, sample, AST.entries, Tree.branch, Tree.entries, Forest.ofList,
@@ -52,6 +53,7 @@ theorem sample_wellFormed : sample.WellFormed := by
         GroupCard.childDefault]
     all_goals aesop
 
+-- [proof->req~clafer-resolved-syntax~1]
 theorem repeated_names_distinct_ids :
     basicDecl.name = setDecl.name ∧ basicDecl.id ≠ setDecl.id := by decide
 
@@ -59,6 +61,7 @@ theorem finite_reference_cycle : sample.entries.length = 9 ∧
     setDecl.reference.target = some bagDecl.id ∧
     bagDecl.reference.target = some setDecl.id := by rw [sample_entries]; decide
 
+-- [proof->req~clafer-finite-traversal~1]
 theorem fold_counts_reference_cycle :
     sample.trees.foldl (fun n t => n + t.fold
       (fun _ counts => 1 + counts.foldl (· + ·) 0)) 0 = 9 := by decide
@@ -67,6 +70,7 @@ def repeatedScope : ConstraintBoundary :=
   { id := 0, context := ⟨2⟩, scopeOccurrences := [⟨3⟩, ⟨3⟩, ⟨4⟩],
     binders := [⟨⟨0⟩, "x", [⟨3⟩, ⟨3⟩]⟩] }
 
+-- [proof->req~clafer-constraint-boundary~1]
 theorem repeated_scope_resolved : repeatedScope.Resolved sample.Known := by
   simp [ConstraintBoundary.Resolved, repeatedScope, AST.Known, sample_entries,
     rootDecl, intDecl, basicDecl, setDecl, bagDecl, derivedDecl, abstractDecl,
@@ -200,6 +204,7 @@ def abstractDeref : Map abstractReferenceShape.kind abstractReferenceShape.hasPa
   ⟨.dereference, rfl⟩
 
 theorem abstract_basic_keeps_head : Nonempty abstractShape.carrier := ⟨head _ _⟩
+-- [proof->req~clafer-individual-shapes~1]
 theorem abstract_reference_incidence :
     (mapSource abstractDeref).val = .head ∧ (mapTarget abstractDeref).val = .target := by decide
 theorem reference_modes : mode setShape.kind setTargetMap.val = .ordinary ∧

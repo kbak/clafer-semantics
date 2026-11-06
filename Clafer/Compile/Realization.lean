@@ -156,6 +156,7 @@ noncomputable def glued : FormalCD.CDOver (vocabulary i) Gluing.registry :=
 theorem glued_declarations (φ) : φ ∈ (glued i).declarations ↔
     ∃ q, ((bank i).formula q).translate (groupLabel i) = φ := Iff.rfl
 
+-- [impl->req~clafer-compile-realization~1]
 /-- The structural MCS and the #65 augmentation remain available unchanged. -/
 noncomputable def compileRealized := (compileAugmented i, bank i)
 @[simp] theorem forget : (compileRealized i).1 = compileAugmented i := rfl
@@ -288,6 +289,7 @@ theorem correspondence (selected : (Semantics.Realization.Core.ofInput i).Select
           rw [p.property] at hh
           contradiction
 
+-- [proof->req~clafer-compile-realization~1]
 /-- Root/freshness/used-object and declaration-disjointness obligations are explicit global conditions;
 all local, abstract and group clauses come from the complete generated bank. -/
 theorem whole_model (selected : (Semantics.Realization.Core.ofInput i).Selected)

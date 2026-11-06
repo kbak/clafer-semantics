@@ -19,6 +19,7 @@ open Clafer.Constraints Telematics.Expressions CategoryTheory DPGraph.Predicates
 
 variable {U : Type u}
 
+-- [impl->req~clafer-appendix-f-expressions~1]
 def FiniteStructural {c} (m : IntegerBinding.{u,w} (support c) U) : Prop :=
   ∀ x : Fin 28, x ≠ 27 → (m.model.obj x : Set U).Finite
 
@@ -41,6 +42,7 @@ theorem two_defined {c x} (m : IntegerBinding.{u,w} (support c) U)
     (exactlyTwo e).Defined m ρ :=
   (e.cardinality_objects_defined m ρ hρ (hf x hx)).equal ⟨⟨2⟩,rfl⟩
 
+-- [proof->req~clafer-appendix-f-expressions~1]
 theorem c01_defined (m : IntegerBinding.{u,w} (support 1) U)
     (ρ : Environment (support 1) U []) (hρ : ρ.Admissible m) (hf : FiniteStructural m) :
     c01.Defined m ρ :=
@@ -149,6 +151,7 @@ theorem c02_defined (m : IntegerBinding.{u,w} (support 11) U)
     c02.Defined m (.closed x.val) :=
   VersionNavigation.denotation_defined (versionModel m vh vd sh sd) x
 
+-- [proof->req~clafer-constraint-semantic-laws~1]
 /-- Absent ECU2 makes the implication in c07 true, even though zero displays
 is not two. This is the actual c07 expansion, with no extra implication guard. -/
 theorem c07_vacuity (m : IntegerBinding.{u,w} (support 19) U)

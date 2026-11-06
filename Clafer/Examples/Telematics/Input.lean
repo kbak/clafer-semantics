@@ -266,6 +266,7 @@ theorem inventory_input (c : Fin 12) :
     domain := fun d => Fin.elim0 d
     domain_eq := fun d => Fin.elim0 d }
 
+-- [impl->req~clafer-appendix-f-complete~1]
 noncomputable def input : Input ast where
   ast := wf
   root_name := by
@@ -362,6 +363,7 @@ theorem effective_defaults : Gluing.Defaults (roles input) (Compile.Realization.
 theorem formalcd_valid : (Compile.Realization.glued input).toRawOver.WellFormed :=
   (Compile.Realization.glued input).wellFormed
 
+-- [proof->req~clafer-appendix-f-complete~1]
 theorem exact_declarations (φ) : φ ∈ (Compile.Realization.glued input).declarations ↔
     ∃ q, ((Compile.Realization.bank input).formula q).translate (groupLabel input) = φ :=
   Compile.Realization.glued_declarations input φ

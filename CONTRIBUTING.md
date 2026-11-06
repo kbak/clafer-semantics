@@ -212,7 +212,8 @@ checked. Include paper references and affected requirement IDs for semantic work
 Follow the [documentation policy](AGENTS.md#documentation): keep living docs
 current, change comparisons in the PR, and factory evidence outside the repository.
 Use the [Lean trace-link convention](docs/traceability.md) for implementation and
-proof artifacts; the pinned OFT does not import inline `.lean` tags.
+proof artifacts. The pinned IntentBond imports tags in Lean line, nested block
+and documentation comments, preserving their source paths and physical lines.
 Review must assess whether definitions match the intended semantics and whether
 proofs establish the stated results; trace coverage and a successful build alone
 do not establish that correspondence. The [source map](docs/sources.md) owns exact

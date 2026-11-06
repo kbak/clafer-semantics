@@ -164,6 +164,9 @@ maintains intent and requirements with OFT links and a nonempty scope. CI checks
 pull requests using the base branch's scope and retains evidence; first adoption
 explicitly checks the candidate baseline and requires review. Exit 4 retains
 semantic review as pending. Failed checks block the CI job.
+Lean implementation, proof and test coverage tags are imported from actual source
+comments with original paths and lines. Preserve the named Markdown explanations
+and require the source-import regression to reject tooling that drops Lean tags.
 The explicitly approved public-root migration expands only baseline `inputs`
 and `review_paths` to `["."]`, preserving every other policy field and the actual
 baseline commit. CI recognizes the exact original and migrated scope identities,
@@ -173,7 +176,7 @@ changes. Retain both identities and the transformation for independent review.
 Covers:
 - `intent~traceable-contributions~1`
 
-Needs: impl
+Needs: impl, itest
 
 ## GitHub planning and tracking
 

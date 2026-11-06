@@ -14,12 +14,14 @@ examples; the library theorems have no finiteness assumption.
 
 namespace DPGraph.Span.Examples
 
+-- [impl->req~span-examples~1]
 /-- Two distinct links share both endpoints. -/
 def parallel : Span Unit Unit where
   Link := Bool
   source _ := ()
   target _ := ()
 
+-- [proof->req~span-representation~1]
 theorem parallel_links : (false : parallel.Link) ≠ true ∧
     parallel.source false = parallel.source true ∧
     parallel.target false = parallel.target true := ⟨Bool.false_ne_true, rfl, rfl⟩
@@ -113,6 +115,7 @@ theorem two_path_not_iso : ¬ Nonempty
   intro h
   exact two_path_not_jointlyInjective ((comp_iso_relation_iff first second).mp h)
 
+-- [proof->req~span-examples~1]
 theorem second_singleValued_not_sufficient : SingleValued secondRelation ∧
     ¬ Nonempty (Iso (first.comp second) (ofRelation (relationComp first.red second.red))) :=
   ⟨second_singleValued, two_path_not_iso⟩

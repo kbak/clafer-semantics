@@ -44,6 +44,7 @@ def targets : Fin 28 → Finset (Fin 36 × Fin 36) :=
   ![∅, ∅, ∅, {(29,1)}, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅,
     ∅, ∅, ∅, ∅, ∅, ∅, ∅, ∅, {(13,1),(14,1),(15,2),(16,2)}, ∅, ∅, ∅]
 
+-- [impl->req~clafer-appendix-f-complete~1]
 def config : Configuration (Fin 28) U where
   root := atom 0
   head d := {x | match x with
@@ -260,6 +261,7 @@ theorem declaration_disjoint : config.DeclarationDisjoint core.toEffectiveCore :
     subst d; subst e
     decide
 
+-- [proof->req~clafer-appendix-f-complete~1]
 theorem structural_satisfaction : Semantics.Realization.Satisfies core config :=
   ⟨typed, rooted, ⟨inherits, parents_hold, references_hold, keys, multiplicities⟩,
     abstracts, groups, declaration_disjoint⟩

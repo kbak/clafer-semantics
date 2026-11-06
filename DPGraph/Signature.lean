@@ -18,6 +18,7 @@ universe s va ua
 
 namespace DPGraph
 
+-- [impl->req~dpgraph-core~1]
 /-- A symbol type with a graph-valued arity (SoSyM B.4, Definition 7).
 No dependencies or inference-closure axioms are part of this signature. -/
 structure Signature where

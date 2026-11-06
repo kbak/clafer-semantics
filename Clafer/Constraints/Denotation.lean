@@ -26,6 +26,7 @@ abbrev Value {s : Support} (U : Type u) : Ty s → Type u
   | .integer => ULift.{u} Int
   | .collection k => Set (k.Carrier U)
 
+-- [impl->req~clafer-constraint-environments~1]
 /-- Positions select individual objects. Neither a name nor a set can be stored
 as the value of a bound variable. Membership is an independent admissibility
 condition, so the equations remain meaningful on raw environments too. -/
@@ -47,6 +48,7 @@ def closed {s U} (x : U) : Environment s U [] := ⟨x, fun v => nomatch v⟩
 def Admissible {s U Γ} (ρ : Environment s U Γ) (b : IntegerBinding.{u,w} s U) : Prop :=
   (b.model.obj s.context : Set U) ρ.this ∧ ∀ x (v : Var Γ x), (b.model.obj x : Set U) (ρ.lookup v)
 
+-- [proof->req~clafer-constraint-environments~1]
 theorem push_admissible {s U Γ} {ρ : Environment s U Γ}
     {m : IntegerBinding.{u,w} s U} (h : ρ.Admissible m) (b : Local s)
     {x : U} (hx : (m.model.obj b.element : Set U) x) : (ρ.push b x).Admissible m := by
@@ -91,6 +93,7 @@ noncomputable def universal {U : Type u} (S : Set U)
   exact if (∀ x ∈ S, (body x).isSome = true) then
     Option.some ⟨∀ x ∈ S, body x = Option.some ⟨True⟩⟩ else none
 
+-- [impl->req~clafer-constraint-denotation~1]
 /-- Denotation of each resolved constructor. Boolean values are propositions;
 truth is not defined by any executable checker's success. -/
 noncomputable def Expr.denote {s : Support} {U : Type u}
