@@ -1500,7 +1500,7 @@ selects captured identities/sets with current navigation, including the distinct
 standalone-this and direct-navigation behavior. The
 [formula contract](behavioral-formulas.md) records that deliberate departure from
 the paper's snapshot-pair evaluator and checked changing-reference witnesses.
-These decisions do not resolve every structural-adapter, pattern or arithmetic question.
+Pattern and encoding obligations remain separate from the delivered source adapters.
 The [contract decision register](behavioral-profile.md#decisions-requiring-contract-review)
 keeps those differences visible before any new definition. The existing
 [structural comparison](resolved-ir-comparison.md) and historical SoSyM checkpoint
@@ -1508,11 +1508,52 @@ remain separate profiles with their original source identities.
 
 The [structural prerequisite audit](behavioral-structure.md) records exact API
 reuse domains, the pinned compiler's off-live reference comparison limit, and
-the remaining arithmetic and structural extension decisions (D3/D4).
+the adopted arithmetic/partial-domain and initializer decisions (D3/D4),
+with richer admission and exact common-fragment agreement.
 
 Covers:
 - `req~behavioral-profile~1`
 - `req~formalization-roadmap~1`
+
+## Behavioral structural and partial-atom correspondence
+
+The [structural contract](behavioral-structure.md) covers SoSyM §5.3.4/§5.5,
+§6.2.2 and Appendix 4 together with behavioral §5 Definitions 1–3 and the
+expression equations (pp. 2:23–28). It adopts S6's nested abstract/refined-parent
+change, S3/S4/T11's inherited child-head counting, S7's actual-parent observation
+and S9/T8's inherited references. Authored abstract types remain distinct from
+ordinary inherited fields. S10 explicitly classifies abstract-super-only compiler
+support as a limitation; source concrete inheritance remains permitted.
+
+Behavioral Definition 2 gives a single partial link function on identities;
+the explanation following Definition 3 contrasts this with association-indexed
+relations. `Structural.ReferenceCoherent` retains that shared target across
+refined reference annotations. At the pinned compiler revision,
+[Alloy.hs lines 294–312](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/Alloy.hs#L294)
+implements `genRefSubrelationConstriant`, while
+[AlloyLtl.hs genConstraints](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs#L278)
+does not emit its counterpart. This observed code difference is a comparison
+obligation, not a reproduced end-to-end backend failure or authority to weaken
+source reference coherence. The file hashes remain in the source tables.
+
+The [reviewed partial-domain disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
+adds strict definedness to the adopted partial mathematical arithmetic. It checks
+all Boolean operands and domain members and all active observations in a temporal
+operator's uninterrupted parent interval; next checks only its next state,
+anchors only their trigger. This is a deliberate extension, not a claim that the
+paper or either backend specifies partial temporal arithmetic. Completion
+independence and exact total/static compatibility are proved separately from
+source signed truth and from future bounded encoding.
+
+The same review explicitly excludes declaration `:=` from this versioned profile.
+The pinned [CheatSheet initializers](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md#L128)
+says default initializers lack backend support; `desugarInit`/`desugarInitHow`
+([Desugarer.hs lines 195–211](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs#L195))
+emits an assertion for `:=`, which supplies no override/default semantics.
+Constant `=` retains its presence-guarded equation at every live enclosing
+attachment state. Behavioral §6.1 p.2:29 does not make it a birth-only initializer.
+The frontend must diagnose the unsupported form and preserve the resolved
+presence/value views. All implementations and proofs are independently authored.
 
 ## Behavioral arithmetic comparison
 
@@ -1572,7 +1613,9 @@ the actual definitions and theorems. Snapshot projection uses live subtypes;
 the converse explicitly requires exact static direct-type/head and parent
 correspondence. It does not establish existence of those witnesses for every
 structural model. Definition 5.4 (constraints), richer inherited references,
-primitive atoms and lasso correctness remain with their respective owners.
+primitive atoms and lasso correctness have separate owning contracts; the
+[structural atom contract](behavioral-structure.md) supplies the richer admission
+and partial-atom bridges.
 No source pin, historical SoSyM checkpoint or static oracle is changed.
 
 ## Empty-collection language extension
@@ -1600,8 +1643,8 @@ attachment distinction. T7 supplies initial/last-live anchors. D1 selects
 identity/set capture with current relations instead of the paper's snapshot-pair
 navigation; the public disposition and concrete changing-reference witness
 remain linked from the contract. Existing static meanings are not reused or
-changed by this formula core. Partial primitive/integer and richer structural
-adapters retain their independent agreement obligations.
+changed by this formula core. The [structural atom contract](behavioral-structure.md)
+provides independently justified primitive/static adapters with strict definedness.
 
 At the immutable [candidate in the source ledger](#behavioral-profile-sources),
 `AlloyLtl.hs` lines 445–489 (`genPExp`, `pushNegations`, `hasTemporal`) provide

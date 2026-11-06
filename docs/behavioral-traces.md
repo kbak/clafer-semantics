@@ -92,9 +92,10 @@ the two model guards. `constant_raw`, `constantEquiv` and `constant_snapshot`
 recover the entire original configuration, field by field, through the live
 carrier equivalence. The witnesses are not assumptions of temporal preservation.
 
-The bridge is confined to the existing guarded effective core. Richer inherited
-references, primitive domains and structural atoms remain obligations of the
-[structural atom extension](behavioral-profile.md#ownership-and-proposed-module-boundaries).
+The bridge is confined to the existing guarded effective core. The independent
+[structural atom extension](behavioral-structure.md) supplies richer admission,
+inherited-reference/live-carrier observations and partial primitive atoms, with
+an exact validity equivalence on this common domain.
 No Compile, gluing, checker or importer contract is changed.
 
 ## Lifetimes and checked boundaries

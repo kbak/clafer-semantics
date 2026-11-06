@@ -2,111 +2,142 @@
 
 `impl~behavioral-structural-audit~1`
 
-The [behavioral profile](behavioral-profile.md) requires structural atoms beyond
-the guarded [trace foundation](behavioral-traces.md). This audit identifies the
-existing declarations that can be reused, their assumptions, and the missing
-bridges owned by [structural atom compatibility (S4)](https://github.com/kbak/clafer-semantics/issues/126).
-The checked observation and conversion interfaces below do not assert proofs
-for the remaining richer structural cases.
-The [source ledger](sources.md#behavioral-profile-sources) fixes the 0.5.7
-candidate and document hashes. S1–S11 below name its static errata; T8/T10/T11
-name its temporal errata, not implementation milestones.
+The [behavioral profile](behavioral-profile.md) uses the independent richer
+structural and expression interfaces below. They implement the S4 bridge owned
+by [structural atom compatibility](https://github.com/kbak/clafer-semantics/issues/126),
+while preserving the guarded [trace foundation](behavioral-traces.md) and all
+historical static meanings. The [source ledger](sources.md#behavioral-profile-sources)
+fixes the compiler candidate and document hashes. S1–S11 denote static errata;
+T8/T10/T11 denote temporal errata.
 
-## Reuse and required extensions
+## Reuse and admitted domains
 
-| Prerequisite / profile rows | Existing declarations and exact boundary | Remaining S4 obligation |
+| Prerequisite / profile rows | Delivered interface and exact boundary | Downstream responsibility |
 | --- | --- | --- |
-| Own and inherited groups; B05/B32; S1–S5, T10–T11 | `Semantics.Groups.ChildObjects` unions child heads over the super closure, independently of Compile. `Compile.Groups` retains definitionally equal aliases and unchanged proofs. `GroupObservation.childrenEquiv`, `bounds_iff` and `holds_iff` transport the complete union to the live carrier. `Configuration.Groups` in the guarded snapshot bridge counts direct children only. | Enforce the inherited predicate in richer behavioral states. The transport theorem does not derive inherited-group validity from direct-only validity. |
-| Abstract types and ordinary inherited fields; B01/B05 | `Realization.Core` retains authored abstractness. `Realization.Abstracts` covers explicit abstracts; `View`, `Contains`, `Deref`, `same_parent_fiber` and `deref_agrees` restrict existing objects/links. `Core.Selected` only admits the documented Appendix 6 combinations. | Extend realization to nested explicit abstracts and parent refinement (S6), retaining one object/parent through inherited views. The current selected theorem does not supply this extension. |
-| Nested abstractness and parent refinement; B01; S6 | `AST.WellFormed.nested_abstract` and `MCS.Family.WellFormed.nested_abstract` require an abstract parent of an effective abstract child. Their `inheritance_parent` clauses require equal declared parents when the super has one. | Support an abstract type under a concrete parent and a subtype nested under a refinement of the super's parent through a richer behavioral model and explicit common-fragment adapter. This implements S6; the module split is an engineering choice. Removing `EffectiveCore.Supported` alone cannot admit these cases. |
-| Inherited references; B04/B06/B18; S8–S9, T8 | `Family.reference` and `Configuration.deref` are declaration-indexed. `EffectiveCore.Supported` requires basic abstract heads and basic subtype declarations; `Realization.Core.Selected` requires basic super targets. `InheritedReference.Owner` resolves the nearest declared reference, with unique owner/ancestry proofs; `deref` and `shared_head` retain its current relation on shared heads. | Integrate these observations into richer state validity, including reference refinement between distinct owners. Distinguish subtype heads from their targets and retain reference kind and resolved target view. |
-| Set versus bag occurrences; B04; S4, T11 | `Configuration.References` requires one target per head. `Keys` identifies equal parent/target pairs only for set references. `Trace.snapshot_distinct` retains different heads, and the existing bag fixture retains two heads at one target. | Extend the same rules to inherited references. Verify that two bag heads count twice in child groups and remain distinct when targets change. The target image may still be a singleton. |
-| Target validity and disappearance; B04/B06 | `Trace.StateValid.typed` uses `Configuration.Typed` on `Trace.raw`; both dereference endpoints must belong to live heads. Raw relations are not filtered to hide invalid endpoints. `Trace.Valid.parent_live` also requires live parents independently of declaration views. | Preserve live, typed targets in the richer model. Distinguish a dead head from a live head with a dead target: the latter violates validity. Relate current observations to these obligations explicitly. |
-| Actual parent, root and top-level policy; B01/B06; S7 | `Identities` fixes actual parents independently of declaration parents. `parent_stable` spans all lifetimes; `top_level_parent` derives the synthetic root in the guarded model. `raw.contains` only supplies parent-bearing declaration views. | Supply actual-parent navigation for abstract contexts with mixed top-level/nested realizations. A parentless abstract declaration must not acquire an invented declaration parent. The observation of a stored absent identity is different from live containment. |
-| Resolved head/target navigation; B06/B08; S8–S9 | `Constraints.Support` retains explicit head, parent, dereference, target and inclusion map occurrences. `Expr.map`, `image`, `join` and widening have independent meanings; repeated support occurrences retain resolved identity obligations. | Prove resolved inherited target-view agreement. Implicit dereference insertion and the unresolved name-search order stay with the frontend; source meaning must not guess them. Explicit dref must not be inserted a second time. |
-| Live sets, this, stored variables and quantification; B07–B08 | `Constraints.Environment` stores one context object and singleton lexical variables. `Admissible` requires current class membership. `Expr.denote_support_congr` compares observed extents/maps with a fixed environment and integer realization; it is not a temporal-environment transport theorem. | Use the accepted D1 capture/current-observation rule. Relate singleton environments on their admissible domain, and account separately for stored sets, absent identities and live-filtered standalone this. Prove quantifier agreement with the domain evaluated before binding. |
-| Primitive observations; B31 | `IntegerBinding` represents all mathematical integers. Strict extraction retains its singleton obligations. `ReferenceObservation.finite_targets` derives a finite target image from finite heads and functional dereferences; `valid_finite_targets` derives functionality from guarded trace validity. `IntegerObservation.coerce` implements the reviewed finite-set-sum conversion. | Connect richer structural/temporal atoms to these interfaces and supply range obligations for bounded downstream arithmetic, without making the whole integer domain finite. |
-| Arithmetic operations; B31; S11 | `Arithmetic` supplies mathematical addition, subtraction, multiplication, negation and partial truncating division/remainder, with zero divisors rejected. `Expr.Defined` and `Expr.Holds` keep undefined distinct from false; quantification requires every body on a domain member defined. | Integrate these operations with temporal atoms; connect occurrence-indexed sums/products and finite min/max selectors to resolved temporal expressions. Existing static meanings and proofs cannot be cited as implementations of these remaining operators. |
-| Defaults and initializers; B32; S1–S2, T10 | `Defaults` validates supplied effective groups, keyword provenance, multiplicities and abstractness. It does not elaborate syntax. The pinned CheatSheet distinguishes constant `=` from default `:=` and says no backend supports the latter. | Preserve adopted child defaults. Classify initializer forms explicitly with S5/C6/C7; neither form is automatically a temporal birth initializer. Any exclusion of required syntax needs profile review, not a silent unsupported guard. |
+| Effective own/inherited groups; B05/B32; S1–S5, T10–T11 | `Structural.Groups` enforces `Semantics.Groups.Holds` on authored ordinary declarations, counting the union of child heads over super ancestry. `Structural.snapshot_groups` transports the complete predicate to live identities. | C6 supplies effective defaults/bounds and their provenance under the adopted default contract. |
+| Abstractness and ordinary inherited fields; B01/B05 | `Structural.Core.authoredAbstract` distinguishes authored abstracts from ordinary inherited fields. `IdentitiesValid` permits ordinary direct instances; `Abstracts` covers authored abstract extents by their subtypes. | C6 preserves authored flags when elaborating effective declarations. |
+| Nested abstractness/refined parents; B01; S6 | `Core.WellFormed.refined_parent` permits the same parent or a subtype of the super's parent. Nested abstract types can have concrete parents. State typing, fixed actual parents and `View` retain existing objects across contexts. | C6 resolves containment/type identities and checks these model obligations. |
+| Concrete supers; B01; S10 | Source admission permits concrete inheritance, as SoSyM §5.5 and behavioral Definition 1.5 require. The concrete-inheritance fixture is admitted outside the old static support guard. | A comparison with the pinned compiler must retain its abstract-super-only limitation. |
+| Inherited/refined references; B04/B06/B18; S8–S9/T8 | `InheritedReference.Owner` finds the nearest declared reference. `Structural.Valid.inherited_reference`, `target_typed`, `target_live` and `refined_reference_agrees` derive totality, endpoint validity and shared-head agreement. | S5 applies modifiers to these same heads/assignments/target images; C6 resolves reference target views. |
+| Set/bag occurrences; B04; S4/T11 | `Structural.Keys` enforces set uniqueness within each declaration's containment fiber; bags retain separate heads. `StructuralBinding.Link` retains an intermediate head even in parent-to-target maps. | C8 must encode those occurrences, not only an existential relation reduct. |
+| Root, actual parents and disappearance; B01/B06; S7 | `Valid` requires a permanent root, live parents and rooted live containment. `top_level_parent`, `view_parent_unique`, `view_covers` and direct parent navigation preserve actual ownership. Raw dangling links fail validity. | Mixed parent classes are resolved per context by C6; no invented parent class is attached to a parentless abstract declaration. |
+| Resolved navigation; B06/B08 | `StructuralBinding.Resolution.ofRoles` derives endpoint typing from declaration roles and valid states. Every support vertex/map occurrence is retained. `coherent` compares full links for repeated identities. | C6 inserts implicit dref once and supplies endpoint roles; unresolved name-search order remains separate. |
+| Captured variables, this and quantification; B07–B08 | `Structural.observed` supplies inherited current relations to the accepted D1 set evaluator. `CapturedStatic.agrees` covers every static constructor on singleton-compatible environments with live this. Quantifiers evaluate their domain before pushing singleton identities. | C6 supplies resolved lexical metadata and runtime typing. Stored sets/absent identities are not automatically static-admissible. |
+| Primitive observations; B31 | `PrimitiveExpression` composes strict extraction, finite-set coercion, cardinality, scalar operations, extrema and indexed folds. `finite_reference_operand` derives definedness from finite captured heads and target-domain typing. | C8 proves bounded-backend correspondence with nonzero divisors and sufficient ranges for every intermediate value. |
+| Partial temporal atoms; B08/B31 | `PartialObservation`, `Formula.Defined` and `Satisfies` keep strict definedness separate from signed truth. `StaticObservation` embeds typed static expressions; the primitive adapter embeds the new arithmetic grammar. | Lasso/encoding tasks must preserve the original formula's definedness as well as signed truth. |
+| Declaration initializers; B32 | The reviewed profile supports `=` as an ordinary presence-guarded equation and explicitly rejects `:=`. `Initializers.elaborate`, `constant_truth` and `every_live_state` expose that contract. | C6/C7 issue an unsupported-form diagnostic for `:=`; no default override semantics or birth-only initialization is inferred. |
 
-`Realization` currently imports `Compile.GroupSemantics`. A behavioral module
-cannot import it wholesale while satisfying the independent-source boundary.
-Reuse therefore needs an owning-module extraction with unchanged static
-theorems, or an independent definition with a proved correspondence. The
-[dependency tests](../tests/behavioral_dependencies.lean) must continue to
-exclude Compile and Verification from `import Clafer.Behavioral`.
+## Structural meaning and historical agreement
+
+[`Structural`](../Clafer/Behavioral/Structural.lean) owns the richer model and
+admission predicates. It keeps authored abstractness separately, requires finite
+rank witnesses for declaration containment/inheritance, checks reference target
+refinement and set/bag kind compatibility, and requires effective group bounds
+to agree with the family annotations. `StateValid` enforces typed raw relations,
+root uniqueness/separation, inheritance/abstract coverage, unique containment,
+reference totality/coherence, set keys, individual multiplicities, inherited
+groups, declaration disjointness and root reachability of every live identity.
+Unused pool identities still have fixed well-typed direct types and parents.
+
+Behavioral §5 Definition 2 has one partial link function per identity. Refined
+reference declarations therefore constrain the same target on a shared head;
+they do not introduce independent assignments. The static generator's
+`genRefSubrelationConstriant` supplies corresponding subrelation constraints.
+The pinned temporal generator's `genConstraints` lacks that corresponding clause.
+This is a source/code comparison gap, not a reproduced end-to-end compiler
+counterexample; backend agreement must establish the shared-link obligation.
+
+[`StructuralCompatibility`](../Clafer/Behavioral/StructuralCompatibility.lean)
+proves `valid_iff_common`: richer validity of `Core.ofEffective m` is equivalent
+to old `Trace.Valid m` under old `WellFormed`, `Supported`, and agreement of the
+two effective-group fields. Reachability, shared-reference coherence, inherited
+keys and groups are derived on that domain. `ofEffective_wellFormed` preserves
+model admission; `Structural.observed_common` preserves the complete observed
+trace, and `eval_common` preserves every set expression. No historical guard is
+removed. `Trace.admissible_projection`, `constant_admissible` and
+`constant_snapshot` retain their exact statements and assumptions.
+
+[`StructuralSnapshot`](../Clafer/Behavioral/StructuralSnapshot.lean) supplies a
+separate richer live projection. Its `snapshot_groups`, `snapshot_heads`,
+`snapshot_assignments` and `snapshot_targets` preserve full inherited child unions
+and reference observations. It does not claim old `StructuralSatisfies` outside
+the historical common domain. Behavioral public imports remain independent of
+Compile and Verification; the owning `Semantics.Groups` predicate is shared.
 
 ## Distinguishing cases
 
-These cases expose missing obligations rather than declare a new meaning.
-Existing checked witnesses are identified separately from required new ones.
+The fully admitted [structural fixtures](../Clafer/Behavioral/StructuralExamples.lean)
+cover nested abstract Port under concrete SubSystem, a refined-parent variant,
+ordinary speed fields inherited under an abstract type, inherited and redeclared
+bag references, two heads at one changing target, and inherited group count two.
+They reject duplicate set targets, dead heads, dead targets, conflicting refined
+assignments, a group bound of one for two children, and direct authored-abstract
+instances. [Concrete inheritance](../Clafer/Behavioral/ConcreteInheritanceExamples.lean)
+is separately admitted and shown outside the old static support guard.
 
-* **Inherited group:** abstract xor A owns optional x/y; B extends A and adds
-  optional z. A B instance with only z meets the effective inherited xor.
-  Enforcing A's original x/y invariant as well would reject it. The
-  [group contract](group-compilation.md#source-and-selected-meaning) and its
-  checked fixtures already establish this selected rule.
-  [`GroupObservation.childrenEquiv`](../Clafer/Behavioral/GroupObservation.lean)
-  preserves the whole inherited union under live projection; `bounds_iff` and
-  `holds_iff` preserve its bounds without requiring finite object carriers.
-* **Nested abstract:** a concrete System owns abstract Port and concrete p : Port.
-  S6 permits the pattern; `Family.WellFormed.nested_abstract` excludes it.
-  A sibling pattern with SubSystem extending System and owning p : Port also
-  needs parent refinement rather than declared-parent equality. Neither is
-  covered by `Realization.Core.Selected`.
-* **Inherited reference:** abstract engine references Engine; motor extends
-  engine. A motor head must use the inherited reference without allocating a
-  second occurrence. T8 requires later final/finalref/finaltarget rules to see
-  it. The current basic-super guards exclude this required example.
-* **Repeated targets:** the existing
-  [trace examples](../Clafer/Behavioral/Examples.lean) retain two bag heads and
-  prove that mapping only to targets is noninjective. They also reject a
-  dangling target and accept a target change during a continuous head lifetime.
-  These are common-fragment witnesses, not inherited-reference tests.
-* **Stored reference:** bind a head at time 0 with target a; change its target to
-  b at time 1. The D1 disposition requires navigation from the stored head to
-  observe b. A variable holding the target set captured at time 0 still holds
-  a. Replacing the head by a new identity must not rebind either stored value.
-* **Absence:** an absent stored head is not a member of the current live class,
-  so the unchanged static `Environment.Admissible` cannot be asserted for it.
-  Direct actual-parent navigation can still observe its surviving fixed parent
-  under D1. A live-subtype snapshot alone cannot represent this environment.
-* **Primitive finiteness:** `DenotationExamples.infinite_integer_cardinality`
-  rejects counting the whole integer domain. `head_count`, `target_image` and
-  `reduced_target_count` distinguish two heads from one target. A finite head
-  observation with a functional dereference needs a finite-image proof; it
-  does not justify a finite primitive universe or arbitrary singleton extraction.
+The [resolved-binding fixtures](../Clafer/Behavioral/StructuralBindingExamples.lean)
+exercise head, parent, dref, target and inclusion maps over an admitted model.
+Two target-map links have identical endpoints but distinct intermediate heads;
+repeated dref occurrences retain the same link carrier. Current dref observes a
+changed target without changing the stored head identity.
 
-The reference-modifier interface supplies three separate observations: the
-child-head set for a parent, the head-to-target relation on those heads, and
-its target image. Equal target images do not imply equal heads or equal
-head-to-target assignments. Swapping two targets between two surviving heads
-preserves the target set while changing both assignments.
-[`ReferenceObservation`](../Clafer/Behavioral/ReferenceObservation.lean) defines
-`heads`, `assignments` and `targets`. `snapshot_heads`, `snapshot_assignments`
-and `snapshot_targets` prove exact image agreement through the live embedding,
-assuming the existing `Trace.Valid` and a live parent. `target_live` and
-`absent_head_no_deref` expose current validity; `absent_parent_heads` needs no
-validity assumption. `finite_targets` only assumes finitely many heads and
-functional references. Its guarded specialization does not require a finite
-ambient carrier. The [witnesses](../Clafer/Behavioral/ReferenceObservationExamples.lean)
-check swapped assignments, two bag heads at one target, head absence and a finite
-integer observation in the infinite `Int` carrier. These are observations for
-later modifier meanings, not proofs of final/finalref/finaltarget themselves.
+The [primitive fixture](../Clafer/Behavioral/PrimitiveExpressionExamples.lean)
+admits two reference heads alongside the entire infinite mathematical integer
+domain and constructs an actual `IntegerBinding`. `complete_static_agreement`
+instantiates the all-constructor theorem on that binding. Capturing a head observes
+its new target later; capturing the earlier target set keeps that set. Explicit
+sum over the two heads returns six at target three, while a whole-integer-extent
+coercion is undefined. Empty minimum remains unequal to a present zero.
 
-[`InheritedReference`](../Clafer/Behavioral/InheritedReference.lean) adds a nearest
-owner relation over declared references, not preflattened effective annotations.
-An own reference stops lookup; a basic node follows its super. Successful lookup
-has a unique ancestor owner with a target. Its `deref` observation restricts that
-owner's current relation to the existing subtype heads. `shared_head` proves
-agreement of two views sharing the owner; `functional` and `target_live` inherit
-guarded trace validity, while `absent_head` follows directly from live membership.
-The [fixtures](../Clafer/Behavioral/InheritedReferenceExamples.lean) retain two bag
-heads at a shared target, observe a target change without replacing the heads,
-and reject navigation after their disappearance. Lookup also stops at a nearer
-redeclared reference. Agreement between distinct redeclared owners, richer model
-admission and the complete inherited set-key obligations remain separate; these
-fixtures do not claim those results.
+The existing guarded disappearance/reappearance and swapped-target witnesses
+remain valid through the exact common-fragment bridge. The reference-modifier
+interface continues to distinguish heads, head-to-target assignments and target
+images: swapping targets can preserve the target set while changing assignments.
+`Structural.current` exposes these observations with inherited reference lookup;
+`finite_current_targets` requires only a finite observed head fiber.
+
+## Captured static atoms and partial temporal composition
+
+`CapturedStatic.capture` constructs a singleton-compatible captured environment
+from any static environment. `agrees` and `defined_iff` prove equality with the
+unchanged static evaluator for all constructors, including relations, joins,
+widening, Boolean operations, quantifiers and strict extraction, assuming live
+this. `admissible_push` keeps runtime membership obligations explicit.
+`StructuralBinding.Resolution` supplies the current-time maps: declared roles
+cover ordinary typed parent navigation, while heterogeneous abstract-parent
+navigation uses the ambient `SetExpr.parent` relation or an explicitly justified
+specialized resolution. Absence does not rebind stored values; standalone this
+is live-filtered, while direct this-parent navigation starts at the retained
+identity and requires only a live fixed parent.
+
+The [reviewed partial-domain rule](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
+extends the accepted mathematical arithmetic. `PartialObservation` returns
+`Option Prop` and `Option (Set U)`. `Formula.Defined` requires:
+
+- Every Boolean operand, including both conditional branches, defined.
+- A defined quantifier domain and a defined body for every member, for all five
+  quantifier forms; a let body receives the whole evaluated set.
+- For next, a defined body at the next state if its actual parent is present.
+- For eventually/always/until/weak-until, defined operands at every state in the
+  remaining uninterrupted parent lifetime. Until's left operand is checked before
+  cancellation even if its right operand could have succeeded earlier.
+- For initially/finally, a defined body only when the start/end anchor triggers.
+
+`Satisfies` conjoins this domain with the already accepted signed denotation.
+Missing observations may be completed arbitrarily internally;
+`raw_extension_agrees` and `extension_agrees` prove both meanings independent of
+that completion on the domain. `undefined_neither` prevents either polarity for
+an undefined formula. This does not change T2's ability to satisfy both signs of
+a defined temporal obligation after cancellation. `total_defined`/`total_agrees`
+recover the entire old total-observation language.
+
+`StaticObservation.signed_atom_agrees` gives exact partial static-atom agreement
+under the captured-environment hypotheses. `satisfies_iff_lowered` reuses signed
+normalization/lowering while retaining the *original* definedness judgment.
+It does not assert that arbitrary normalization or Boolean simplification may
+erase an undefined operand. The [partial witnesses](../Clafer/Behavioral/PartialExamples.lean)
+cover strict branches, every quantified member, empty domains, cancellation,
+reappearance, absent attachments, inactive anchors and undefined arithmetic.
 
 ## Integer-set conversion
 
@@ -132,8 +163,9 @@ reject infinite/noninteger observations, and retain arbitrary mathematical `Int`
 
 The historical `IntegerRealization.extract`, `Expr.integerOf`, static denotation
 and their requirements remain unchanged. The behavioral conversion is an explicit
-additional interface. It does not itself add operators to a temporal expression
-grammar.
+additional interface. The resolved `PrimitiveExpression` grammar composes it with arithmetic,
+extrema and occurrence-indexed folds; `PartialObservation.primitives` supplies
+the guarded temporal adapter.
 
 ## Mathematical arithmetic
 
@@ -190,65 +222,40 @@ operands can therefore contribute repeatedly. Agreement with a deduplicated unio
 requires disjointness, or the frontend must retain separate operand occurrences.
 Neither the selector nor the fold makes the whole primitive domain finite.
 
-## Source dispositions and open decisions
+## Source dispositions and downstream obligations
 
-The [accepted profile](behavioral-profile.md#errata-coverage-and-deliberate-departures)
-already adopts S1/S2/T10 child defaults, S3/S4/T11 effective group counting and
-set-only keys, and S7's actual-parent/root distinction. S5's frontend rejection
-of an unreachable group lower bound stays separate from the source meaning of
-an empty context. S8/S9 require explicit resolved views; the separate
-[name-resolution decision](https://github.com/kbak/clafer-semantics/issues/121)
-does not block semantics over those resolved views. S10's missing compiler
-support for concrete supers is a compiler limitation, not a reason to rewrite
-the existing static semantics. S11's bounded backend arithmetic is not source
-integer overflow semantics.
+| Source item | Disposition |
+| --- | --- |
+| S1/S2/T10 | Retain adopted numeric/keyword child defaults and inherited opt policy; effective elaboration remains C6. |
+| S3/S4/T11 | Enforce the effective group on each authored ordinary declaration over own/inherited child heads; abstract group annotations are inherited templates. Bag heads count separately. |
+| S5 | An unreachable lower group bound gives an empty source context. Any compiler rejection is a frontend restriction, not a changed source predicate. |
+| S6 | Admit nested authored abstracts under concrete parents and parent refinement; preserve identity and actual parent in inherited views. |
+| S7 | Root is a permanent source identity. Parent navigation follows fixed actual parents, including parentless abstract views. Pinned static backend restrictions on root expressions/mixed abstract variables stay explicit in C6 comparison. |
+| S8/S9 | Frontends resolve names and insert implicit dref exactly once. Typed support maps and ambient current observations implement the resulting head/target views; name-search order remains with the separate resolution decision. |
+| S10 | Keep source-permitted concrete supers. Do not import the pinned compiler's abstract-super-only restriction into source validity. |
+| S11 | Use the adopted mathematical integer and partial arithmetic rules above. Other numeric types retain the profile's separate proposed-exclusion and review status; finite encoding ranges remain C8 obligations. |
+| T8 | Supply inherited heads, assignments and target images; S5 owns final/finalref/finaltarget predicates. |
+| B32/D4 | Support constant `=`; explicitly reject `:=` in this profile. |
 
-D1 now has an explicit
-[stable-identity/current-navigation disposition](https://github.com/kbak/clafer-semantics/issues/125#issuecomment-6684850305).
-Capture retains quantifier identities and evaluated let collections. Extents and
-navigation use the observation time; standalone this is live-filtered, direct
-navigation starts from its identity, and actual-parent navigation requires a
-live target parent without requiring the child live. This deliberately differs
-from the paper's snapshot-tagged expression equations (§5, pp. 2:26–28).
-The pinned `AlloyLtl.genPExp'`, `thisAlive`, direct-this join and `parentRel`
-support this comparison. Its `genConstraints` constrains reference targets only
-while a head is live; agreement for off-live reference data must not be inferred
-from those clauses.
+The [accepted initializer disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
+uses the pinned desugarer's presence implication in the enclosing attachment
+context. `Initializers.constant` takes separately resolved head and value views,
+and builds `some heads => left = value`. Ordinary attachment checks it at every
+live context state; no `initially` wrapper is inserted. Operand definedness is
+strict even when the presence guard is false. The CheatSheet explicitly says no
+backend supports `:=`, and emitting an assertion does not define override/default
+semantics. C6/C7 must reject that syntax explicitly for this profile. This reviewed
+restriction does not remove default multiplicity/group elaboration.
 
-The [source audit](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685083999)
-distinguishes the required S6/S9/T8 structural extensions from new arithmetic
-choices. D3's finite-set conversion, zero-divisor rejection and mathematical
-arithmetic and empty extrema are resolved above; integration with temporal
-expressions and resolved aggregate operands remains required. The compiler distributes `sum`/`product` over
-syntactic union, so overlapping operands cannot be claimed equivalent to
-aggregation over a deduplicated head set without a disjointness condition.
-For D4, constant `=` is a presence-guarded constraint; `:=` is documented as
-unsupported and is currently emitted as an assertion. Neither supplies temporal
-birth-initializer meaning. S5/C6/C7 still owe its explicit profile disposition.
-The proposed full S4 requirement IDs remain reserved; the implemented conversion
-and arithmetic interfaces have their own narrower requirements; they do not
-discharge full S4 acceptance.
-
-## Unchanged agreement domain and completion
-
-`Trace.admissible_projection` still requires `EffectiveCore.WellFormed`,
-`EffectiveCore.Supported` and `Trace.Valid`. Its result is exactly
-`StructuralSatisfies` on the live carrier. `StaticCorrespondence.constant_admissible`
-still requires those two model guards, `StructuralSatisfies`, and the explicit
-direct-type/head-closure and parent/containment correspondence witness.
-`constant_snapshot` recovers the complete original configuration through the
-live-carrier equivalence. None asserts existence of that witness for every
-structural configuration or covers all rows above.
-
-All missing structural bridges above remain S4 work, including the inherited,
-nested and integer cases excluded by the initial guard. S3 owns signed formula
-composition and temporal environment operations; S5 owns modifier and initializer
-surface meaning; C6 owns resolved structural elaboration; C8 owns arithmetic
-and reference encoding correspondence. Required rows cannot become unowned
-gaps or be discharged by tables alone. Acceptance needs actual declarations,
-assumptions, positive/negative witnesses, full validation and semantic review.
-Historical SoSyM and static compiler/oracle profiles retain their existing pins.
+S4 supplies these source interfaces and agreement results. S5 still owns surface
+modifiers, transitions and patterns; C6/C7 own parsing, name resolution, implicit
+views, initializer diagnostics and elaboration preservation; C8 owns bounded
+arithmetic/reference encoding correspondence. Lasso tasks must preserve the
+partial domain as well as signed truth. No backend correctness or complete
+behavioral implementation follows from structural compatibility alone.
 
 Covers:
 - `req~behavioral-profile~1`
 - `req~behavioral-structural-boundary~1`
+- `req~behavioral-structural-compatibility~1`
+- `req~behavioral-reference-atoms~1`

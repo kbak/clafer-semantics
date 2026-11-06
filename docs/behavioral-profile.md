@@ -12,8 +12,9 @@ The [trace foundation](behavioral-traces.md) records the delivered identity,
 lifetime and structural bridge APIs and witnesses. The
 [formula contract](behavioral-formulas.md) supplies signed evaluation,
 normalization/lowering and the adopted D1 environments over total observations;
-later feature obligations remain separate. The [structural prerequisite audit](behavioral-structure.md)
-maps the required richer cases to actual APIs and records missing bridges.
+later feature obligations remain separate. The [structural and atom contract](behavioral-structure.md)
+adds richer admission, inherited-reference bindings, captured static agreement and
+strict partial temporal composition, with explicit downstream obligations.
 
 Profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
@@ -45,7 +46,7 @@ moving meaning across a repository or layer requires contract review.
 | --- | --- | --- |
 | [Trace and snapshot semantics (S2)][S2] | `Clafer/Behavioral/Trace.lean`, `Snapshot.lean` | Shared identity/type/parent data, live states, lifetimes, structural projection and constant embedding |
 | [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Lifetime.lean`, `Normalization.lean`, `Lowering.lean` | Independent signed source satisfaction, interval meaning, normalization and ordinary temporal core; no compiler IR or target imports |
-| [Structural atom compatibility (S4)][S4] | `Atoms.lean`, `Structural.lean` | Explicit adapters to existing structural/constraint meanings, reference and primitive obligations |
+| [Structural atom compatibility (S4)][S4] | `Structural.lean`, `StructuralCompatibility`, `StructuralObservation`, `StructuralSnapshot`, `StructuralBinding`, `CapturedStatic`, `PrimitiveExpression`, `StaticObservation`, `PartialObservation`, `PartialCompatibility`, `Initializers` | Independent richer admission, full current bindings, captured static agreement and strict partial temporal composition; reviewed initializer profile |
 | [Surface meaning (S5)][S5] | `Surface.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
 | [Lasso checking (S6)][S6] | `Lasso.lean`, `Evaluation.lean` | Finite representation, infinite unfolding and exact-candidate evaluation theorem over the normalized core |
 | [Compiler contract (C1)][C1], [IR (C4)][C4] | Downstream executable behavioral IR and interpretation | Pins an accepted upstream SHA; representation correctness is proved, not an assumed preservation predicate |
@@ -88,11 +89,11 @@ need a direct-type witness, that witness and its existence obligation must be
 explicit. Neither arbitrary sequences of valid snapshots nor arbitrary temporal
 constraints follow from this bridge.
 
-This initial domain excludes the richer inherited/reference/primitive cases that
-`EffectiveCore.Supported` excludes. Those cases remain **required S4 work**, not
-an exclusion from final behavioral delivery. Static atom agreement later quantifies
-over an explicit admissible environment, snapshot embedding and definedness
-hypotheses. The present `Expr.not` remains ordinary static negation; reusing it
+This initial domain excludes richer inherited/reference/primitive cases.
+The [S4 contract](behavioral-structure.md) supplies their independent richer model,
+current bindings and partial-atom adapters, with exact agreement on the old domain.
+Static atom agreement states its captured-environment, live-this and definedness
+hypotheses explicitly. The present `Expr.not` remains ordinary static negation; reusing it
 for lifetime-bounded source negation would change the profile.
 
 Finite lassos are a separate analysis representation: a nonempty finite state
@@ -181,7 +182,7 @@ do not discharge source proofs.
 | B29: syntax/precedence and aliases | P §6.1; T12; CS Temporal logic/Transitions | [C7] with [S5] normalization | Parser/elaboration agreement; transitions bind weakest; `not` quantifier differs from `!` | `initially (a --> b)` / parse it as `(initially a) --> b`; following `xor` ambiguity |
 | B30: lassos and bounded reporting | P §6.2; T13 | [S6], [C2], [C3], [C9] | Infinite unfolding/evaluation agreement; identity capacity assumptions | Nonzero prefix and loop-edge birth / invalid loop index or undersized identity pool |
 | B31: integer observations and operations | P §6.1 structural reuse; S11; current denotation; reviewed D3 conversion | [S4], [C6], [C8] | Explicit strict-singleton versus finite-set-sum conversion and arithmetic-domain/range conditions; complete D3 | Empty arithmetic operand contributes zero while presence stays false; defined arithmetic in range / wrong-domain or infinite observation, zero divisor; backend range overflow |
-| B32: declaration `=` / `:=`, numeric/group defaults | P §6.1 p. 2:29; T10; S1–S2 | [S4], [S5], [C6], [C7] | Separate static initialization/default elaboration from temporal birth; resolve D4 | Explicit override and inherited opt / confuse `=` with `initially` |
+| B32: declaration `=` / `:=`, numeric/group defaults | P §6.1 p. 2:29; T10; S1–S2 | [S4], [S5], [C6], [C7] | Constant equation at every live attachment state; explicit rejection of `:=`; effective defaults remain separate from temporal birth | Inherited opt and persistent `=` / accept `:=` silently or confuse `=` with `initially` |
 
 The current static prerequisite rules are described by
 [group compilation](group-compilation.md), [inherited realization](inherited-realization.md),
@@ -268,8 +269,8 @@ features cannot disappear through an unsupported-input guard.
 | --- | --- | --- |
 | D1: observations of stored identities — adopted | P §5 pp. 2:26–28 attaches snapshots to environment values; pinned `AlloyLtl.genPExp'` emits bound variables as stable identities and current-state navigation. `thisAlive` filters standalone `this`, whereas direct `this` navigation starts at the identity even after its disappearance. | [Approved disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831): capture identities/sets and use current relations, retaining standalone-this versus direct-navigation distinction. The [formula contract](behavioral-formulas.md#captured-values-and-current-navigation) and its witnesses give exact rules. [S4]/[C4] must preserve them in adapters; no full agreement with the paper's snapshot-pair evaluator is claimed. |
 | D2: independent scoped patterns | The paper lacks all 30 equations; pinned `TmpPatFollow` between q/r puts the p implication at the opener, unlike the after-until branch. | [S5]/[C7]/[C8]: evaluate a trace with q at 0, p later, r later still, and no response; record whether to correct the expansion or select that candidate behavior. Preserve the complete pattern scope while resolving the mismatch. |
-| D3: arithmetic — source rules resolved; integration required | The [accepted behavioral conversion](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729) sums finite integer sets, including empty-to-zero, while preserving relational presence/equality and strict extraction. The [accepted scalar rule](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865) uses mathematical Int, truncation toward zero, matching remainder and undefined division/remainder at zero. The [extrema disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685652746) keeps empty selectors empty; explicit folds retain occurrences, with empty sum 0/product 1. Backend overflow does not change source meaning. | [S4]/[C6]/[C8]: use the [arithmetic contract](behavioral-structure.md#mathematical-arithmetic); integrate `+`, `-`, unary minus, `*`, `/`, `%`, sum/product/min/max and `#`; retain the [aggregate contract](behavioral-structure.md#aggregates-and-extrema), then prove range/finite-observation bridges. Undefined expressions and wrong-domain/infinite observations must not silently become zero, false or true. |
-| D4: defaults and full structural prerequisites | P §6.1 `=` / `:=` are not temporal initializers; S6 nested abstracts and S9 resolution go beyond the current checker. | [S4]/[S5]/[C1]/[C6]: classify each initializer and inherited/nested case, including any unsupported form, in the compiler profile. Keep default elaboration downstream; retain source constraints and instance identity upstream. |
+| D3: arithmetic and partial temporal domain — adopted | The [accepted behavioral conversion](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729) sums finite integer sets, including empty-to-zero, while preserving relational presence/equality and strict extraction. The [accepted scalar rule](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865) uses mathematical Int, truncation toward zero, matching remainder and undefined division/remainder at zero. The [extrema disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685652746) keeps empty selectors empty; explicit folds retain occurrences, with empty sum 0/product 1. Backend overflow does not change source meaning. The [strict temporal-domain disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) requires every operand/member and every active temporal observation defined. | [S4] supplies the [resolved expression and partial-domain interfaces](behavioral-structure.md#captured-static-atoms-and-partial-temporal-composition), finite-observation and agreement proofs. [C6]/[C8] preserve those rules during elaboration/encoding and establish sufficient intermediate ranges. Undefined expressions and wrong-domain/infinite observations must not silently become zero, false or true. |
+| D4: defaults and structural prerequisites — adopted | The [reviewed disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) supports `=` as a presence-guarded equation at every live attachment state and explicitly rejects `:=` in this profile. S6 nested abstracts/refined parents and S9 inherited references use the richer independent structural core. S10 concrete supers remain source-permitted. | [S4] supplies admission, common-fragment equivalence, full bindings and initializer disposition. [C6]/[C7] preserve effective defaults and instance identities, resolve views and diagnose unsupported `:=`; [S5] owns remaining surface modifiers. Neither initializer denotes temporal birth. |
 
 The following broader nonbehavioral features are **proposed exclusions requiring
 S1/C1 review**, not silent omissions: decimal/double/real and string computation,

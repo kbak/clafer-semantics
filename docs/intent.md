@@ -93,10 +93,11 @@ require explicit acceptance. The [trace foundation](behavioral-traces.md) suppli
 shared identities, lifetime boundaries and the guarded structural snapshot/constant
 bridge. The [signed formula contract](behavioral-formulas.md) supplies independent
 parent-bounded evaluation, identity-capturing environments and proved normalization
-and lowering over total observations. Full structural/partial-atom integration,
-surface meaning and lasso checking remain separate work. The
-[structural prerequisite audit](behavioral-structure.md) identifies reuse boundaries
-and missing inherited/reference/atom bridges.
+and lowering over total observations. The [structural and atom contract](behavioral-structure.md)
+adds nested/refined structural admission, inherited references, full current-state
+bindings, captured static expressions and strict partial temporal observations,
+with exact common-fragment agreement. Surface modifiers/patterns and lasso
+checking remain separate work.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 Feature integration uses `behavioral`; the existing structural imports and
 historical static profiles remain supported.
@@ -147,7 +148,7 @@ numbers and ticket chains must not substitute for an explanation.
 | This intent | Product goals, delivered scope and exclusions |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
 | [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md) and [formulas](behavioral-formulas.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, remaining feature obligations and integration gates |
-| [Behavioral structural prerequisites](behavioral-structure.md) | Existing structural/atom APIs, exact reuse domains, required extensions and source decisions |
+| [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |

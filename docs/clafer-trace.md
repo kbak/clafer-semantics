@@ -1728,8 +1728,8 @@ Covers:
 [IntegerObservation.lean](../Clafer/Behavioral/IntegerObservation.lean): `coerce`
 and `operand` implement the explicit finite-set-sum conversion from the
 [reviewed contract](behavioral-structure.md#integer-set-conversion). This does not
-replace strict extraction or relational equality and is not yet an integrated
-temporal expression evaluator.
+replace strict extraction or relational equality. `PrimitiveExpression` and the
+partial-observation adapter compose this interface with temporal atoms.
 
 Covers:
 - `req~behavioral-integer-coercion~1`
@@ -1822,3 +1822,91 @@ not certify a complete richer structural model.
 
 Covers:
 - `req~behavioral-inherited-reference-observation~1`
+
+## Behavioral richer structural compatibility
+
+`impl~behavioral-structural-compatibility~1`
+
+[Structural.lean](../Clafer/Behavioral/Structural.lean) defines `Core`,
+`Core.WellFormed`, `IdentitiesValid`, `StateValid` and `Valid` with authored
+abstractness, refined parents, inherited groups and shared reference assignments.
+[StructuralSnapshot.lean](../Clafer/Behavioral/StructuralSnapshot.lean) exposes
+live-carrier inherited observations. [Initializers.lean](../Clafer/Behavioral/Initializers.lean)
+implements the reviewed constant-equation/default-rejection profile. The
+[contract](behavioral-structure.md) records source sections, all S1–S11 dispositions
+and the frontend/modifier/encoding boundaries.
+
+Covers:
+- `req~behavioral-structural-compatibility~1`
+
+`proof~behavioral-structural-compatibility~1`
+
+[StructuralCompatibility.lean](../Clafer/Behavioral/StructuralCompatibility.lean):
+`valid_iff_common` assumes old `WellFormed`, `Supported` and equality of effective
+group fields. `Core.ofEffective_wellFormed` preserves admission; `Common.reachable`,
+`coherent`, `keys_iff` and `groups_iff` derive the added clauses on that domain.
+`view_parent_unique`, `view_covers` and `top_level_parent` preserve actual ownership.
+`Structural.snapshot_groups` transports the complete inherited predicate.
+`Initializers.constant_truth` requires all three resolved collections defined;
+`default_rejected` and `every_live_state` retain the explicit profile boundary.
+The [structural](../Clafer/Behavioral/StructuralExamples.lean) and
+[concrete-inheritance](../Clafer/Behavioral/ConcreteInheritanceExamples.lean)
+fixtures prove full admission outside the old guard and reject invalid groups,
+abstract direct instances, set duplicates and reference endpoints/refinements.
+
+Covers:
+- `req~behavioral-structural-compatibility~1`
+
+## Behavioral current references and partial atoms
+
+`impl~behavioral-reference-atoms~1`
+
+[StructuralObservation.lean](../Clafer/Behavioral/StructuralObservation.lean)
+adapts current inherited relations to captured sets. [StructuralBinding.lean](../Clafer/Behavioral/StructuralBinding.lean)
+constructs full support maps with typed endpoints and intermediate reference heads.
+[CapturedStatic.lean](../Clafer/Behavioral/CapturedStatic.lean) evaluates the existing
+typed syntax with captured lexical sets and current bindings;
+[StaticObservation.lean](../Clafer/Behavioral/StaticObservation.lean) exposes those
+expressions as partial temporal atoms/domains.
+[PrimitiveExpression.lean](../Clafer/Behavioral/PrimitiveExpression.lean) composes
+resolved integer operations and occurrences indexed by operand position and head.
+[PartialObservation.lean](../Clafer/Behavioral/PartialObservation.lean) defines the
+strict domain and signed satisfaction under the reviewed D3 extension.
+
+Covers:
+- `req~behavioral-reference-atoms~1`
+
+`proof~behavioral-reference-atoms~1`
+
+`Structural.Valid.inherited_reference`, `target_typed`, `target_live` and
+`refined_reference_agrees` derive inherited current-reference obligations from
+validity. `InheritedReference.owner_exists_iff` characterizes successful lookup.
+`Structural.observed_common`/`eval_common` preserve the old common observations;
+`Structural.snapshot_heads`/`snapshot_assignments`/`snapshot_targets` preserve
+richer observations on live carriers. `Resolution.ofRoles` derives link typing;
+`Resolution.coherent` supplies full link equivalences for repeated support maps.
+
+`CapturedStatic.capture_compatible` constructs compatible singleton environments;
+`agrees`/`defined_iff` cover every static constructor assuming that compatibility
+and live this. Runtime typing is separate, as `admissible_push` states.
+`StaticObservation.signed_atom_agrees` preserves both defined static atom signs.
+`PrimitiveExpression.finite_reference_operand` requires finite captured heads,
+a valid trace, a resolved owner/target, and target membership in the integer
+domain; it does not require a finite primitive class.
+
+[PartialCompatibility.lean](../Clafer/Behavioral/PartialCompatibility.lean):
+`raw_extension_agrees` and `extension_agrees` assume the formula's strict domain
+and two total observations that agree wherever the partial observations are
+present. `total_defined`/`total_agrees` recover the total language;
+`undefined_neither` rejects either sign outside the domain.
+`satisfies_iff_lowered` retains original definedness while reusing signed lowering.
+The [binding](../Clafer/Behavioral/StructuralBindingExamples.lean),
+[primitive](../Clafer/Behavioral/PrimitiveExpressionExamples.lean) and
+[partial](../Clafer/Behavioral/PartialExamples.lean) fixtures use admitted structural
+traces, including an infinite integer carrier, repeated target-map links and sums,
+current navigation of captured values, zero divisors, strict branch/member checks,
+parent cancellation/reappearance, absent contexts and constant initialization
+that must hold after birth. These are source bridges, not backend correctness.
+
+Covers:
+- `req~behavioral-reference-atoms~1`
