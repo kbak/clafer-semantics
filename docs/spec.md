@@ -116,6 +116,21 @@ commits with the same dependency identity to reuse them. Always invoke the full
 discovered module build so Lake validates every module's inputs before reuse;
 never substitute an unchecked copy of a prior checkout's build directory.
 
+Keep Mathlib downloads separate from evolving Lake build artifacts. Key the
+download cache by the discovered Mathlib import inventory as well as dependency
+identity, so changed imports can populate a new cache without uploading unchanged
+downloads on every commit. Cache Python package downloads and pinned OFT/Alloy
+jars; still install the pinned packages and verify each jar before use.
+
+CI first restores a small exporter cache containing its executable, build manifest
+and build-recipe digest. Validate all compiler/dependency, exporter-source/binary
+and recipe identities before omitting compiler setup. Only a valid cache may avoid
+restoring the Haskell build dependencies and installing build prerequisites.
+Missing, changed or corrupt cache entries require rebuilding or a failing check;
+they never authorize stale execution. Recheck the prepared exporter before exporting
+its paths into validation. Keep actual compiler/solver tests and evidence generation
+fresh, including on cache hits.
+
 Audit declarations by their originating project modules, including private and
 generated declarations regardless of namespace, with complete `import all`
 coverage. Reject unsafe/partial definitions, new axioms and transitive axiom

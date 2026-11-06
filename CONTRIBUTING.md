@@ -134,15 +134,28 @@ profiles may enable native caching for project modules and pinned dependencies;
 keep that cache outside captured source and preserve the complete validation
 gates. Lake checks source, compiler-option and transitive-import traces before
 reusing a module, rebuilding changed modules and their dependents. CI saves Lake
-artifacts and Mathlib downloads after
-successful checks, keyed by OS, architecture, toolchain and dependency manifest.
-The commit suffix allows the cache to grow when later changes introduce imports.
+artifacts and Mathlib downloads in separate caches after successful checks, keyed
+by OS, architecture, toolchain and dependency manifest. Lake's cache retains a
+commit suffix so new builds can populate it. Mathlib's download key includes the
+discovered import inventory, avoiding repeated uploads when only project proofs
+change while allowing newly imported dependencies to populate a new cache.
 `LAKE_CACHE_DIR` and `MATHLIB_CACHE_DIR` locate these caches outside the checkout
 so IntentBond's fresh snapshots inherit them. `LAKE_ARTIFACT_CACHE=true` enables
 incremental compilation; use `false` for fresh compilation in an isolated snapshot.
 The shared check sets `LAKE_RESTORE_ARTIFACTS=true` so all outputs are restored to
 the paths used by the audit, tests and kernel checker. A warm cache still runs
 the complete module build, fresh kernel replay, axiom audit and regression tests.
+
+CI also caches Python package downloads and pinned OFT/Alloy jars; installation
+and jar verification still run. Before restoring Haskell build dependencies,
+CI probes a small exporter cache containing only the executable, build manifest
+and recipe digest. `scripts/verification/runtime.py --check-cache WORK` checks
+these identities without provisioning. `--github-env WORK` prepares or rechecks
+the exporter and appends its paths to `GITHUB_ENV`; `WORK` must be external.
+A verified hit skips the compiler dependency restore and build prerequisites.
+Changed or missing exporter inputs take the pinned build path. Cache keys include
+the exporter, builder, runtime and protocol sources and runner platform. All live
+compiler/solver comparisons still execute and produce new evidence.
 
 ## Tickets and pull requests
 
