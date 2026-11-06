@@ -1439,3 +1439,18 @@ domain and the accepted Appendix 4 partial-singleton bridge. Its extraction erro
 API remains a selected library contract, not a verbatim paper definition. The
 Figure 21 guarded VC meaning and Clafer expression meanings retain their separate
 source obligations. No source correction, supported fragment or comparison pin changes.
+
+## Empty-collection language extension
+
+The adopted [empty-set decision](https://github.com/kbak/clafer-semantics/issues/134)
+extends SoSyM Appendix 4/Figure 28 with an explicit typed empty collection.
+[Alloy's Subtypes and Relational Expressions sections](https://alloytools.org/spec.html)
+and [Edwards, Jackson and Torlak (2004), §4](https://groups.csail.mit.edu/sdg/pubs/2004/typeSystem.pdf)
+distinguish bottom element typing from arity and ill-typed expressions: Alloy
+`none` is unary, while `none -> none` is binary. Clafer uses reserved `noclafer`
+to preserve existing models that use `none` as a name. The implementation is original;
+no Alloy or publication source is copied. The semantic contract is in
+[constraint denotation](constraint-denotation.md#empty-collections). This is a
+language evolution, not a correction attributed to the SoSyM paper. Existing
+partial scalar extraction and mathematical integers are retained. The executable
+comparison uses Alloy 6.2.0, source `794226dd07b536fe35c5ca44b529417183cd629b`.

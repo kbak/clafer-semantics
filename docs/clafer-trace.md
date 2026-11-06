@@ -1568,3 +1568,29 @@ Covers:
 - `req~clafer-effective-core~1`
 - `req~clafer-compile-groups~1`
 - `req~clafer-integer-extraction~1`
+
+## Empty collections
+
+`impl~clafer-empty-collections~1`
+
+[Typing](../Clafer/Constraints/Typing.lean) defines `Expr.empty`; its equation is
+in [Denotation](../Clafer/Constraints/Denotation.lean). Collection membership,
+renaming and support invariance include the constructor.
+
+Covers:
+- `req~clafer-core-typing~1`
+- `req~clafer-constraint-denotation~1`
+
+`proof~clafer-empty-collections~1`
+
+[Empty](../Clafer/Constraints/Empty.lean) proves `empty_defined`, `empty_extents`,
+`empty_maps`, `cardinality_empty`, `no_empty`, `lone_empty`, `some_empty`,
+`one_empty`, `union_empty`, `empty_union`, `difference_empty`,
+`intersection_empty`, `empty_difference`, `empty_subset`, `image_empty`,
+`join_empty`, `all_empty`, and `integerOf_empty`. The collection shape remains
+intrinsic; no new cast between arities or into scalars is admitted.
+
+Covers:
+- `req~clafer-core-typing~1`
+- `req~clafer-constraint-denotation~1`
+- `req~clafer-constraint-semantic-laws~1`

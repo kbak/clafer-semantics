@@ -1693,7 +1693,11 @@ SoSyM D.1/Figure 28 and D.3.1–2: Boolean conjunction/negation, same-sort equal
 integer comparison/addition/subtraction, collection cardinality, unary-set and
 binary-relation union/difference/intersection and Boolean subsetting, unary–binary
 image and binary–binary join. Both joins require matching middle classes. Include
-Boolean/integer literals and explicit no/one/lone/some helpers for resolved input.
+Boolean/integer literals, typed empty unary/binary collections, and explicit
+no/one/lone/some helpers for resolved input. Empty collection instantiation is
+element-bottom typing: it requires no class instance or inheritance edge, retains
+arity, and does not introduce Boolean/scalar integer coercions. The `noclafer`
+source literal is unary; binary empties retain separate endpoint annotations.
 Follow the [Q3 source disposition](sources.md#appendix-d-rule-dispositions-q3):
 intersection is ordinary common-element intersection, already printed as ∩;
 D.4.1 identifies E and S on set expressions. This increment supplies syntax and
@@ -2300,7 +2304,11 @@ Needs: impl, proof
 
 Give independent mathematical meanings and constructor equations for all supported
 Boolean, integer, unary-set and binary-relation constructors, both joins,
-quantification, cardinality and no/one/lone/some helpers. Apply [Q3](sources.md#appendix-d-rule-dispositions-q3) ordinary
+quantification, cardinality and no/one/lone/some helpers. Empty collections are
+always defined (`Option.some ∅`), independent of class extents and map values.
+Prove empty-set union/difference/intersection, subset, cardinality, multiplicity,
+navigation and universal-quantifier laws, preserving strict undefined propagation
+and undefined scalar extraction from emptiness. Apply [Q3](sources.md#appendix-d-rule-dispositions-q3) ordinary
 intersection. Make span reduction explicit; retain original links and count
 reference heads separately from dereferenced targets. Integrate the [partial singleton
 extraction bridge](integer-extraction.md), deriving Appendix 6 numeric operand definedness from structural

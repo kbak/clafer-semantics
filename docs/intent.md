@@ -86,7 +86,8 @@ Compile/gluing preservation separate; the
 retains their source differences and unresolved historical identities.
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,
-production runtime configuration management, Claferize, post-2014 extensions beyond the adopted child-default policy,
+production runtime configuration management, Claferize, post-2014 extensions beyond the adopted child-default policy and
+[empty-collection extension](constraint-denotation.md#empty-collections),
 a production parser and visualization. Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document

@@ -594,3 +594,11 @@ configuration. The selected whole-model theorem then establishes satisfaction
 of its canonical descent into the complete glued bank. The [full-model contract](telematics.md)
 owns the attachment map, proof boundaries and rejection witnesses. It neither
 extends the finite checker nor replaces the earlier subset fixtures.
+
+## Empty collection typing
+
+The [empty-collection contract](constraint-denotation.md#empty-collections) extends
+the static core with `Expr.empty`, indexed by its unary/binary collection shape.
+The frontend may instantiate a unary bottom literal at any element class; this
+adds no diagram class, inheritance relation, or model-binding dependency.
+Empty literals have defined denotation and require no finite ambient universe.

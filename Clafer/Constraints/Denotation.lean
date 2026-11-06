@@ -99,6 +99,7 @@ noncomputable def Expr.denote {s : Support} {U : Type u}
   match e with
   | .boolean b => Option.some ⟨b = true⟩
   | .integer n => Option.some ⟨n⟩
+  | .empty _ => Option.some ∅
   | .this => Option.some {ρ.this}
   | .extent x => Option.some (m.model.obj x)
   | .var v => Option.some {ρ.lookup v}

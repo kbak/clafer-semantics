@@ -68,6 +68,10 @@ is not supplied by the constructor. Names may shadow; resolved IDs are fresh. -/
 inductive Expr (s : Support) : List (Local s) → Ty s → Type where
   | boolean {Γ} (value : Bool) : Expr s Γ .boolean
   | integer {Γ} (value : Int) : Expr s Γ .integer
+  /-- Adopted empty-collection extension (#134) to SoSyM Appendix 4.
+  Element-bottom instantiation retains the collection's arity and endpoints;
+  it requires neither an object nor an inheritance edge. -/
+  | empty {Γ} (shape : Collection s) : Expr s Γ (.collection shape)
   | this {Γ} : Expr s Γ (.collection (.objects s.context))
   /-- Resolved global class extent, including parentless abstract families.
   Appendix 6's global plaECU navigation cannot be a synthetic-root child. -/
