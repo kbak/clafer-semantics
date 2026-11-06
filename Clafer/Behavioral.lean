@@ -19,5 +19,6 @@ public import Clafer.Behavioral.Modifiers
 public import Clafer.Behavioral.Transitions
 public import Clafer.Behavioral.Patterns
 public import Clafer.Behavioral.Properties
+public import Clafer.Behavioral.Composition
 
 /-! Optional behavioral source semantics. Structural `import Clafer` stays independent. -/

@@ -36,7 +36,14 @@ compatibility. The separate [finite verification API](behavioral-verification.md
 `Lasso`/`Orbit`, `FiniteEvaluation`, `LassoValidation`, `FiniteSets` and
 `Verification`, with `LassoExamples` as checked fixtures. Its imports may reuse
 the guarded structural checker; `Clafer.Behavioral` retains source independence.
-Finite adapters for richer structural/partial observations remain separate work.
+The [qualification layer](behavioral-qualification.md) adds source-only
+`PartialLowering` and `Composition`, plus separate `FinitePartial` and
+`FiniteComposition` modules. Strict source domains and signed truth reduce to
+ordinary core obligations; certified finite partial observations retain
+missingness. Full finite body checking requires exact constraint/modifier
+inventories and independently established structural admission. `commonCheck`
+also executes the old guarded structural checks. Concrete richer primitive
+adapters retain the qualification contract's finite-carrier restrictions.
 The [surface layer](behavioral-surface.md) adds `Anchors`, `Modifiers`,
 `Transitions`, `Patterns` and `Properties`. Independent meanings reduce to the
 signed formula core; partial adapters retain the expanded source domain. Only

@@ -1967,6 +1967,51 @@ that must hold after birth. These are source bridges, not backend correctness.
 Covers:
 - `req~behavioral-reference-atoms~1`
 
+## Behavioral qualification
+
+`impl~behavioral-qualification~1`
+
+[PartialLowering](../Clafer/Behavioral/PartialLowering.lean) defines `CheckedAtom`,
+`PartialObservation.checked`, `Formula.domainFormula` and `checkedCore`.
+[Composition](../Clafer/Behavioral/Composition.lean) defines complete modifier
+constraint inventories, `Modifiers.CoreHolds` and `Constraint.CoreHolds`.
+[FinitePartial](../Clafer/Behavioral/FinitePartial.lean) defines optional finite
+observations, exact `Agrees`, certified adapters and `Formula.Program.check`.
+[FiniteComposition](../Clafer/Behavioral/FiniteComposition.lean) supplies finite
+context placements, exact constraint bundles, `bodyCheck` and `commonCheck`.
+The [qualification contract](behavioral-qualification.md) owns source inventory,
+strict-domain equations and finite representation limits.
+
+Covers:
+- `req~behavioral-qualification~1`
+
+`proof~behavioral-qualification~1`
+
+`domainFormula_agrees` and `checkedCore_agrees` preserve all original strict
+domain obligations and both source signs. `Model.behavioral_core_iff` includes
+structural validity, all effective modifiers and all constraints.
+`Model.common_iff`, `common_snapshot` and `constant_iff` retain old well-formedness,
+support, group equality and the constant converse's `StaticCorrespondence`.
+`FinitePartialObservation.checked_agrees` proves values and missingness agree
+over every environment/time; `Program.check_satisfied`, `check_undefined` and
+`check_violated` separate the three outcomes. `Constraint.Finite.holds_iff` and
+`FiniteBundle.holds_iff` preserve context inventories and implicit always.
+`bodyCheck_correct` requires independently established richer admission and an
+exact modifier inventory; `commonCheck_correct` executes the existing guarded
+structural checks. `Transitions.Chain.finite_agrees` and `Patterns.finite_agrees`
+compose independent surface meanings with the same strict finite API.
+
+[QualificationExamples](../Clafer/Behavioral/QualificationExamples.lean) supplies
+full replaceable-machine satisfaction and stable-parent rejection, an admitted
+inherited-final-reference model and its mutation, and defined/undefined/false
+partial observations across cancellation and rebirth. Existing source witnesses
+remain individually indexed by the [complete inventory](behavioral-qualification.md#complete-source-and-witness-inventory).
+Kernel checking proves these statements; semantic acceptance and final source
+profile disposition remain separate gates.
+
+Covers:
+- `req~behavioral-qualification~1`
+
 ## Behavioral surface
 
 The [surface contract](behavioral-surface.md) records the independent meanings,

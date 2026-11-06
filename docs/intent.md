@@ -98,12 +98,15 @@ adds nested/refined structural admission, inherited references, full current-sta
 bindings, captured static expressions and strict partial temporal observations,
 with exact common-fragment agreement. The [finite behavioral checker](behavioral-verification.md)
 adds history-aware lassos, executable normalized-core evaluation and agreement
-with infinite meaning, including a proved total set-observation adapter. Finite
-adapters for richer structural/partial observations remain separate work. The
+with infinite meaning, including a proved total set-observation adapter. The
 [surface contract](behavioral-surface.md) adds inherited lifetime modifiers,
 anchors, guarded transition chains, all thirty signed pattern/scope cases and
 separate model/assertion/scenario meanings, with explicit reviewed compiler
 departures and normalization interfaces.
+The [qualification contract](behavioral-qualification.md) composes full source
+models, strict partial domains and finite core checking, with exact static
+common-fragment agreement and a complete source/witness inventory. Its finite
+observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 Feature integration uses `behavioral`; the existing structural imports and
 historical static profiles remain supported.
@@ -155,6 +158,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
 | [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
 | [Behavioral surface](behavioral-surface.md) | Modifier/anchor, transition and pattern meaning, source decisions, property quantification and reduction APIs |
+| [Behavioral qualification](behavioral-qualification.md) | Full model/core composition, strict finite observations, static common fragment, complete feature witnesses and source-profile acceptance boundary |
 | [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |

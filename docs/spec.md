@@ -914,6 +914,60 @@ Covers:
 
 Needs: impl, proof, utest
 
+## Behavioral semantic composition and qualification
+
+`req~behavioral-qualification~1`
+
+Compose the accepted structural, effective modifier and attached constraint
+meanings into a full behavioral model, with an iff to ordinary temporal core
+obligations. Translate strict definedness from the original source tree alongside
+signed truth. Preserve every Boolean operand, every quantified member, the entire
+active temporal domain and lifetime-anchor guards; normalization must not erase
+undefinedness. Prove the exact unchanged static common-fragment bridge, retaining
+well-formedness, support, group agreement and the converse's stable identity witness.
+
+Connect surface transitions and all scoped patterns to finite core evaluation
+through proved reductions. Finite partial observations must agree with source
+values, missingness, domains and captured environments at every absolute time.
+Keep undefined, defined false and satisfied distinct. Full finite model checking
+must retain complete constraint/modifier inventories and context correspondence;
+richer structural admission is an explicit prerequisite, while the historical
+common fragment uses its existing executable structural check. Document the
+finite-clock and finite-carrier restrictions without narrowing infinite meaning.
+
+Exercise full representative models and mutations, including stable/replaced
+machines, cancellation under both signs, repeated lifetimes, inherited final
+references, group/bag identities, recurring/anchored patterns and properties.
+Retain full source-matched validation, an immutable candidate and independent
+semantic review before acceptance. The [qualification contract](behavioral-qualification.md)
+records exact APIs and trust limits; this gate does not authorize main integration.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl, proof, utest
+
+## Behavioral source qualification inventory
+
+`req~behavioral-source-correspondence~1`
+
+Maintain a complete B01–B32 and T1–T13 qualification inventory against immutable
+source locators. Identify actual source declarations, theorem assumptions,
+positive/negative witnesses and exact downstream obligations for every row.
+Preserve reviewed D1–D5 departures and explicit unsupported initializer syntax.
+Do not equate compiler observations, trace links or passing automation with
+semantic acceptance. Reconcile the final release against the adopted source pin,
+or record explicit maintainer acceptance of that immutable prerelease profile.
+Keep source hashes and current contracts in maintained documentation, and run
+evidence and acceptance records externally or in the public issue/PR.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
 ## Resolved-IR comparison contract and compatibility audit
 
 `req~resolved-ir-comparison-contract~1`

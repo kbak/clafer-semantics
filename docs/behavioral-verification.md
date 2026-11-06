@@ -92,11 +92,13 @@ fixed parent. Invalid reference tables still fail structural checks.
 
 The generic boundary accommodates later normalized surface reductions and exact
 trace comparisons. A structural/primitive adapter must prove its own source
-agreement and actual finite-domain/range conditions. The reviewed
-[D3 partial-arithmetic interfaces](behavioral-structure.md#mathematical-arithmetic)
-are not yet integrated into this checker. A missing adapter is unsupported. This
-total-atom contract has no admitted undefined value; it does not collapse
-undefinedness into violation or supply partial temporal-atom integration.
+agreement and actual finite-domain/range conditions. The
+[qualification interface](behavioral-qualification.md#finite-composition-and-its-boundaries)
+composes strict partial temporal domains with this total core, using certified
+optional observations and separate undefined/violated/satisfied outcomes.
+The original `Verification.checkAt` remains a total-atom API: a missing adapter
+is unsupported. Concrete richer structural and all-Int primitive representations
+retain the qualification contract's explicit restrictions and adapter obligations.
 
 The main results are:
 
