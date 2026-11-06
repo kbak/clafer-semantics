@@ -34,6 +34,16 @@ total; full static/partial-atom agreement, surface meaning and lasso analysis
 remain separate work. Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
+The [structural prerequisite audit](behavioral-structure.md) distinguishes the
+guarded snapshot predicates from inherited group/realization and atom APIs.
+`Clafer.Semantics.Groups` owns the reusable inherited-child union and group
+predicate; Compile retains definitionally equal aliases. Reference observations
+and integer-set conversion live under Behavioral. The existing richer realization
+module still imports Compile, while behavioral source meaning must remain
+independent of it. Further reuse needs an extraction or correspondence; dropping
+a support guard does not provide nested abstractness, refined parents or inherited
+references.
+
 Source meaning is independent of executable IR and target semantics. The upstream
 extension owns infinite traces, stable identity/parent data, lifetime meaning,
 normalization proofs and a justified finite-lasso checker. The downstream compiler

@@ -15,3 +15,15 @@ run_cmd do
 #check Clafer.Behavioral.StaticCorrespondence.constant_admissible
 #check Clafer.Behavioral.Formula.normalize_lower_agrees
 #check Clafer.Behavioral.Formula.persistent_eventually_consistent
+#check Clafer.Semantics.Groups.ChildObjects
+#check Clafer.Semantics.Groups.Holds
+#check Clafer.Behavioral.GroupObservation.holds_iff
+#check Clafer.Behavioral.ReferenceObservation.snapshot_assignments
+#check Clafer.Behavioral.ReferenceObservation.valid_finite_targets
+#check Clafer.Behavioral.InheritedReference.Owner.unique
+#check Clafer.Behavioral.InheritedReference.shared_head
+#check Clafer.Behavioral.IntegerObservation.coerce_defined_iff
+#check Clafer.Behavioral.IntegerObservation.agrees_with_extract
+#check Clafer.Behavioral.Arithmetic.defined_iff
+#check Clafer.Behavioral.Aggregate.fold_defined_iff
+#check Clafer.Behavioral.Aggregate.select_singleton
