@@ -21,8 +21,12 @@ The [behavioral contract candidate](behavioral-profile.md) reserves an optional
 `Clafer.Behavioral` entry point and modules under `Clafer/Behavioral` in the existing
 package. Trace/snapshot, signed formula/environment, structural atom, surface and
 lasso modules have separate responsibilities; their exact proposed split and
-implementation owners are listed in the contract. No behavioral declarations
-are delivered yet. Existing structural entry points and the dependency direction
+implementation owners are listed in the contract.
+The [trace foundation](behavioral-traces.md) delivers shared static identities,
+infinite presence/reference data, lifetime boundaries and the live-carrier
+structural bridge in `Trace.lean` and `Snapshot.lean`; `Examples.lean` supplies
+checked witnesses. Signed formulas, surface meaning and lasso analysis remain
+separate work. Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 
 Source meaning is independent of executable IR and target semantics. The upstream

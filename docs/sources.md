@@ -1500,6 +1500,26 @@ Covers:
 - `req~behavioral-profile~1`
 - `req~formalization-roadmap~1`
 
+## Behavioral identity and snapshot correspondence
+
+The [trace foundation](behavioral-traces.md) implements the accepted profile's
+foundational slice: Juodisius et al. §5 Definition 2/static typing (p. 2:25),
+Definition 3 (pp. 2:25–26) and Definition 5.1/5.3 (p. 2:28), with T1/T7/T11/T13
+from the immutable [behavioral source ledger](#behavioral-profile-sources).
+T1 replaces no-reappearance and requires the same actual parent across all
+lifetimes. T7 supplies time-zero and repeated start/end boundaries. T11's
+set-only key and head-object counting use the existing guarded structural
+meaning, not a new unrestricted effective-group semantics. T13 imposes no
+finite identity/step bound on the source trace.
+
+The [proof index](clafer-trace.md#behavioral-traces-and-snapshot-bridge) identifies
+the actual definitions and theorems. Snapshot projection uses live subtypes;
+the converse explicitly requires exact static direct-type/head and parent
+correspondence. It does not establish existence of those witnesses for every
+structural model. Definition 5.4 (constraints), richer inherited references,
+primitive atoms and lasso correctness remain with their respective owners.
+No source pin, historical SoSyM checkpoint or static oracle is changed.
+
 ## Empty-collection language extension
 
 The adopted [empty-set decision](https://github.com/kbak/clafer-semantics/issues/134)

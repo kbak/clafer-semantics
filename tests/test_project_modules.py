@@ -96,6 +96,8 @@ class PublicLibrariesTest(unittest.TestCase):
             "FormalCD.Metamodel.Realization.Self", "FormalCD.Metamodel.Realization.Examples",
             "FormalCD.SelfDescription", "FormalCD.Telematics.Basic",
             "FormalCD.Telematics.VC", "FormalCD.Telematics.Examples",
+            "Clafer.Behavioral", "Clafer.Behavioral.Trace",
+            "Clafer.Behavioral.Snapshot", "Clafer.Behavioral.Examples",
             "Clafer.Context", "Clafer.Syntax", "Clafer.Shape",
             "Clafer.Shape.Diagram", "Clafer.Examples",
             "Clafer.MCS.Basic", "Clafer.MCS.Laws", "Clafer.MCS.Metamodel",
@@ -144,6 +146,8 @@ class PublicLibrariesTest(unittest.TestCase):
         self.assertIn(Path("tests/public_imports.lean"), tests)
         self.assertIn(Path("tests/formalcd_imports.lean"), tests)
         self.assertIn(Path("tests/semantic_dependencies.lean"), tests)
+        self.assertIn(Path("tests/behavioral_dependencies.lean"), tests)
+        self.assertIn(Path("tests/structural_without_behavioral.lean"), tests)
         self.assertIn(Path("tests/group_dependencies.lean"), tests)
         self.assertIn(Path("tests/structural_checker.lean"), tests)
         self.assertIn(Path("tests/resolved_import.lean"), tests)

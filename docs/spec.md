@@ -438,6 +438,77 @@ Covers:
 
 Needs: impl
 
+## Behavioral shared identities
+
+`req~behavioral-identities~1`
+
+Represent identities independently of time, names and dereferenced targets, with
+one concrete direct type and actual parent per identity. The synthetic root has
+its unique root type and no parent; every other identity has a typed actual
+parent. Abstract declaration roles and actual parents remain distinct. Preserve
+that parent across all lifetimes, including absence and reappearance, and derive
+the synthetic-root parent for top-level instances. Preserve distinct reference
+heads at equal targets through snapshot projection. Reject parent reassignment
+and target-based occurrence collapse with kernel-checked witnesses.
+
+Follow the [trace contract](behavioral-traces.md) and behavioral paper §5
+Definitions 1–3/5, with pinned errata T1/T11. Keep these declarations in Clafer.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral infinite traces and lifetimes
+
+`req~behavioral-traces~1`
+
+Define infinite natural-time traces with fixed identity/type/parent information,
+changing presence and changing reference relations. Do not require a finite
+identity pool, forbid reappearance or silently filter invalid dereference data.
+Validity requires an always-live synthetic root, parent presence for every live
+child and the stated structural state obligations. Statewise satisfaction alone
+does not permit changing the identity correspondence between times.
+
+Define lifetime starts at time zero and every absent-to-live boundary, and ends
+at the last live state before absence. Prove their boundary laws and the constant
+trace laws. Supply nontrivial valid reappearance, parent replacement, repeated
+identity and changing-reference witnesses, plus orphan rejection. Apply the
+[trace contract](behavioral-traces.md) and paper §5 Definitions 2/5 with T1/T7/T13;
+formula satisfaction, modifiers and finite-lasso justification remain separate.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral live-carrier structural bridge
+
+`req~behavioral-snapshot-bridge~1`
+
+Project each valid trace state to the existing structural semantics on its live
+carrier, with an injective embedding into the shared identity carrier. Prove
+`StructuralSatisfies`, including ambient coverage of that live carrier and exact
+containment-fiber/group-union cardinality transport. Absent or unused pool atoms
+must not be forced into live root objects. Retain complete reference occurrences.
+
+For the common `EffectiveCore.WellFormed`/`Supported` fragment without temporal
+modifiers or constraints, embed a satisfying structural configuration as a
+constant trace given explicit valid static identities and exact direct-type,
+head-closure and parent/containment correspondence. Retain the witness-existence
+obligation; do not infer it from arbitrary overlapping extents. Recover every
+configuration field through the live-carrier equivalence, and exhibit concrete
+bag and inherited correspondence witnesses. Check unused atoms and occurrence
+separation. Keep the [precise hypotheses](behavioral-traces.md#projection-and-constant-embedding),
+source locators, actual Lean trace links and independent-import checks together.
+Do not change existing static Compile/checker contracts or claim temporal
+preservation from pointwise structural agreement.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
 ## Resolved-IR comparison contract and compatibility audit
 
 `req~resolved-ir-comparison-contract~1`

@@ -2,13 +2,15 @@
 
 `impl~behavioral-profile-contract~1`
 
-This is the contract candidate for [profile adoption (S1)](https://github.com/kbak/clafer-semantics/issues/123).
-Its semantic choices require explicit independent review before acceptance.
+This is the contract accepted through [profile adoption (S1)](https://github.com/kbak/clafer-semantics/issues/123).
+The unresolved decisions below still require explicit review before dependent definitions.
 The [accepted research direction](https://github.com/kbak/clafer-semantics/issues/112#issuecomment-6673473063)
 selects independent source semantics and integration branches; it does not accept
 new definitions. This document specifies the complete intended behavioral surface,
-its owners and verification obligations. No behavioral Lean declarations or
-proofs are delivered by this contract change.
+its owners and verification obligations.
+The [trace foundation](behavioral-traces.md) records the delivered identity,
+lifetime and structural bridge APIs and witnesses; later feature obligations
+remain separate.
 
 Profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
@@ -29,7 +31,8 @@ Add behavioral modules under `Clafer/Behavioral`, exposed through an optional
 remains independent. The module inventory still builds and audits every owned
 module, including modules outside public entrypoint closures.
 
-These are reserved responsibilities and proposed module names, not existing APIs.
+These are responsibility boundaries. Trace/Snapshot APIs are documented in the
+[trace foundation](behavioral-traces.md); other names remain proposed.
 Implementing tickets must publish actual declaration names and assumptions before
 accepted downstream use. Splitting a file within its responsibility is allowed;
 moving meaning across a repository or layer requires contract review.
@@ -73,7 +76,8 @@ The first bridge domain is a resolved `EffectiveCore` satisfying its existing
 `WellFormed` and `Supported` predicates, with no additional temporal constraints
 or modifiers. State data must satisfy the corresponding typing, root, parent,
 reference, inheritance, declaration-disjointness, multiplicity and group clauses.
-S2 must prove projection into `StructuralSatisfies`, and conversely embed a
+The [trace bridge](behavioral-traces.md#projection-and-constant-embedding) proves
+projection into `StructuralSatisfies`, and conversely embeds a
 satisfying structural configuration as a constant trace under the stated stable
 identity/type/parent correspondence. Where the current overlapping super extents
 need a direct-type witness, that witness and its existence obligation must be
