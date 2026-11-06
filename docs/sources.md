@@ -1474,12 +1474,17 @@ implementations supply comparison evidence rather than definitions by fiat.
 | Source | SHA-256 of inspected bytes | Role |
 | --- | --- | --- |
 | [Behavioral paper PDF](https://arxiv.org/pdf/1807.08576v1) | `b5c03f295e490e7c97878cdb3b9f2ec6aa3f6b667de19988a48c59faba76bb06` | Primary behavioral definitions and source-sugar account |
-| [Temporal errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md) | `fd7913d82304ddc39765b5e67451cf19802c5cc13798b1ecb64fed00699d6a32` | T1–T13, including deliberate changes and correction classifications |
-| [Static errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/static-semantics-errata.md) | `3d9e5f6bbee631529fcc00c15b862d1102e77c4609b812bd0e44d31046ad442e` | S1–S12 prerequisites, differences and unresolved resolution order |
-| [CheatSheet](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md) | `eb26986a92ff8832d8757328c7d2abc9686ba98687dfa941efb05c76cfd23559` | Behavioral surface inventory and aliases |
-| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs) | `b49938b19f5ae64ae5a6557d6b5328aac521b8956981322098f028b3262d473d` | `pushNegations`, `genPExp'`, `thisAlive`, `parentRel`, `genIFunExp`, finality and scope comparison |
+| [Temporal errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md) | `d42a6f72ddfc70e3ef628e7d7ad2c3ae99e468185fdb5a7056fe80d38e861d4d` | T1–T13, including deliberate changes and correction classifications |
+| [Static errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/static-semantics-errata.md) | `0e3aa5c138c70773709fd13f210301100d7116f091482518ab2f5fe0a4080d8c` | S1–S12 prerequisites, differences and unresolved resolution order |
+| [CheatSheet](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md) | `d8de22fc45850ca87dc080121fcf1a1421db86c4951ea9f56ec5e9ba6f14ee5e` | Behavioral surface inventory and aliases |
+| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs) | `68423e38d8002f6875bc72ebe267959cc5f44b2d0a5077446e304ae6e1a5057a` | `pushNegations`, `genPExp'`, `thisAlive`, `parentRel`, `genIFunExp`, finality and scope comparison |
 | [Desugarer.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs) | `8fbe866a70521a25dfe75ad191dc0737887376877ccfb37921c26a4901e68ad7` | `desugarClaferTrans`, `desugarTrans'`, `desugarSequence`, `translateTmpPatterns`, `desugarInit` |
-| [Compiler LICENSE](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/LICENSE) | `7ce5f2392d821cff6ad1021a9cfc4132a7c37aff2658d7f62d6a7e4b4aa59e0d` | MIT terms for compiler and associated documentation |
+| [Compiler LICENSE](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms for compiler and associated documentation |
+
+The errata, CheatSheet, AlloyLtl and compiler-license digests above are the exact
+Git-blob bytes. Earlier acquisition copies had one appended LF; removing that
+acquisition artifact changes their digests without changing source content or
+the pinned compiler revision.
 
 The following public decisions explain the candidate; their corresponding
 immutable source text above controls reproducibility:
@@ -1501,9 +1506,54 @@ keeps those differences visible before any new definition. The existing
 [structural comparison](resolved-ir-comparison.md) and historical SoSyM checkpoint
 remain separate profiles with their original source identities.
 
+The [structural prerequisite audit](behavioral-structure.md) records exact API
+reuse domains, the pinned compiler's off-live reference comparison limit, and
+the remaining arithmetic and structural extension decisions (D3/D4).
+
 Covers:
 - `req~behavioral-profile~1`
 - `req~formalization-roadmap~1`
+
+## Behavioral arithmetic comparison
+
+The [D3 conversion decision](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729)
+and [scalar arithmetic decision](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865)
+select finite integer-set sums and mathematical scalar arithmetic, with division
+and remainder undefined at zero. The [comparison audit](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685412556)
+records backend differences and the limits of its executable evidence.
+
+Additional files from the same pinned Clafer candidate:
+
+| Source | SHA-256 | Role |
+| --- | --- | --- |
+| [Choco.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/Choco.hs) | `337e886c9e7e30c44732a15f0242cecf9b2f3f91db8cc0a18212f72ff4d8c733` | Arithmetic operator translation and reference-head aggregation |
+| [ResolverType.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/ResolverType.hs) | `7e65c4ee18206357ea014de7535b50b33f7d72b8604939b3b08e3af67337ddfd` | Integer conversion and distribution of explicit aggregates over syntactic union |
+
+The supplementary Choco backend is
+`gsdlab/chocosolver@c08d4a5d36ce9759240c7ed547953a5c32348cb5` (release version
+0.5.6, Choco Solver dependency 6.0.2, Java 21). It is not an alternate primary
+language specification or a new static oracle pin. Its MIT license was inspected;
+no third-party source is incorporated here.
+
+| Source | SHA-256 | Role |
+| --- | --- | --- |
+| [README.md](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/README.md) | `b3bb958cc79cd4eb57b37e694d5a0141a4a39aefac045260f168866642169f24` | Integer scopes versus Alloy bit widths and machine limits |
+| [pom.xml](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/pom.xml) | `fbbedfb3be859314d719762f42909695eeceb5ce9782c0ba623225e4cfe1d379` | Build/dependency identities |
+| [AstCompiler.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ast/compiler/AstCompiler.java) | `90298ca1903f7fede4e40d153b02c4a79a50875e4b245f0142ad9902eb2d85d5` | `asInt`, guarded division, empty extrema and occurrence-sensitive sums/products |
+| [Irs.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ir/Irs.java) | `ba91666a133674b94c83f658ba8ec2eb8995afa2f51ec9a7408740d2a28165ef` | Zero-numerator simplification, zero-divisor rejection and Java integer constant folding |
+| [IrCompiler.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ir/compiler/IrCompiler.java) | `4c93e5cbd1c7b3fc996e9f320f2de1f080de60b5032c7ae83a9b78d73265ce8c` | Solver division/modulo constraints |
+| [ArithmeticTest.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/test/java/org/clafer/ArithmeticTest.java) | `6f68ab459b72eddee55decd33bc9fd502a77f6799d984981e47273994f5db45d` | Signed division, repeated-reference sums and product boundary regressions |
+| [LICENSE](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/LICENSE) | `91276db973f25602d1aa43491f59cbc84cb88e6f151e1d0cc82a755563ce0195` | MIT terms |
+
+The comparison built that unchanged backend and exercised its public AST API;
+it did not run an end-to-end Clafer-to-Choco compiler proof. Witnesses include
+constant and variable zero divisors, negative operands, absent numeric heads,
+empty extrema/aggregates, modeled scope bounds and Java overflow. Alloy 6.2.0
+was tested with satisfiable witness commands under default and `--nooverflow`
+settings. Earlier assertion checks under `--nooverflow` cannot establish admitted
+zero-divisor values: rejection can make an assertion hold vacuously. The audit
+explicitly corrects that inference. These results justify stated agreement
+conditions, not unconditional equivalence between the backends.
 
 ## Behavioral identity and snapshot correspondence
 
@@ -1581,7 +1631,8 @@ and parent information across lifetimes; T7 requires initial history and the
 last-live endpoint; T2 cancellation is inherited through the independently
 proved source normalization/lowering. The proof covers the accepted total
 observation core and its D1 set adapter, with explicit finite evidence for any
-additional atom adapter. It does not choose a D3 partial-arithmetic meaning.
+additional atom adapter. It does not yet integrate the reviewed
+[D3 partial-arithmetic interface](behavioral-structure.md#mathematical-arithmetic).
 
 The [Alloy 6 reference](https://alloytools.org/alloy6.html), sections “Instances
 are traces”, “Time horizon” and “Meaning of temporal connectives”, provides the

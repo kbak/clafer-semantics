@@ -97,6 +97,9 @@ and lowering over total observations. The [finite behavioral checker](behavioral
 adds history-aware lassos, executable normalized-core evaluation and agreement
 with infinite meaning, including a proved total set-observation adapter. Full
 structural/partial-atom integration and surface meaning remain separate work.
+The [structural prerequisite audit](behavioral-structure.md) identifies reuse
+boundaries, reviewed arithmetic interfaces and missing inherited/reference/atom
+bridges.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 Feature integration uses `behavioral`; the existing structural imports and
 historical static profiles remain supported.
@@ -147,6 +150,7 @@ numbers and ticket chains must not substitute for an explanation.
 | This intent | Product goals, delivered scope and exclusions |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
 | [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
+| [Behavioral structural prerequisites](behavioral-structure.md) | Existing structural/atom APIs, exact reuse domains, required extensions and source decisions |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |

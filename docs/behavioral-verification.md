@@ -92,10 +92,11 @@ fixed parent. Invalid reference tables still fail structural checks.
 
 The generic boundary accommodates later normalized surface reductions and exact
 trace comparisons. A structural/primitive adapter must prove its own source
-agreement and actual finite-domain/range conditions. Partial integers and the
-unresolved D3 arithmetic contract are not assigned Boolean values here. A missing
-adapter is unsupported. This total-atom contract has no admitted undefined value;
-it neither collapses undefinedness into violation nor claims to resolve D3.
+agreement and actual finite-domain/range conditions. The reviewed
+[D3 partial-arithmetic interfaces](behavioral-structure.md#mathematical-arithmetic)
+are not yet integrated into this checker. A missing adapter is unsupported. This
+total-atom contract has no admitted undefined value; it does not collapse
+undefinedness into violation or supply partial temporal-atom integration.
 
 The main results are:
 
