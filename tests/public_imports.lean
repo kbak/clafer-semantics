@@ -106,6 +106,7 @@ example {A : Type u} {n : Nat} {B : Fin n → Type v}
 
 /-! Public pushout interfaces retain the fixed carrier universes and independent
 signature universes. These examples also fix the explicit argument order. -/
+-- [itest->req~dpgraph-pushout-data~1]
 #check DPGraph.Pushout.CarrierCocone
 #check DPGraph.Pushout.obj
 #check DPGraph.Pushout.inl
@@ -122,9 +123,11 @@ variable (F : DPGraph.Hom S T) (J : DPGraph.Hom S U)
 variable (c : DPGraph.Pushout.CarrierCocone F J) (hc : IsColimit c)
 variable {Ω : Quiv.{pv, pu}} (I : DPGraph.Interpretation σ Ω)
 
+-- [itest->req~dpgraph-pushout-universal~1]
 example : IsColimit (DPGraph.Pushout.cocone F J c) :=
   DPGraph.Pushout.isColimit F J c hc
 
+-- [itest->req~dpgraph-model-amalgamation~1]
 example : I.Model (DPGraph.Pushout.obj F J c) ≃ DPGraph.Pushout.CompatibleModels I F J :=
   DPGraph.Pushout.modelEquiv F J c I hc
 

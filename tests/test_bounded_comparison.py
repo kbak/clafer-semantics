@@ -33,6 +33,8 @@ def candidate(members, containment=(), references=(), garbage=()):
     return dict(objects=objects,root=0,members=rows,containment=list(containment),references=list(references))
 
 
+# [utest->req~clafer-alloy-representation~1]
+# [utest->req~clafer-comparison-replay~1]
 class RelationTests(unittest.TestCase):
     def test_command_matches_complete_identifiers(self):
         header="open util/integer\npred show {}\nrun show for 1\n\n"
@@ -113,6 +115,7 @@ class RelationTests(unittest.TestCase):
             self.assertEqual([],value["containment"])
 
 
+# [utest->req~clafer-comparison-replay~1]
 class SourceIdentityTests(unittest.TestCase):
     """Exercise real source hashing/replay and Git, without compiler/solver setup."""
 
@@ -237,6 +240,9 @@ class SourceIdentityTests(unittest.TestCase):
             c.replay(path,self.directory/"changed-runtime")
 
 
+# [utest->req~clafer-bounded-comparison~1]
+# [utest->req~clafer-alloy-representation~1]
+# [utest->req~clafer-comparison-replay~1]
 class LiveComparisonTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

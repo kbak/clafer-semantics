@@ -171,8 +171,12 @@ pull requests using the base branch's scope and retains evidence; first adoption
 explicitly checks the candidate baseline and requires review. Exit 4 retains
 semantic review as pending. Failed checks block the CI job.
 Lean implementation, proof and test coverage tags are imported from actual source
-comments with original paths and lines. Preserve the named Markdown explanations
-and require the source-import regression to reject tooling that drops Lean tags.
+comments with original paths and lines. Use those source annotations as the
+authoritative coverage links, without a duplicate Markdown declaration index.
+Preserve mathematical explanations, assumptions and source correspondence in
+the existing topic contracts and source map. Documents that fulfill documentation
+requirements retain their own annotations. Require the source-import regression
+to reject tooling that drops Lean tags.
 The explicitly approved public-root migration expands only baseline `inputs`
 and `review_paths` to `["."]`, preserving every other policy field and the actual
 baseline commit. CI recognizes the exact original and migrated scope identities,
@@ -267,15 +271,15 @@ structural discipline, structural Compile and resolved-referent gluing.
 
 It keeps private deployment configuration and credentials outside the source repository. Keep
 [intent](intent.md) as the canonical overview, linking current architecture,
-mathematical explanations, source citations, requirements and trace artifacts.
+mathematical explanations, source citations, requirements and source traceability.
 
 Use its documentation map to identify the authoritative location for each kind
 of detail. Consolidate repeated explanations through links while retaining intent
-and artifact IDs, trace relationships, source citations and existing link
-destinations. Explain internal decision labels by name and link to their defining
+and continuing requirement IDs, trace relationships and source citations. Redirect
+incoming links when consolidating redundant documents. Explain internal decision labels by name and link to their defining
 table; readers must not need issue history to understand a correction or contract.
 Name capabilities, dependencies and proof limits in the prose. Link to the current
-contract or proof inventory for technical detail. Historical references must use
+contract or annotated source for technical detail. Historical references must use
 descriptive link text identifying the issue or pull request; do not use bare
 numbers, number-only links or chains of tickets as explanations. Internal decision
 references must link at each point of use to the relevant explanation or table

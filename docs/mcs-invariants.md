@@ -155,8 +155,8 @@ bounds. Local inverse/triangle/key/default formulas can be transported by
 formula-bank obligations separately. Structural validity neither assumes that
 compilation theorem nor proves satisfaction of the declared constraints.
 
-The canonical requirements and named proof artifacts are in
-[spec](spec.md#mcs-metamodel-and-ownership) and [Clafer trace](clafer-trace.md#mcs-metamodel).
+The [requirements](spec.md#mcs-metamodel-and-ownership) are linked by annotations
+in the [metamodel](../Clafer/MCS/Metamodel.lean) and [structural laws](../Clafer/MCS/Laws.lean).
 
 ## Gluing boundary
 
@@ -183,5 +183,5 @@ shows why DP preservation alone does not establish CD validity.
 The positive gluing fixture proves `Gluing.Examples.valid`, `defaults` and
 constructs `glued`, merging two user classes and two head maps but preserving
 parallel parent maps. Its source key holds while translated formulas collide.
-The repeated-name, isolated-vertex and repeated-argument witnesses are linked
-in [Clafer trace](clafer-trace.md#mcs-gluing-acceptance-proofs).
+The [gluing boundary examples](../Clafer/MCS/Gluing/Boundaries.lean) check repeated
+names, isolated vertices and repeated arguments.

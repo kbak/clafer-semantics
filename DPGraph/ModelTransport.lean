@@ -22,6 +22,7 @@ variable {S : DPGraph.{s, va, ua, v₁, u₁} σ}
 variable {T : DPGraph.{s, va, ua, v₂, u₂} σ}
 variable {F : Hom S T} {J : Hom T S}
 
+-- [impl->req~model-reduct-injective~1]
 -- [proof->req~model-reduct-injective~1]
 /-- A composite equal to the target identity makes restriction injective. -/
 theorem reduct_injective_of_comp_eq_id (h : J.comp F = Hom.id T) :
@@ -30,6 +31,7 @@ theorem reduct_injective_of_comp_eq_id (h : J.comp F = Hom.id T) :
   have h' := congrArg (I.reduct J) hmn
   simpa only [← I.reduct_comp, h, I.reduct_id] using h'
 
+-- [impl->req~model-reduct-surjective~1]
 -- [proof->req~model-reduct-surjective~1]
 /-- A composite equal to the source identity supplies a preimage for every model. -/
 theorem reduct_surjective_of_comp_eq_id (h : F.comp J = Hom.id S) :

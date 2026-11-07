@@ -9,8 +9,10 @@ and lexical contexts are retained.
 
 The [requirements](spec.md#integer-extraction-from-primitive-navigation) define
 this extension separately from the original typing/support promises. Its source
-correspondence is recorded in the [source map](sources.md#integer-extraction-and-appendix-f-version-operands),
-with named [implementation and proof links](clafer-trace.md#integer-extraction-interface).
+correspondence is recorded in the [source map](sources.md#integer-extraction-and-appendix-f-version-operands).
+[Integer realization](../FormalCD/Integer.lean) supplies extraction and its proofs;
+the [Clafer binding](../Clafer/Constraints/Integer.lean) adds resolved support and
+inclusion obligations.
 
 ## Domain and extraction
 

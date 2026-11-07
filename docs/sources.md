@@ -196,7 +196,7 @@ Concrete
 span predicates use the selected contracts below in a bounded graph of subsets
 and spans; no all-universes SetMap is asserted. The formula-level
 satisfaction equivalence does not assert whole-model reflection.
-[Trace artifacts](dpgraph-trace.md) name the actual declarations and proofs.
+The [semantics module](../DPGraph/Semantics.lean) states and proves these laws.
 
 ## Supporting sources and licenses
 
@@ -586,8 +586,8 @@ unqualified coincidence assertion with equality after reduction.
 ### Delivered implementation boundary and proof references
 
 The operations and equivalences are independently available through `import DPGraph`.
-Names below are relative to `DPGraph`; the [trace artifacts](dpgraph-trace.md)
-link their requirement and proof obligations.
+Names below are relative to `DPGraph`; annotations beside the actual declarations
+link their [requirements and proof obligations](traceability.md).
 
 | Construct | Implementation and proof references |
 | --- | --- |
@@ -620,9 +620,8 @@ equality of reduced relations alone does not establish these predicates.
 
 The table extends the exact `DPGraph` mapping above through the two upper layers.
 Future representations and obligations are proposals for their owning increments,
-not additional promises of implemented mathematics. Detailed delivered
-declarations remain in [DPGraph trace artifacts](dpgraph-trace.md) and
-[FormalCD trace artifacts](formalcd-trace.md).
+not additional promises of implemented mathematics. The [architecture](architecture.md)
+links the delivered modules and states their theorem boundaries.
 The [supporting-source audit limits](#supporting-sources-and-licenses) and
 [Q1–Q8 dispositions](#question-dispositions-and-validation-tasks) supply the
 remaining research obligations for this source-map artifact.
@@ -635,7 +634,7 @@ Covers:
 | Predicate catalogue: B.3 Table 3, §6.1.1–2, A.1 Table 2 | Separate typed arities and span meanings; invariance, multiplicity and empty/repeated-family boundaries; [common-target disjointness correction (Q8)](sources.md#predicate-contracts-and-the-accepted-q8-correction) | Selected vocabulary is proved; the [predicate implementation PR](https://github.com/kbak/clafer-semantics/pull/34) records delivery. Unsupported predicates remain deferred. |
 | Formal CD: §6.1.1–3, Figure 21a–b | Raw/bundled CD, registry, naming and effective defaults; name-preserving morphisms are an explicit library specialization | Structure and morphisms are implemented in the [formal-CD PR](https://github.com/kbak/clafer-semantics/pull/35); whole Figure 21b models and guarded version comparison are implemented in the [telematics PR](https://github.com/kbak/clafer-semantics/pull/38). |
 | Metamodel: §6.1.3, Figure 21c | Compatible vocabulary, nd/ad disciplines, full graph bindings; separate syntactic self-description from semantic instantiation | The [metamodel PR](https://github.com/kbak/clafer-semantics/pull/36) implements these disciplines. [Bounded self-description](architecture.md#bounded-self-description-and-figure-21b) retains the literal-key and argument-totality limits below. |
-| Syntax and individual Shapes: §5.2 Figure 16, §6.2.2 Figure 22, Appendix 3 | Resolved deep AST and individual Shapes; IDs, containment, inheritance, references, abstractness, root/domains and finite traversal | [resolved syntax and Shapes issue](https://github.com/kbak/clafer-semantics/issues/3), [implementation and proofs](clafer-trace.md) |
+| Syntax and individual Shapes: §5.2 Figure 16, §6.2.2 Figure 22, Appendix 3 | Resolved deep AST and individual Shapes; IDs, containment, inheritance, references, abstractness, root/domains and finite traversal | [resolved syntax and Shapes issue](https://github.com/kbak/clafer-semantics/issues/3), [syntax](../Clafer/Syntax.lean) and [Shapes](../Clafer/Shape.lean) |
 | MCS: §6.2.3 Figure 23, Tables 5–8 (see Appendix 5) | Accepted guarded incidence/naming and analogous expansion, preserving exact Shape presence rules and distinct identity levels; see the [inventory](mcs-invariants.md). The accepted [Q9](mcs-invariants.md#figure-23-source-multiplicity-correction) correction applies source `0..1` to the four ordinary-map and three inclusion-role associations, retaining exact Shape presence. | The [MCS disciplines issue](https://github.com/kbak/clafer-semantics/issues/20) records accepted guards and ownership bounds; role/referent/name separation is retained. |
 | Constraints: Appendix D.1–D.4 | Resolved typed core, lexical binders, both joins, explicit inheritance widening and finite graph support; meaning remains distinct from syntax | The [core-typing issue](https://github.com/kbak/clafer-semantics/issues/21) records delivery; Appendix 4 notation decisions appear below. |
 | Compile: §6.2.4 | [Structural Compile](compile.md): finite resolved-AST-to-MCS construction; derived termination, freshness, incidence, cojoining and kind/name preservation under explicit input well-formedness | The [Compile issue](https://github.com/kbak/clafer-semantics/issues/22) records delivery. Its construction depends on resolved syntax, MCS disciplines and typed constraint support. |
@@ -657,10 +656,10 @@ source gaps. Keep the original issue discussions as the decision history.
 | Q2 — Appendix 5 analogous clauses | Accepted: incidence/naming equations apply only to present roles; existing Shape rules separately require or forbid each role. The analogous expansion includes Sing/root, every supported primitive domain, the accepted parentless exception and both directions of canonical naming equivalences. | The [complete Table 5–8 inventory](mcs-invariants.md#appendix-e-inventory) enumerates the guards. The inventory links definitions and positive/negative witnesses; the accepted Figure 23 multiplicity correction is [Q9](mcs-invariants.md#figure-23-source-multiplicity-correction). |
 | Q3 — Appendix 4 notation | Resolved for the selected core: ordinary common-element intersection is already printed as ∩ in D.4.2. D.4.1 equates E and S on set expressions, reconciling the mixed subscripts. D.1–D.3 govern typing; the implementation boundary is enumerated below. | [Core constraint typing](spec.md#resolved-core-constraint-typing) supplies typed syntax and explicit inheritance paths. The [denotation extension](constraint-denotation.md) supplies independent core meanings, local finite cardinality and the [singleton-extraction bridge](integer-extraction.md); no compiler-preservation theorem follows from a signature. |
 | Q4 — labels and identity | Accepted MCS representation: preserve role identities separately from resolved class/map referents and displayed names, and state the identity level of cojoining equalities. Repeated parent/dref/isA strings do not identify arrows. Approved [Q4](sources.md#mcs-gluing-and-the-approved-q4-rule): identify exactly equal class/map referents; equal map referents require equal endpoint class referents, and identified roles require equal names, predefined identities/kinds and modes. Reject conflicts. | The [MCS representation](mcs-invariants.md) retains the data needed for intended identifications and repeated-name witnesses; [resolved-referent gluing](architecture.md#mcs-gluing) implements this congruence and proves endpoint/declaration preservation, then separate CD validity under explicit default assumptions. [Structural Compile](compile.md) retains generated identities. Existing `FormalCD` names remain metadata. |
-| Q5 — self-description | Bounded syntactic representation and a separate restricted semantic self-instance are delivered. Universal every-CD realizability and a universe fixpoint remain outside scope. | The [bounded self-description proof](formalcd-trace.md#bounded-syntactic-self-description-proof) establishes representation/well-formedness in explicit `CDOver` parameters. Preserve the ordered/isolated/repeated binding witnesses and literal key/total-args limits below. The [realization contract](metamodel-realization.md) supplies explicit source support/separation and proves the particular self-instance without changing those limits. |
+| Q5 — self-description | Bounded syntactic representation and a separate restricted semantic self-instance are delivered. Universal every-CD realizability and a universe fixpoint remain outside scope. | The [bounded self-description proof](../FormalCD/SelfDescription.lean) establishes representation/well-formedness in explicit `CDOver` parameters. Preserve the ordered/isolated/repeated binding witnesses and literal key/total-args limits below. The [realization contract](metamodel-realization.md) supplies explicit source support/separation and proves the particular self-instance without changing those limits. |
 | Q6 — acquisition and visual completeness | Partial audit: 2003 full text missing; twelve recovered 2000 pages inspected with four page gaps. The criticality assessment above records alternate evidence and conditional acquisition. Visual inspection alone does not replace a construct-by-construct inventory. | The [supporting-source assessment issue](https://github.com/kbak/clafer-semantics/issues/41) records the bounded assessment and reviewed source disposition. The [syntax correspondence](#resolved-2014-clafer-and-individual-shapes), [MCS inventory](mcs-invariants.md) and [representative coverage](representative-models.md) pair Figures 16/22/23 and Appendix 6 with text, labels, incidence and examples. Reopen acquisition for a named necessary claim lacking adequate primary evidence; never mark unread definitions audited. |
 | Q7 — VC order and guard | Accepted: display.version ≥ server.version, guarded by a nonempty server fiber. Contrary adjacent PDF p.18 prose is the discrepancy. | The [guarded correspondence and whole-model proofs](#figure-21b-and-the-accepted-q7-correction) establish these cases: greater/equal pass, lower fails VC, absent server passes. No remaining implementation task for this correction. |
-| Q8 — disjointness shape | Accepted: §6.1.2/Figure 21 common-target maps with nonoverlapping images; Table 3's common-source shape is erroneous. | The [predicate proofs](dpgraph-trace.md#corrected-disjointness-proofs) establish typed arity, interpretation and overlap/repeated-nonempty-binding failures. [Contract below](#predicate-contracts-and-the-accepted-q8-correction); no second predicate or source-object inequality. |
+| Q8 — disjointness shape | Accepted: §6.1.2/Figure 21 common-target maps with nonoverlapping images; Table 3's common-source shape is erroneous. | The [predicate proofs](../DPGraph/Predicates/Examples.lean) establish typed arity, interpretation and overlap/repeated-nonempty-binding failures. [Contract below](#predicate-contracts-and-the-accepted-q8-correction); no second predicate or source-object inequality. |
 | Q9 — Figure 23 source multiplicities | Accepted source correction: source `0..1` on the four ordinary-map and three inclusion-role associations means unique ownership within each image. The printed lower bounds force every MapRole into both parent_map and dref_map images, contradicting their distinct Table 8 names. | Shape/inheritance guards still require or forbid roles exactly. Head-class and formula source `1` are unchanged. The [correction and proof map](mcs-invariants.md#figure-23-source-multiplicity-correction) link the typed representation and nonempty witnesses. |
 
 The accepted source/design cross-check and bounded supporting-source assessment
@@ -723,8 +722,11 @@ string ordering, automatic coercion selection, or tuple binders. The integer
 extraction extension uses mathematical `Int` without overflow.
 Those extensions require concrete source/semantic contracts before implementation.
 The [requirements](spec.md#resolved-core-constraint-typing) and
-[trace artifacts](clafer-trace.md#resolved-core-expression-constructors) state
-exactly the implemented claims.
+[typed expression definitions](../Clafer/Constraints/Typing.lean) state
+exactly the implemented claims. The [typing rejection witnesses](../Clafer/Constraints/Examples.lean)
+that use `fail_if_success` check that invalid expressions cannot be elaborated.
+Their enclosing `True` conclusions do not prove semantic impossibility;
+expression truth and definedness belong to the separate denotation.
 
 <a id="integer-extraction-and-appendix-f-version-operands"></a>
 
@@ -738,7 +740,7 @@ the paper spells out a runtime error API. Success requires an exact singleton of
 a realized integer; invalid results are undefined (`none`). The integer-domain
 encoding/decoder is reused from Figure 21, without using its VC predicate to
 interpret general expressions. [The conversion contract](integer-extraction.md)
-and [trace artifacts](clafer-trace.md#integer-extraction-interface) state its limits.
+and [integer binding](../Clafer/Constraints/Integer.lean) state its limits.
 
 The primary PDF above was used for Appendix 6 PDF p.34, D.3–D.4 and §6.1/Figure 21.
 The selected Appendix 6 declarations have these navigation consequences:
@@ -813,8 +815,9 @@ separate corrected VC extension described below.
 | Table 3 mult-trg/mult-src (PDF p.13), B.1 indexed families (PDF pp.29–30) | `InRange`, `TargetMultiplicity`, `SourceMultiplicity`, `distinctValuesEquiv`, multiplicity invariance/duality/distinct-value theorems |
 | B.4 Definitions 6–9 and B.5 (PDF p.31) | `signature`, `semanticGraph`, `interpretation`; generic `Interpretation.Satisfies` and `.reduct` |
 
-The [trace artifacts](dpgraph-trace.md) link implementations and checked
-acceptance witnesses to the current mathematical requirements. Transport and
+Annotations beside the [predicate definitions](../DPGraph/Predicates/Meaning.lean)
+and [acceptance witnesses](../DPGraph/Predicates/Examples.lean) link them to the
+current mathematical requirements. Transport and
 invariance results are derived library statements for these selected contracts,
 not additional claims attributed verbatim to the paper.
 
@@ -851,8 +854,9 @@ The metamodel extension below adds nd/ad and Figure 21c construction; a general
 constraint language and complete primitive/object-diagram semantics remain open.
 Figure 21b supplies a bounded integer realization for its separate VC extension.
 
-The [FormalCD trace artifacts](formalcd-trace.md) link these independently
-formalized contracts and acceptance witnesses to their Lean declarations.
+The [structural examples](../FormalCD/Examples.lean) and
+[semantic examples](../FormalCD/SemanticsExamples.lean) exercise these contracts;
+source annotations connect the declarations to their requirements.
 
 ## Figure 21c metamodel
 
@@ -954,7 +958,7 @@ bindings. They are not asserted to be full Figure 21c models. `fragmentModel`
 checks an explicit declaration fragment; the separate name witnesses check nd.
 The metamodel `diagram` is syntactically well-formed, which does not assert its
 own semantic satisfaction. The separate
-[canonical realization](formalcd-trace.md#particular-semantic-self-instantiation-proofs)
+[canonical realization](../FormalCD/Metamodel/Realization/Self.lean)
 proves whole-metamodel satisfaction under `context diagram`; no universal
 every-CD-is-an-instance theorem is claimed.
 
@@ -1248,8 +1252,8 @@ The shared ambient carrier represents unrelated overlap as well as subtype
 sharing. Clafer satisfaction adds the declaration-disjointness clarification below;
 generic `DPGraph`/`FormalCD` models remain unrestricted. No primitive value domain
 or authored/default theorem is introduced. The [requirements](spec.md#whole-model-structural-satisfaction-and-interpretation)
-and [trace map](clafer-trace.md) distinguish definitions, implementation proofs and
-whole-model boundary tests.
+and [structural checker contract](structural-checker.md) distinguish definitions,
+correctness proofs and whole-model boundary tests.
 
 The [small Lean walkthrough](getting-started.md) specializes this existing
 contract to a manually resolved phone with an optional camera. Its
@@ -1420,11 +1424,11 @@ optimization correctness and from the separate [bounded Alloy comparison](bounde
 
 ## Reusable semantic foundations
 
-The [span/navigation laws](dpgraph-trace.md#reusable-span-and-navigation-laws-proofs)
-are derived from Appendix 2 mappings (legacy B.1 Definitions 1–5), composition
+The [span laws](../DPGraph/Predicates/Relational.lean) and
+[navigation laws](../DPGraph/Predicates/Navigation.lean) are derived from Appendix 2 mappings (legacy B.1 Definitions 1–5), composition
 (Q1), Table 3 and Appendix 1. Moving these statements into DPGraph adds no
 functionality, finiteness or identity hypothesis to generic spans.
-The [exact-image law](dpgraph-trace.md#exact-declaration-image-semantics-proofs)
+The [exact-image law](../DPGraph/Semantics.lean)
 is a specialization of Appendix 2 satisfaction under translation (legacy B.5),
 with explicit equality of declaration images; it is not unrestricted model reflection.
 
@@ -1608,8 +1612,8 @@ set-only key and head-object counting use the existing guarded structural
 meaning, not a new unrestricted effective-group semantics. T13 imposes no
 finite identity/step bound on the source trace.
 
-The [proof index](clafer-trace.md#behavioral-traces-and-snapshot-bridge) identifies
-the actual definitions and theorems. Snapshot projection uses live subtypes;
+The [trace definitions](../Clafer/Behavioral/Trace.lean) and
+[snapshot bridge](../Clafer/Behavioral/Snapshot.lean) carry their source annotations. Snapshot projection uses live subtypes;
 the converse explicitly requires exact static direct-type/head and parent
 correspondence. It does not establish existence of those witnesses for every
 structural model. Definition 5.4 (constraints), richer inherited references,
@@ -1637,7 +1641,7 @@ comparison uses Alloy 6.2.0, source `794226dd07b536fe35c5ca44b529417183cd629b`.
 ## Behavioral formula correspondence
 
 The [formula contract](behavioral-formulas.md) and
-[proof index](clafer-trace.md#behavioral-formulas-and-signed-normalization) cover
+[normalization proofs](../Clafer/Behavioral/Normalization.lean) cover
 Juodisius et al. §5 Definition 4 (pp. 2:27–28), Definition 5.4 and §6.1
 (pp. 2:30–32), with deliberate T2 parent-bounded signed negation and the T3
 attachment distinction. T7 supplies initial/last-live anchors. D1 selects
@@ -1686,7 +1690,7 @@ comparison interpretation of a finite sequence with a final-to-earlier loop and
 ordinary future operators. The implementation and finite-orbit proof are original;
 no solver output or Haskell generator supplies the definition of truth. A finite
 clock retains the previous position, so the first visit and repeated loop visits
-need not share `Starts`. The [proof index](clafer-trace.md#behavioral-finite-verification)
+need not share `Starts`. The [finite verification contract](behavioral-verification.md)
 identifies the kernel-checked correspondence and actual finite checks.
 T13's analysis limit remains: exact-lasso agreement is not completeness over
 all infinite traces or an inferred-scope guarantee. Static oracle/source pins
@@ -1694,8 +1698,7 @@ and the independent structural checker profile are unchanged.
 
 ## Behavioral surface correspondence
 
-The [surface contract](behavioral-surface.md) and
-[proof index](clafer-trace.md#behavioral-surface) cover B15–B29's source semantics;
+The [surface contract](behavioral-surface.md) covers B15–B29's source semantics;
 parsing, resolution and target preservation retain their separate owners.
 The baseline comparison uses the immutable [behavioral ledger](#behavioral-profile-sources);
 the [PR113 revision comparison](#pr113-modifier-and-pattern-revisions) below

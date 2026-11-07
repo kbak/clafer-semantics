@@ -151,8 +151,7 @@ not satisfaction of its source-negated syntax.
 errata. `CS` refers to the pinned [CheatSheet][cheat]. Each row is required in the
 final profile unless explicitly marked **review decision**. The S5 rows below
 name source APIs and checked witnesses; their hypotheses and
-links are in the [surface contract](behavioral-surface.md) and
-[proof index](clafer-trace.md#behavioral-surface). Other rows retain their separate
+links are in the [surface contract](behavioral-surface.md). Other rows retain their separate
 owner obligations, reconciled against actual declarations in the
 [complete qualification inventory](behavioral-qualification.md#complete-source-and-witness-inventory).
 Backend witnesses alone

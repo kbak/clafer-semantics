@@ -1,11 +1,12 @@
 # Representative models through compilation and gluing
 
+<!-- [impl->req~clafer-representative-coverage~1] -->
+
 The [product intent](intent.md) and [Compile contract](compile.md) bound this
 integration of `Clafer`, `FormalCD` and `DPGraph`. The requirements are
 [representative integration](spec.md#representative-compilation-and-gluing) and
 [coverage accounting](spec.md#representative-paper-coverage-accounting).
-The [named trace artifacts](clafer-trace.md#representative-model-integration)
-link each claim below to Lean declarations.
+The tables below link the claims to their Lean declarations.
 
 Primary source: the [published SoSyM article](sources.md#primary-source), SHA-256
 `653fc7868637680c44b6176d8ff643ec20149534fe1681ea4fc4ce636db76f2d`:
@@ -75,8 +76,8 @@ attachment here; the following omissions remain visible.
 | c01, c03–c12 | All omitted, including the final three selections | Every body attached and proved by `Telematics.source_holds` |
 
 The [complete fixture](telematics.md) owns the combined satisfaction account;
-its [proof index](clafer-trace.md#complete-appendix-f-model-proofs) names
-the individual conjunct proofs. Meanings and navigation paths are defined once
+its [satisfaction module](../Clafer/Examples/Telematics/Satisfaction.lean) proves
+the individual conjuncts. Meanings and navigation paths are defined once
 in the constraint inventory linked above.
 
 The structural configuration has one plaDisplay per ECU. Its displayed choices
@@ -98,7 +99,7 @@ applies the selected semantic bridge to its actual generated/glued diagram.
   The theorem assumes neither singleton operands nor the desired inequality.
   The separate concrete integer support examples demonstrate defined true and
   false results and rejection of missing/multiple/noninteger operands.
-* The mathematical results are kernel-checked declarations linked in the trace.
+* The mathematical results are kernel-checked declarations with source annotations.
   Command-level build/IntentBond evidence records the configured validation;
   trace coverage does not certify the source correspondence. Independent semantic
   review and acceptance remain separate gates.

@@ -10,6 +10,7 @@ import time
 from protocol import Rejection, check_candidate_bounds, encoded, natural, reject, unsupported
 
 
+# [impl->req~clafer-alloy-representation~1]
 def inventory(core, metadata):
     """Associate receipt fields by their declared owner/target, never spelling."""
     nodes = {n["uid"]: n for n in core["declarations"]}
@@ -99,6 +100,7 @@ def rename(candidate, mapping):
         **{k: [[u, [mapping[a], mapping[b]]] for u, (a, b) in candidate[k]] for k in ("containment", "references")}))
 
 
+# [impl->req~clafer-alloy-representation~1]
 def isomorphism(left, right):
     """Exact finite graph isomorphism fixing root, partitioned by all memberships.
 
@@ -141,6 +143,7 @@ def occurrences(candidate):
                   for v, (head, t) in candidate["references"] if u == v and h == head)
 
 
+# [impl->req~clafer-alloy-representation~1]
 def pin(candidate, core, metadata):
     nodes, fields = inventory(core, metadata)
     validate_candidate(candidate, core, metadata["bounds"])
@@ -195,6 +198,7 @@ def range_argument(original, bounds, bitwidth):
                 signed_min=-(2 ** (bitwidth - 1)), signed_max=2 ** (bitwidth - 1) - 1)
 
 
+# [impl->req~clafer-alloy-representation~1]
 def decode(witness, core, metadata):
     nodes, fields = inventory(core, metadata)
     if set(witness["signatures"]) != set(nodes) or set(witness["fields"]) != set(fields):

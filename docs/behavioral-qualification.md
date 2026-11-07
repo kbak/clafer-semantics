@@ -125,9 +125,9 @@ Compile/gluing, structural checker behavior and historical oracle pins are uncha
 
 The [B01–B32 source matrix](behavioral-profile.md#feature-disposition-matrix)
 owns each exact paper/erratum/CheatSheet locator. The table below closes its
-source-side accounting with actual declarations and distinguishing witnesses;
-the [proof index](clafer-trace.md#behavioral-qualification) gives file links and
-composition assumptions. Source feature accounting is separate from maintainer
+source-side accounting with actual declarations and distinguishing witnesses.
+The composition assumptions are stated above and in the
+[composition proofs](../Clafer/Behavioral/Composition.lean). Source feature accounting is separate from maintainer
 acceptance and downstream frontend/encoding qualification.
 
 | Rows | Actual source meaning and proof | Positive / negative evidence and retained boundary |

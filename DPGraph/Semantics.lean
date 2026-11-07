@@ -55,6 +55,7 @@ theorem satisfies_translate (φ : Formula σ G) (F : G ⥤q H) (m : H ⥤q Ω) :
 def IsModel (S : DPGraph.{s, va, ua, v₁, u₁} σ) (m : S.carrier ⥤q Ω) : Prop :=
   ∀ φ ∈ S.declarations, I.Satisfies m φ
 
+-- [impl->req~dpgraph-declaration-image~1]
 -- [proof->req~dpgraph-declaration-image~1]
 /-- An exact declaration image reflects model satisfaction as well as preserving
 it. This derived B.5 law requires equality of the declaration sets; an arbitrary

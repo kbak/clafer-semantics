@@ -26,6 +26,7 @@ def runtime():
     return executable, build
 
 
+# [utest->req~clafer-compiler-capture~1]
 class PinnedImportTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
