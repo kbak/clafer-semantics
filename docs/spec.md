@@ -226,7 +226,8 @@ Needs: impl, utest
 
 The repository keeps its MIT license and provides contribution and
 private security-reporting guidance, issue/PR templates, a brief README, and links
-to the SoSyM publication, free preprint, and maintained Haskell implementation.
+to the structural SoSyM publication and behavioral Clafer paper, their free access
+versions, and the maintained Haskell implementation.
 
 The README explains Clafer and the formalization's purpose for new readers,
 states the established results and their limits, and provides clone/build
@@ -235,6 +236,11 @@ documentation, contribution guidance, issue tracking and security reporting.
 Link the first mention of Lean to its [official site](https://lean-lang.org/).
 Keep detailed mathematical inventories in the canonical documentation rather
 than requiring familiarity with paper section numbers at the entry point.
+
+Link a [conceptual guide from structure to behavior](structure-and-behavior.md)
+from the README and documentation map. Explain configurations and histories,
+identity, environments and lifetime-scoped obligations with diagrams, using the
+current corrected contracts and retaining their structural correspondence limits.
 
 Keep onboarding concise and link to clafer.org for language examples. Document
 cache-assisted pinned setup, distinguish a Lean build from full validation and

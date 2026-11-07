@@ -155,6 +155,7 @@ numbers and ticket chains must not substitute for an explanation.
 | Read or maintain | Purpose |
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
+| [From structure to behavior](structure-and-behavior.md) | Conceptual bridge between the papers: configurations, shared identities, changing references, captured environments and lifetime-scoped temporal obligations |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
 | [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
 | [Behavioral surface](behavioral-surface.md) | Modifier/anchor, transition and pattern meaning, source decisions, property quantification and reduction APIs |

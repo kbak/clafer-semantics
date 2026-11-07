@@ -7,13 +7,16 @@
 
 **A [Lean 4](https://lean-lang.org/) formalization of Clafer's modeling semantics.**
 [Clafer](https://www.clafer.org/) combines class modeling, feature modeling, and
-constraints in one language for describing families of systems and their valid
-configurations. This project turns the definitions in the published Clafer paper into
-precise mathematical objects and machine-checked proofs.
+constraints in one language for describing families of systems, their valid
+configurations, and their behavior over time. This project turns definitions from
+the structural and behavioral Clafer papers, with the documented corrections,
+into precise mathematical objects and machine-checked proofs.
 
 Use it to study the semantics, inspect worked models, or build on reusable graph
 and class-diagram foundations. The focus is the connection between a model's
-structure, its constraints, and the configurations that satisfy them.
+structure, its constraints, and the configurations and histories that satisfy them.
+Start with [From structure to behavior](docs/structure-and-behavior.md) for a
+conceptual guide with diagrams, shared identities, lifetimes, and temporal obligations.
 
 [Overview and documentation](docs/intent.md) · [Contributing](CONTRIBUTING.md) ·
 [Roadmap](docs/architecture.md#roadmap-and-validation-accounting) · [MIT license](LICENSE)
@@ -30,6 +33,8 @@ The `clafer` Lake package provides three public Lean libraries:
 
 Dependencies flow `Clafer → FormalCD → DPGraph → Mathlib`; `DPGraph` is independently
 importable. The [architecture](docs/architecture.md) explains these boundaries.
+The optional `Clafer.Behavioral` entry point adds infinite traces, temporal
+constraint meanings, and their structural correspondence.
 
 The [Telematics case study](docs/telematics.md) connects a complete, manually resolved
 telematics model to compilation and a concrete satisfying interpretation,
@@ -100,14 +105,19 @@ To cite the formalization, use [CITATION.cff](CITATION.cff) and include the Git
 commit used. The [snapshot and review policy](docs/maintenance.md#research-snapshots)
 describes how reviewed source revisions are recorded.
 
-The primary semantic reference is:
+The primary semantic references are:
 
 - *Clafer: unifying class and feature modeling*, Software & Systems Modeling
   **15, 811–845 (2016)**; published online in 2014,
   [DOI: 10.1007/s10270-014-0441-1](https://doi.org/10.1007/s10270-014-0441-1)
   ([author preprint for free access](https://gsd.uwaterloo.ca/sites/default/files/2014-Bak-Clafer-Unifying-Class-Feature-Modeling%28SOSYM%29.pdf)).
+- *Clafer: Lightweight Modeling of Structure, Behaviour, and Variability*,
+  The Art, Science, and Engineering of Programming **3(1), article 2 (2019)**,
+  [DOI: 10.22152/programming-journal.org/2019/3/2](https://doi.org/10.22152/programming-journal.org/2019/3/2)
+  ([free article](https://arxiv.org/abs/1807.08576v1)).
 
-Read the [paper corrections and clarifications](docs/sosym-errata.md) alongside it;
+Read the [structural corrections and clarifications](docs/sosym-errata.md) and
+the [behavioral profile](docs/behavioral-profile.md) alongside the papers;
 the [source map](docs/sources.md) records exact correspondences and accepted choices.
 The maintained [Haskell implementation](https://github.com/gsdlab/clafer/)
 provides supplementary context and the existing Clafer toolchain.
