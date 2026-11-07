@@ -206,13 +206,13 @@ environments. There need not be one environment stored beside each snapshot.
 A quantifier captures an identity; a set binding captures an evaluated set of
 identities. Advancing time retains those values. Navigation reads the current
 relationships. In the reference example, suppose that time 0 captures
-$x=\lbrace h\rbrace$ and $y=\mathrm{target}_0(x)=\lbrace a\rbrace$. At time 1:
+$x=\{h\}$ and $y=\mathrm{target}_0(x)=\{a\}$. At time 1:
 
 | Expression | Result |
 | --- | --- |
-| $x$ | Still $\lbrace h\rbrace$ |
-| Current target of $x$ | Now $\lbrace b\rbrace$ |
-| $y$ | Still $\lbrace a\rbrace$ |
+| $x$ | Still $\{h\}$ |
+| Current target of $x$ | Now $\{b\}$ |
+| $y$ | Still $\{a\}$ |
 
 Capturing the head remembers which reference was selected. Capturing its target
 remembers which target it had when selected. An absent identity can remain in a
@@ -385,7 +385,7 @@ this recovers the existing structural satisfaction judgment:
 $$
 \tau\models_{\mathrm{beh}}(D,\Phi)
 \quad\Longrightarrow\quad
-\forall t,\ \operatorname{snapshot}(\tau,t)\models_{\mathrm{str}}D.
+\forall t,\ \mathrm{snapshot}_t(\tau)\models_{\mathrm{str}}D.
 $$
 
 **A compatible static configuration can remain constant.** When there are no
