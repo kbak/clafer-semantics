@@ -12,6 +12,7 @@ def subsets(items):
         yield from combinations(items, size)
 
 
+# [impl->req~clafer-comparison-replay~1]
 def domain(core, bounds):
     """All labelled tables for n=0..sum(user scopes), fixed fresh singleton root.
 
@@ -40,6 +41,7 @@ def domain(core, bounds):
                 yield canonical(c)
 
 
+# [impl->req~clafer-comparison-replay~1]
 def generated(core, bounds, seed, count):
     """Python Random MT19937; explicit seed, independent fair relation bits.
 
@@ -80,6 +82,7 @@ def reductions(candidate):
             smaller=copy.deepcopy(c); smaller[table].pop(i); yield smaller
 
 
+# [impl->req~clafer-comparison-replay~1]
 def shrink(candidate, core, bounds, preserves):
     """Deletion-minimal for reductions(), not a global minimum or new proof."""
     current=canonical(candidate); attempts=0

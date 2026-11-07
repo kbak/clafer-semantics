@@ -10,12 +10,12 @@ tracked in the [public-launch settings issue](https://github.com/kbak/clafer-sem
 
 Maintain these repository controls:
 
-- Main-branch protection requires PRs, a passing `Lean and IntentBond` check on
+- Main-branch protection must require PRs, a passing `Lean and IntentBond` check on
   an up-to-date branch, and resolved review conversations. Force pushes and branch
   deletion are blocked. Administrators are subject to the same restrictions. For the
   current single-maintainer project, there is no minimum approving-review count:
   GitHub cannot count an author's own approval. Require independent semantic review of IntentBond exit-4 changes
-  before acceptance, and record its disposition in the PR. A green CI check does
+  before merge, and record its disposition in the PR. A green CI check does
   not supply that review. Require one approving review once another reviewer is
   available; dismiss stale approvals and require approval of the latest push.
 - GitHub private vulnerability reporting is enabled.
@@ -39,6 +39,54 @@ IntentBond updates must update both `requirements/intentbond.txt` and the pinned
 skill link in `AGENTS.md`. Lean updates must update `lean-toolchain` and pass the
 shared checks. Review checking-policy changes explicitly; IntentMade's trusted
 scope pin must also be deliberately advanced when adopting a new policy.
+
+## Behavioral integration controls
+
+Apply the same PR, required `Lean and IntentBond` check, up-to-date branch,
+conversation-resolution, force-push/deletion and administrator controls to
+`behavioral`. Preserve main's controls. For the single-maintainer approval-count
+policy above, retain explicit independent semantic review in the PR even where
+GitHub cannot enforce an approving-review count. Automation exit 4 leaves that
+review pending.
+The [maintainer acceptance policy](#maintainer-acceptance) governs reconciliation
+after a maintainer merges the PR.
+
+[CI](../.github/workflows/ci.yml) covers PRs targeting any branch and pushes to
+both `main` and `behavioral`; the behavioral target forces full validation.
+Inspect classic branch protection and repository rulesets for **both** branches
+when accepting the integration contract. Save the readback and discrepancies in
+external evidence and the PR. An absent protection or empty ruleset is a policy
+gap, not proof that these controls are enforced. Settings repairs require a
+concrete reviewed configuration and must not weaken main. Do not claim that
+editing this document or adding workflow triggers installs hosted controls.
+
+[The integration contract](behavioral-profile.md#integration-and-acceptance)
+separates feature acceptance on behavioral from the two-repository main gates.
+Explicitly reconcile issue closure and manual Ready statuses after acceptance.
+
+## Maintainer acceptance
+
+<!-- [impl->req~github-tracking~1] -->
+
+A maintainer's merge of a PR completing an issue communicates approval and
+acceptance of that change, including its stated scope and assumptions, unless
+the maintainer explicitly leaves acceptance pending. A separate acceptance
+message or GitHub approving-review submission is not required. On observing the
+merge, record the PR and immutable merged SHA, reconcile the delivered acceptance
+criteria, close the completed issue with the ticket helper, mark it Done and
+refresh affected unstarted tickets in both repositories. Do this as part of the
+merge follow-up, including merges into a non-default integration branch.
+
+Keep pre-merge review obligations and validation evidence intact. A historical
+IntentBond exit-4 result describes automation at the time of checking; it does
+not override subsequent maintainer acceptance. Record that acceptance separately
+without changing the evidence or claiming an independent review was performed
+when none is recorded. Do not keep completed work open solely because the PR
+description still says review pending; reconcile that description too.
+
+A PR closed without merging, successful CI alone, or a merge that leaves some
+acceptance criteria undelivered does not complete the issue. Record any remaining
+work explicitly. Research releases retain their own review and publication gates.
 
 ## Research snapshots
 

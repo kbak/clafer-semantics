@@ -89,6 +89,7 @@ def category(lean_verdict, solver, faithful):
             ("violates", "sat"): "alloy_accepts_lean_rejects", ("satisfies", "unsat"): "lean_accepts_alloy_rejects"}[lean_verdict, solver]
 
 
+# [impl->req~clafer-comparison-replay~1]
 def compare(bundle, candidate, output, *, bitwidth, overall, runtime=None, timeout=30, heap_mb=512,
             search=None, unpinned=False, mutation=None, candidate_bytes=None):
     """All stages retain null verdicts until they actually run.
@@ -242,6 +243,7 @@ def compare(bundle, candidate, output, *, bitwidth, overall, runtime=None, timeo
     return result
 
 
+# [impl->req~clafer-comparison-replay~1]
 def replay(directory, output, runtime=None):
     directory = Path(directory)
     m = loads((directory / "manifest.json").read_bytes())

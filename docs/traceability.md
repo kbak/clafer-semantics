@@ -29,24 +29,39 @@ theorem translate_id ... := ...
 ```
 
 Only add a link when the declaration or group supplies evidence for that contract.
-Do not infer every link from a Markdown artifact's file list: an explanatory
-artifact may discuss several requirements and modules together.
+Read the actual declaration and its assumptions before annotating it; a document's
+mention of a module does not establish coverage of every requirement it discusses.
 
-Keep the named Markdown artifacts in [DPGraph](dpgraph-trace.md),
-[FormalCD](formalcd-trace.md) and [Clafer](clafer-trace.md) as readable accounts of
-source correspondence, declaration names and theorem assumptions. Their stable
-IDs and existing links remain useful; inline tags add direct source locations.
-Use `Needs: impl, proof` on requirements that require both. Use `utest` or `itest`
-for actual checks rather than labeling executable test code as a proof.
-Maintain requirements, source tags, these explanations and assertions together.
-Pure import aggregators and unrelated helper declarations need no arbitrary tags.
+Source annotations are the authoritative implementation, proof and test links.
+Keep mathematical explanations, theorem assumptions and limitations in the relevant
+[topic contracts](intent.md#documentation-map), and exact paper correspondence in
+the [source map](sources.md). Link directly to the relevant source modules when
+explaining a result. Do not maintain a second requirement-to-declaration inventory
+in Markdown. Documentation that itself fulfills a documentation requirement may
+carry its own implementation annotation beside the relevant text.
+
+Use `Needs: impl, proof` on requirements that require both. A theorem can supply
+both when stating and proving a mathematical result is the implementation.
+Use `utest` or `itest` for actual checks rather than labeling executable test code
+as a proof. Maintain requirements, source tags, explanations and assertions
+together. Pure import aggregators and unrelated helpers need no arbitrary tags.
 
 OFT checks the declared links, including requirement revisions. A tag or artifact
 named `proof` does not establish a theorem: Lean checks the declaration, and
 review assesses whether its statement matches the requirement and paper. The
 configured command still supplies command-level evidence rather than individual
-theorem-execution associations. Markdown artifacts do not replace source tags
-when the corresponding implementation or proof lives in Lean.
+theorem-execution associations.
+
+To inspect the links imported for a requirement, use an existing IntentBond
+evidence bundle from the [validation workflow](../CONTRIBUTING.md#setup-and-checks):
+
+```sh
+ib explain 'req~behavioral-snapshot-bridge~1' --compact --evidence /path/to/evidence.json
+```
+
+This reports the captured links and source locations. It does not rerun checks
+or establish that the evidence matches later edits; inspect the linked source
+and use the workflow's source verification when reusing validation evidence.
 
 The source-import regression checks a real annotated Lean module through the
 installed IntentBond importer, so a future pin that silently drops Lean artifacts
@@ -100,3 +115,27 @@ the baseline commit, source identities and reason; IntentBond's test log records
 the actual path and results. Keep both with the evidence. Documentation checks do
 not supply fresh Lean execution evidence or semantic approval. See
 [setup and checks](../CONTRIBUTING.md#setup-and-checks) for commands and prerequisites.
+
+<a id="behavioral-contract-and-future-proofs"></a>
+
+## Behavioral contract and proofs
+
+The [behavioral contract](behavioral-profile.md) and its
+[source ledger](sources.md#behavioral-profile-sources) are implementation artifacts
+for **documentation** requirements: the profile requirement
+(`req~behavioral-profile~1`) and structural boundary requirement
+(`req~behavioral-structural-boundary~1`). Feature-matrix rows and API summaries
+are distinct from the annotated Lean declarations and proof artifacts they describe.
+The [trace foundation](behavioral-traces.md) explains the implemented identity,
+lifetime and snapshot contracts and links to their annotated Lean definitions.
+For each implementation ticket, link its actual definitions/theorems
+and positive/negative witnesses using the convention above, preserving exact
+source locators and all structural, environment, definedness and finite-bound
+assumptions. Record unresolved semantic choices publicly before implementing them.
+
+Feature validation uses the captured behavioral integration baseline and its
+trusted scope. Behavioral PR/push CI requires full validation; main keeps the
+manifest-selected path. Retain evidence outside source and verify each accepted
+commit against it before downstream pinning. Independent semantic review remains
+required even when all coverage/build/kernel gates pass. The final qualification
+must close every required feature row; checking the first slice is insufficient.

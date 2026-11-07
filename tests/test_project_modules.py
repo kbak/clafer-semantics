@@ -96,6 +96,47 @@ class PublicLibrariesTest(unittest.TestCase):
             "FormalCD.Metamodel.Realization.Self", "FormalCD.Metamodel.Realization.Examples",
             "FormalCD.SelfDescription", "FormalCD.Telematics.Basic",
             "FormalCD.Telematics.VC", "FormalCD.Telematics.Examples",
+            "Clafer.Behavioral", "Clafer.Behavioral.Trace",
+            "Clafer.Behavioral.Snapshot", "Clafer.Behavioral.Examples",
+            "Clafer.Behavioral.Lifetime", "Clafer.Behavioral.Environment",
+            "Clafer.Behavioral.Formula", "Clafer.Behavioral.Denotation",
+            "Clafer.Behavioral.Normalization", "Clafer.Behavioral.Lowering",
+            "Clafer.Behavioral.FormulaExamples",
+            "Clafer.Behavioral.Orbit", "Clafer.Behavioral.Lasso",
+            "Clafer.Behavioral.FiniteEvaluation", "Clafer.Behavioral.LassoValidation",
+            "Clafer.Behavioral.FiniteSets", "Clafer.Behavioral.Verification",
+            "Clafer.Behavioral.LassoExamples",
+            "Clafer.Behavioral.GroupObservation", "Clafer.Semantics.Groups",
+            "Clafer.Behavioral.ReferenceObservation", "Clafer.Behavioral.ReferenceObservationExamples",
+            "Clafer.Behavioral.InheritedReference", "Clafer.Behavioral.InheritedReferenceExamples",
+            "Clafer.Behavioral.IntegerObservation", "Clafer.Behavioral.IntegerObservationExamples",
+            "Clafer.Behavioral.Arithmetic", "Clafer.Behavioral.ArithmeticExamples",
+            "Clafer.Behavioral.Aggregate", "Clafer.Behavioral.AggregateExamples",
+            "Clafer.Behavioral.Structural",
+            "Clafer.Behavioral.StructuralCompatibility",
+            "Clafer.Behavioral.StructuralExamples",
+            "Clafer.Behavioral.ConcreteInheritanceExamples",
+            "Clafer.Behavioral.StructuralObservation",
+            "Clafer.Behavioral.StructuralSnapshot",
+            "Clafer.Behavioral.StructuralBinding",
+            "Clafer.Behavioral.StructuralBindingExamples",
+            "Clafer.Behavioral.CapturedStatic",
+            "Clafer.Behavioral.PrimitiveExpression",
+            "Clafer.Behavioral.PrimitiveExpressionExamples",
+            "Clafer.Behavioral.PartialObservation",
+            "Clafer.Behavioral.PartialCompatibility",
+            "Clafer.Behavioral.PartialExamples",
+            "Clafer.Behavioral.PartialLowering", "Clafer.Behavioral.Composition",
+            "Clafer.Behavioral.FinitePartial", "Clafer.Behavioral.FiniteComposition",
+            "Clafer.Behavioral.QualificationExamples",
+            "Clafer.Behavioral.StaticObservation",
+            "Clafer.Behavioral.Initializers",
+            "Clafer.Behavioral.Anchors", "Clafer.Behavioral.AnchorExamples",
+            "Clafer.Behavioral.Modifiers", "Clafer.Behavioral.ModifierExamples",
+            "Clafer.Behavioral.ModifierBoundaryExamples",
+            "Clafer.Behavioral.Transitions", "Clafer.Behavioral.TransitionExamples",
+            "Clafer.Behavioral.Patterns", "Clafer.Behavioral.PatternExamples",
+            "Clafer.Behavioral.Properties", "Clafer.Behavioral.PropertyExamples",
             "Clafer.Context", "Clafer.Syntax", "Clafer.Shape",
             "Clafer.Shape.Diagram", "Clafer.Examples",
             "Clafer.MCS.Basic", "Clafer.MCS.Laws", "Clafer.MCS.Metamodel",
@@ -144,6 +185,9 @@ class PublicLibrariesTest(unittest.TestCase):
         self.assertIn(Path("tests/public_imports.lean"), tests)
         self.assertIn(Path("tests/formalcd_imports.lean"), tests)
         self.assertIn(Path("tests/semantic_dependencies.lean"), tests)
+        self.assertIn(Path("tests/behavioral_dependencies.lean"), tests)
+        self.assertIn(Path("tests/behavioral_lasso.lean"), tests)
+        self.assertIn(Path("tests/structural_without_behavioral.lean"), tests)
         self.assertIn(Path("tests/group_dependencies.lean"), tests)
         self.assertIn(Path("tests/structural_checker.lean"), tests)
         self.assertIn(Path("tests/resolved_import.lean"), tests)

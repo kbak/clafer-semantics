@@ -34,6 +34,14 @@ Browse requirements by topic:
   [checker](#effective-structural-core-and-supported-fragment),
   [importer](#pinned-resolved-compiler-import) and
   [bounded comparison](#exact-bounded-candidate-comparison).
+- **Behavioral:** [profile](#behavioral-language-profile),
+  [structural boundary](#behavioral-structural-and-repository-boundary),
+  [formula meaning](#behavioral-formula-meaning-and-attachment),
+  [signed normalization](#behavioral-signed-normalization) and
+  [environments](#behavioral-time-spanning-environments),
+  [modifiers](#behavioral-modifiers-and-anchors), [transitions](#behavioral-transition-sugar),
+  [patterns](#behavioral-scoped-patterns), [properties](#behavioral-models-and-properties),
+  [lassos](#behavioral-finite-lassos) and [evaluation](#behavioral-finite-evaluation).
 - **Worked models:** [walkthrough](#small-lean-model-walkthrough),
   [representative integration](#representative-compilation-and-gluing) and
   [complete telematics model](#complete-resolved-appendix-6-integration).
@@ -163,8 +171,12 @@ pull requests using the base branch's scope and retains evidence; first adoption
 explicitly checks the candidate baseline and requires review. Exit 4 retains
 semantic review as pending. Failed checks block the CI job.
 Lean implementation, proof and test coverage tags are imported from actual source
-comments with original paths and lines. Preserve the named Markdown explanations
-and require the source-import regression to reject tooling that drops Lean tags.
+comments with original paths and lines. Use those source annotations as the
+authoritative coverage links, without a duplicate Markdown declaration index.
+Preserve mathematical explanations, assumptions and source correspondence in
+the existing topic contracts and source map. Documents that fulfill documentation
+requirements retain their own annotations. Require the source-import regression
+to reject tooling that drops Lean tags.
 The explicitly approved public-root migration expands only baseline `inputs`
 and `review_paths` to `["."]`, preserving every other policy field and the actual
 baseline commit. CI recognizes the exact original and migrated scope identities,
@@ -190,6 +202,21 @@ creates issues from body files, adds them to the Project, sets their status, and
 supports later edits, comments, and closure. GitHub operation failures must be
 reported as failures; if issue creation succeeds before Project tracking fails,
 the helper reports the created URL so tracking can be retried without recreation.
+The helper accepts `track --status ready` using the Project's live Ready option
+ID, and fails if that option is unavailable. It does not infer dependencies or
+change other tickets automatically. Use Todo → Ready → In Progress → Done:
+Ready is actionable work with accepted hard prerequisites across both repositories;
+selection and actual work move it to In Progress. A maintainer's merge
+of a PR delivering the acceptance criteria communicates approval and acceptance
+unless the maintainer explicitly leaves it pending. Agents must record the merged SHA, close
+the completed issue and mark Done without seeking a second confirmation or a
+separate review submission, following the
+[acceptance policy](maintenance.md#maintainer-acceptance). Retain automation and
+review evidence with their original meanings. An unmerged closed PR or successful
+automation alone is not acceptance. Closed-as-not-planned prerequisites
+are not accepted completion. Roadmap containers do not enter Ready. Manually
+reconcile affected unstarted tickets after accepted closure, reopening, dependency
+edits or scope decisions, without silently resetting active work.
 Planning tickets do not authorize starting semantic implementation.
 
 Covers:
@@ -203,7 +230,8 @@ Needs: impl, utest
 
 The repository keeps its MIT license and provides contribution and
 private security-reporting guidance, issue/PR templates, a brief README, and links
-to the SoSyM publication, free preprint, and maintained Haskell implementation.
+to the structural SoSyM publication and behavioral Clafer paper, their free access
+versions, and the maintained Haskell implementation.
 
 The README explains Clafer and the formalization's purpose for new readers,
 states the established results and their limits, and provides clone/build
@@ -212,6 +240,11 @@ documentation, contribution guidance, issue tracking and security reporting.
 Link the first mention of Lean to its [official site](https://lean-lang.org/).
 Keep detailed mathematical inventories in the canonical documentation rather
 than requiring familiarity with paper section numbers at the entry point.
+
+Link a [conceptual guide from structure to behavior](structure-and-behavior.md)
+from the README and documentation map. Explain configurations and histories,
+identity, environments and lifetime-scoped obligations with diagrams, using the
+current corrected contracts and retaining their structural correspondence limits.
 
 Keep onboarding concise and link to clafer.org for language examples. Document
 cache-assisted pinned setup, distinguish a Lean build from full validation and
@@ -238,15 +271,15 @@ structural discipline, structural Compile and resolved-referent gluing.
 
 It keeps private deployment configuration and credentials outside the source repository. Keep
 [intent](intent.md) as the canonical overview, linking current architecture,
-mathematical explanations, source citations, requirements and trace artifacts.
+mathematical explanations, source citations, requirements and source traceability.
 
 Use its documentation map to identify the authoritative location for each kind
 of detail. Consolidate repeated explanations through links while retaining intent
-and artifact IDs, trace relationships, source citations and existing link
-destinations. Explain internal decision labels by name and link to their defining
+and continuing requirement IDs, trace relationships and source citations. Redirect
+incoming links when consolidating redundant documents. Explain internal decision labels by name and link to their defining
 table; readers must not need issue history to understand a correction or contract.
 Name capabilities, dependencies and proof limits in the prose. Link to the current
-contract or proof inventory for technical detail. Historical references must use
+contract or annotated source for technical detail. Historical references must use
 descriptive link text identifying the issue or pull request; do not use bare
 numbers, number-only links or chains of tickets as explanations. Internal decision
 references must link at each point of use to the relevant explanation or table
@@ -323,7 +356,9 @@ Needs: impl
 Maintain the three reusable layers and explicit exclusions in [intent](intent.md),
 the source-to-construct mapping in the [source map](sources.md), and representation
 alternatives, dependencies and validation tasks in [architecture](architecture.md).
-SoSyM is the primary semantic authority; identify exact sections/definitions/figures,
+SoSyM is the primary structural semantic authority; the separate
+[behavioral profile](behavioral-profile.md) identifies its behavioral paper and
+reviewed departures. Identify exact sections/definitions/figures,
 the inspected publisher e-offprint hash, edition/page convention and Mathlib commit.
 Retain the preprint identity for historical provenance and free access.
 Compare edition differences before changing a source-based semantic claim; do not
@@ -355,6 +390,626 @@ later semantic increments require their own authorized scope. The existing
 validation, IntentBond and GitHub-tracking requirements continue to apply.
 Project-critical source research and the conditional sketch-extension assessment
 have a separate [supporting-source assessment issue](https://github.com/kbak/clafer-semantics/issues/41).
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral language profile
+
+`req~behavioral-profile~1`
+
+Maintain the versioned [behavioral contract](behavioral-profile.md), grounded in
+arXiv 1807.08576v1 §§5–6 and the immutable 0.5.7 candidate's T1–T13 errata,
+with source hashes, licenses and public decision locators. Keep an exhaustive
+disposition matrix for modifiers, transitions/guards/chains, X/F/G/U/W, anchors,
+all patterns/scopes, assertions/scenarios and their static prerequisites. Every
+required row needs an owner, proof obligation and positive/negative fixture plan.
+Separate proposed obligations from delivered declarations and accepted results.
+
+Explicitly record reappearance, parent identity across lifetimes, parent-bounded
+obligations and signed source negation, group counts, reference views and partial
+integer boundaries. Unresolved choices must have public dispositions before
+choosing definitions; deferral or scope reduction needs explicit review. A later
+release SHA needs a recorded delta review. Preserve historical SoSyM and static
+oracle baselines. The initial slice does not reduce the completion scope.
+
+Feature PRs target `behavioral`; downstream uses immutable accepted upstream
+pins. CI on behavioral PRs and pushes must retain full build, tests, kernel,
+layer/axiom and traceability gates. Review actual branch-protection settings
+without weakening main. Require independent semantic review before merge,
+recognize [maintainer merge acceptance](maintenance.md#maintainer-acceptance),
+explicitly close completed issues after non-default-branch integration, and retain
+the ordered final S7/C10/S8/C11 gates. This requirement delivers a contract and workflow, not
+behavioral implementation or authorization to merge main.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral structural compatibility
+
+`req~behavioral-structural-compatibility~1`
+
+Supply an independent resolved behavioral structural core covering own/inherited
+effective groups, authored abstractness, ordinary inherited fields, nested abstract
+types under concrete parents, refined containment parents, and inherited/refined
+references. Preserve source-permitted concrete supers; S10's backend restriction
+does not narrow source admission. Require rooted live containment, fixed typed
+actual parents, authored-abstract coverage, reference endpoint validity, multiplicity
+and complete effective-group bounds. Context views restrict existing identities
+and parents. Keep effective-default elaboration downstream and its adopted policy
+unchanged. Prove an exact validity equivalence on the historical guarded common
+fragment without relaxing its guards or changing its snapshot/constant theorems.
+
+Classify every S1–S11/T8/T10/T11 prerequisite in the
+[structural contract](behavioral-structure.md). The reviewed B32 profile rejects
+`:=` explicitly and interprets `=` as an ordinary presence-guarded equation at
+every live attachment state, with strict operand definedness. Preserve the
+historical SoSyM checkpoint. Supply admitted richer structural models and negative
+wrong-group, authored-abstract, reference-key and endpoint witnesses. No required
+structural matrix row may be left without an implementation or a reviewed
+disposition and named downstream obligation.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral references and partial atoms
+
+`req~behavioral-reference-atoms~1`
+
+Resolve the nearest declared reference while preserving head identity and one
+current target per head across refined reference views. Require live typed
+endpoints and set uniqueness in each declaration's containment fiber; preserve
+bag occurrences, including repeated targets. Supply separate heads, assignments
+and target-image observations for later modifiers. Resolved support bindings must
+retain full link carriers and repeated map occurrences; target-map links retain
+their intermediate heads. Prove endpoint typing from declaration roles and state
+validity, with heterogeneous actual-parent navigation kept explicit.
+
+Integrate captured identities/sets, current navigation, live-filtered standalone
+this, direct actual-parent navigation and domain-before-binding quantification.
+Prove all-constructor agreement with the static evaluator on singleton-compatible
+environments and live this; keep runtime typing and strict extraction obligations
+explicit. Provide resolved primitive expressions for finite-set coercion, strict
+extraction, cardinality, mathematical arithmetic, extrema and occurrence-indexed
+folds. Prove finite observed references give defined primitive coercion under
+target-domain typing without assuming a finite integer universe.
+
+Integrate partial atoms/domains with the accepted signed temporal meaning through
+a separate strict definedness judgment. Require all Boolean operands and every
+quantified member defined; temporal operands must be defined throughout the
+remaining uninterrupted parent interval, next only at its next active state,
+and lifetime-anchor bodies only when triggered. Undefined formulas have neither
+polarity. Prove completion independence, exact total-observation compatibility,
+static-atom agreement and guarded reuse of normalization/lowering. Include
+structural/current-navigation, infinite-primitive/finite-observation, repeated-head
+aggregation, zero-divisor, quantifier, cancellation and absent-context witnesses.
+Backend agreement retains explicit nonzero-divisor and intermediate-range
+obligations with the encoding owner; it is not a source wraparound rule.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral inherited-reference observation
+
+`req~behavioral-inherited-reference-observation~1`
+
+Resolve the nearest declared reference along a super chain: a declaration's own
+reference stops lookup, while a basic declaration follows its super. Keep this
+lookup separate from name resolution, a preflattened effective-reference table,
+and reference-target identity. Prove uniqueness and ancestry of the owner, with
+an actual target at every successful owner. Raw cyclic/all-basic inputs must not
+invent an owner; existence on admitted richer models remains a separate obligation.
+
+Observe an inherited dereference by restricting the owner's current relation to
+the subtype's existing head extent. Prove agreement between views sharing an
+owner on shared head identities, own-reference agreement, functionality and live
+target validity under the existing trace-validity hypotheses, and emptiness at
+an absent head. Check nearest ownership, two bag heads at one target, changing
+targets and disappearance. These observations do not assert richer structural
+admission or agreement between distinct redeclared reference owners; those are
+separate structural compatibility obligations in the [audit](behavioral-structure.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral integer-set conversion
+
+`req~behavioral-integer-coercion~1`
+
+Provide the reviewed D3 arithmetic conversion of a finite observed set of
+integer objects to the sum of its distinct values. Empty observations contribute
+zero; singleton observations agree with the existing exact extraction. Preserve
+all mathematical integers without introducing a backend bit width. Require
+finiteness of the observed set and membership of every object in the explicit
+integer realization; infinite or off-domain observations remain undefined.
+An undefined expression is not a defined empty set and must not become zero.
+
+Keep relational presence and equality unchanged, so an empty collection remains
+different from a present zero. Keep `IntegerRealization.extract`, `Expr.integerOf`
+and the historical static denotation unchanged. The new conversion is explicit
+in the behavioral interface; source elaboration must choose the right operation.
+Sum each distinct target once in this conversion. Aggregation over reference
+heads retains occurrences and is a separate operation. Prove finite/domain
+definedness, empty/singleton equations, and agreement on the entire defined
+domain of strict extraction; check multiple values, repeated targets, arbitrary
+integers and rejected observations. See the
+[structural and arithmetic contract](behavioral-structure.md#integer-set-conversion).
+Operator definedness, extrema and explicit occurrence-sensitive aggregates are
+specified separately below.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral mathematical arithmetic
+
+`req~behavioral-integer-arithmetic~1`
+
+Provide the reviewed D3 scalar operations on mathematical integers: addition,
+subtraction, multiplication and unary negation, together with division truncating
+toward zero and its matching signed remainder. Division and remainder are
+undefined at a zero divisor, including zero divided by zero. Undefined operands
+propagate through every operation, including multiplication by zero. A defined
+empty collection contributes zero through the separate integer-set conversion;
+it does not make division by that value defined.
+
+Do not introduce bounded wraparound or machine overflow into source meaning.
+Backend agreement needs separate domain and range hypotheses. Prove the exact
+operator domain, the quotient/remainder identity, missing-operand propagation
+and agreement with the unchanged historical scalar addition/subtraction.
+Check signed operands, every zero-divisor case, empty numerator/denominator and
+values beyond machine range. See the [arithmetic contract](behavioral-structure.md#mathematical-arithmetic).
+This scalar interface does not itself provide a temporal expression grammar,
+aggregate semantics or an Alloy/Choco encoding-correctness theorem.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite integer aggregates
+
+`req~behavioral-integer-aggregates~1`
+
+Provide explicit sum and product over finite occurrence-indexed observations.
+Separate reference heads contribute separately at equal integer targets; implicit
+integer-set coercion retains its distinct-target meaning. Empty sum is zero and
+empty product is one. Require every contributing value defined, and reject an
+infinite occurrence collection even if its values coincide or contain zero.
+Frontend expansion of aggregate operands must preserve the intended occurrences;
+a syntactic union split into separate aggregates is not a deduplicated head union.
+
+Provide minimum/maximum as selectors of integer objects in finite observations.
+The empty observation yields a defined empty collection, so presence/equality
+remain empty while arithmetic conversion gives zero. A nonempty finite integer
+observation selects exactly one observed object with the extremal value. Reject
+infinite or noninteger observations. Prove domain, selection, singleton and
+empty-conversion laws, with positive/negative witnesses for repeated targets,
+missing values, infinity, nonintegers and the empty-versus-zero distinction.
+See the [aggregate contract](behavioral-structure.md#aggregates-and-extrema).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral structural and repository boundary
+
+`req~behavioral-structural-boundary~1`
+
+Specify the behavioral extension under `Clafer/Behavioral`, with an optional
+`Clafer.Behavioral` entry point in the single `clafer` Lake package. Preserve
+structural imports and `Clafer -> FormalCD -> DPGraph -> Mathlib`; no generic
+temporal lower-layer framework is presumed. Keep independent source meaning,
+source normalization and lasso correctness upstream; executable IR, frontend,
+independent Alloy target meaning, encoding and compiler-specific proofs remain
+downstream, with one-way dependencies.
+
+Use infinite traces for meaning, finite lassos only through a separately justified
+unfolding/evaluation contract. Specify stable identity/type/parent data, live
+carriers, reference occurrence identity and loop-edge/lifetime obligations.
+State snapshot agreement and constant-trace embedding only for their actual
+common structural domain, with explicit environment/definedness hypotheses for
+atom reuse. Do not identify pointwise structural correctness with temporal
+preservation or bounded checking with unrestricted completeness. New meanings
+must not silently change the existing structural checker/importer profiles.
+
+The [contract](behavioral-profile.md) records interfaces and theorem obligations;
+the [qualification inventory](behavioral-qualification.md) links the actual Lean
+artifacts and their assumptions. This documentation requirement is separate from
+the implementation and proof requirements below.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl
+
+## Behavioral shared identities
+
+`req~behavioral-identities~1`
+
+Represent identities independently of time, names and dereferenced targets, with
+one concrete direct type and actual parent per identity. The synthetic root has
+its unique root type and no parent; every other identity has a typed actual
+parent. Abstract declaration roles and actual parents remain distinct. Preserve
+that parent across all lifetimes, including absence and reappearance, and derive
+the synthetic-root parent for top-level instances. Preserve distinct reference
+heads at equal targets through snapshot projection. Reject parent reassignment
+and target-based occurrence collapse with kernel-checked witnesses.
+
+Follow the [trace contract](behavioral-traces.md) and behavioral paper §5
+Definitions 1–3/5, with pinned errata T1/T11. Keep these declarations in Clafer.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral infinite traces and lifetimes
+
+`req~behavioral-traces~1`
+
+Define infinite natural-time traces with fixed identity/type/parent information,
+changing presence and changing reference relations. Do not require a finite
+identity pool, forbid reappearance or silently filter invalid dereference data.
+Validity requires an always-live synthetic root, parent presence for every live
+child and the stated structural state obligations. Statewise satisfaction alone
+does not permit changing the identity correspondence between times.
+
+Define lifetime starts at time zero and every absent-to-live boundary, and ends
+at the last live state before absence. Prove their boundary laws and the constant
+trace laws. Supply nontrivial valid reappearance, parent replacement, repeated
+identity and changing-reference witnesses, plus orphan rejection. Apply the
+[trace contract](behavioral-traces.md) and paper §5 Definitions 2/5 with T1/T7/T13;
+formula satisfaction, modifiers and finite-lasso justification remain separate.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral live-carrier structural bridge
+
+`req~behavioral-snapshot-bridge~1`
+
+Project each valid trace state to the existing structural semantics on its live
+carrier, with an injective embedding into the shared identity carrier. Prove
+`StructuralSatisfies`, including ambient coverage of that live carrier and exact
+containment-fiber/group-union cardinality transport. Absent or unused pool atoms
+must not be forced into live root objects. Retain complete reference occurrences.
+
+For the common `EffectiveCore.WellFormed`/`Supported` fragment without temporal
+modifiers or constraints, embed a satisfying structural configuration as a
+constant trace given explicit valid static identities and exact direct-type,
+head-closure and parent/containment correspondence. Retain the witness-existence
+obligation; do not infer it from arbitrary overlapping extents. Recover every
+configuration field through the live-carrier equivalence, and exhibit concrete
+bag and inherited correspondence witnesses. Check unused atoms and occurrence
+separation. Keep the [precise hypotheses](behavioral-traces.md#projection-and-constant-embedding),
+source locators, actual Lean trace links and independent-import checks together.
+Do not change existing static Compile/checker contracts or claim temporal
+preservation from pointwise structural agreement.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral formula meaning and attachment
+
+`req~behavioral-formula-denotation~1`
+
+Give independent infinite-time meanings to X/F/G/U/W over the accepted traces.
+Each live applicable context starts its attached constraint at every time. Bound
+each temporal obligation by that context's fixed actual parent's remaining
+uninterrupted lifetime; use an always-present bound for synthetic-root context.
+Context disappearance alone does not cancel an obligation. A parent gap cancels
+it permanently, including when that identity later reappears; U still requires
+its left operand before cancellation. Initial/final anchors refer to the context's
+birth/last-live state, including zero and repeated lifetimes. State the exact
+root/persistent-parent laws and attachment distinctions.
+
+Follow the [formula contract](behavioral-formulas.md), behavioral paper §5
+Definitions 4–5 and §6.1 as changed by T2/T3/T7. Prove operator lowering and
+context/lifetime rules and provide valid-trace cancellation, reappearance,
+source-versus-parent attachment, U/W and anchor witnesses. Keep ordinary temporal
+logic separate from the source signs and from any finite representation.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral signed normalization
+
+`req~behavioral-signed-normalization~1`
+
+Define positive and negative source judgments independently of a normalizer and
+compiler output. Source negation flips polarity before lifetime bounds. Specify
+X/F/G/U/W and anchor sign rules, Boolean implication/equivalence/xor/conditionals,
+all/some/no propagation, and the classical one/lone barriers including their raw
+counting bodies. Keep Lean meta-level negation and assertion failure classical.
+Prove normalized shape, all-constructor agreement, lowering agreement and their
+composition, including binders and attachment. Establish ordinary classical
+polarity on total temporal-free observations without applying static `Expr.not`
+to temporal source formulas.
+
+Supply contrasting valid-trace witnesses where F error and its source negation
+both hold after parent cancellation, where negating the lowered F fails, and a
+theorem excluding both F polarities for a total atom under persistent-parent
+assumptions. Include nested negation, Boolean combinations and quantifier/counting
+boundaries. Apply the [signed formula contract](behavioral-formulas.md#signed-source-meaning-and-normalization)
+and pinned temporal erratum T2; do not infer unrestricted classical contradiction
+for source negation or claim compiler preservation from normalization alone.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral time-spanning environments
+
+`req~behavioral-environments~1`
+
+Implement the adopted [D1 identity/current-navigation contract](behavioral-formulas.md#captured-values-and-current-navigation).
+Quantifiers capture singleton identities and let captures evaluated sets; later
+times retain those values and the original attachment. Use lexically scoped
+variables. Current navigation reads current extents, containment and references;
+parent navigation can start at an absent identity but selects only a live fixed
+parent. Standalone this is live-filtered, while resolved direct this navigation
+starts at its fixed identity. Preserve bag-head identities and actual parent
+identity independently of targets and declaration roles.
+
+Prove capture, shadowing, absence and navigation equations, with changing-reference
+and absent-context witnesses. Record the deliberate departure from the paper's
+snapshot-tagged environment. Keep observations total on the stated set domain.
+Do not coerce undefined static/primitive values to Boolean results: any reuse of
+the static evaluator requires a separate agreement theorem with discharged
+environment and definedness conditions. The separate behavioral references and
+partial-atoms requirement owns that integration under the adopted D3 rules.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral modifiers and anchors
+
+`req~behavioral-modifiers~1`
+
+Define effective inherited initial/final/finalref/finaltarget and dynamic enum
+finality over admitted richer structural traces. Initial requires children at
+every parent birth; final fixes heads and references shallowly. Finalref fixes
+each head's reference during its uninterrupted life; finaltarget fixes the
+parent's target image during its uninterrupted life. Preserve inherited owner
+lookup, identity multiplicity and lifetime resets. Prove expansion into captured
+sets and temporal formulas, including attachment and signed lowering. Characterize
+initially at time zero and every context birth, finally at every last live state,
+and vacuity of finally for a never-ending life. Follow the explicit reference
+modifier completion in the [surface contract](behavioral-surface.md), not an
+unattributed equation from the paper.
+
+Provide admitted stable and changing inherited-reference witnesses, target swaps,
+shallow finality, inherited initial presence, repeated births and lifetime gaps.
+Conjoin all effective reference modifiers, whether supplied directly or inherited;
+retain witnesses where each fails independently. Their conjunction permits head
+replacement at an existing target, which final rejects. Finaltarget fixes a set
+image, not a multiset: retain a bag changing {A,A,B} to {A,B,B} with the same
+head identities and exact cardinality, alongside target-loss rejection. Test
+head-only gaps separately from parent gaps, including inherited references.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral transition sugar
+
+`req~behavioral-transition-sugar~1`
+
+Define guarded and unguarded immediate/eventual transitions and declaration
+attachment under T2–T4 and behavioral §6.1 pp.2:31–32. The first link is
+conditional; later sources/guards are required sequentially. Eventual links
+require source/context persistence until target or parent cancellation; guards
+are entry tests. Prove both signed meanings and reduction/normalization,
+retaining the original strict partial domain. Supply the resolved presence
+adapter and record the generic caller's attachment obligation. Check valid
+chains and mutations with missing intermediate states/guards, context/source
+loss, cancellation and reappearance. See the [surface contract](behavioral-surface.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral scoped patterns
+
+`req~behavioral-patterns~1`
+
+Define never, sometime, lonce, always, precedence and response in all five
+scopes against independent signed interval meaning. Prove every expansion for
+both polarities, including temporal scope premises and lifetime cancellation;
+compose signed normalization/lowering while retaining partial definedness.
+Adopt D2's corrected response throughout between intervals and first-opener
+after-precedence. Identify the compiler revisions containing and correcting each
+mismatch, retaining historical mutants and pins. Characterize implicit always
+recurrence versus initially anchored existence; distinguish root attachment of
+after-precedence from its initially anchored evaluation with repeated openers.
+Check all thirty cells with positive/negative infinite-trace witnesses and both
+signs, plus missing,
+repeated and simultaneous boundaries, events at opening/closing, contiguous
+versus separated episodes, context loss, parent gaps and reappearance. Follow
+the [surface contract](behavioral-surface.md) and T2/T9, not compiler equality.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral models and properties
+
+`req~behavioral-properties~1`
+
+Define model satisfaction from structural admission, effective modifiers and
+all attached constraints. Separate universal assertions from existential
+model-plus-scenario feasibility, for root and nested attachments. Counterexamples
+use classical failure of interpreted satisfaction, including definedness;
+source negation is not its replacement. Prove counterexample/assertion duality,
+scenario extension and normalization with the original partial domain. Check
+multiple valid traces and multiple nested instances, cancellation's two source
+polarities and the distinct negative-scenario conjunction/implication forms.
+Exercise implicit root attachment versus initially through the assertion's
+actual constraint-satisfaction API, including repeated pattern openers.
+The [surface contract](behavioral-surface.md) fixes the scope of T5/T6/T9/T12
+and the downstream parser/elaboration boundary.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite lassos
+
+`req~behavioral-lassos~1`
+
+Represent an exact finite identity inventory and a nonempty finite state sequence
+with a checked loop index, shared direct types/actual parents, and changing live
+and reference observations. Define its infinite unfolding independently of formula
+evaluation. State finite well-formedness and prove equivalence with infinite trace
+validity in the existing guarded structural fragment. Preserve reference occurrence
+identities, root/parent presence, multiplicities and groups across the loop edge.
+Reject malformed loops, empty input and inconsistent repeated type/parent metadata.
+
+Preserve time-zero birth and first-entry history separately from later loop visits;
+prove finite initial/final and parent-presence observations agree at every absolute
+time. Permit reappearance with fixed identities and parents. Follow the
+[verification contract](behavioral-verification.md), paper §5 Definitions 2–5 / §6.2
+and T1/T7/T13. Exercise self-loops, nonzero prefixes, loop-edge births/deaths,
+parent/type switches and duplicate-reference-target mutations.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral finite evaluation
+
+`req~behavioral-finite-checker~1`
+
+Implement every accepted normalized `Core` constructor over a supplied finite
+lasso, retaining captured identity sets and original attachment through binders.
+Justify temporal search by a proved finite-state bound, not an arbitrary prefix
+cutoff. Prove all-constructor agreement with independent infinite `Core.eval` and
+composition with signed normalization/lowering and attached constraint meaning.
+Preserve parent cancellation without resumption after reappearance and the
+one/lone classical barriers inherited from the core translation.
+
+Require finite total atom/domain observations and explicit independent source
+agreement over every environment and absolute time. Supply the accepted total
+set-grammar adapter with an agreement proof. Separate malformed, unsupported,
+violated and satisfied outcomes; missing finite observation/range evidence is
+unsupported, and no undefined partial primitive value becomes a Boolean verdict.
+The [verification contract](behavioral-verification.md) retains S4/D3 ownership of
+partial atoms and the exact guarded structural boundary. Provide an API for
+normalized surface reductions and downstream exact-candidate comparisons.
+
+Kernel-check the correspondence and boundary fixtures; exhaustively compare small
+lassos to an independent temporal oracle while preserving static checker regressions.
+Claim only the admitted exact-lasso correspondence, never completeness over all
+infinite traces or unrestricted consequences from bounded UNSAT.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Behavioral semantic composition and qualification
+
+`req~behavioral-qualification~1`
+
+Compose the accepted structural, effective modifier and attached constraint
+meanings into a full behavioral model, with an iff to ordinary temporal core
+obligations. Translate strict definedness from the original source tree alongside
+signed truth. Preserve every Boolean operand, every quantified member, the entire
+active temporal domain and lifetime-anchor guards; normalization must not erase
+undefinedness. Prove the exact unchanged static common-fragment bridge, retaining
+well-formedness, support, group agreement and the converse's stable identity witness.
+
+Connect surface transitions and all scoped patterns to finite core evaluation
+through proved reductions. Finite partial observations must agree with source
+values, missingness, domains and captured environments at every absolute time.
+Keep undefined, defined false and satisfied distinct. Full finite model checking
+must retain complete constraint/modifier inventories and context correspondence;
+richer structural admission is an explicit prerequisite, while the historical
+common fragment uses its existing executable structural check. Document the
+finite-clock and finite-carrier restrictions without narrowing infinite meaning.
+
+Exercise full representative models and mutations, including stable/replaced
+machines, cancellation under both signs, repeated lifetimes, inherited final
+references, group/bag identities, recurring/anchored patterns and properties.
+Retain full source-matched validation, an immutable candidate and independent
+semantic review before acceptance. The [qualification contract](behavioral-qualification.md)
+records exact APIs and trust limits; this gate does not authorize main integration.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl, proof, utest
+
+## Behavioral source qualification inventory
+
+`req~behavioral-source-correspondence~1`
+
+Maintain a complete B01–B32 and T1–T13 qualification inventory against immutable
+source locators. Identify actual source declarations, theorem assumptions,
+positive/negative witnesses and exact downstream obligations for every row.
+Preserve reviewed D1–D5 departures and explicit unsupported initializer syntax.
+Do not equate compiler observations, trace links or passing automation with
+semantic acceptance. Reconcile the final release against the adopted source pin,
+or record explicit maintainer acceptance of that immutable prerelease profile.
+Keep source hashes and current contracts in maintained documentation, and run
+evidence and acceptance records externally or in the public issue/PR.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral main integration
+
+`req~behavioral-main-integration~1`
+
+Integrate behavioral semantics into main only after the semantic and downstream
+compiler qualification candidates have both been accepted. Reconcile current
+main into behavioral and review the complete integration diff, current public
+documentation, code duplication, import/API compatibility, source licenses and
+profile disposition. Preserve the structural imports, historical SoSyM and static
+oracle baselines and full validation gates. Any scope-policy change requires
+explicit review; passing automation alone is not semantic acceptance.
+
+Require full source-matched IntentBond, build, regression, layer/axiom and kernel
+evidence on the exact candidate, independent semantic review and authorization
+for the concrete `behavioral` to `main` PR. After the authorized merge, verify and
+hand off the actual immutable main SHA, APIs, assumptions, fixtures and matching
+evidence to the compiler repin gate. Close the integration issue only after that
+handoff. Retain behavioral through downstream completion unless the maintainer
+selects cleanup. The [integration contract](behavioral-profile.md#integration-and-acceptance)
+owns the workflow; completion records remain in the issue/PR and external evidence.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -1563,7 +2218,9 @@ interface for [core constraint typing](spec.md#resolved-core-constraint-typing),
 Constraint bodies and expression typing are supplied by the separate core
 constraint module below. Name resolution remains an upstream obligation; the separate
 [denotation extension](constraint-denotation.md) supplies Appendix 4 equations. The context module must not depend on the expression
-implementation. Check repeated-occurrence and dangling-reference examples.
+implementation. The behavioral extension retains a separate attachment and
+time-spanning environment contract; this static boundary does not supply source
+temporal negation or lifetime semantics. Check repeated-occurrence and dangling-reference examples.
 
 Covers:
 - `intent~formalization-foundation~1`

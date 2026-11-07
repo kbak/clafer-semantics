@@ -3,6 +3,7 @@ module
 public import Clafer.Compile.EffectiveCore
 public import Clafer.Compile.Basic
 public import Clafer.Semantics.Interpretation
+public import Clafer.Semantics.Groups
 
 /-!
 # Group arities and meanings
@@ -18,9 +19,7 @@ open CategoryTheory MCS DPGraph DPGraph.Predicates
 
 variable {C : Type} (f : Family C)
 
-/-- Reflexive super hierarchy, selected from resolved identities. -/
-def Ancestor (p s : C) : Prop :=
-  Relation.ReflTransGen (fun c s => f.super c = some s) p s
+export Semantics.Groups (Ancestor ChildObjects Holds)
 
 abbrev Ancestors (p : C) := {s : C // Ancestor f p s}
 
@@ -91,14 +90,5 @@ def meaning {U : Type} (p : Id f) (d : arity f p.val ⥤q semanticGraph U) : Pro
 
 def interpretation (U : Type) : Interpretation (signature f) (semanticGraph U) :=
   ⟨meaning f⟩
-
-/-- The independent structural statement: same parent identity and the union
-of selected containment fibers. #66 must supply any realization of these maps. -/
-def ChildObjects {U : Type} (s : Semantics.Configuration C U) (p : C) (x y : U) : Prop :=
-  ∃ a, Ancestor f p a ∧ ∃ c, f.parent c = some a ∧ s.contains c x y
-
-def Holds {U : Type} (s : Semantics.Configuration C U) (p : C) : Prop :=
-  ∀ x : s.head p,
-    InRange (f.group p).effective.range {y : U // ChildObjects f s p x.val y}
 
 end Clafer.Compile.Groups

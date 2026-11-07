@@ -85,10 +85,39 @@ Compile/gluing preservation separate; the
 [original Alloy translation, compiler and Diskin assessment](sources.md#metamodel-realization-and-translational-semantics)
 retains their source differences and unresolved historical identities.
 
+The [behavioral profile](behavioral-profile.md) supplies a separate
+extension under `Clafer/Behavioral`: independent infinite-trace meaning, lifetime
+and signed temporal obligations, surface reductions and justified lasso checking.
+Its complete feature/disposition matrix and two-repository ownership contract
+retain the accepted prerelease source identity and explicit proof boundaries.
+The [trace foundation](behavioral-traces.md) supplies
+shared identities, lifetime boundaries and the guarded structural snapshot/constant
+bridge. The [signed formula contract](behavioral-formulas.md) supplies independent
+parent-bounded evaluation, identity-capturing environments and proved normalization
+and lowering over total observations. The [structural and atom contract](behavioral-structure.md)
+adds nested/refined structural admission, inherited references, full current-state
+bindings, captured static expressions and strict partial temporal observations,
+with exact common-fragment agreement. The [finite behavioral checker](behavioral-verification.md)
+adds history-aware lassos, executable normalized-core evaluation and agreement
+with infinite meaning, including a proved total set-observation adapter. The
+[surface contract](behavioral-surface.md) adds inherited lifetime modifiers,
+anchors, guarded transition chains, all thirty signed pattern/scope cases and
+separate model/assertion/scenario meanings, with explicit reviewed compiler
+departures and normalization interfaces.
+The [qualification contract](behavioral-qualification.md) composes full source
+models, strict partial domains and finite core checking, with exact static
+common-fragment agreement and a complete source/witness inventory. Its finite
+observation restrictions and remaining acceptance gates stay explicit.
+The optional `Clafer.Behavioral` entry point stays within the same Lake package.
+Feature integration uses `behavioral`; the existing structural imports and
+historical static profiles remain supported.
+
 Exclude production instance generation, general Alloy/SMT/SAT integration,
-production runtime configuration management, Claferize, post-2014 extensions beyond the adopted child-default policy and
-[empty-collection extension](constraint-denotation.md#empty-collections),
-a production parser and visualization. Keep the foundation reproducible and
+production runtime configuration management, Claferize, post-2014 extensions
+beyond the adopted child-default policy,
+[empty-collection extension](constraint-denotation.md#empty-collections) and the
+separately reviewed behavioral profile, a production parser and visualization.
+Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document
 owns the detailed scope; [requirements](spec.md) state the precise promises.
@@ -127,13 +156,18 @@ numbers and ticket chains must not substitute for an explanation.
 | Read or maintain | Purpose |
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
+| [From structure to behavior](structure-and-behavior.md) | Conceptual bridge between the papers: configurations, shared identities, changing references, captured environments and lifetime-scoped temporal obligations |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
+| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
+| [Behavioral surface](behavioral-surface.md) | Modifier/anchor, transition and pattern meaning, source decisions, property quantification and reduction APIs |
+| [Behavioral qualification](behavioral-qualification.md) | Full model/core composition, strict finite observations, static common fragment, complete feature witnesses and source-profile acceptance boundary |
+| [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |
 | [Metamodel realization](metamodel-realization.md) | Exact restricted theorem, reconstruction, source-to-obligation comparison and bounded semantic self-instantiation |
 | [Paper companion](sosym-errata.md) | Concise corrections and clarifications for SoSyM readers |
-| [DPGraph](dpgraph-trace.md), [FormalCD](formalcd-trace.md) and [Clafer](clafer-trace.md) traces | Named implementation/proof artifacts and actual Lean declarations |
+| [Source annotations and IntentBond evidence](traceability.md#lean-artifacts) | Requirement links beside actual definitions, proofs and tests; inspect the captured graph with IntentBond |
 | [Constraint preservation](constraint-preservation.md) | Derived predicate meanings, exact binding/label transport and selected whole-model correspondence |
 | [Constraint denotation](constraint-denotation.md) | Explicit environments, core equations and Appendix 6 elaboration |
 | [Complete telematics model](telematics.md) | All twelve constraint bodies, final selections and concrete whole-model satisfaction |
@@ -162,6 +196,7 @@ The historical link above reads the retained records in their original path
 context. The local `changes/` copies retain historical filenames in references;
 use the current map for maintained documents and the
 [filename convention](../CONTRIBUTING.md#documentation-filenames) when adding or moving them.
-Do not merge normative requirements with proof indexes or treat historical
-proposals as current promises. Preserve artifact IDs, trace relationships, source
-citations and existing link destinations when consolidating living prose.
+Keep normative requirements separate from implementation and proof evidence;
+do not treat historical proposals as current promises. Preserve continuing
+requirement IDs, trace relationships and source citations when consolidating
+living prose, and redirect incoming links to the authoritative contract or source.

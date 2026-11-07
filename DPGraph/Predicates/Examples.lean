@@ -430,6 +430,7 @@ def largeIdentity : Span.{1,1,3} (Set.univ : Set (ULift.{1} Unit))
   source := ULift.down
   target := ULift.down
 
+-- [proof->req~setmap-semantic-graph~1]
 theorem larger_universe_interpretation :
     unaryDiagram.{1,3} largeIdentity ∈ (interpretation.{1,3} (ULift.{1} Unit)).meaning .inclusion :=
   ⟨⟨ULift.down_injective, fun a => ⟨⟨a⟩, rfl⟩⟩, fun _ => rfl⟩

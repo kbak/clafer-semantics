@@ -51,6 +51,10 @@ maintainer. `close --no-project` likewise leaves Project reconciliation to the
 maintainer. This public contribution route also applies to agents working in forks;
 private Project access is not a prerequisite. Link PRs with `Closes #N`.
 Close tickets and mark Done only after their acceptance criteria are met.
+A maintainer's merge of the completing PR communicates approval and acceptance;
+do not request a second confirmation or leave the ticket open for a separate
+review submission. Record the merged SHA, close the ticket, mark Done and refresh
+affected readiness using the [acceptance policy](docs/maintenance.md#maintainer-acceptance).
 In IntentMade, the credential-bearing coordinator uses its deployment ticket
 wrapper. Workers return ticket updates to the coordinator; never copy GitHub
 credentials into a worker.

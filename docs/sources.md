@@ -196,7 +196,7 @@ Concrete
 span predicates use the selected contracts below in a bounded graph of subsets
 and spans; no all-universes SetMap is asserted. The formula-level
 satisfaction equivalence does not assert whole-model reflection.
-[Trace artifacts](dpgraph-trace.md) name the actual declarations and proofs.
+The [semantics module](../DPGraph/Semantics.lean) states and proves these laws.
 
 ## Supporting sources and licenses
 
@@ -586,8 +586,8 @@ unqualified coincidence assertion with equality after reduction.
 ### Delivered implementation boundary and proof references
 
 The operations and equivalences are independently available through `import DPGraph`.
-Names below are relative to `DPGraph`; the [trace artifacts](dpgraph-trace.md)
-link their requirement and proof obligations.
+Names below are relative to `DPGraph`; annotations beside the actual declarations
+link their [requirements and proof obligations](traceability.md).
 
 | Construct | Implementation and proof references |
 | --- | --- |
@@ -620,9 +620,8 @@ equality of reduced relations alone does not establish these predicates.
 
 The table extends the exact `DPGraph` mapping above through the two upper layers.
 Future representations and obligations are proposals for their owning increments,
-not additional promises of implemented mathematics. Detailed delivered
-declarations remain in [DPGraph trace artifacts](dpgraph-trace.md) and
-[FormalCD trace artifacts](formalcd-trace.md).
+not additional promises of implemented mathematics. The [architecture](architecture.md)
+links the delivered modules and states their theorem boundaries.
 The [supporting-source audit limits](#supporting-sources-and-licenses) and
 [Q1–Q8 dispositions](#question-dispositions-and-validation-tasks) supply the
 remaining research obligations for this source-map artifact.
@@ -635,7 +634,7 @@ Covers:
 | Predicate catalogue: B.3 Table 3, §6.1.1–2, A.1 Table 2 | Separate typed arities and span meanings; invariance, multiplicity and empty/repeated-family boundaries; [common-target disjointness correction (Q8)](sources.md#predicate-contracts-and-the-accepted-q8-correction) | Selected vocabulary is proved; the [predicate implementation PR](https://github.com/kbak/clafer-semantics/pull/34) records delivery. Unsupported predicates remain deferred. |
 | Formal CD: §6.1.1–3, Figure 21a–b | Raw/bundled CD, registry, naming and effective defaults; name-preserving morphisms are an explicit library specialization | Structure and morphisms are implemented in the [formal-CD PR](https://github.com/kbak/clafer-semantics/pull/35); whole Figure 21b models and guarded version comparison are implemented in the [telematics PR](https://github.com/kbak/clafer-semantics/pull/38). |
 | Metamodel: §6.1.3, Figure 21c | Compatible vocabulary, nd/ad disciplines, full graph bindings; separate syntactic self-description from semantic instantiation | The [metamodel PR](https://github.com/kbak/clafer-semantics/pull/36) implements these disciplines. [Bounded self-description](architecture.md#bounded-self-description-and-figure-21b) retains the literal-key and argument-totality limits below. |
-| Syntax and individual Shapes: §5.2 Figure 16, §6.2.2 Figure 22, Appendix 3 | Resolved deep AST and individual Shapes; IDs, containment, inheritance, references, abstractness, root/domains and finite traversal | [resolved syntax and Shapes issue](https://github.com/kbak/clafer-semantics/issues/3), [implementation and proofs](clafer-trace.md) |
+| Syntax and individual Shapes: §5.2 Figure 16, §6.2.2 Figure 22, Appendix 3 | Resolved deep AST and individual Shapes; IDs, containment, inheritance, references, abstractness, root/domains and finite traversal | [resolved syntax and Shapes issue](https://github.com/kbak/clafer-semantics/issues/3), [syntax](../Clafer/Syntax.lean) and [Shapes](../Clafer/Shape.lean) |
 | MCS: §6.2.3 Figure 23, Tables 5–8 (see Appendix 5) | Accepted guarded incidence/naming and analogous expansion, preserving exact Shape presence rules and distinct identity levels; see the [inventory](mcs-invariants.md). The accepted [Q9](mcs-invariants.md#figure-23-source-multiplicity-correction) correction applies source `0..1` to the four ordinary-map and three inclusion-role associations, retaining exact Shape presence. | The [MCS disciplines issue](https://github.com/kbak/clafer-semantics/issues/20) records accepted guards and ownership bounds; role/referent/name separation is retained. |
 | Constraints: Appendix D.1–D.4 | Resolved typed core, lexical binders, both joins, explicit inheritance widening and finite graph support; meaning remains distinct from syntax | The [core-typing issue](https://github.com/kbak/clafer-semantics/issues/21) records delivery; Appendix 4 notation decisions appear below. |
 | Compile: §6.2.4 | [Structural Compile](compile.md): finite resolved-AST-to-MCS construction; derived termination, freshness, incidence, cojoining and kind/name preservation under explicit input well-formedness | The [Compile issue](https://github.com/kbak/clafer-semantics/issues/22) records delivery. Its construction depends on resolved syntax, MCS disciplines and typed constraint support. |
@@ -657,10 +656,10 @@ source gaps. Keep the original issue discussions as the decision history.
 | Q2 — Appendix 5 analogous clauses | Accepted: incidence/naming equations apply only to present roles; existing Shape rules separately require or forbid each role. The analogous expansion includes Sing/root, every supported primitive domain, the accepted parentless exception and both directions of canonical naming equivalences. | The [complete Table 5–8 inventory](mcs-invariants.md#appendix-e-inventory) enumerates the guards. The inventory links definitions and positive/negative witnesses; the accepted Figure 23 multiplicity correction is [Q9](mcs-invariants.md#figure-23-source-multiplicity-correction). |
 | Q3 — Appendix 4 notation | Resolved for the selected core: ordinary common-element intersection is already printed as ∩ in D.4.2. D.4.1 equates E and S on set expressions, reconciling the mixed subscripts. D.1–D.3 govern typing; the implementation boundary is enumerated below. | [Core constraint typing](spec.md#resolved-core-constraint-typing) supplies typed syntax and explicit inheritance paths. The [denotation extension](constraint-denotation.md) supplies independent core meanings, local finite cardinality and the [singleton-extraction bridge](integer-extraction.md); no compiler-preservation theorem follows from a signature. |
 | Q4 — labels and identity | Accepted MCS representation: preserve role identities separately from resolved class/map referents and displayed names, and state the identity level of cojoining equalities. Repeated parent/dref/isA strings do not identify arrows. Approved [Q4](sources.md#mcs-gluing-and-the-approved-q4-rule): identify exactly equal class/map referents; equal map referents require equal endpoint class referents, and identified roles require equal names, predefined identities/kinds and modes. Reject conflicts. | The [MCS representation](mcs-invariants.md) retains the data needed for intended identifications and repeated-name witnesses; [resolved-referent gluing](architecture.md#mcs-gluing) implements this congruence and proves endpoint/declaration preservation, then separate CD validity under explicit default assumptions. [Structural Compile](compile.md) retains generated identities. Existing `FormalCD` names remain metadata. |
-| Q5 — self-description | Bounded syntactic representation and a separate restricted semantic self-instance are delivered. Universal every-CD realizability and a universe fixpoint remain outside scope. | The [bounded self-description proof](formalcd-trace.md#bounded-syntactic-self-description-proof) establishes representation/well-formedness in explicit `CDOver` parameters. Preserve the ordered/isolated/repeated binding witnesses and literal key/total-args limits below. The [realization contract](metamodel-realization.md) supplies explicit source support/separation and proves the particular self-instance without changing those limits. |
+| Q5 — self-description | Bounded syntactic representation and a separate restricted semantic self-instance are delivered. Universal every-CD realizability and a universe fixpoint remain outside scope. | The [bounded self-description proof](../FormalCD/SelfDescription.lean) establishes representation/well-formedness in explicit `CDOver` parameters. Preserve the ordered/isolated/repeated binding witnesses and literal key/total-args limits below. The [realization contract](metamodel-realization.md) supplies explicit source support/separation and proves the particular self-instance without changing those limits. |
 | Q6 — acquisition and visual completeness | Partial audit: 2003 full text missing; twelve recovered 2000 pages inspected with four page gaps. The criticality assessment above records alternate evidence and conditional acquisition. Visual inspection alone does not replace a construct-by-construct inventory. | The [supporting-source assessment issue](https://github.com/kbak/clafer-semantics/issues/41) records the bounded assessment and reviewed source disposition. The [syntax correspondence](#resolved-2014-clafer-and-individual-shapes), [MCS inventory](mcs-invariants.md) and [representative coverage](representative-models.md) pair Figures 16/22/23 and Appendix 6 with text, labels, incidence and examples. Reopen acquisition for a named necessary claim lacking adequate primary evidence; never mark unread definitions audited. |
 | Q7 — VC order and guard | Accepted: display.version ≥ server.version, guarded by a nonempty server fiber. Contrary adjacent PDF p.18 prose is the discrepancy. | The [guarded correspondence and whole-model proofs](#figure-21b-and-the-accepted-q7-correction) establish these cases: greater/equal pass, lower fails VC, absent server passes. No remaining implementation task for this correction. |
-| Q8 — disjointness shape | Accepted: §6.1.2/Figure 21 common-target maps with nonoverlapping images; Table 3's common-source shape is erroneous. | The [predicate proofs](dpgraph-trace.md#corrected-disjointness-proofs) establish typed arity, interpretation and overlap/repeated-nonempty-binding failures. [Contract below](#predicate-contracts-and-the-accepted-q8-correction); no second predicate or source-object inequality. |
+| Q8 — disjointness shape | Accepted: §6.1.2/Figure 21 common-target maps with nonoverlapping images; Table 3's common-source shape is erroneous. | The [predicate proofs](../DPGraph/Predicates/Examples.lean) establish typed arity, interpretation and overlap/repeated-nonempty-binding failures. [Contract below](#predicate-contracts-and-the-accepted-q8-correction); no second predicate or source-object inequality. |
 | Q9 — Figure 23 source multiplicities | Accepted source correction: source `0..1` on the four ordinary-map and three inclusion-role associations means unique ownership within each image. The printed lower bounds force every MapRole into both parent_map and dref_map images, contradicting their distinct Table 8 names. | Shape/inheritance guards still require or forbid roles exactly. Head-class and formula source `1` are unchanged. The [correction and proof map](mcs-invariants.md#figure-23-source-multiplicity-correction) link the typed representation and nonempty witnesses. |
 
 The accepted source/design cross-check and bounded supporting-source assessment
@@ -723,8 +722,11 @@ string ordering, automatic coercion selection, or tuple binders. The integer
 extraction extension uses mathematical `Int` without overflow.
 Those extensions require concrete source/semantic contracts before implementation.
 The [requirements](spec.md#resolved-core-constraint-typing) and
-[trace artifacts](clafer-trace.md#resolved-core-expression-constructors) state
-exactly the implemented claims.
+[typed expression definitions](../Clafer/Constraints/Typing.lean) state
+exactly the implemented claims. The [typing rejection witnesses](../Clafer/Constraints/Examples.lean)
+that use `fail_if_success` check that invalid expressions cannot be elaborated.
+Their enclosing `True` conclusions do not prove semantic impossibility;
+expression truth and definedness belong to the separate denotation.
 
 <a id="integer-extraction-and-appendix-f-version-operands"></a>
 
@@ -738,7 +740,7 @@ the paper spells out a runtime error API. Success requires an exact singleton of
 a realized integer; invalid results are undefined (`none`). The integer-domain
 encoding/decoder is reused from Figure 21, without using its VC predicate to
 interpret general expressions. [The conversion contract](integer-extraction.md)
-and [trace artifacts](clafer-trace.md#integer-extraction-interface) state its limits.
+and [integer binding](../Clafer/Constraints/Integer.lean) state its limits.
 
 The primary PDF above was used for Appendix 6 PDF p.34, D.3–D.4 and §6.1/Figure 21.
 The selected Appendix 6 declarations have these navigation consequences:
@@ -813,8 +815,9 @@ separate corrected VC extension described below.
 | Table 3 mult-trg/mult-src (PDF p.13), B.1 indexed families (PDF pp.29–30) | `InRange`, `TargetMultiplicity`, `SourceMultiplicity`, `distinctValuesEquiv`, multiplicity invariance/duality/distinct-value theorems |
 | B.4 Definitions 6–9 and B.5 (PDF p.31) | `signature`, `semanticGraph`, `interpretation`; generic `Interpretation.Satisfies` and `.reduct` |
 
-The [trace artifacts](dpgraph-trace.md) link implementations and checked
-acceptance witnesses to the current mathematical requirements. Transport and
+Annotations beside the [predicate definitions](../DPGraph/Predicates/Meaning.lean)
+and [acceptance witnesses](../DPGraph/Predicates/Examples.lean) link them to the
+current mathematical requirements. Transport and
 invariance results are derived library statements for these selected contracts,
 not additional claims attributed verbatim to the paper.
 
@@ -851,8 +854,9 @@ The metamodel extension below adds nd/ad and Figure 21c construction; a general
 constraint language and complete primitive/object-diagram semantics remain open.
 Figure 21b supplies a bounded integer realization for its separate VC extension.
 
-The [FormalCD trace artifacts](formalcd-trace.md) link these independently
-formalized contracts and acceptance witnesses to their Lean declarations.
+The [structural examples](../FormalCD/Examples.lean) and
+[semantic examples](../FormalCD/SemanticsExamples.lean) exercise these contracts;
+source annotations connect the declarations to their requirements.
 
 ## Figure 21c metamodel
 
@@ -954,7 +958,7 @@ bindings. They are not asserted to be full Figure 21c models. `fragmentModel`
 checks an explicit declaration fragment; the separate name witnesses check nd.
 The metamodel `diagram` is syntactically well-formed, which does not assert its
 own semantic satisfaction. The separate
-[canonical realization](formalcd-trace.md#particular-semantic-self-instantiation-proofs)
+[canonical realization](../FormalCD/Metamodel/Realization/Self.lean)
 proves whole-metamodel satisfaction under `context diagram`; no universal
 every-CD-is-an-instance theorem is claimed.
 
@@ -1248,8 +1252,8 @@ The shared ambient carrier represents unrelated overlap as well as subtype
 sharing. Clafer satisfaction adds the declaration-disjointness clarification below;
 generic `DPGraph`/`FormalCD` models remain unrestricted. No primitive value domain
 or authored/default theorem is introduced. The [requirements](spec.md#whole-model-structural-satisfaction-and-interpretation)
-and [trace map](clafer-trace.md) distinguish definitions, implementation proofs and
-whole-model boundary tests.
+and [structural checker contract](structural-checker.md) distinguish definitions,
+correctness proofs and whole-model boundary tests.
 
 The [small Lean walkthrough](getting-started.md) specializes this existing
 contract to a manually resolved phone with an optional camera. Its
@@ -1420,11 +1424,11 @@ optimization correctness and from the separate [bounded Alloy comparison](bounde
 
 ## Reusable semantic foundations
 
-The [span/navigation laws](dpgraph-trace.md#reusable-span-and-navigation-laws-proofs)
-are derived from Appendix 2 mappings (legacy B.1 Definitions 1–5), composition
+The [span laws](../DPGraph/Predicates/Relational.lean) and
+[navigation laws](../DPGraph/Predicates/Navigation.lean) are derived from Appendix 2 mappings (legacy B.1 Definitions 1–5), composition
 (Q1), Table 3 and Appendix 1. Moving these statements into DPGraph adds no
 functionality, finiteness or identity hypothesis to generic spans.
-The [exact-image law](dpgraph-trace.md#exact-declaration-image-semantics-proofs)
+The [exact-image law](../DPGraph/Semantics.lean)
 is a specialization of Appendix 2 satisfaction under translation (legacy B.5),
 with explicit equality of declaration images; it is not unrestricted model reflection.
 
@@ -1440,6 +1444,185 @@ API remains a selected library contract, not a verbatim paper definition. The
 Figure 21 guarded VC meaning and Clafer expression meanings retain their separate
 source obligations. No source correction, supported fragment or comparison pin changes.
 
+## Behavioral profile sources
+
+`impl~behavioral-profile-sources~1`
+
+The [behavioral contract](behavioral-profile.md) proposes the versioned
+`behavioral-0.5.7-candidate/v1` profile. Its source candidate is
+`gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`, the unmerged candidate
+of [release PR 113](https://github.com/gsdlab/clafer/pull/113).
+A later release must be compared against these exact bytes, with semantic,
+fixture and dependency changes reviewed before replacing the pin. No static
+oracle or historical SoSyM identity is changed by this profile.
+
+The behavioral primary reference is Juodisius, Sarkar, Mukkamala, Antkiewicz,
+Czarnecki and Wąsowski, *Clafer: Lightweight Modeling of Structure, Behaviour,
+and Variability*, The Art, Science, and Engineering of Programming 3(1), article
+2 (2019), [DOI](https://doi.org/10.22152/programming-journal.org/2019/3/2),
+[arXiv 1807.08576v1](https://arxiv.org/abs/1807.08576v1). Locators use its printed
+`2:n` article pages: §5 Definitions 1–5 and expression equations, pp. 2:23–28;
+§6.1 defaults/sugar, pp. 2:29–32; §6.2 historical implementation, p. 2:32.
+Sections 8–9 supply design/related-work context. This is a focused audit, not a
+claim to have reviewed the entire paper or its entire model collection.
+The paper is CC BY 4.0 (license notice on its first page). Its file remains
+external; the contract gives attributed paraphrases and mathematical obligations.
+SoSyM remains the structural primary reference; this paper does not supersede
+its recorded corrections or the static comparison contract.
+
+All compiler paths below are at the immutable candidate above. The source is
+MIT licensed; preserve its copyright/license notice if incorporating code or
+substantial documentation. The profile is independently authored, and compiler
+implementations supply comparison evidence rather than definitions by fiat.
+
+| Source | SHA-256 of inspected bytes | Role |
+| --- | --- | --- |
+| [Behavioral paper PDF](https://arxiv.org/pdf/1807.08576v1) | `b5c03f295e490e7c97878cdb3b9f2ec6aa3f6b667de19988a48c59faba76bb06` | Primary behavioral definitions and source-sugar account |
+| [Temporal errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md) | `d42a6f72ddfc70e3ef628e7d7ad2c3ae99e468185fdb5a7056fe80d38e861d4d` | T1–T13, including deliberate changes and correction classifications |
+| [Static errata](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/static-semantics-errata.md) | `0e3aa5c138c70773709fd13f210301100d7116f091482518ab2f5fe0a4080d8c` | S1–S12 prerequisites, differences and unresolved resolution order |
+| [CheatSheet](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md) | `d8de22fc45850ca87dc080121fcf1a1421db86c4951ea9f56ec5e9ba6f14ee5e` | Behavioral surface inventory and aliases |
+| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs) | `68423e38d8002f6875bc72ebe267959cc5f44b2d0a5077446e304ae6e1a5057a` | `pushNegations`, `genPExp'`, `thisAlive`, `parentRel`, `genIFunExp`, finality and scope comparison |
+| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs) | `8fbe866a70521a25dfe75ad191dc0737887376877ccfb37921c26a4901e68ad7` | `desugarClaferTrans`, `desugarTrans'`, `desugarSequence`, `translateTmpPatterns`, `desugarInit` |
+| [Compiler LICENSE](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms for compiler and associated documentation |
+
+The errata, CheatSheet, AlloyLtl and compiler-license digests above are the exact
+Git-blob bytes. Earlier acquisition copies had one appended LF; removing that
+acquisition artifact changes their digests without changing source content or
+the pinned compiler revision.
+
+The following public decisions explain the candidate; their corresponding
+immutable source text above controls reproducibility:
+
+- [Parent-lifetime transition qualification](https://github.com/gsdlab/clafer/issues/107#issuecomment-6636750785): stable and replaceable machines need different properties.
+- [Inherited reference modifiers](https://github.com/gsdlab/clafer/issues/109#issuecomment-6641695619): final/finalref/finaltarget must apply to inherited references too.
+- [Signed temporal normalization](https://github.com/gsdlab/clafer/issues/110#issuecomment-6636751499): normalize negations before lifetime bounds, retaining one/lone barriers.
+- [Errata review dispositions](https://github.com/gsdlab/clafer/issues/111#issuecomment-6636751998): trace-wide scopes, fixed parent across lifetimes, transition attachment and effective-group change.
+- [Root and parent correction](https://github.com/gsdlab/clafer/issues/112#issuecomment-6641299178): synthetic static root versus temporal root, actual parents of abstract instances and explicit backend limits.
+
+The [adopted D1 disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831)
+selects captured identities/sets with current navigation, including the distinct
+standalone-this and direct-navigation behavior. The
+[formula contract](behavioral-formulas.md) records that deliberate departure from
+the paper's snapshot-pair evaluator and checked changing-reference witnesses.
+Pattern and encoding obligations remain separate from the delivered source adapters.
+The [contract decision register](behavioral-profile.md#decisions-requiring-contract-review)
+keeps those differences visible before any new definition. The existing
+[structural comparison](resolved-ir-comparison.md) and historical SoSyM checkpoint
+remain separate profiles with their original source identities.
+
+The [structural prerequisite audit](behavioral-structure.md) records exact API
+reuse domains, the pinned compiler's off-live reference comparison limit, and
+the adopted arithmetic/partial-domain and initializer decisions (D3/D4),
+with richer admission and exact common-fragment agreement.
+
+Covers:
+- `req~behavioral-profile~1`
+- `req~formalization-roadmap~1`
+
+## Behavioral structural and partial-atom correspondence
+
+The [structural contract](behavioral-structure.md) covers SoSyM §5.3.4/§5.5,
+§6.2.2 and Appendix 4 together with behavioral §5 Definitions 1–3 and the
+expression equations (pp. 2:23–28). It adopts S6's nested abstract/refined-parent
+change, S3/S4/T11's inherited child-head counting, S7's actual-parent observation
+and S9/T8's inherited references. Authored abstract types remain distinct from
+ordinary inherited fields. S10 explicitly classifies abstract-super-only compiler
+support as a limitation; source concrete inheritance remains permitted.
+
+Behavioral Definition 2 gives a single partial link function on identities;
+the explanation following Definition 3 contrasts this with association-indexed
+relations. `Structural.ReferenceCoherent` retains that shared target across
+refined reference annotations. At the pinned compiler revision,
+[Alloy.hs lines 294–312](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/Alloy.hs#L294)
+implements `genRefSubrelationConstriant`, while
+[AlloyLtl.hs genConstraints](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/AlloyLtl.hs#L278)
+does not emit its counterpart. This observed code difference is a comparison
+obligation, not a reproduced end-to-end backend failure or authority to weaken
+source reference coherence. The file hashes remain in the source tables.
+
+The [reviewed partial-domain disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
+adds strict definedness to the adopted partial mathematical arithmetic. It checks
+all Boolean operands and domain members and all active observations in a temporal
+operator's uninterrupted parent interval; next checks only its next state,
+anchors only their trigger. This is a deliberate extension, not a claim that the
+paper or either backend specifies partial temporal arithmetic. Completion
+independence and exact total/static compatibility are proved separately from
+source signed truth and from future bounded encoding.
+
+The same review explicitly excludes declaration `:=` from this versioned profile.
+The pinned [CheatSheet initializers](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md#L128)
+says default initializers lack backend support; `desugarInit`/`desugarInitHow`
+([Desugarer.hs lines 195–211](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs#L195))
+emits an assertion for `:=`, which supplies no override/default semantics.
+Constant `=` retains its presence-guarded equation at every live enclosing
+attachment state. Behavioral §6.1 p.2:29 does not make it a birth-only initializer.
+The frontend must diagnose the unsupported form and preserve the resolved
+presence/value views. All implementations and proofs are independently authored.
+
+## Behavioral arithmetic comparison
+
+The [D3 conversion decision](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729)
+and [scalar arithmetic decision](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865)
+select finite integer-set sums and mathematical scalar arithmetic, with division
+and remainder undefined at zero. The [comparison audit](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685412556)
+records backend differences and the limits of its executable evidence.
+
+Additional files from the same pinned Clafer candidate:
+
+| Source | SHA-256 | Role |
+| --- | --- | --- |
+| [Choco.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Generator/Choco.hs) | `337e886c9e7e30c44732a15f0242cecf9b2f3f91db8cc0a18212f72ff4d8c733` | Arithmetic operator translation and reference-head aggregation |
+| [ResolverType.hs](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/ResolverType.hs) | `7e65c4ee18206357ea014de7535b50b33f7d72b8604939b3b08e3af67337ddfd` | Integer conversion and distribution of explicit aggregates over syntactic union |
+
+The supplementary Choco backend is
+`gsdlab/chocosolver@c08d4a5d36ce9759240c7ed547953a5c32348cb5` (release version
+0.5.6, Choco Solver dependency 6.0.2, Java 21). It is not an alternate primary
+language specification or a new static oracle pin. Its MIT license was inspected;
+no third-party source is incorporated here.
+
+| Source | SHA-256 | Role |
+| --- | --- | --- |
+| [README.md](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/README.md) | `b3bb958cc79cd4eb57b37e694d5a0141a4a39aefac045260f168866642169f24` | Integer scopes versus Alloy bit widths and machine limits |
+| [pom.xml](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/pom.xml) | `fbbedfb3be859314d719762f42909695eeceb5ce9782c0ba623225e4cfe1d379` | Build/dependency identities |
+| [AstCompiler.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ast/compiler/AstCompiler.java) | `90298ca1903f7fede4e40d153b02c4a79a50875e4b245f0142ad9902eb2d85d5` | `asInt`, guarded division, empty extrema and occurrence-sensitive sums/products |
+| [Irs.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ir/Irs.java) | `ba91666a133674b94c83f658ba8ec2eb8995afa2f51ec9a7408740d2a28165ef` | Zero-numerator simplification, zero-divisor rejection and Java integer constant folding |
+| [IrCompiler.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/main/java/org/clafer/ir/compiler/IrCompiler.java) | `4c93e5cbd1c7b3fc996e9f320f2de1f080de60b5032c7ae83a9b78d73265ce8c` | Solver division/modulo constraints |
+| [ArithmeticTest.java](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/src/test/java/org/clafer/ArithmeticTest.java) | `6f68ab459b72eddee55decd33bc9fd502a77f6799d984981e47273994f5db45d` | Signed division, repeated-reference sums and product boundary regressions |
+| [LICENSE](https://github.com/gsdlab/chocosolver/blob/c08d4a5d36ce9759240c7ed547953a5c32348cb5/LICENSE) | `91276db973f25602d1aa43491f59cbc84cb88e6f151e1d0cc82a755563ce0195` | MIT terms |
+
+The comparison built that unchanged backend and exercised its public AST API;
+it did not run an end-to-end Clafer-to-Choco compiler proof. Witnesses include
+constant and variable zero divisors, negative operands, absent numeric heads,
+empty extrema/aggregates, modeled scope bounds and Java overflow. Alloy 6.2.0
+was tested with satisfiable witness commands under default and `--nooverflow`
+settings. Earlier assertion checks under `--nooverflow` cannot establish admitted
+zero-divisor values: rejection can make an assertion hold vacuously. The audit
+explicitly corrects that inference. These results justify stated agreement
+conditions, not unconditional equivalence between the backends.
+
+## Behavioral identity and snapshot correspondence
+
+The [trace foundation](behavioral-traces.md) implements the accepted profile's
+foundational slice: Juodisius et al. §5 Definition 2/static typing (p. 2:25),
+Definition 3 (pp. 2:25–26) and Definition 5.1/5.3 (p. 2:28), with T1/T7/T11/T13
+from the immutable [behavioral source ledger](#behavioral-profile-sources).
+T1 replaces no-reappearance and requires the same actual parent across all
+lifetimes. T7 supplies time-zero and repeated start/end boundaries. T11's
+set-only key and head-object counting use the existing guarded structural
+meaning, not a new unrestricted effective-group semantics. T13 imposes no
+finite identity/step bound on the source trace.
+
+The [trace definitions](../Clafer/Behavioral/Trace.lean) and
+[snapshot bridge](../Clafer/Behavioral/Snapshot.lean) carry their source annotations. Snapshot projection uses live subtypes;
+the converse explicitly requires exact static direct-type/head and parent
+correspondence. It does not establish existence of those witnesses for every
+structural model. Definition 5.4 (constraints), richer inherited references,
+primitive atoms and lasso correctness have separate owning contracts; the
+[structural atom contract](behavioral-structure.md) supplies the richer admission
+and partial-atom bridges, and the separate
+[finite correspondence](#behavioral-finite-correspondence) supplies lasso correctness.
+No source pin, historical SoSyM checkpoint or static oracle is changed.
+
 ## Empty-collection language extension
 
 The adopted [empty-set decision](https://github.com/kbak/clafer-semantics/issues/134)
@@ -1454,3 +1637,213 @@ no Alloy or publication source is copied. The semantic contract is in
 language evolution, not a correction attributed to the SoSyM paper. Existing
 partial scalar extraction and mathematical integers are retained. The executable
 comparison uses Alloy 6.2.0, source `794226dd07b536fe35c5ca44b529417183cd629b`.
+
+## Behavioral formula correspondence
+
+The [formula contract](behavioral-formulas.md) and
+[normalization proofs](../Clafer/Behavioral/Normalization.lean) cover
+Juodisius et al. §5 Definition 4 (pp. 2:27–28), Definition 5.4 and §6.1
+(pp. 2:30–32), with deliberate T2 parent-bounded signed negation and the T3
+attachment distinction. T7 supplies initial/last-live anchors. D1 selects
+identity/set capture with current relations instead of the paper's snapshot-pair
+navigation; the public disposition and concrete changing-reference witness
+remain linked from the contract. Existing static meanings are not reused or
+changed by this formula core. The [structural atom contract](behavioral-structure.md)
+provides independently justified primitive/static adapters with strict definedness.
+
+At the immutable [candidate in the source ledger](#behavioral-profile-sources),
+`AlloyLtl.hs` lines 445–489 (`genPExp`, `pushNegations`, `hasTemporal`) provide
+supplementary normalization evidence; lines 504–558 and 578–604 give variable,
+this, parent-bound and anchor generation, and lines 173–185 give `parentRel`.
+The implementation is independently authored, with interval-based source meaning
+and a separate ordinary temporal core. one/lone retain the complete raw body,
+matching the normalizer's fallback; all/some/no propagate signs. Distributing
+classical temporal-free subtrees is justified by `temporalFree_polarity`, not a
+claim that generated ASTs are identical. Source anchor meaning uses actual
+`Starts`/`Ends` as required by T7; no unrestricted equality to generator output
+on absent contexts or arbitrary raw ASTs is asserted.
+
+`normalize_lower_agrees` proves this source-to-core translation. It is not a
+preservation theorem for the pinned Haskell compiler, source surface sugar,
+partial atoms or a finite lasso checker. The normalizer's source dualities do not
+turn source negation into classical complement after lifetime cancellation.
+
+## Behavioral finite correspondence
+
+The [finite verification contract](behavioral-verification.md) implements an
+analysis representation for the independent source definitions: behavioral
+paper §5 Definitions 2–5 (pp. 2:25–28) and §6.2 (p. 2:32), amended by pinned
+T1/T2/T7/T13 in the [source ledger](#behavioral-profile-sources). T1 fixes identity
+and parent information across lifetimes; T7 requires initial history and the
+last-live endpoint; T2 cancellation is inherited through the independently
+proved source normalization/lowering. The proof covers the accepted total
+observation core and its D1 set adapter, with explicit finite evidence for any
+additional atom adapter. The
+[qualification composition](behavioral-qualification.md#finite-composition-and-its-boundaries)
+adds the reviewed strict D3 partial domain through independently proved domain
+translation and optional finite observations. It preserves undefined outcomes;
+concrete richer primitive adapters retain explicit finite-carrier/range limits.
+
+The [Alloy 6 reference](https://alloytools.org/alloy6.html), sections “Instances
+are traces”, “Time horizon” and “Meaning of temporal connectives”, provides the
+comparison interpretation of a finite sequence with a final-to-earlier loop and
+ordinary future operators. The implementation and finite-orbit proof are original;
+no solver output or Haskell generator supplies the definition of truth. A finite
+clock retains the previous position, so the first visit and repeated loop visits
+need not share `Starts`. The [finite verification contract](behavioral-verification.md)
+identifies the kernel-checked correspondence and actual finite checks.
+T13's analysis limit remains: exact-lasso agreement is not completeness over
+all infinite traces or an inferred-scope guarantee. Static oracle/source pins
+and the independent structural checker profile are unchanged.
+
+## Behavioral surface correspondence
+
+The [surface contract](behavioral-surface.md) covers B15–B29's source semantics;
+parsing, resolution and target preservation retain their separate owners.
+The baseline comparison uses the immutable [behavioral ledger](#behavioral-profile-sources);
+the [PR113 revision comparison](#pr113-modifier-and-pattern-revisions) below
+records later supplementary corrections without adopting their compiler pin.
+
+- Behavioral §§4.1–4.2 and §6.1 pp.2:30–32 supply attachment, anchors,
+  transition/pattern sugar and finality; §§4.5/6.1 concern assertions/scenarios.
+  T2–T9 and T12 amend polarity, chaining, scenario quantification, births,
+  inherited reference modifiers, pattern attachment and syntax.
+- Pinned `Desugarer.hs` lines 214–252 (`desugarClaferTrans`, `desugarTrans'`,
+  `desugarSequence`, `precondition`, `step`) distinguishes declaration attachment,
+  entry guards and required suffixes. Lines 414–457 (`translateTmpPatterns`)
+  supply the complete comparison inventory, not an assumed correctness oracle.
+- D2's [response-between correction](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093)
+  moves the p implication inside the interval obligation. The
+  [after-precedence correction](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689399331)
+  prevents selecting a later q to discard a violation. `Patterns.response_interval`
+  and `first_opener` give event-level characterizations; `PatternExamples`
+  reproduces the distinguishing behavior of both pinned expansion shapes.
+- Behavioral §§6.1–6.2 p.2:32 supplies `final` child equality and lifetime scope.
+  It does not define `finalref` or `finaltarget`. T8/CheatSheet introduces their
+  distinction and inherited-reference application without complete equations.
+  D5 explicitly completes it: per-head reference stability versus parent target
+  image stability. Pinned `AlloyLtl.hs` lines 303–313 (`finalConsts`) emits
+  per-head equality for both reference modifiers, including inherited lookup.
+  `ModifierExamples.swap_finaltarget` / `swap_not_finalref` separates the meanings;
+  `inherited_ref_mutation` and `inherited_shallow_final` retain owner and depth
+  boundaries. This is a documented compiler mismatch, not paper equivalence.
+
+The direct interval/sequence meanings and syntax expansions are separately defined
+and proved equal for both source signs. The complete thirty-cell finite witnesses
+are transported to infinite source meaning through the accepted lasso theorem.
+They do not execute Haskell, prove source parsing, cover every possible temporal
+valuation by enumeration, or establish bounded-search completeness. Modifier
+reduction assumes richer structural validity and total set observations; partial
+transition/pattern/property reduction retains the original source domain.
+
+## PR113 modifier and pattern revisions
+
+The primary meaning remains behavioral §5 Definitions 2–5 and §§6.1–6.2,
+with the accepted [D2/D5 dispositions](behavioral-profile.md#decisions-requiring-contract-review).
+The following immutable compiler patches are supplementary, MIT-licensed source
+comparisons. They do not change `behavioral-0.5.7-candidate/v1` or the historical
+`af858ec0fe3ce2ceacb7fd120947c058233086d6` source and oracle identities.
+
+| Boundary | At historical pin `af858ec0fe3ce2ceacb7fd120947c058233086d6` | Later inspected correction and retained regression |
+| --- | --- | --- |
+| Response between | `translateTmpPatterns` tests p only at q. | [`b2875f35916337f4b7945ab6451b019c59fbbc76`](https://github.com/gsdlab/clafer/commit/b2875f35916337f4b7945ab6451b019c59fbbc76) moves the implication inside the until interval in `Desugarer.hs`; `pinnedBetween` and `between_late_trigger_regression` retain the old shape. |
+| Precedence after | `translateTmpPatterns` may choose a later q. | The same `b2875f3` patch requires the first q. `pinnedAfterPrecedence` and `first_opener_regression` retain the historical shape; `root_attachment_not_initially` distinguishes repeated root evaluations from one anchored evaluation. |
+| Parent target image | `AlloyLtl.hs` emits per-head equality for both reference modifiers. | `b2875f3` adds parent-scoped image equality and keeps per-head equality for finalref, including inherited owner lookup. Existing swap witnesses and `ModifierBoundaryExamples` distinguish assignments, target sets, multiplicities, and head replacement. |
+| Combined reference modifiers | `desugarRefModifier` retains only the first reference modifier, represented by `Maybe` fields. | [`8a12ae70b7c44a10ee45bcf34f45cd5abe335e60`](https://github.com/gsdlab/clafer/commit/8a12ae70b7c44a10ee45bcf34f45cd5abe335e60) changes direct/inherited IR fields to lists, deduplicates parsed modifiers and checks membership in the generator. Lean's semantic input is already a set; effective obligations are conjoined. Spelling order and repeated-token parsing belong to [compiler modifier elaboration](https://github.com/kbak/clafer-compiler-lean/issues/76). |
+
+The [`96b5264452a6c82b53e24c22160bfcf1b48a31bd` fixture patch](https://github.com/gsdlab/clafer/commit/96b5264452a6c82b53e24c22160bfcf1b48a31bd)
+adds `finalref finaltarget` to an inherited reference and the reverse spelling to
+a direct reference in `test/positive/tmp_final_inherited_reference.cfr`. Its
+singleton assertions do not distinguish swaps, multiplicity changes or replacement;
+the admitted Lean witnesses supply those boundaries without claiming parser tests.
+
+[`9a0f16ed18bdfb5277bedcc6577731f4b422be77`](https://github.com/gsdlab/clafer/commit/9a0f16ed18bdfb5277bedcc6577731f4b422be77)
+adds temporal explicit output and containment-qualified nested assertion domains.
+Explicit normalization belongs to [the downstream compiler task](https://github.com/kbak/clafer-compiler-lean/issues/86);
+this comparison adds no semantics parser or external UID/schema migration.
+Reading these patches is not execution of the newer Haskell compiler or adoption
+of its toolchain. Historical mutant names, source pins and execution receipts
+remain reproducible; fresh downstream comparison requires its own source-matched
+execution evidence.
+
+## PR113 root binding and final comparison disposition
+
+`impl~behavioral-integration-sources~1`
+
+The accepted primary profile remains `behavioral-0.5.7-candidate/v1` at
+`af858ec0fe3ce2ceacb7fd120947c058233086d6`, including the adopted D1–D5
+dispositions. The separate compiler comparison profile
+`behavioral-pr113-c7a2fb7/v1` pins
+[`c7a2fb7d0ba601f52efeac459d12f859a40580fe`](https://github.com/gsdlab/clafer/commit/c7a2fb7d0ba601f52efeac459d12f859a40580fe).
+Its immutable [downstream source ledger](https://github.com/kbak/clafer-compiler-lean/blob/b68c30b765756adc508cde7485061fa2aaed8966/docs/sources.md#pr113-union-and-root-binding-delta)
+and [workflow comparison contract](https://github.com/kbak/clafer-compiler-lean/blob/b68c30b765756adc508cde7485061fa2aaed8966/docs/behavioral-source.md#source-candidate-and-haskell-comparison-disposition)
+retain the complete revision inventory, tool identities and comparison boundaries.
+The [accepted compiler qualification](https://github.com/kbak/clafer-compiler-lean/issues/79)
+owns the execution and acceptance records; they are not fresh execution of those
+compiler revisions by this semantics repository.
+
+| Supplementary revision | Source disposition |
+| --- | --- |
+| [`2c8022631fa5f214df32b40e28af5d642ba87212`](https://github.com/gsdlab/clafer/commit/2c8022631fa5f214df32b40e28af5d642ba87212) | Union reference field types use signature unions. This is a target-representation correction, not adoption of expression-valued reference targets in the Lean frontend. |
+| [`8298fbd8a7701351268615824d10140f02205299`](https://github.com/gsdlab/clafer/commit/8298fbd8a7701351268615824d10140f02205299) | CLI validation propagates failures and checks explicit output. Corpus execution still needs its own receipts. |
+| [`67324c57e7ccf3ac95b41c0607b865d845c33e48`](https://github.com/gsdlab/clafer/commit/67324c57e7ccf3ac95b41c0607b865d845c33e48) | Compact explicit navigation, exact regression comparison and parallel positive tests. The downstream ledger retains the invalid-worker false-success limitation. |
+| `c7a2fb7d0ba601f52efeac459d12f859a40580fe` | Root facts/assertions bind `this` directly to the singleton root while retaining `always`; nested instance quantification and live guards remain. Actual Analyzer warning receipts, including old-output positive controls, belong to the downstream comparison. |
+
+The root change is consistent with `Properties.Constraint.root_holds`,
+`Anchors.root_recurrence` and `PatternExamples.root_attachment_not_initially`.
+Removing an unused binder does not remove recurrence, bind nested `this` to root,
+or change strict definedness. The accepted downstream comparison retains three
+limitations: the `union-dead-target` original-SAT/explicit-UNSAT discrepancy,
+the ill-typed `root-navigation-unsupported` output, and the exact `inherited-set`
+candidate with two concrete reference heads sharing one target. Accepted
+`Structural.Keys` and the Lean target reject that last candidate; Haskell accepts
+it because the generated inherited concrete-fiber set key is missing. These
+outcomes remain discrepancies, not evidence of agreement or a reason to weaken
+source semantics. The full source observer used downstream is tested Python
+reference code, separate from the kernel-proved compiler theorems and first-slice
+checker. The native workflow emits Alloy directly; Haskell explicit normalization
+and unrestricted original/explicit equivalence are outside that workflow.
+
+The later inspected head
+[`8cfa0f3740f1cfb515f9862bc8993b826fa08a67`](https://github.com/gsdlab/clafer/commit/8cfa0f3740f1cfb515f9862bc8993b826fa08a67)
+adds exactly two commits after `c7a2fb7`: build configuration
+[`eb2f653a02979d0db35451ed6abf131eaf7c355a`](https://github.com/gsdlab/clafer/commit/eb2f653a02979d0db35451ed6abf131eaf7c355a)
+sets GHC's module parallelism to eight, and `8cfa0f3` adds root documentation,
+five negative static-root fixtures and a changelog entry. The generator, errata,
+semantic definitions and MIT license are unchanged in this two-commit delta.
+The [root analysis](https://github.com/gsdlab/clafer/blob/8cfa0f3740f1cfb515f9862bc8993b826fa08a67/doc/root.md)
+distinguishes static backend root restrictions from the temporal singleton;
+it does not select a new root encoding. These are source-review observations,
+not new build, solver or fixture execution evidence. The comparison pin remains
+`c7a2fb7`; its receipts are not relabelled for the newer build configuration.
+Release PR #113 was open at this inspection. No final release is adopted; any
+subsequent delta needs its own review. All historical SoSyM and static oracle
+identities remain unchanged, and no third-party source is copied here.
+
+Covers:
+- `req~behavioral-source-correspondence~1`
+- `req~behavioral-main-integration~1`
+
+## Behavioral qualification correspondence
+
+`impl~behavioral-qualification-sources~1`
+
+The [qualification inventory](behavioral-qualification.md#complete-source-and-witness-inventory)
+accounts for all B01–B32/T1–T13 source obligations at the immutable
+[behavioral source pin](#behavioral-profile-sources). Composition follows
+behavioral §5 Definitions 3–5 and §6.1, with the accepted D1–D5 dispositions:
+shared identities, current observations, strict partial definedness, signed
+parent-lifetime truth and effective surface modifiers. The added core-domain
+translation is an original proof of the accepted D3 contract, not a newly
+attributed paper equation. Full-model and finite-composition theorems retain
+structural, context, inventory and finite-observation assumptions.
+
+The [source disposition](behavioral-qualification.md#source-disposition-and-acceptance)
+records the historical comparison to `b6c38617b203c17f57b994546172801ddaaf88c2`
+and links the [later root-binding and comparison disposition](#pr113-root-binding-and-final-comparison-disposition).
+Neither replaces the adopted
+`af858ec0fe3ce2ceacb7fd120947c058233086d6` pin, qualify a final release or claim
+compiler preservation. Historical static and SoSyM identities remain unchanged.
+
+Covers:
+- `req~behavioral-source-correspondence~1`

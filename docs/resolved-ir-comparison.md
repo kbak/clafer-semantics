@@ -107,7 +107,8 @@ called missing. `Clafer` names are in [Syntax](../Clafer/Syntax.lean),
 [DPGraph.Predicates.Meaning](../DPGraph/Predicates/Meaning.lean), with the derived
 key correspondence in [FunctionalKey](../DPGraph/Predicates/FunctionalKey.lean).
 Generic satisfaction and reduct names are in [DPGraph.Semantics](../DPGraph/Semantics.lean).
-Their [trace artifacts](clafer-trace.md) distinguish syntax proofs from satisfaction.
+The [structural checker contract](structural-checker.md) distinguishes syntax
+proofs from satisfaction.
 S = accepted structural support subject to the stated guard; X = excluded from version 1;
 D = awaiting a decision, rejected by the version-1 admission gate for now.
 
@@ -631,7 +632,7 @@ solver pin/decode and comparison in `scripts/verification/`; tests stay under `t
 `Shape.raw_wellFormed`, and [core expression typing](spec.md#resolved-core-constraint-typing) are not a whole-model
 satisfaction predicate. Structural results from [Compile](compile.md) and [gluing](architecture.md#mcs-gluing) are also insufficient
 alone. The [structural checker guide](structural-checker.md) and
-[trace artifacts](clafer-trace.md#effective-structural-core) identify the declarations
+[effective-core definitions](../Clafer/Semantics/EffectiveCore.lean) identify the declarations
 covering these accepted obligations:
 
 1. A complete interpreted structural signature/declaration inventory, including

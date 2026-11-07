@@ -119,6 +119,7 @@ relations, not proofs of complete inherited-family realizability; the separate
 uses only Sing; its empty-context case tests the group predicate vacuously and
 does not assert the separate root singleton obligation.
 
-Named implementation/proof and acceptance artifacts are in
-[the Clafer trace](clafer-trace.md). [Representative integration](representative-models.md)
+[Group semantics](../Clafer/Compile/GroupSemantics.lean) states the correspondence
+proofs; [group examples](../Clafer/Compile/GroupExamples.lean) exercise the generated
+and glued declarations. [Representative integration](representative-models.md)
 and the [complete Telematics model](telematics.md) have separate acceptance criteria.

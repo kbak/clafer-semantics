@@ -218,12 +218,72 @@ Review must assess whether definitions match the intended semantics and whether
 proofs establish the stated results; trace coverage and a successful build alone
 do not establish that correspondence. The [source map](docs/sources.md) owns exact
 paper correspondences, accepted corrections and audit limits; the
-[product overview](docs/intent.md) owns current scope. Keep focused contracts and
-trace indexes separate from those summaries, and preserve frozen change records
-under their retention policy.
+[product overview](docs/intent.md) owns current scope. Keep assumptions and proof
+limits in the focused contracts and coverage links beside their source declarations;
+do not duplicate those links in hand-maintained indexes. Use IntentBond evidence
+to inspect the captured coverage graph. Preserve frozen change records under
+their retention policy.
 
 Contributions use the existing [MIT license](LICENSE). Preserve attribution and
 check licenses before incorporating upstream code or publication material.
+
+### Ticket readiness
+
+Use **Todo → Ready → In Progress → Done**. Todo includes blocked or insufficiently
+specified work. Ready is an actionable ticket whose hard dependencies are completed
+and accepted, including dependencies in the other repository; a roadmap container
+is not actionable work. Ready does not select or start a task. In Progress means
+selected work has actually started. Done requires fulfilled acceptance criteria,
+required review and accepted integration. A prerequisite closed as not planned is
+not accepted completion.
+
+A maintainer's merge of the completing PR communicates approval and acceptance.
+Reconcile its issue and Project status immediately; do not ask for acceptance
+again or wait for a separate GitHub review submission. Follow the
+[maintainer acceptance policy](docs/maintenance.md#maintainer-acceptance) for the
+merge record, retained evidence and dependent readiness.
+
+```sh
+python3 scripts/tickets.py track 123 --status ready
+python3 scripts/tickets.py track 123 --status in-progress
+```
+
+The helper uses the Project's current Status/option IDs. It does not create a
+missing Ready option or calculate readiness. Reconciliation is **manual**: after
+acceptance, reopening, hard-dependency changes or scope decisions, inspect affected
+unstarted tickets in both repositories. Promote eligible Todo tickets to Ready;
+return blocked Ready tickets to Todo. Coordinate active work with its owner rather
+than silently resetting In Progress. Parent/sub-issue membership groups scope;
+only hard dependencies block intake. Independent Ready tasks may proceed together
+with shared-file/API coordination. Without Project access, record the assessment
+in public issue comments and leave board changes to a maintainer.
+
+### Behavioral integration
+
+The [behavioral profile contract](docs/behavioral-profile.md) owns the versioned
+surface, source decisions, repository interfaces and final acceptance gates.
+Start selected feature branches from `behavioral`, using `codex/behavioral-...`;
+feature PRs target `behavioral` and include `Closes #N`. Capture that integration
+baseline SHA explicitly for validation. CI runs full validation on PRs targeting
+and pushes to `behavioral`, including documentation changes. The main branch's
+existing selection policy remains unchanged.
+
+Dependencies deliver an accepted immutable SHA, actual APIs/theorems/assumptions,
+fixtures and source-matched evidence before downstream intake. Never substitute
+a moving upstream branch or successful CI for semantic acceptance. Preserve the
+static oracle and historical source profiles. Reconcile changes from main
+deliberately and refresh affected evidence.
+
+Require independent semantic review of the concrete diff before merge and explicit
+acceptance of profile/scope changes. The maintainer's merge communicates that
+acceptance under the policy above. Review the actual [branch controls](docs/maintenance.md#behavioral-integration-controls);
+CI configuration does not install protection. After an accepted feature PR lands
+on this non-default branch, close its issue explicitly with the ticket helper and
+mark Done; do not assume `Closes` performed closure. Refresh affected readiness
+in both repositories. The final semantics main PR waits for semantic qualification
+and complete compiler qualification; the compiler then pins the actual merged
+upstream SHA and requalifies. Obtain final merge authorization for those concrete
+PRs. No feature ticket authorizes an early main merge or release.
 
 ## Documentation filenames
 
