@@ -57,7 +57,7 @@ $$
 Adding behavioral constraints $\Phi$ selects histories:
 
 $$
-\operatorname{Behaviors}(D,\Phi)
+\mathrm{Behaviors}(D,\Phi)
 =\lbrace\tau\mid \mathrm{Coherent}(\tau)
   \land (\forall t,\ I_t\in\mathcal C(D))
   \land \tau\models\Phi\rbrace.
