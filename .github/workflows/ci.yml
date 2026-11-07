@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, behavioral]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -51,7 +51,6 @@ jobs:
         env:
           PR_BASE: ${{ github.event.pull_request.base.sha }}
           PUSH_BASE: ${{ github.event.before }}
-          TARGET_BRANCH: ${{ github.base_ref || github.ref_name }}
         run: |
           candidate=$(git rev-parse HEAD)
           baseline=${PR_BASE:-${PUSH_BASE:-$candidate}}
@@ -67,13 +66,8 @@ jobs:
             baseline=$candidate
             git show "$candidate:scope.json" > "$RUNNER_TEMP/trusted-scope.json"
           fi
-          validation_args=()
-          if [[ "$TARGET_BRANCH" == behavioral ]]; then
-            validation_args+=(--full)
-          fi
           python scripts/validation.py prepare --repo "$GITHUB_WORKSPACE" \
-            --base "$baseline" --candidate "$candidate" --out "$RUNNER_TEMP/validation-selection.json" \
-            "${validation_args[@]}"
+            --base "$baseline" --candidate "$candidate" --out "$RUNNER_TEMP/validation-selection.json"
           mode=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["mode"])' "$RUNNER_TEMP/validation-selection.json")
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "baseline=$baseline" >> "$GITHUB_OUTPUT"

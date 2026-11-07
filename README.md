@@ -18,6 +18,7 @@ structure, its constraints, and the configurations and histories that satisfy th
 Start with [From structure to behavior](docs/structure-and-behavior.md) for a
 conceptual guide with diagrams, shared identities, lifetimes, and temporal obligations.
 
+[Key proved properties](docs/proved-properties.md) ·
 [Overview and documentation](docs/intent.md) · [Contributing](CONTRIBUTING.md) ·
 [Roadmap](docs/architecture.md#roadmap-and-validation-accounting) · [MIT license](LICENSE)
 

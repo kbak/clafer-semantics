@@ -260,30 +260,19 @@ in public issue comments and leave board changes to a maintainer.
 
 ### Behavioral integration
 
-The [behavioral profile contract](docs/behavioral-profile.md) owns the versioned
-surface, source decisions, repository interfaces and final acceptance gates.
-Start selected feature branches from `behavioral`, using `codex/behavioral-...`;
-feature PRs target `behavioral` and include `Closes #N`. Capture that integration
-baseline SHA explicitly for validation. CI runs full validation on PRs targeting
-and pushes to `behavioral`, including documentation changes. The main branch's
-existing selection policy remains unchanged.
+Structural and behavioral contributions use topic branches from `main` and PRs
+back to `main`, with `Closes #N`. The temporary `behavioral` integration branch
+is retired. Capture the main baseline explicitly and use the standard validation
+wrapper; source, workflow and contributor-instruction changes require full checks.
 
-Dependencies deliver an accepted immutable SHA, actual APIs/theorems/assumptions,
-fixtures and source-matched evidence before downstream intake. Never substitute
-a moving upstream branch or successful CI for semantic acceptance. Preserve the
-static oracle and historical source profiles. Reconcile changes from main
-deliberately and refresh affected evidence.
-
-Require independent semantic review of the concrete diff before merge and explicit
-acceptance of profile/scope changes. The maintainer's merge communicates that
-acceptance under the policy above. Review the actual [branch controls](docs/maintenance.md#behavioral-integration-controls);
-CI configuration does not install protection. After an accepted feature PR lands
-on this non-default branch, close its issue explicitly with the ticket helper and
-mark Done; do not assume `Closes` performed closure. Refresh affected readiness
-in both repositories. The final semantics main PR waits for semantic qualification
-and complete compiler qualification; the compiler then pins the actual merged
-upstream SHA and requalifies. Obtain final merge authorization for those concrete
-PRs. No feature ticket authorizes an early main merge or release.
+The [behavioral profile contract](docs/behavioral-profile.md) continues to own the
+versioned surface, source decisions and repository interfaces. Downstream uses
+accepted immutable upstream commits with their actual APIs, assumptions, fixtures
+and source-matched evidence. Independent semantic review remains required before
+merge; [maintainer merge acceptance](docs/maintenance.md#maintainer-acceptance)
+then governs issue closure and dependent readiness. Preserve the historical static
+profiles and oracle pins. A later profile or release needs its own source review;
+completion of the integration does not authorize a release.
 
 ## Documentation filenames
 
