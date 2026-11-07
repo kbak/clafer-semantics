@@ -86,17 +86,8 @@ theorem domainFormula_agrees (τ : Trace C U) (O : PartialObservation A D U)
     {n} (a : Formula A D n) (ρ : Environment U n) (t : Nat) :
     a.domainFormula.raw τ O.checked ρ t ↔ a.Defined τ O ρ t := by
   induction a generalizing t with
-  | quant q d a ih =>
+  | quant _ d a ih | letSet d a ih =>
     simp only [domainFormula, raw, Quantifier.eval, ih, Defined]
-    constructor
-    · rintro ⟨⟨S, hs⟩, h⟩
-      refine ⟨S, hs, ?_⟩
-      simpa [PartialObservation.checked, PartialObservation.canonical, PartialObservation.complete, hs] using h
-    · rintro ⟨S, hs, h⟩
-      refine ⟨⟨S, hs⟩, ?_⟩
-      simpa [PartialObservation.checked, PartialObservation.canonical, PartialObservation.complete, hs] using h
-  | letSet d a ih =>
-    simp only [domainFormula, raw, ih, Defined]
     constructor
     · rintro ⟨⟨S, hs⟩, h⟩
       refine ⟨S, hs, ?_⟩

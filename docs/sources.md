@@ -1766,6 +1766,64 @@ of its toolchain. Historical mutant names, source pins and execution receipts
 remain reproducible; fresh downstream comparison requires its own source-matched
 execution evidence.
 
+## PR113 root binding and final comparison disposition
+
+`impl~behavioral-integration-sources~1`
+
+The accepted primary profile remains `behavioral-0.5.7-candidate/v1` at
+`af858ec0fe3ce2ceacb7fd120947c058233086d6`, including the adopted D1–D5
+dispositions. The separate compiler comparison profile
+`behavioral-pr113-c7a2fb7/v1` pins
+[`c7a2fb7d0ba601f52efeac459d12f859a40580fe`](https://github.com/gsdlab/clafer/commit/c7a2fb7d0ba601f52efeac459d12f859a40580fe).
+Its immutable [downstream source ledger](https://github.com/kbak/clafer-compiler-lean/blob/b68c30b765756adc508cde7485061fa2aaed8966/docs/sources.md#pr113-union-and-root-binding-delta)
+and [workflow comparison contract](https://github.com/kbak/clafer-compiler-lean/blob/b68c30b765756adc508cde7485061fa2aaed8966/docs/behavioral-source.md#source-candidate-and-haskell-comparison-disposition)
+retain the complete revision inventory, tool identities and comparison boundaries.
+The [accepted compiler qualification](https://github.com/kbak/clafer-compiler-lean/issues/79)
+owns the execution and acceptance records; they are not fresh execution of those
+compiler revisions by this semantics repository.
+
+| Supplementary revision | Source disposition |
+| --- | --- |
+| [`2c8022631fa5f214df32b40e28af5d642ba87212`](https://github.com/gsdlab/clafer/commit/2c8022631fa5f214df32b40e28af5d642ba87212) | Union reference field types use signature unions. This is a target-representation correction, not adoption of expression-valued reference targets in the Lean frontend. |
+| [`8298fbd8a7701351268615824d10140f02205299`](https://github.com/gsdlab/clafer/commit/8298fbd8a7701351268615824d10140f02205299) | CLI validation propagates failures and checks explicit output. Corpus execution still needs its own receipts. |
+| [`67324c57e7ccf3ac95b41c0607b865d845c33e48`](https://github.com/gsdlab/clafer/commit/67324c57e7ccf3ac95b41c0607b865d845c33e48) | Compact explicit navigation, exact regression comparison and parallel positive tests. The downstream ledger retains the invalid-worker false-success limitation. |
+| `c7a2fb7d0ba601f52efeac459d12f859a40580fe` | Root facts/assertions bind `this` directly to the singleton root while retaining `always`; nested instance quantification and live guards remain. Actual Analyzer warning receipts, including old-output positive controls, belong to the downstream comparison. |
+
+The root change is consistent with `Properties.Constraint.root_holds`,
+`Anchors.root_recurrence` and `PatternExamples.root_attachment_not_initially`.
+Removing an unused binder does not remove recurrence, bind nested `this` to root,
+or change strict definedness. The accepted downstream comparison retains three
+limitations: the `union-dead-target` original-SAT/explicit-UNSAT discrepancy,
+the ill-typed `root-navigation-unsupported` output, and the exact `inherited-set`
+candidate with two concrete reference heads sharing one target. Accepted
+`Structural.Keys` and the Lean target reject that last candidate; Haskell accepts
+it because the generated inherited concrete-fiber set key is missing. These
+outcomes remain discrepancies, not evidence of agreement or a reason to weaken
+source semantics. The full source observer used downstream is tested Python
+reference code, separate from the kernel-proved compiler theorems and first-slice
+checker. The native workflow emits Alloy directly; Haskell explicit normalization
+and unrestricted original/explicit equivalence are outside that workflow.
+
+The later inspected head
+[`8cfa0f3740f1cfb515f9862bc8993b826fa08a67`](https://github.com/gsdlab/clafer/commit/8cfa0f3740f1cfb515f9862bc8993b826fa08a67)
+adds exactly two commits after `c7a2fb7`: build configuration
+[`eb2f653a02979d0db35451ed6abf131eaf7c355a`](https://github.com/gsdlab/clafer/commit/eb2f653a02979d0db35451ed6abf131eaf7c355a)
+sets GHC's module parallelism to eight, and `8cfa0f3` adds root documentation,
+five negative static-root fixtures and a changelog entry. The generator, errata,
+semantic definitions and MIT license are unchanged in this two-commit delta.
+The [root analysis](https://github.com/gsdlab/clafer/blob/8cfa0f3740f1cfb515f9862bc8993b826fa08a67/doc/root.md)
+distinguishes static backend root restrictions from the temporal singleton;
+it does not select a new root encoding. These are source-review observations,
+not new build, solver or fixture execution evidence. The comparison pin remains
+`c7a2fb7`; its receipts are not relabelled for the newer build configuration.
+Release PR #113 was open at this inspection. No final release is adopted; any
+subsequent delta needs its own review. All historical SoSyM and static oracle
+identities remain unchanged, and no third-party source is copied here.
+
+Covers:
+- `req~behavioral-source-correspondence~1`
+- `req~behavioral-main-integration~1`
+
 ## Behavioral qualification correspondence
 
 `impl~behavioral-qualification-sources~1`
@@ -1781,8 +1839,9 @@ attributed paper equation. Full-model and finite-composition theorems retain
 structural, context, inventory and finite-observation assumptions.
 
 The [source disposition](behavioral-qualification.md#source-disposition-and-acceptance)
-records the exact comparison to the later immutable compiler candidate
-`b6c38617b203c17f57b994546172801ddaaf88c2`. It does not replace the adopted
+records the historical comparison to `b6c38617b203c17f57b994546172801ddaaf88c2`
+and links the [later root-binding and comparison disposition](#pr113-root-binding-and-final-comparison-disposition).
+Neither replaces the adopted
 `af858ec0fe3ce2ceacb7fd120947c058233086d6` pin, qualify a final release or claim
 compiler preservation. Historical static and SoSyM identities remain unchanged.
 

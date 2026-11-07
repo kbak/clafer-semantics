@@ -17,11 +17,11 @@ public roots. Imports flow `Clafer -> FormalCD -> DPGraph -> Mathlib`.
 
 ## Behavioral extension boundary
 
-The [behavioral contract candidate](behavioral-profile.md) reserves an optional
+The [behavioral contract](behavioral-profile.md) provides an optional
 `Clafer.Behavioral` entry point and modules under `Clafer/Behavioral` in the existing
 package. Trace/snapshot, signed formula/environment, structural atom, surface and
-lasso modules have separate responsibilities; their exact proposed split and
-implementation owners are listed in the contract.
+lasso modules have separate responsibilities; their module boundaries and owners
+are listed in the contract.
 The [trace foundation](behavioral-traces.md) delivers shared static identities,
 infinite presence/reference data, lifetime boundaries and the live-carrier
 structural bridge in `Trace.lean` and `Snapshot.lean`; `Examples.lean` supplies

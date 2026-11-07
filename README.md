@@ -33,8 +33,13 @@ The `clafer` Lake package provides three public Lean libraries:
 
 Dependencies flow `Clafer → FormalCD → DPGraph → Mathlib`; `DPGraph` is independently
 importable. The [architecture](docs/architecture.md) explains these boundaries.
-The optional `Clafer.Behavioral` entry point adds infinite traces, temporal
-constraint meanings, and their structural correspondence.
+The optional `Clafer.Behavioral` entry point adds infinite traces, lifetime-scoped
+constraints, modifiers, transitions, patterns, assertions and scenarios, with
+proved reductions and structural correspondence. Import
+`Clafer.Behavioral.FiniteComposition` separately for certified checking of supplied
+finite lassos under explicit observation and structural assumptions. The
+[behavioral qualification contract](docs/behavioral-qualification.md) states these
+proofs and their limits.
 
 The [Telematics case study](docs/telematics.md) connects a complete, manually resolved
 telematics model to compilation and a concrete satisfying interpretation,

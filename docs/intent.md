@@ -85,11 +85,12 @@ Compile/gluing preservation separate; the
 [original Alloy translation, compiler and Diskin assessment](sources.md#metamodel-realization-and-translational-semantics)
 retains their source differences and unresolved historical identities.
 
-The [behavioral profile candidate](behavioral-profile.md) scopes a separate
+The [behavioral profile](behavioral-profile.md) supplies a separate
 extension under `Clafer/Behavioral`: independent infinite-trace meaning, lifetime
 and signed temporal obligations, surface reductions and justified lasso checking.
 Its complete feature/disposition matrix and two-repository ownership contract
-require explicit acceptance. The [trace foundation](behavioral-traces.md) supplies
+retain the accepted prerelease source identity and explicit proof boundaries.
+The [trace foundation](behavioral-traces.md) supplies
 shared identities, lifetime boundaries and the guarded structural snapshot/constant
 bridge. The [signed formula contract](behavioral-formulas.md) supplies independent
 parent-bounded evaluation, identity-capturing environments and proved normalization
