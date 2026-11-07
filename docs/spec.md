@@ -627,9 +627,10 @@ atom reuse. Do not identify pointwise structural correctness with temporal
 preservation or bounded checking with unrestricted completeness. New meanings
 must not silently change the existing structural checker/importer profiles.
 
-The [contract](behavioral-profile.md) records the intended interfaces and theorem
-obligations; the owning implementation tickets must later introduce actual Lean
-artifacts and kernel-checked proofs. This documentation requirement claims none.
+The [contract](behavioral-profile.md) records interfaces and theorem obligations;
+the [qualification inventory](behavioral-qualification.md) links the actual Lean
+artifacts and their assumptions. This documentation requirement is separate from
+the implementation and proof requirements below.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -982,6 +983,33 @@ semantic acceptance. Reconcile the final release against the adopted source pin,
 or record explicit maintainer acceptance of that immutable prerelease profile.
 Keep source hashes and current contracts in maintained documentation, and run
 evidence and acceptance records externally or in the public issue/PR.
+
+Covers:
+- `intent~formalization-foundation~1`
+- `intent~traceable-contributions~1`
+
+Needs: impl
+
+## Behavioral main integration
+
+`req~behavioral-main-integration~1`
+
+Integrate behavioral semantics into main only after the semantic and downstream
+compiler qualification candidates have both been accepted. Reconcile current
+main into behavioral and review the complete integration diff, current public
+documentation, code duplication, import/API compatibility, source licenses and
+profile disposition. Preserve the structural imports, historical SoSyM and static
+oracle baselines and full validation gates. Any scope-policy change requires
+explicit review; passing automation alone is not semantic acceptance.
+
+Require full source-matched IntentBond, build, regression, layer/axiom and kernel
+evidence on the exact candidate, independent semantic review and authorization
+for the concrete `behavioral` to `main` PR. After the authorized merge, verify and
+hand off the actual immutable main SHA, APIs, assumptions, fixtures and matching
+evidence to the compiler repin gate. Close the integration issue only after that
+handoff. Retain behavioral through downstream completion unless the maintainer
+selects cleanup. The [integration contract](behavioral-profile.md#integration-and-acceptance)
+owns the workflow; completion records remain in the issue/PR and external evidence.
 
 Covers:
 - `intent~formalization-foundation~1`

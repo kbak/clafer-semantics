@@ -192,7 +192,7 @@ rejects the tested zero-divisor and overflowing witnesses. The pinned Choco
 backend rejects constant `5/0` but simplifies `0/0` to zero before checking the
 divisor. It does not wrap at the modeled Alloy bit width, but some Java constant
 calculations wrap at 32 bits. Neither behavior is forced by model checking.
-Future encoding correspondence must state finite-observation, nonzero-divisor
+Encoding correspondence must state finite-observation, nonzero-divisor
 and sufficient-range assumptions, including intermediate expressions. These
 probes compare specific pinned implementations; they are not a general
 backend-correctness proof. Pins and source hashes are in the [source ledger](sources.md#behavioral-arithmetic-comparison).
@@ -233,7 +233,7 @@ Neither the selector nor the fold makes the whole primitive domain finite.
 | S7 | Root is a permanent source identity. Parent navigation follows fixed actual parents, including parentless abstract views. Pinned static backend restrictions on root expressions/mixed abstract variables stay explicit in C6 comparison. |
 | S8/S9 | Frontends resolve names and insert implicit dref exactly once. Typed support maps and ambient current observations implement the resulting head/target views; name-search order remains with the separate resolution decision. |
 | S10 | Keep source-permitted concrete supers. Do not import the pinned compiler's abstract-super-only restriction into source validity. |
-| S11 | Use the adopted mathematical integer and partial arithmetic rules above. Other numeric types retain the profile's separate proposed-exclusion and review status; finite encoding ranges remain C8 obligations. |
+| S11 | Use the adopted mathematical integer and partial arithmetic rules above. Other numeric types are outside the accepted profile; finite encoding ranges remain compiler obligations. |
 | T8 | Supply inherited heads, assignments and target images; S5 owns final/finalref/finaltarget predicates. |
 | B32/D4 | Support constant `=`; explicitly reject `:=` in this profile. |
 
@@ -247,11 +247,12 @@ backend supports `:=`, and emitting an assertion does not define override/defaul
 semantics. C6/C7 must reject that syntax explicitly for this profile. This reviewed
 restriction does not remove default multiplicity/group elaboration.
 
-S4 supplies these source interfaces and agreement results. S5 still owns surface
-modifiers, transitions and patterns; C6/C7 own parsing, name resolution, implicit
+The source interfaces above compose with the [surface contract](behavioral-surface.md)
+for modifiers, transitions and patterns. The compiler owns parsing, name resolution, implicit
 views, initializer diagnostics and elaboration preservation; C8 owns bounded
-arithmetic/reference encoding correspondence. Lasso tasks must preserve the
-partial domain as well as signed truth. No backend correctness or complete
+arithmetic/reference encoding correspondence. The [qualification contract](behavioral-qualification.md)
+preserves the partial domain as well as signed truth in finite composition.
+No backend correctness or complete
 behavioral implementation follows from structural compatibility alone.
 
 Covers:

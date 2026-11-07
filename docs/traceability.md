@@ -124,8 +124,8 @@ The [behavioral contract](behavioral-profile.md) and its
 [source ledger](sources.md#behavioral-profile-sources) are implementation artifacts
 for **documentation** requirements: the profile requirement
 (`req~behavioral-profile~1`) and structural boundary requirement
-(`req~behavioral-structural-boundary~1`). Feature-matrix rows, reserved module names
-and fixture recipes are obligations, not Lean declarations or proof artifacts.
+(`req~behavioral-structural-boundary~1`). Feature-matrix rows and API summaries
+are distinct from the annotated Lean declarations and proof artifacts they describe.
 The [trace foundation](behavioral-traces.md) explains the implemented identity,
 lifetime and snapshot contracts and links to their annotated Lean definitions.
 For each implementation ticket, link its actual definitions/theorems

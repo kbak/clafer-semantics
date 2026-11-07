@@ -123,7 +123,8 @@ Initial/final anchors guard their body by `Trace.Starts` and `Trace.Ends` for th
 Ends is the last live state before absence. Both source signs retain the anchor
 and change the body sign. A permanent root starts at zero and never ends. The
 anchor atoms retain absolute trace history; no loop-periodicity assumption is
-made for a later finite evaluator.
+made for finite evaluation; the [lasso clock](behavioral-verification.md#initial-history-and-exact-temporal-evaluation)
+retains that history explicitly.
 
 ## Signed source meaning and normalization
 

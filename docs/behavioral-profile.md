@@ -3,7 +3,7 @@
 `impl~behavioral-profile-contract~1`
 
 This is the contract accepted through [profile adoption (S1)](https://github.com/kbak/clafer-semantics/issues/123).
-The unresolved decisions below still require explicit review before dependent definitions.
+The decision register below records the adopted meanings and their source departures.
 The [accepted research direction](https://github.com/kbak/clafer-semantics/issues/112#issuecomment-6673473063)
 selects independent source semantics and integration branches; it does not accept
 new definitions. This document specifies the complete intended behavioral surface,
@@ -11,8 +11,8 @@ its owners and verification obligations.
 The [trace foundation](behavioral-traces.md) records the delivered identity,
 lifetime and structural bridge APIs and witnesses. The
 [formula contract](behavioral-formulas.md) supplies signed evaluation,
-normalization/lowering and the adopted D1 environments over total observations;
-later feature obligations remain separate. The [structural and atom contract](behavioral-structure.md)
+normalization/lowering and the adopted D1 environments over total observations.
+The [structural and atom contract](behavioral-structure.md)
 adds richer admission, inherited-reference bindings, captured static agreement and
 strict partial temporal composition, with explicit downstream obligations. The
 [surface contract](behavioral-surface.md) specifies modifiers, anchors, transitions,
@@ -31,10 +31,12 @@ Covers:
 - `req~behavioral-profile~1`
 - `req~behavioral-structural-boundary~1`
 
-## Ownership and proposed module boundaries
+<a id="ownership-and-proposed-module-boundaries"></a>
+
+## Ownership and module boundaries
 
 The existing `clafer` Lake package retains `DPGraph`, `FormalCD` and `Clafer`.
-Add behavioral modules under `Clafer/Behavioral`, exposed through an optional
+Behavioral modules live under `Clafer/Behavioral`, exposed through an optional
 `Clafer.Behavioral` entry point. Preserve existing structural entry points:
 `import Clafer` need not import behavioral machinery, and `import DPGraph`
 remains independent. The module inventory still builds and audits every owned
@@ -42,18 +44,19 @@ module, including modules outside public entrypoint closures.
 
 These are responsibility boundaries. Trace/Snapshot APIs are documented in the
 [trace foundation](behavioral-traces.md); formula/environment APIs in the
-[formula contract](behavioral-formulas.md). Other names remain proposed.
-Implementing tickets must publish actual declaration names and assumptions before
-accepted downstream use. Splitting a file within its responsibility is allowed;
+[formula contract](behavioral-formulas.md). The owning contracts document actual
+declarations, assumptions and witnesses; the [qualification inventory](behavioral-qualification.md)
+connects them across the complete surface. Splitting a file within its responsibility is allowed;
 moving meaning across a repository or layer requires contract review.
 
-| Owner | Proposed modules / interface | Required boundary |
+| Owner | Modules / interface | Required boundary |
 | --- | --- | --- |
 | [Trace and snapshot semantics (S2)][S2] | `Clafer/Behavioral/Trace.lean`, `Snapshot.lean` | Shared identity/type/parent data, live states, lifetimes, structural projection and constant embedding |
 | [Signed temporal semantics (S3)][S3] | `Formula.lean`, `Environment.lean`, `Denotation.lean`, `Lifetime.lean`, `Normalization.lean`, `Lowering.lean` | Independent signed source satisfaction, interval meaning, normalization and ordinary temporal core; no compiler IR or target imports |
 | [Structural atom compatibility (S4)][S4] | `Structural.lean`, `StructuralCompatibility`, `StructuralObservation`, `StructuralSnapshot`, `StructuralBinding`, `CapturedStatic`, `PrimitiveExpression`, `StaticObservation`, `PartialObservation`, `PartialCompatibility`, `Initializers` | Independent richer admission, full current bindings, captured static agreement and strict partial temporal composition; reviewed initializer profile |
 | [Surface meaning (S5)][S5] | `Anchors.lean`, `Modifiers.lean`, `Transitions.lean`, `Patterns.lean`, `Properties.lean` | Independent modifier/transition/pattern meaning and reduction proofs; assertions and scenarios |
 | [Lasso checking (S6)][S6] | `Lasso.lean`, `Orbit.lean`, `FiniteEvaluation.lean`, `LassoValidation.lean`, `FiniteSets.lean`, `Verification.lean` | [Finite representation, unfolding and exact-candidate evaluation](behavioral-verification.md) over the normalized core |
+| [Semantic qualification (S7)][S7] | `PartialLowering.lean`, `Composition.lean`, `FinitePartial.lean`, `FiniteComposition.lean` | Full source/core composition, strict partial finite observations and exact common-fragment agreement |
 | [Compiler contract (C1)][C1], [IR (C4)][C4] | Downstream executable behavioral IR and interpretation | Pins an accepted upstream SHA; representation correctness is proved, not an assumed preservation predicate |
 | [Target semantics (C3)][C3], [encoding (C5)][C5]/[full encoding (C8)][C8] | Downstream independent Alloy temporal meaning, encoder, serializer | Source meaning must not be defined by the generator or target evaluator |
 | [Structural frontend (C6)][C6], [behavioral frontend (C7)][C7] | Downstream parsing, resolution and elaboration | Names become resolved IDs and explicit head/target views; source positions and attachment survive |
@@ -135,8 +138,9 @@ standard signed operands. Negated `initially`/`finally` push the sign into the
 anchored body. Temporal implication, equivalence, xor and conditionals expand;
 `all`, `some`, `no` propagate polarity, while `one` and `lone` retain classical
 negation of their interpreted counting result. Temporal-free atoms remain classical
-on their defined domain. S3 must state the precise normalization judgment, including
-these barriers, and prove agreement with independent source meaning.
+on their defined domain. The [signed formula contract](behavioral-formulas.md)
+states the precise normalization judgment, including these barriers, and its
+proved agreement with independent source meaning.
 
 Consequently `F error` and its **source** negation can both hold if the parent
 ends before an error. Under a persistent parent and defined atoms the corresponding
@@ -289,8 +293,8 @@ features cannot disappear through an unsupported-input guard.
 | D4: defaults and structural prerequisites — adopted | The [reviewed disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) supports `=` as a presence-guarded equation at every live attachment state and explicitly rejects `:=` in this profile. S6 nested abstracts/refined parents and S9 inherited references use the richer independent structural core. S10 concrete supers remain source-permitted. | [S4] supplies admission, common-fragment equivalence, full bindings and initializer disposition. [C6]/[C7] preserve effective defaults and instance identities, resolve views and diagnose unsupported `:=`; [S5] owns remaining surface modifiers. Neither initializer denotes temporal birth. |
 | D5: reference modifiers — adopted completion | P §§6.1–6.2 p.2:32 defines final child-set stability and nested lifetime limits, but does not name finalref/finaltarget. T8/CheatSheet distinguish them; the pinned generator uses per-head equality for both. | The [reviewed completion](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) fixes per-head references for finalref, parent target images for finaltarget, and heads plus references for final. Each rule resets at its relevant lifetime gap and includes inherited references. [S5] proves these independent meanings; [C7]/[C8] must retain their distinction. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records parent-image correction in `b2875f3` and retention of all modifiers in `8a12ae7`; neither changes the historical pin. |
 
-The following broader nonbehavioral features are **proposed exclusions requiring
-S1/C1 review**, not silent omissions: decimal/double/real and string computation,
+The accepted profile excludes the following broader nonbehavioral features:
+decimal/double/real and string computation,
 optimization goals, backend escapes, alternative solvers, inferred-scope correctness,
 and production parser/tooling in this repository. Inheritance from concrete types
 is unimplemented by the pinned compiler (S10); unrestricted name resolution order
@@ -301,6 +305,8 @@ structural prerequisite necessary for the required behavioral rows. Source `let`
 and the paper's static initializer syntax remain accounted for by B07/B32 and D1/D4.
 
 ## Integration and acceptance
+
+`impl~behavioral-main-integration-contract~1`
 
 Feature branches use `codex/behavioral-...` and PRs target `behavioral`, with
 `Closes #N`. Selection and accepted hard dependencies precede implementation.
@@ -336,10 +342,24 @@ The final gates are ordered to avoid a cross-repository cycle:
 4. [Compiler main integration (C11)][C11] pins the actual merged semantics main SHA,
    repeats full qualification and obtains its own merge authorization.
 
+For the semantics main gate, review the complete `main...behavioral` diff after
+reconciling current main, including documentation, redundant code, structural
+imports/API behavior and any scope-policy changes. Run full source-matched
+validation against the frozen main baseline. Open the final PR from `behavioral`
+to `main`, link the gate and roadmap, and obtain independent semantic review and
+authorization for that concrete candidate. After merging, verify the actual main
+commit against retained evidence and provide its immutable APIs, assumptions,
+fixtures and source disposition to the compiler repin gate. Retain `behavioral`
+through downstream completion unless the maintainer selects cleanup. Record
+execution and acceptance in the issue/PR and external evidence, not in this contract.
+
 Keep static tests, the historical SoSyM checkpoint, structural comparison receipts
 and oracle pins reproducible throughout. A first successful slice is progress,
 not completion. Tags, releases and final main merges require their own concrete
 review/authorization; this contract change supplies none of them.
+
+Covers:
+- `req~behavioral-main-integration~1`
 
 [paper]: https://arxiv.org/abs/1807.08576v1
 [temporal]: https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md

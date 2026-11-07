@@ -8,7 +8,12 @@ open Lean in
 -- [utest->req~behavioral-snapshot-bridge~1]
 run_cmd do
   for name in (← getEnv).header.moduleNames do
-    if (`Clafer.Compile).isPrefixOf name || (`Clafer.Verification).isPrefixOf name then
+    if [ `Clafer.Compile, `Clafer.Verification,
+         `Clafer.Behavioral.Lasso, `Clafer.Behavioral.Orbit,
+         `Clafer.Behavioral.FiniteEvaluation, `Clafer.Behavioral.LassoValidation,
+         `Clafer.Behavioral.FiniteSets, `Clafer.Behavioral.Verification,
+         `Clafer.Behavioral.FinitePartial, `Clafer.Behavioral.FiniteComposition ].any
+         (fun executionModule => executionModule.isPrefixOf name) then
       throwError "behavioral source semantics imported {name}"
 
 #check Clafer.Behavioral.Trace.admissible_projection

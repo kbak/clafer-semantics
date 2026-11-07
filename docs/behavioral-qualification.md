@@ -7,7 +7,7 @@ meaning for resolved structural declarations, strict partial observations,
 effective modifiers, transitions, scoped patterns, assertions and scenarios.
 Qualification composes those meanings and records their exact correspondence
 with finite checking. Source meaning remains independent of the finite evaluator,
-compiler frontend and Alloy backend. This document describes the candidate's
+compiler frontend and Alloy backend. This document describes the accepted profile's
 mathematical contract; acceptance and source-matched execution evidence belong
 to the [qualification issue](https://github.com/kbak/clafer-semantics/issues/129)
 and its PR.
@@ -188,8 +188,15 @@ bounded comparison does not qualify those frontend/backend changes or replace
 the source pin. The source [release PR](https://github.com/gsdlab/clafer/pull/113)
 was still open when this immutable comparison was prepared.
 
-Closing qualification requires explicit acceptance of the immutable prerelease
-profile, or a fresh delta review against an actual release, plus independent
-review of the concrete qualification diff and full validation evidence. An
-IntentBond exit 4 remains review pending. Main integration additionally requires
-downstream compiler qualification under the [ordered release gates](behavioral-profile.md#integration-and-acceptance).
+The [later comparison disposition](sources.md#pr113-root-binding-and-final-comparison-disposition)
+records the accepted downstream `c7a2fb7` profile, its retained discrepancies and
+the inspected two-commit delta through `8cfa0f3`. It preserves the primary source
+identity and makes no claim of final-release qualification.
+
+The immutable prerelease profile with D1–D5 is accepted; its qualification
+evidence and acceptance record remain on the [qualification issue](https://github.com/kbak/clafer-semantics/issues/129).
+A later source-profile change still requires explicit delta review and acceptance.
+Main integration requires the concrete candidate's full validation, independent
+review and merge authorization under the [ordered release gates](behavioral-profile.md#integration-and-acceptance).
+Historical IntentBond exit-4 evidence retains its original review-pending status;
+acceptance is recorded separately.
