@@ -1697,7 +1697,9 @@ and the independent structural checker profile are unchanged.
 The [surface contract](behavioral-surface.md) and
 [proof index](clafer-trace.md#behavioral-surface) cover B15–B29's source semantics;
 parsing, resolution and target preservation retain their separate owners.
-All comparison sources use the immutable [behavioral ledger](#behavioral-profile-sources).
+The baseline comparison uses the immutable [behavioral ledger](#behavioral-profile-sources);
+the [PR113 revision comparison](#pr113-modifier-and-pattern-revisions) below
+records later supplementary corrections without adopting their compiler pin.
 
 - Behavioral §§4.1–4.2 and §6.1 pp.2:30–32 supply attachment, anchors,
   transition/pattern sugar and finality; §§4.5/6.1 concern assertions/scenarios.
@@ -1730,6 +1732,36 @@ They do not execute Haskell, prove source parsing, cover every possible temporal
 valuation by enumeration, or establish bounded-search completeness. Modifier
 reduction assumes richer structural validity and total set observations; partial
 transition/pattern/property reduction retains the original source domain.
+
+## PR113 modifier and pattern revisions
+
+The primary meaning remains behavioral §5 Definitions 2–5 and §§6.1–6.2,
+with the accepted [D2/D5 dispositions](behavioral-profile.md#decisions-requiring-contract-review).
+The following immutable compiler patches are supplementary, MIT-licensed source
+comparisons. They do not change `behavioral-0.5.7-candidate/v1` or the historical
+`af858ec0fe3ce2ceacb7fd120947c058233086d6` source and oracle identities.
+
+| Boundary | At historical pin `af858ec0fe3ce2ceacb7fd120947c058233086d6` | Later inspected correction and retained regression |
+| --- | --- | --- |
+| Response between | `translateTmpPatterns` tests p only at q. | [`b2875f35916337f4b7945ab6451b019c59fbbc76`](https://github.com/gsdlab/clafer/commit/b2875f35916337f4b7945ab6451b019c59fbbc76) moves the implication inside the until interval in `Desugarer.hs`; `pinnedBetween` and `between_late_trigger_regression` retain the old shape. |
+| Precedence after | `translateTmpPatterns` may choose a later q. | The same `b2875f3` patch requires the first q. `pinnedAfterPrecedence` and `first_opener_regression` retain the historical shape; `root_attachment_not_initially` distinguishes repeated root evaluations from one anchored evaluation. |
+| Parent target image | `AlloyLtl.hs` emits per-head equality for both reference modifiers. | `b2875f3` adds parent-scoped image equality and keeps per-head equality for finalref, including inherited owner lookup. Existing swap witnesses and `ModifierBoundaryExamples` distinguish assignments, target sets, multiplicities, and head replacement. |
+| Combined reference modifiers | `desugarRefModifier` retains only the first reference modifier, represented by `Maybe` fields. | [`8a12ae70b7c44a10ee45bcf34f45cd5abe335e60`](https://github.com/gsdlab/clafer/commit/8a12ae70b7c44a10ee45bcf34f45cd5abe335e60) changes direct/inherited IR fields to lists, deduplicates parsed modifiers and checks membership in the generator. Lean's semantic input is already a set; effective obligations are conjoined. Spelling order and repeated-token parsing belong to [compiler modifier elaboration](https://github.com/kbak/clafer-compiler-lean/issues/76). |
+
+The [`96b5264452a6c82b53e24c22160bfcf1b48a31bd` fixture patch](https://github.com/gsdlab/clafer/commit/96b5264452a6c82b53e24c22160bfcf1b48a31bd)
+adds `finalref finaltarget` to an inherited reference and the reverse spelling to
+a direct reference in `test/positive/tmp_final_inherited_reference.cfr`. Its
+singleton assertions do not distinguish swaps, multiplicity changes or replacement;
+the admitted Lean witnesses supply those boundaries without claiming parser tests.
+
+[`9a0f16ed18bdfb5277bedcc6577731f4b422be77`](https://github.com/gsdlab/clafer/commit/9a0f16ed18bdfb5277bedcc6577731f4b422be77)
+adds temporal explicit output and containment-qualified nested assertion domains.
+Explicit normalization belongs to [the downstream compiler task](https://github.com/kbak/clafer-compiler-lean/issues/86);
+this comparison adds no semantics parser or external UID/schema migration.
+Reading these patches is not execution of the newer Haskell compiler or adoption
+of its toolchain. Historical mutant names, source pins and execution receipts
+remain reproducible; fresh downstream comparison requires its own source-matched
+execution evidence.
 
 ## Behavioral qualification correspondence
 

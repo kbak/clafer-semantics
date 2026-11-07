@@ -1,6 +1,7 @@
 module
 
 public import Clafer.Behavioral.Patterns
+public import Clafer.Behavioral.Properties
 public import Clafer.Behavioral.LassoExamples
 
 /-! # Complete pattern matrix and boundary mutations
@@ -227,5 +228,44 @@ theorem first_closer :
     checkFormula (expand (.sometime p) (.between q r)) repeatedCloser = false := by
   simp [checkFormula, expand, p, q, r, Formula.normalize, Formula.lower]
   decide
+
+/-- The first opener has its precedent immediately. The second opens a new
+obligation at the root, with p later and no further s. -/
+def attachmentOpeners : Valuation := fun atom time =>
+  if atom = 1 then time == 0 || time == 2
+  else if atom = 3 then time == 0
+  else atom == 0 && time == 3
+
+def afterPrecedence : F := expand (.precede s p) (.after q)
+
+-- [utest->req~behavioral-patterns~1]
+theorem attachment_evaluations :
+    checkFormula afterPrecedence attachmentOpeners true 0 0 = true ∧
+    checkFormula afterPrecedence attachmentOpeners true 0 2 = false := by
+  simp [checkFormula, afterPrecedence, expand, p, q, s, Formula.normalize, Formula.lower]
+  decide
+
+/-- The actual root assertion API supplies implicit always; initially limits
+this same pattern to the root's birth. The lasso is admitted by trace_valid. -/
+-- [utest->req~behavioral-patterns~1]
+-- [utest->req~behavioral-properties~1]
+theorem root_attachment_not_initially :
+    (Properties.Constraint.root afterPrecedence.initially).Holds trace.unfold
+      (.ofTotal (observation attachmentOpeners)) ∧
+    ¬ (Properties.Constraint.root afterPrecedence).Holds trace.unfold
+      (.ofTotal (observation attachmentOpeners)) := by
+  constructor
+  · rw [Properties.Constraint.root_holds _ _ _ trace_valid.root_live]
+    intro t
+    rw [Formula.total_agrees]
+    intro birth
+    have ht := (Trace.root_starts Examples.model trace.unfold trace_valid t).mp birth
+    subst t
+    exact (source_agrees _ _ true 0 0).mp attachment_evaluations.1
+  · intro h
+    have bad := (Properties.Constraint.root_holds _ _ _ trace_valid.root_live).mp h 2
+    rw [Formula.total_agrees] at bad
+    have yes := (source_agrees _ _ true 0 2).mpr bad
+    exact Bool.noConfusion (attachment_evaluations.2.symm.trans yes)
 
 end Clafer.Behavioral.PatternExamples

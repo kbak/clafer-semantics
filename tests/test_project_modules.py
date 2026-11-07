@@ -133,6 +133,7 @@ class PublicLibrariesTest(unittest.TestCase):
             "Clafer.Behavioral.Initializers",
             "Clafer.Behavioral.Anchors", "Clafer.Behavioral.AnchorExamples",
             "Clafer.Behavioral.Modifiers", "Clafer.Behavioral.ModifierExamples",
+            "Clafer.Behavioral.ModifierBoundaryExamples",
             "Clafer.Behavioral.Transitions", "Clafer.Behavioral.TransitionExamples",
             "Clafer.Behavioral.Patterns", "Clafer.Behavioral.PatternExamples",
             "Clafer.Behavioral.Properties", "Clafer.Behavioral.PropertyExamples",
