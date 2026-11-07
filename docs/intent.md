@@ -4,9 +4,10 @@
 
 `intent~formalization-foundation~1`
 
-Develop a maintainable Lean 4 formalization grounded in the published SoSyM paper
-(online 2014; journal issue 2016),
-with reusable foundations supporting structural Clafer. The repository
+Develop a maintainable Lean 4 formalization of structural and behavioral Clafer,
+with reusable graph and class-diagram foundations. The published SoSyM paper
+(online 2014; journal issue 2016) grounds the structural semantics; the behavioral
+paper and adopted profile ground the temporal extension. The repository
 `kbak/clafer-semantics` contains one Lake package, `clafer`, and sibling public roots
 `DPGraph`, `FormalCD` and `Clafer`. Dependencies flow
 `Clafer -> FormalCD -> DPGraph -> Mathlib`; `DPGraph` remains independently importable.
@@ -109,8 +110,9 @@ models, strict partial domains and finite core checking, with exact static
 common-fragment agreement and a complete source/witness inventory. Its finite
 observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
-Feature integration uses `behavioral`; the existing structural imports and
-historical static profiles remain supported.
+The accepted extension is integrated into `main`; contributions use main-based
+topic branches. Existing structural imports and historical static profiles remain
+supported.
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,
 production runtime configuration management, Claferize, post-2014 extensions
@@ -121,6 +123,8 @@ Keep the foundation reproducible and
 reviewable. The brief README introduces Clafer, the formalization's purpose and
 maturity, a build and checked example, and contribution routes. This document
 owns the detailed scope; [requirements](spec.md) state the precise promises.
+The [key proved properties](proved-properties.md) explain the main guarantees,
+why they matter and their essential assumptions, with exact declaration links.
 The [Lean walkthrough](getting-started.md) connects one small model to checked
 statements and shows pinned downstream use; language examples remain at
 [clafer.org](https://www.clafer.org/p/examples.html). Software citations identify
@@ -156,6 +160,7 @@ numbers and ticket chains must not substitute for an explanation.
 | Read or maintain | Purpose |
 | --- | --- |
 | This intent | Product goals, delivered scope and exclusions |
+| [Key proved properties](proved-properties.md) | Curated guarantees, significance, hypotheses and exact theorem links; distinguishes general results, concrete proofs and empirical evidence |
 | [From structure to behavior](structure-and-behavior.md) | Conceptual bridge between the papers: configurations, shared identities, changing references, captured environments and lifetime-scoped temporal obligations |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
 | [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |

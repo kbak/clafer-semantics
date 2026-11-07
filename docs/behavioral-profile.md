@@ -5,8 +5,8 @@
 This is the contract accepted through [profile adoption (S1)](https://github.com/kbak/clafer-semantics/issues/123).
 The decision register below records the adopted meanings and their source departures.
 The [accepted research direction](https://github.com/kbak/clafer-semantics/issues/112#issuecomment-6673473063)
-selects independent source semantics and integration branches; it does not accept
-new definitions. This document specifies the complete intended behavioral surface,
+selects independent source semantics; later feature acceptance supplies the
+delivered definitions. This document specifies the complete intended behavioral surface,
 its owners and verification obligations.
 The [trace foundation](behavioral-traces.md) records the delivered identity,
 lifetime and structural bridge APIs and witnesses. The
@@ -308,8 +308,9 @@ and the paper's static initializer syntax remain accounted for by B07/B32 and D1
 
 `impl~behavioral-main-integration-contract~1`
 
-Feature branches use `codex/behavioral-...` and PRs target `behavioral`, with
-`Closes #N`. Selection and accepted hard dependencies precede implementation.
+The accepted behavioral extension is integrated into `main` in both repositories.
+The temporary `behavioral` branch is retired; new topic branches and PRs use
+`main`, with `Closes #N`. Selection and accepted hard dependencies precede implementation.
 Follow [Todo → Ready → In Progress → Done](../CONTRIBUTING.md#ticket-readiness).
 Parent/child roadmap links group work; they are not hard dependencies.
 
@@ -323,15 +324,18 @@ communicates approval and acceptance under the [acceptance policy](maintenance.m
 do not wait for a second confirmation or a separate review submission. Refresh
 affected unstarted statuses in both repositories manually.
 
-PR and push CI on `behavioral` run full validation, even for a contract-only diff:
-module discovery, build, all tests, independent imports, axiom/layer audits, kernel
-replay and IntentBond trace/source checks. Main retains its existing validation
-selection policy. Hosted CI and branch protection are separate controls; follow
+During integration, PR and push CI on `behavioral` required full validation,
+including contract-only diffs. Current contributions use main’s existing
+manifest-based validation selection policy. Full checks retain module discovery,
+build, all tests, independent imports, axiom/layer audits, kernel replay and
+IntentBond trace/source checks. Hosted CI and branch protection are separate controls; follow
 [maintenance policy](maintenance.md#behavioral-integration-controls), inspect actual
 settings, and retain the readback outside source. Exit 4 is automation success
 with review pending, not permission to accept a semantic choice.
 
-The final gates are ordered to avoid a cross-repository cycle:
+The completed integration used the following ordered gates to avoid a
+cross-repository cycle. These obligations remain the basis for interpreting its
+acceptance records:
 
 1. [Semantic qualification (S7)][S7] accepts all required rows, structural bridges,
    surface/core composition, lasso obligations and exact source-profile disposition.
@@ -342,7 +346,7 @@ The final gates are ordered to avoid a cross-repository cycle:
 4. [Compiler main integration (C11)][C11] pins the actual merged semantics main SHA,
    repeats full qualification and obtains its own merge authorization.
 
-For the semantics main gate, review the complete `main...behavioral` diff after
+The semantics main gate required the following handoff: review the complete `main...behavioral` diff after
 reconciling current main, including documentation, redundant code, structural
 imports/API behavior and any scope-policy changes. Run full source-matched
 validation against the frozen main baseline. Open the final PR from `behavioral`

@@ -4,7 +4,9 @@ This document explains how the three libraries fit together, why their
 representations were chosen, and what their proofs establish. Read the
 [product overview](intent.md) for scope and navigation, the [source map](sources.md)
 for correspondence with the paper, and the [source annotations](traceability.md)
-for requirement links beside individual definitions, proofs and tests.
+for requirement links beside individual definitions, proofs and tests. The
+[key proved properties](proved-properties.md) give a reader-facing selection of
+the main guarantees with their hypotheses and exact declaration links.
 
 The repository `kbak/clafer-semantics` contains one Lake package, `clafer`, with sibling
 public roots. Imports flow `Clafer -> FormalCD -> DPGraph -> Mathlib`.
@@ -79,7 +81,8 @@ neither temporal preservation nor trace completeness.
 The [feature matrix](behavioral-profile.md#feature-disposition-matrix) records
 delivered surface APIs and remaining cross-repository obligations, alongside
 the theorem table below. Its [integration gates](behavioral-profile.md#integration-and-acceptance)
-require both repositories' complete accepted candidates before main integration.
+record the ordered acceptance obligations fulfilled by the integration into main.
+New contributions use main-based topic branches.
 
 ## DPGraph core and models
 

@@ -133,9 +133,9 @@ and positive/negative witnesses using the convention above, preserving exact
 source locators and all structural, environment, definedness and finite-bound
 assumptions. Record unresolved semantic choices publicly before implementing them.
 
-Feature validation uses the captured behavioral integration baseline and its
-trusted scope. Behavioral PR/push CI requires full validation; main keeps the
-manifest-selected path. Retain evidence outside source and verify each accepted
+Current feature validation uses the captured main baseline and its trusted
+scope, with the manifest-selected validation path. The completed behavioral
+integration required full validation against its explicit integration baseline. Retain evidence outside source and verify each accepted
 commit against it before downstream pinning. Independent semantic review remains
 required even when all coverage/build/kernel gates pass. The final qualification
 must close every required feature row; checking the first slice is insufficient.

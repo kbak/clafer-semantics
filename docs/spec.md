@@ -246,6 +246,16 @@ from the README and documentation map. Explain configurations and histories,
 identity, environments and lifetime-scoped obligations with diagrams, using the
 current corrected contracts and retaining their structural correspondence limits.
 
+Maintain one [key proved properties guide](proved-properties.md) for readers who
+want to understand the guarantees without reading Lean. Curate the major results
+across all three roots and the behavioral extension. For each, state its meaning,
+significance, essential hypotheses and limits; give exact Lean declaration/source
+links and a focused contract link. Separate general and conditional results from
+concrete example proofs and empirical comparisons, and cross-link the compiler's
+companion account without attributing downstream guarantees to upstream semantics.
+Keep requirement-to-proof links beside source declarations rather than duplicate
+the trace graph in the guide. Review every summary against its actual statement.
+
 Keep onboarding concise and link to clafer.org for language examples. Document
 cache-assisted pinned setup, distinguish a Lean build from full validation and
 state the latter's platform/prerequisite limits. Provide a minimal downstream
@@ -416,9 +426,11 @@ choosing definitions; deferral or scope reduction needs explicit review. A later
 release SHA needs a recorded delta review. Preserve historical SoSyM and static
 oracle baselines. The initial slice does not reduce the completion scope.
 
-Feature PRs target `behavioral`; downstream uses immutable accepted upstream
-pins. CI on behavioral PRs and pushes must retain full build, tests, kernel,
-layer/axiom and traceability gates. Review actual branch-protection settings
+After accepted integration and maintainer-selected retirement of `behavioral`,
+feature PRs target `main`; downstream uses immutable accepted upstream pins.
+Current CI follows the manifest-selected validation policy above. The completed
+behavioral integration required full build, tests, kernel, layer/axiom and
+traceability gates. Review actual branch-protection settings
 without weakening main. Require independent semantic review before merge,
 recognize [maintainer merge acceptance](maintenance.md#maintainer-acceptance),
 explicitly close completed issues after non-default-branch integration, and retain

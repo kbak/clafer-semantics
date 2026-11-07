@@ -42,27 +42,19 @@ scope pin must also be deliberately advanced when adopting a new policy.
 
 ## Behavioral integration controls
 
-Apply the same PR, required `Lean and IntentBond` check, up-to-date branch,
-conversation-resolution, force-push/deletion and administrator controls to
-`behavioral`. Preserve main's controls. For the single-maintainer approval-count
-policy above, retain explicit independent semantic review in the PR even where
-GitHub cannot enforce an approving-review count. Automation exit 4 leaves that
-review pending.
-The [maintainer acceptance policy](#maintainer-acceptance) governs reconciliation
-after a maintainer merges the PR.
+The temporary `behavioral` branch is retired after accepted integration in both
+repositories. Structural and behavioral changes now use main's PR, validation and
+review controls above. [CI](../.github/workflows/ci.yml) covers PRs targeting any
+branch and pushes to `main`, using the manifest-based validation selector. Full
+validation remains required for source and tooling changes; documentation checks
+do not provide new Lean execution evidence or semantic approval.
 
-[CI](../.github/workflows/ci.yml) covers PRs targeting any branch and pushes to
-both `main` and `behavioral`; the behavioral target forces full validation.
-Inspect classic branch protection and repository rulesets for **both** branches
-when accepting the integration contract. Save the readback and discrepancies in
-external evidence and the PR. An absent protection or empty ruleset is a policy
-gap, not proof that these controls are enforced. Settings repairs require a
-concrete reviewed configuration and must not weaken main. Do not claim that
-editing this document or adding workflow triggers installs hosted controls.
-
-[The integration contract](behavioral-profile.md#integration-and-acceptance)
-separates feature acceptance on behavioral from the two-repository main gates.
-Explicitly reconcile issue closure and manual Ready statuses after acceptance.
+The [integration contract](behavioral-profile.md#integration-and-acceptance)
+retains the completed two-repository gate obligations and immutable handoff
+requirements. Its historical branch controls are not instructions to recreate
+`behavioral`. Preserve main's hosted protection when retiring temporary branches;
+CI configuration and contributor documentation do not install those controls.
+Acceptance records belong in the public issues/PRs and external evidence.
 
 ## Maintainer acceptance
 
