@@ -29,7 +29,7 @@ One structural specification constrains every snapshot in a behavior:
 
 ```mermaid
 flowchart TB
-    D["Structural specification D<br/>types, containment, references, cardinalities"]
+    D["Structural specification<br/>types, containment, references, cardinalities"]
     subgraph T["One possible history"]
         direction LR
         I0["Snapshot I₀<br/>machine is idle"]
@@ -47,20 +47,20 @@ The arrows from the specification express structural conformance. The dashed
 arrows express temporal succession. The diagram does not identify the latter
 with structural morphisms.
 
-Write the collection of legal structural configurations of a specification
-$D$ as:
+Let $D$ be a structural specification. Write $\mathcal C(D)$ for its collection
+of legal structural configurations:
 
 $$
-\mathcal C(D)=\{I\mid I\models_{\mathrm{str}}D\}.
+\mathcal C(D)=\lbrace I\mid I\models_{\mathrm{str}}D\rbrace.
 $$
 
 Adding behavioral constraints $\Phi$ selects histories:
 
 $$
-\llbracket D,\Phi\rrbracket_{\mathrm{beh}}
-=\{\tau\mid \mathrm{Coherent}(\tau)
+\operatorname{Behaviors}(D,\Phi)
+=\lbrace\tau\mid \mathrm{Coherent}(\tau)
   \land (\forall t,\ I_t\in\mathcal C(D))
-  \land \tau\models\Phi\}.
+  \land \tau\models\Phi\rbrace.
 $$
 
 This is a conceptual decomposition: coherence retains identity, type and parent
