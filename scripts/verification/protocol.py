@@ -319,6 +319,7 @@ def flatten_ir(module):
 
 
 @strict_boundary
+# [impl->req~clafer-compiler-capture~1]
 def validate_generation(g, source, ir, alloy):
     exact(g, {"status", "schema", "effective_options", "backend", "source_audit", "post_analysis",
         "post_strings", "strings", "output_strings", "scopes", "consumed_map", "implicit_template",

@@ -124,7 +124,7 @@ These twelve explicit conjuncts are manually elaborated as `c01`–`c12` in
 [Expressions](../Clafer/Examples/Telematics/Expressions.lean), with resolved
 support proofs against the structural AST. Their independent equations, local
 definedness obligations and positive/negative witnesses are indexed in the
-[denotation contract](constraint-denotation.md) and [proof inventory](clafer-trace.md#manual-appendix-f-expression-implementation).
+[denotation contract](constraint-denotation.md) and [definedness proofs](../Clafer/Examples/Telematics/Definedness.lean).
 Navigation arrows below select child heads unless explicitly marked widen,
 dereference or parent. The [selected preservation bridge](constraint-preservation.md) derives source
 predicate meanings; the [combined acceptance fixture](telematics.md) applies it to all twelve bodies.

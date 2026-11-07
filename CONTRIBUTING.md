@@ -218,9 +218,11 @@ Review must assess whether definitions match the intended semantics and whether
 proofs establish the stated results; trace coverage and a successful build alone
 do not establish that correspondence. The [source map](docs/sources.md) owns exact
 paper correspondences, accepted corrections and audit limits; the
-[product overview](docs/intent.md) owns current scope. Keep focused contracts and
-trace indexes separate from those summaries, and preserve frozen change records
-under their retention policy.
+[product overview](docs/intent.md) owns current scope. Keep assumptions and proof
+limits in the focused contracts and coverage links beside their source declarations;
+do not duplicate those links in hand-maintained indexes. Use IntentBond evidence
+to inspect the captured coverage graph. Preserve frozen change records under
+their retention policy.
 
 Contributions use the existing [MIT license](LICENSE). Preserve attribution and
 check licenses before incorporating upstream code or publication material.

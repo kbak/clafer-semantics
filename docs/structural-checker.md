@@ -134,8 +134,9 @@ set/bag repeated targets. Test-only `collapseMutant` counts distinct targets and
 bounds; the unchanged optional-reference fixture rejects the real checker and
 accepts each mutant. Both kernel witnesses and native assertions detect the
 changed result. Full validation discovers these modules and tests, audits axioms
-and imports, and replays the kernel; [trace artifacts](clafer-trace.md) name the
-actual declarations. Validation evidence and acceptance review remain external.
+and imports, and replays the kernel. Annotations beside the declarations and
+assertions supply their coverage links. Validation evidence and acceptance
+review remain external.
 
 ## Pinned compiler input
 

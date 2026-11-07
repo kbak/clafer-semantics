@@ -6,8 +6,8 @@ The [profile](behavioral-profile.md) exposes resolved modifiers, transitions,
 patterns, constraints, assertions and scenarios through `Clafer.Behavioral`.
 This is independent source meaning. There is no production parser here and no
 assumption that the Haskell compiler preserves it. The [source ledger](sources.md#behavioral-surface-correspondence)
-records immutable source locators and the [proof index](clafer-trace.md#behavioral-surface)
-names declarations and fixtures. Source modules do not import the finite checker;
+records immutable source locators. The sections below link the definitions,
+proofs and distinguishing fixtures for each construct. Source modules do not import the finite checker;
 fixture modules may use its proved correspondence to infinite traces.
 
 Covers:

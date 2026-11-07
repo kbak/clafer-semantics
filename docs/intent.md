@@ -166,7 +166,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |
 | [Metamodel realization](metamodel-realization.md) | Exact restricted theorem, reconstruction, source-to-obligation comparison and bounded semantic self-instantiation |
 | [Paper companion](sosym-errata.md) | Concise corrections and clarifications for SoSyM readers |
-| [DPGraph](dpgraph-trace.md), [FormalCD](formalcd-trace.md) and [Clafer](clafer-trace.md) traces | Named implementation/proof artifacts and actual Lean declarations |
+| [Source annotations and IntentBond evidence](traceability.md#lean-artifacts) | Requirement links beside actual definitions, proofs and tests; inspect the captured graph with IntentBond |
 | [Constraint preservation](constraint-preservation.md) | Derived predicate meanings, exact binding/label transport and selected whole-model correspondence |
 | [Constraint denotation](constraint-denotation.md) | Explicit environments, core equations and Appendix 6 elaboration |
 | [Complete telematics model](telematics.md) | All twelve constraint bodies, final selections and concrete whole-model satisfaction |
@@ -195,6 +195,7 @@ The historical link above reads the retained records in their original path
 context. The local `changes/` copies retain historical filenames in references;
 use the current map for maintained documents and the
 [filename convention](../CONTRIBUTING.md#documentation-filenames) when adding or moving them.
-Do not merge normative requirements with proof indexes or treat historical
-proposals as current promises. Preserve artifact IDs, trace relationships, source
-citations and existing link destinations when consolidating living prose.
+Keep normative requirements separate from implementation and proof evidence;
+do not treat historical proposals as current promises. Preserve continuing
+requirement IDs, trace relationships and source citations when consolidating
+living prose, and redirect incoming links to the authoritative contract or source.

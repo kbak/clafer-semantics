@@ -105,4 +105,4 @@ version order, display counts, wrong server/parent navigation, external domains
 and inadmissible context objects. A changed typed body changes satisfaction on
 the same support diagram. Structural compilation validity is separately proved
 and does not discharge these semantic checks. See the
-[named trace artifacts](clafer-trace.md#derived-source-predicate-meanings).
+[predicate meaning and proofs](../Clafer/Constraints/Predicate.lean).

@@ -9,6 +9,7 @@ import tempfile
 from protocol import PIN, VERSION, EXPORT_SCHEMA, SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
 
 
+# [impl->req~clafer-compiler-capture~1]
 @strict_boundary
 def capture(source, exporter, build_file, bounds, output):
     source, exporter, build_file, output = map(Path, (source, exporter, build_file, output))

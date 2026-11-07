@@ -260,9 +260,8 @@ Adding dependency closure alone repairs neither obstruction.
 | [Self](../FormalCD/Metamodel/Realization/Self.lean) | Complete arity inventory, support/separation, counts, self-instance and reconstruction |
 | [Examples](../FormalCD/Metamodel/Realization/Examples.lean) | Whole-model positive, empty, zero-arrow and isolated-binding collision cases; repeated-link and metadata boundaries |
 
-The [proof index](formalcd-trace.md#restricted-realization-and-reconstruction-proofs)
-links the distinct requirements for realization, self-instantiation and boundary
-witnesses. Existing shape, discipline, formula-identity and bounded syntactic
+Annotations in these modules link the distinct requirements for realization,
+self-instantiation and boundary witnesses to their definitions and proofs. Existing shape, discipline, formula-identity and bounded syntactic
 self-description promises remain unchanged. Validation uses the full pinned
 [workflow](../CONTRIBUTING.md#setup-and-checks), including kernel replay,
 axiom/layer audits and independent imports. Passing automation does not replace

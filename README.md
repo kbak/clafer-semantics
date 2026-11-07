@@ -75,7 +75,7 @@ Then explore [spans](DPGraph/Span/Examples.lean), [class diagrams](FormalCD/Exam
 [compilation and gluing](docs/representative-models.md), or the
 [complete telematics model](docs/telematics.md). The
 [documentation map](docs/intent.md#documentation-map) leads to detailed contracts,
-source citations, and proof indexes. The walkthrough also shows
+source citations, and annotated proofs. The walkthrough also shows
 [use from another Lake project](docs/getting-started.md#use-as-a-lake-dependency).
 Full validation has additional [prerequisites](CONTRIBUTING.md#setup-and-checks);
 building these Lean examples does not require Java, Haskell or Alloy.

@@ -123,8 +123,13 @@ to observed extents/maps, proving independence from unused support entries. It
 does not discard any part of the full structural binding. `c01_defined`–`c12_defined`
 derive definedness from admitted context objects, finite structural extents and
 the four version/server map bounds, with no finiteness requirement on int.
-The [trace inventory](clafer-trace.md#resolved-constraint-denotation)
-links their actual declarations and sensitive positive/negative witnesses.
+[Denotation laws](../Clafer/Constraints/DenotationLaws.lean) and
+[definedness proofs](../Clafer/Examples/Telematics/Definedness.lean) state these
+results; [semantic examples](../Clafer/Constraints/DenotationExamples.lean)
+distinguish false from undefined results. The
+[expression mutations](../Clafer/Examples/Telematics/Mutations.lean) include a
+wrong-owner candidate that deliberately violates a structural bound. These
+expression tests do not assert whole-model satisfaction.
 No textual resolver, automatic coercion insertion, higher-arity relation,
 string arithmetic, tuple binder or evaluator correctness is claimed. The separate
 [preservation contract](constraint-preservation.md) states the selected
