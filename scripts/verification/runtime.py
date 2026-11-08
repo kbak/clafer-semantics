@@ -11,7 +11,8 @@ import tarfile
 import tempfile
 from urllib.request import urlopen
 
-from protocol import ARCHIVE, PIN, SOURCE_TREE, STACK_LOCK, digest, loads
+from protocol import digest, loads
+from compiler_profile import PIN, ARCHIVE, SOURCE_TREE, EXPORTER, STACK_LOCK
 
 HERE = Path(__file__).resolve().parent
 STACK_ARCHIVE = "1fda71e657cd8d355625cc66b61b352699279dfee2664c014a392163bd19a952"
@@ -29,7 +30,7 @@ def valid_runtime(executable, build_file):
             compiler_archive_sha256=ARCHIVE, source_tree_sha256=SOURCE_TREE,
             resolver="lts-22.44", ghc_version="9.6.7", stack_version="3.11.1",
             stack_lock=STACK_LOCK, compiler_sources_unchanged=True,
-            exporter_source=digest((HERE / "Export.hs").read_bytes()),
+            exporter_source=digest((HERE / EXPORTER).read_bytes()),
             exporter_binary=digest(executable.read_bytes()))
         return build == expected and os.access(executable, os.X_OK)
     except (OSError, ValueError):
@@ -125,19 +126,20 @@ def prepare(work=None):
 
 
 def main():
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    if not args:
         raise RuntimeError("Usage: runtime.py COMMAND [ARG ...] | --check-cache WORK | --github-env WORK")
-    if sys.argv[1] in ("--check-cache", "--github-env"):
-        if len(sys.argv) != 3:
+    if args[0] in ("--check-cache", "--github-env"):
+        if len(args) != 2:
             raise RuntimeError("Cache commands require exactly one external work directory")
-        work = work_directory(sys.argv[2])
-        if sys.argv[1] == "--check-cache":
+        work = work_directory(args[1])
+        if args[0] == "--check-cache":
             return 0 if cached_runtime(work) else 1
         destination = os.environ.get("GITHUB_ENV")
         if not destination:
             raise RuntimeError("--github-env requires GITHUB_ENV")
         executable, build = prepare(work)
-        values = dict(CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build))
+        values = {"CLAFER_CAPTURE": str(executable), "CLAFER_CAPTURE_BUILD": str(build)}
         if any("\n" in value or "\r" in value for value in values.values()):
             raise RuntimeError("GitHub environment paths must not contain newlines")
         with Path(destination).open("a") as output:
@@ -145,7 +147,7 @@ def main():
         return 0
     executable, build = prepare()
     env = dict(os.environ, CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build))
-    return subprocess.call(sys.argv[1:], env=env)
+    return subprocess.call(args, env=env)
 
 
 if __name__ == "__main__":

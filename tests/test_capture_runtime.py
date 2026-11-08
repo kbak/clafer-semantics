@@ -22,7 +22,7 @@ class CaptureRuntimeTests(unittest.TestCase):
         self.root = Path(scratch.name)
         self.here = self.root / "checkout/scripts/verification"
         self.here.mkdir(parents=True)
-        (self.here / "Export.hs").write_text("exporter source")
+        (self.here / r.EXPORTER).write_text("exporter source")
         (self.here / "build.py").write_text("builder source")
         self.cache = self.root / "cache"
         self.work = self.cache / r.PIN
@@ -43,9 +43,21 @@ class CaptureRuntimeTests(unittest.TestCase):
             compiler_archive_sha256=r.ARCHIVE, source_tree_sha256=r.SOURCE_TREE,
             resolver="lts-22.44", ghc_version="9.6.7", stack_version="3.11.1",
             stack_lock=r.STACK_LOCK, compiler_sources_unchanged=True,
-            exporter_source=r.digest((self.here / "Export.hs").read_bytes()),
+            exporter_source=r.digest((self.here / r.EXPORTER).read_bytes()),
             exporter_binary=r.digest(executable.read_bytes()))))
         return executable, build
+
+    def test_legacy_and_unreviewed_producers_are_rejected(self):
+        executable, build = self.write_runtime(self.root / "explicit")
+        original = r.loads(build.read_bytes())
+        for commit in ("6750e6f591b2131549122c13dee94d3d2257eaea", "0" * 40):
+            build.write_bytes(encoded(dict(original, compiler_commit=commit)))
+            self.assertFalse(r.valid_runtime(executable, build))
+            with patch.dict(os.environ, CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build)), \
+                 patch.object(r, "download") as download:
+                with self.assertRaisesRegex(RuntimeError, "Configured exporter"):
+                    r.prepare()
+                download.assert_not_called()
 
     def fake_download(self, url, path, sha256):
         if path.name == "stack.tar.gz":
@@ -67,7 +79,7 @@ class CaptureRuntimeTests(unittest.TestCase):
             self.assertEqual(r.prepare(), first)
             self.assertEqual(build.call_count, 1)
             # Both a fresh snapshot's exporter and its builder must be current.
-            (self.here / "Export.hs").write_text("new exporter source")
+            (self.here / r.EXPORTER).write_text("new exporter source")
             r.prepare()
             self.assertEqual(build.call_count, 2)
             (self.here / "build.py").write_text("new builder source")
@@ -117,7 +129,7 @@ class CaptureRuntimeTests(unittest.TestCase):
             recipe = hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest()
             stamp.write_text(recipe)
             self.assertEqual(r.main(), 0)
-            for path in (executable, build, stamp, self.here / "Export.hs", self.here / "build.py"):
+            for path in (executable, build, stamp, self.here / r.EXPORTER, self.here / "build.py"):
                 with self.subTest(path=path):
                     original = path.read_bytes()
                     path.write_bytes(original + b"changed")

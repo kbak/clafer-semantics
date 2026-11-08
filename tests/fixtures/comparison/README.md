@@ -14,6 +14,10 @@ Runtime captures, hashes, seeds, witnesses and minimized replays are retained
 outside the repository by the executable tests.
 `predicate_name.cfr` checks that a supported name containing `ib_candidate`
 compares and replays without being mistaken for the added predicate itself.
+`collisions.cfr` exercises the 0.5.7 name map for reserved Alloy words, names
+derived for fields/lifetimes, assertion names and the harness's own auxiliary
+names, plus the escaped-name collision `a'` versus `a_prime`. Candidates retain
+source UIDs through renamed Alloy signatures and fields.
 
 The JSON candidates are stable, original MIT-licensed regression inputs:
 `unrelated-overlap.json` preserves the #52 counterexample as a shared semantic
@@ -23,4 +27,6 @@ are the deterministic deletion-minimal sensitivity cases paired respectively
 with `set.cfr`, `bag.cfr` and `optional.cfr`. The live tests apply only the named
 injected mutation, compare the original checker candidate, shrink, check equality
 with these fixtures and replay the external result bundle. These fixtures contain
-no execution logs or private paths.
+no execution logs or private paths. Their current UID spellings match 0.5.7;
+object identities, row incidence and semantic expectations are unchanged. The
+original 0.5.4 fixtures remain in the pre-upgrade repository revision.

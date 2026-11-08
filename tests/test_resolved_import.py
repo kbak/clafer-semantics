@@ -18,12 +18,8 @@ FIXTURES = ROOT / "tests/fixtures/importer"
 
 
 def runtime():
-    executable = os.environ.get("CLAFER_CAPTURE") or shutil.which("clafer-capture")
-    if not executable:
-        raise RuntimeError("Build the pinned exporter with scripts/verification/build.py and set CLAFER_CAPTURE; see docs/resolved-import.md")
-    executable = Path(executable)
-    build = Path(os.environ.get("CLAFER_CAPTURE_BUILD", str(executable.with_name("build.json"))))
-    return executable, build
+    from runtime import prepare
+    return prepare()
 
 
 # [utest->req~clafer-compiler-capture~1]
@@ -76,18 +72,20 @@ class PinnedImportTests(unittest.TestCase):
         repeats = [n for n in nodes if n["name"] == "same"]
         self.assertEqual(2, len(repeats))
         self.assertNotEqual(repeats[0]["uid"], repeats[1]["uid"])
-        self.assertEqual("c0_Base", repeats[0]["super"])
+        self.assertEqual("Base", repeats[0]["super"])
         self.assertEqual([0, 0], next(n for n in nodes if n["name"] == "Unused")["card"])
 
     def test_saved_ir_matches_live_capture(self):
-        self.assertEqual(p.loads((FIXTURES / "analyzed.json").read_bytes()), self.bag)
+        self.assertEqual(p.loads((FIXTURES / "analyzed-057.json").read_bytes()), self.bag)
+        with self.assertRaisesRegex(p.Rejection, "fields"):
+            p.decode_ir(p.loads((FIXTURES / "analyzed.json").read_bytes()))
 
     def test_apostrophe_uid_collisions_preserve_names(self):
         nodes, _ = p.decode_ir(p.loads(self.receipts["spellings"]["json"]))
         by_name = {n["name"]: n for n in nodes}
-        self.assertEqual("c0_same__prime__", by_name["same'"]["uid"])
-        self.assertEqual("c1_same__prime__", by_name["same__prime__"]["uid"])
-        self.assertEqual("c0_links__prime__", by_name["links'"]["uid"])
+        self.assertEqual("same_prime", by_name["same'"]["uid"])
+        self.assertEqual("same__prime__", by_name["same__prime__"]["uid"])
+        self.assertEqual("links_prime", by_name["links'"]["uid"])
         self.assertEqual(by_name["Élément"]["uid"], by_name["links'"]["target"])
 
     def test_source_positions_are_strict_nonsemantic_metadata(self):
@@ -124,12 +122,13 @@ class PinnedImportTests(unittest.TestCase):
         base = self.receipts["set_and_bag_references"]
         source = (FIXTURES / "set_and_bag_references.cfr").read_bytes()
         for state, code in (("post_analysis", "string_pass_changed_ir"),
-                            ("consumed_map", "stale_consumed_map")):
+                            ("source_map", "stale_consumed_map"),
+                            ("consumed_map", "backend_consumed_map")):
             receipt = copy.deepcopy(base)
             row = (receipt[state]["_mDecls"][0]["_iClafer"] if state == "post_analysis"
                    else dict(receipt[state])[declaration["_uid"]])
             row["_cinPos"] = valid
-            if state == "consumed_map":
+            if state in ("source_map", "consumed_map"):
                 for element in dict(receipt[state])["root"]["_elements"]:
                     if element["_iClafer"]["_uid"] == declaration["_uid"]:
                         element["_iClafer"]["_cinPos"] = valid
@@ -190,11 +189,11 @@ class PinnedImportTests(unittest.TestCase):
             with self.subTest(value=value):
                 self.rejected_ir(field("_card", value), "interval")
                 self.rejected_ir(field("_glCard", value), "interval")
-        for uid in ["root", "clafer", "int", "", "r!", "c0_a", "sig", "String", "seq"]:
+        for uid in ["root", "clafer", "int", "decimal", "", "r!", "a"]:
             with self.subTest(uid=uid):
                 self.rejected_ir(field("_uid", uid))
         self.rejected_ir(field("_parentUID", ""), "parent_incidence")
-        self.rejected_ir(field("_parentUID", "c0_a"), "parent_incidence")
+        self.rejected_ir(field("_parentUID", "a"), "parent_incidence")
         self.rejected_ir(field("_gcard", None), "fields")
         self.rejected_ir(field("new_semantic_field", True), "fields")
         self.rejected_ir(field("_cinPos", [1, 2]), "position")
@@ -213,8 +212,8 @@ class PinnedImportTests(unittest.TestCase):
             with self.subTest(tag=tag):
                 self.rejected_ir(lambda d: ref(d).__setitem__("_iType", {"tag": tag}), "type_metadata")
         self.rejected_ir(lambda d: ref(d)["_exp"].__setitem__("_modName", "module"), "qualified_id")
-        self.rejected_ir(lambda d: ref(d)["_exp"]["_binding"].__setitem__("contents", "c0_a"), "binding_identity")
-        self.rejected_ir(lambda d: ref(d)["_iType"].__setitem__("_hi", ["c0_a"]), "type_hierarchy")
+        self.rejected_ir(lambda d: ref(d)["_exp"]["_binding"].__setitem__("contents", "a"), "binding_identity")
+        self.rejected_ir(lambda d: ref(d)["_iType"].__setitem__("_hi", ["a"]), "type_hierarchy")
         self.rejected_ir(lambda d: ref(d)["_exp"].__setitem__("_isTop", False), "top_flag")
         for uid in ["missing", "integer"]:
             def change(d):
@@ -231,7 +230,8 @@ class PinnedImportTests(unittest.TestCase):
         for modifier in ["_initial", "_final"]:
             self.rejected_ir(lambda d: d["iModule"]["_mDecls"][1]["_iClafer"]["_modifiers"].__setitem__(modifier, True), "temporal_modifier")
         for modifier in ["FinalRefTarget", "FinalRef", "FinalTarget", "Unknown"]:
-            self.rejected_ir(lambda d: d["iModule"]["_mDecls"][2]["_iClafer"]["_reference"].__setitem__("_refModifier", modifier), "reference_modifier")
+            self.rejected_ir(lambda d: d["iModule"]["_mDecls"][2]["_iClafer"]["_reference"].__setitem__("_refModifiers", [modifier]),
+                "reference_modifier_enum" if modifier == "Unknown" else "reference_modifier")
 
     def test_combination_guards(self):
         self.rejected_ir(lambda d: d["iModule"]["_mDecls"][0]["_iClafer"].__setitem__("_card", [0, 1]), "abstract_fragment")
@@ -268,7 +268,7 @@ class PinnedImportTests(unittest.TestCase):
         source = (FIXTURES / "set_and_bag_references.cfr").read_bytes()
         changes = [lambda g: g.__setitem__("schema", "unknown"),
             lambda g: g.__setitem__("backend", "tmp.als"),
-            lambda g: g.__setitem__("scopes", [["c0_a", 4]]),
+            lambda g: g.__setitem__("scopes", [["a", 4]]),
             lambda g: g.__setitem__("strings", [[0, "str"]]),
             lambda g: g.__setitem__("post_strings", {}),
             lambda g: g.__setitem__("consumed_map", g["consumed_map"][:-1]),

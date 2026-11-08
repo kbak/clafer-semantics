@@ -23,6 +23,7 @@ from capture import capture
 import protocol as p
 import relation
 from runtime import prepare
+from compiler_profile import PIN
 
 FIXTURES=ROOT / "tests/fixtures/comparison"
 
@@ -39,7 +40,7 @@ class RelationTests(unittest.TestCase):
     def test_command_matches_complete_identifiers(self):
         header="open util/integer\npred show {}\nrun show for 1\n\n"
         pin_text="pred ib_candidate {}\n"
-        for symbol in ("c0_ib_candidate", "ib_candidate_suffix", "ib_candidate'", "ib_candidateÉ"):
+        for symbol in ("user_ib_candidate", "ib_candidate_suffix", "ib_candidate'", "ib_candidateÉ"):
             with self.subTest(symbol=symbol):
                 declaration=f"lone sig {symbol} {{}}\n"
                 model,command=c.command(header+declaration,pin_text,{symbol:1},4,1)
@@ -133,9 +134,10 @@ class SourceIdentityTests(unittest.TestCase):
         # compiler. Malformed candidate bytes stop before checker/solver setup.
         for name in ("input.cfr","analyzed.json","model.als","build.json","manifest.json"):
             (self.bundle/name).write_bytes(b"{}\n")
-        (self.bundle/"generation.json").write_bytes(p.encoded(dict(observations=[])))
+        (self.bundle/"generation.json").write_bytes(p.encoded(dict(observations=[],effective_options=p.OPTIONS)))
+        (self.bundle/"manifest.json").write_bytes(p.encoded(dict(compiler_commit=PIN)))
         self.enterContext(patch.object(c,"ROOT",self.source))
-        self.enterContext(patch.object(c,"import_bundle",return_value=({},{})))
+        self.enterContext(patch.object(c,"import_bundle",return_value=({},dict(compiler_commit=PIN))))
 
     def git(self,*args,cwd=None):
         return subprocess.check_output(["git",*args],cwd=cwd or self.source,text=True,
@@ -255,22 +257,22 @@ class LiveComparisonTests(unittest.TestCase):
         print(f"Bounded comparison evidence: {cls.evidence}",flush=True)
         cls.bundles={};cls.cores={};cls.metadata={};cls.serial=0
         maps={
-          "bag":{"c0_Target":2,"c0_refs":3},"set":{"c0_Target":2,"c0_refs":3},
-          "optional":{"c0_x":2},"overlap":{"c0_x":1,"c0_y":1},
-          "nesting":{"c0_box":2,"c0_child":2},
-          "inheritance":{"c0_Base":3,"c0_Middle":2,"c0_Unused":1,"c0_left":2,"c0_right":2},
-          "bounds":{"c0_box":1,"c0_zero":0,"c0_optional":1,"c0_exact":2,"c0_bounded":3,"c0_unbounded":3},
-          "groups":{"c0_Target":1,"c0_box":1,"c0_refs":4},
-          "cycles":{"c0_a":2,"c0_child":1,"c0_b":2}}
-        maps.update(parent_set={"c0_Target":1,"c0_box":2,"c0_refs":2},
-            nested_inheritance={"c0_Base":1,"c0_box":1,"c0_child":1},
-            abstract_bounds={"c0_Base":1,"c0_left":1,"c0_right":1},one={"c0_x":0},
-            some={"c0_x":0},
-            eight={"c0_x":8},keywords={**{f"c{i}_"+name:1 for i in range(4) for name in ("first","second")},
-                **{"c0_"+name:1 for name in ("exclusive","inclusive","atMostOne","optionalGroup")}},
-            identities={"c0_Base":2,"c0_Unused":0,"c0_left":1,"c0_right":1,"c0_same":2,"c1_same":2,"c0_links":2},
-            spellings={"c0_box":2,"c0_links__prime__":2,"c0_same__prime__":2,"c1_same__prime__":2,"c0_Élément":2},
-            predicate_name={"c0_ib_candidate":1})
+          "bag":{"Target":2,"refs":3},"set":{"Target":2,"refs":3},
+          "optional":{"x":2},"overlap":{"x":1,"y":1},
+          "nesting":{"box":2,"child":2},
+          "inheritance":{"Base":3,"Middle":2,"Unused":1,"left":2,"right":2},
+          "bounds":{"box":1,"zero":0,"optional":1,"exact":2,"bounded":3,"unbounded":3},
+          "groups":{"Target":1,"box":1,"refs":4},
+          "cycles":{"a":2,"child":1,"b":2}}
+        maps.update(parent_set={"Target":1,"box":2,"refs":2},
+            nested_inheritance={"Base":1,"box":1,"child":1},
+            abstract_bounds={"Base":1,"left":1,"right":1},one={"x":0},
+            some={"x":0},
+            eight={"x":8},keywords={**{group+"__"+name:1 for group in ("exclusive","inclusive","atMostOne","optionalGroup") for name in ("first","second")},
+                **{name:1 for name in ("exclusive","inclusive","atMostOne","optionalGroup")}},
+            identities={"Base":2,"Unused":0,"left":1,"right":1,"left__same":2,"right__same":2,"links":2},
+            spellings={"box":2,"links_prime":2,"same_prime":2,"same__prime__":2,"Élément":2},
+            predicate_name={"ib_candidate":1})
         for name,bounds in maps.items():
             path=cls.evidence / ("capture-"+name)
             fixture=(ROOT/"tests/fixtures/importer"/(name+".cfr")) if name in ("identities","spellings") else FIXTURES/(name+".cfr")
@@ -278,7 +280,7 @@ class LiveComparisonTests(unittest.TestCase):
             cls.bundles[name]=path;cls.cores[name]=core;cls.metadata[name]=meta
         # Reuse the same generated pair with a second explicit manual vector.
         path=cls.evidence/"capture-bag-small";shutil.copytree(cls.bundles["bag"],path)
-        manifest=p.loads((path/"manifest.json").read_bytes());manifest["bounds"]={"root":1,"c0_Target":1,"c0_refs":1}
+        manifest=p.loads((path/"manifest.json").read_bytes());manifest["bounds"]={"root":1,"Target":1,"refs":1}
         (path/"manifest.json").write_bytes(p.encoded(manifest))
         cls.cores["bag-small"],cls.metadata["bag-small"]=p.import_bundle(path);cls.bundles["bag-small"]=path
 
@@ -292,8 +294,8 @@ class LiveComparisonTests(unittest.TestCase):
 
     def repeat(self,count=3):
         heads=list(range(2,2+count))
-        return candidate({"c0_Target":[1],"c0_refs":heads},
-            [["c0_Target",[0,1]]]+[["c0_refs",[0,h]] for h in heads],[["c0_refs",[h,1]] for h in heads])
+        return candidate({"Target":[1],"refs":heads},
+            [["Target",[0,1]]]+[["refs",[0,h]] for h in heads],[["refs",[h,1]] for h in heads])
 
     def test_01_repeated_targets_and_replay(self):
         for count in (0,1,3):
@@ -308,63 +310,63 @@ class LiveComparisonTests(unittest.TestCase):
         self.run_case("bag",renamed,"agree_satisfies")
 
     def test_02_nesting_groups_and_effective_bounds(self):
-        nested=candidate({"c0_box":[1],"c0_child":[2]},[["c0_box",[0,1]],["c0_child",[1,2]]])
+        nested=candidate({"box":[1],"child":[2]},[["box",[0,1]],["child",[1,2]]])
         self.run_case("nesting",nested,"agree_satisfies")
         bad=copy.deepcopy(nested);bad["containment"].pop();self.run_case("nesting",bad,"agree_violates")
         for count in (1,2,3,4):
             heads=list(range(3,3+count))
-            value=candidate({"c0_Target":[1],"c0_box":[2],"c0_refs":heads},
-                [["c0_Target",[0,1]],["c0_box",[0,2]]]+[["c0_refs",[2,h]] for h in heads],
-                [["c0_refs",[h,1]] for h in heads])
+            value=candidate({"Target":[1],"box":[2],"refs":heads},
+                [["Target",[0,1]],["box",[0,2]]]+[["refs",[2,h]] for h in heads],
+                [["refs",[h,1]] for h in heads])
             self.run_case("groups",value,"agree_satisfies" if count in (2,3) else "agree_violates")
-        members={"c0_box":[1],"c0_exact":[2,3],"c0_bounded":[4,5],"c0_unbounded":[6,7]}
-        links=[["c0_box",[0,1]]]+[[u,[1,o]] for u,os_ in members.items() if u!="c0_box" for o in os_]
+        members={"box":[1],"exact":[2,3],"bounded":[4,5],"unbounded":[6,7]}
+        links=[["box",[0,1]]]+[[u,[1,o]] for u,os_ in members.items() if u!="box" for o in os_]
         good=candidate(members,links);self.run_case("bounds",good,"agree_satisfies")
-        bad=copy.deepcopy(good);bad["containment"].remove(["c0_exact",[1,3]])
+        bad=copy.deepcopy(good);bad["containment"].remove(["exact",[1,3]])
         self.run_case("bounds",bad,"agree_violates")
         self.run_case("bounds",candidate({}),"agree_satisfies")
 
     def test_03_inheritance_overlap_and_root_negatives(self):
-        good=candidate({"c0_Base":[1,2],"c0_Middle":[1],"c0_left":[1],"c0_right":[2]},
-                       [["c0_left",[0,1]],["c0_right",[0,2]]])
+        good=candidate({"Base":[1,2],"Middle":[1],"left":[1],"right":[2]},
+                       [["left",[0,1]],["right",[0,2]]])
         self.run_case("inheritance",good,"agree_satisfies")
-        for members in ({"c0_Base":[1]}, {"c0_Unused":[1]},
-                        {"c0_Base":[1],"c0_Middle":[1],"c0_left":[1],"c0_right":[1]}):
-            links=[[u,[0,o]] for u,os_ in members.items() if u in ("c0_left","c0_right") for o in os_]
+        for members in ({"Base":[1]}, {"Unused":[1]},
+                        {"Base":[1],"Middle":[1],"left":[1],"right":[1]}):
+            links=[[u,[0,o]] for u,os_ in members.items() if u in ("left","right") for o in os_]
             self.run_case("inheritance",candidate(members,links),"agree_violates")
-        overlap=candidate({"c0_x":[1],"c0_y":[1]},[["c0_x",[0,1]],["c0_y",[0,1]]])
+        overlap=candidate({"x":[1],"y":[1]},[["x",[0,1]],["y",[0,1]]])
         self.assertEqual(overlap,p.loads((FIXTURES/"unrelated-overlap.json").read_bytes()))
         result,path=self.run_case("overlap",overlap,"agree_violates")
         self.assertEqual("violates",result["lean"])
         self.assertEqual(["declaration_disjoint"],p.loads((path/"lean.json").read_bytes())["failed_predicates"])
-        self.run_case("overlap",candidate({"c0_x":[1],"c0_y":[2]},
-            [["c0_x",[0,1]],["c0_y",[0,2]]]),"agree_satisfies")
-        self.run_case("nesting",candidate({"c0_box":[1],"c0_child":[1]},
-            [["c0_box",[0,1]],["c0_child",[1,1]]]),"agree_violates")
-        value=candidate({"c0_x":[1]},[["c0_x",[0,1]]])
+        self.run_case("overlap",candidate({"x":[1],"y":[2]},
+            [["x",[0,1]],["y",[0,2]]]),"agree_satisfies")
+        self.run_case("nesting",candidate({"box":[1],"child":[1]},
+            [["box",[0,1]],["child",[1,1]]]),"agree_violates")
+        value=candidate({"x":[1]},[["x",[0,1]]])
         for mutate in (lambda x:x["objects"].append(2),
-                       lambda x:x["containment"].clear(),lambda x:x["members"].append(["c0_x",0])):
+                       lambda x:x["containment"].clear(),lambda x:x["members"].append(["x",0])):
             bad=copy.deepcopy(value);mutate(bad);self.run_case("optional",bad,"agree_violates")
-        too_many=candidate({"c0_x":[1,2]},[["c0_x",[0,1]],["c0_x",[0,2]]])
+        too_many=candidate({"x":[1,2]},[["x",[0,1]],["x",[0,2]]])
         self.run_case("optional",too_many,"agree_violates")
         bad=copy.deepcopy(value);bad["members"].append(["root",1])
         r,_=self.run_case("optional",bad,"unsupported");self.assertEqual("violates",r["lean"])
         self.run_case("optional",dict(value,members=[],containment=[]),"agree_violates")
-        nested=candidate({"c0_Base":[2],"c0_box":[1],"c0_child":[2]},[["c0_box",[0,1]],["c0_child",[1,2]]])
+        nested=candidate({"Base":[2],"box":[1],"child":[2]},[["box",[0,1]],["child",[1,2]]])
         self.run_case("nested_inheritance",nested,"agree_satisfies")
 
     def test_04_cycles_nonfunctional_and_malformed(self):
-        value=candidate({"c0_a":[1],"c0_b":[2],"c0_child":[3]},
-                        [["c0_a",[0,1]],["c0_b",[0,2]],["c0_child",[1,3]]],
-                        [["c0_a",[1,2]],["c0_b",[2,1]]])
+        value=candidate({"a":[1],"b":[2],"child":[3]},
+                        [["a",[0,1]],["b",[0,2]],["child",[1,3]]],
+                        [["a",[1,2]],["b",[2,1]]])
         self.run_case("cycles",value,"agree_satisfies")
         bad=copy.deepcopy(value);bad["references"].pop();self.run_case("cycles",bad,"agree_violates")
-        multi=candidate({"c0_Target":[1,2],"c0_refs":[3]},
-            [["c0_Target",[0,1]],["c0_Target",[0,2]],["c0_refs",[0,3]]],[["c0_refs",[3,1]],["c0_refs",[3,2]]])
+        multi=candidate({"Target":[1,2],"refs":[3]},
+            [["Target",[0,1]],["Target",[0,2]],["refs",[0,3]]],[["refs",[3,1]],["refs",[3,2]]])
         self.run_case("bag",multi,"agree_violates")
         for mutate in (lambda x:x["objects"].append(0),lambda x:x["members"].append(["missing",1]),
-                       lambda x:x["references"].append(["c0_a",[1,99]]),
-                       lambda x:x["references"].append(["c0_a",[1,3]])):
+                       lambda x:x["references"].append(["a",[1,99]]),
+                       lambda x:x["references"].append(["a",[1,3]])):
             bad=copy.deepcopy(value);mutate(bad);r,_=self.run_case("cycles",bad,"malformed")
             self.assertIsNone(r["solver"])
         self.run_case("bag",None,"malformed")
@@ -406,7 +408,7 @@ class LiveComparisonTests(unittest.TestCase):
     def test_07_mutations_shrink_and_deterministic_replay(self):
         cases=[("set","omit_set_uniqueness",self.repeat(),"alloy_accepts_lean_rejects"),
                ("bag","collapse_bag_heads",self.repeat(),"pin_decode_failure"),
-               ("optional","drop_cardinality",candidate({"c0_x":[1,2]},[["c0_x",[0,1]],["c0_x",[0,2]]]),"alloy_accepts_lean_rejects")]
+               ("optional","drop_cardinality",candidate({"x":[1,2]},[["x",[0,1]],["x",[0,2]]]),"alloy_accepts_lean_rejects")]
         for name,mutation,value,expected in cases:
             self.run_case(name,value,expected,mutation=mutation)
             def preserves(smaller):
@@ -424,7 +426,7 @@ class LiveComparisonTests(unittest.TestCase):
 
     def test_08_tampering_arithmetic_errors_and_unknown(self):
         self.run_case("bag",self.repeat(),"unsupported",bitwidth=4)
-        eight=candidate({"c0_x":list(range(1,9))},[["c0_x",[0,h]] for h in range(1,9)])
+        eight=candidate({"x":list(range(1,9))},[["x",[0,h]] for h in range(1,9)])
         self.run_case("eight",eight,"agree_satisfies",bitwidth=8)
         self.run_case("eight",eight,"unsupported",bitwidth=4)
         self.run_case("keywords",None,"agree_satisfies",bitwidth=10,unpinned=True)
@@ -433,9 +435,9 @@ class LiveComparisonTests(unittest.TestCase):
         with patch.object(alloy_runtime,"solve",return_value=dict(outcome="timeout",detail="injected timeout")):
             self.run_case("bag",self.repeat(),"inconclusive")
         real_command=c.command
-        value=candidate({"c0_Target":[1,2],"c0_refs":[3,4,5]},
-            [["c0_Target",[0,1]],["c0_Target",[0,2]]]+[["c0_refs",[0,h]] for h in (3,4,5)],
-            [["c0_refs",[h,1]] for h in (3,4,5)])
+        value=candidate({"Target":[1,2],"refs":[3,4,5]},
+            [["Target",[0,1]],["Target",[0,2]]]+[["refs",[0,h]] for h in (3,4,5)],
+            [["refs",[h,1]] for h in (3,4,5)])
         def wrong_relation(original,pin_text,*args,**kwargs):
             self.assertIn("ib_obj_2->ib_obj_0",pin_text)
             return real_command(original,pin_text.replace("ib_obj_2->ib_obj_0","ib_obj_2->ib_obj_1",1),*args,**kwargs)
@@ -461,13 +463,13 @@ class LiveComparisonTests(unittest.TestCase):
             c.replay(path,self.evidence/"bad-replay",runtime=self.runtime)
 
     def test_10_apostrophe_names_compare_and_replay(self):
-        # 0.5.4 escapes apostrophes in UIDs, including collisions with a literal
-        # __prime__ name, while retaining distinct head identities and references.
-        value=candidate({"c0_box":[1],"c0_Élément":[2],"c0_same__prime__":[3],
-                         "c1_same__prime__":[4],"c0_links__prime__":[5]},
-            [["c0_box",[0,1]],["c0_Élément",[0,2]],
-             ["c0_same__prime__",[1,3]],["c1_same__prime__",[1,4]],
-             ["c0_links__prime__",[1,5]]],[["c0_links__prime__",[5,2]]])
+        # 0.5.7 escapes apostrophes while retaining literal __prime__ names,
+        # distinct head identities and references.
+        value=candidate({"box":[1],"Élément":[2],"same_prime":[3],
+                         "same__prime__":[4],"links_prime":[5]},
+            [["box",[0,1]],["Élément",[0,2]],
+             ["same_prime",[1,3]],["same__prime__",[1,4]],
+             ["links_prime",[1,5]]],[["links_prime",[5,2]]])
         r,path=self.run_case("spellings",value,"agree_satisfies")
         self.assertEqual("admitted",r["admission"])
         self.assertTrue(r["complete"])
@@ -531,11 +533,11 @@ class LiveComparisonTests(unittest.TestCase):
 
     def test_13_predicate_substring_comparison_and_replay(self):
         original=(self.bundles["predicate_name"]/"model.als").read_text()
-        self.assertIn("lone sig c0_ib_candidate",original)
+        self.assertIn("lone sig ib_candidate",original)
         for count in (0,1):
             with self.subTest(count=count):
-                value=candidate({"c0_ib_candidate":list(range(1,count+1))},
-                                [["c0_ib_candidate",[0,o]] for o in range(1,count+1)])
+                value=candidate({"ib_candidate":list(range(1,count+1))},
+                                [["ib_candidate",[0,o]] for o in range(1,count+1)])
                 result,path=self.run_case("predicate_name",value,"agree_satisfies",bitwidth=4,overall=1)
                 self.assertEqual("sat",result["solver"])
                 self.assertTrue(result["faithful"])
@@ -548,14 +550,14 @@ class LiveComparisonTests(unittest.TestCase):
                 self.assertTrue(replayed["complete"])
 
     def test_09_per_parent_keys_and_two_parents(self):
-        value=candidate({"c0_Target":[1],"c0_box":[2,3],"c0_refs":[4,5]},
-            [["c0_Target",[0,1]],["c0_box",[0,2]],["c0_box",[0,3]],["c0_refs",[2,4]],["c0_refs",[3,5]]],
-            [["c0_refs",[4,1]],["c0_refs",[5,1]]])
+        value=candidate({"Target":[1],"box":[2,3],"refs":[4,5]},
+            [["Target",[0,1]],["box",[0,2]],["box",[0,3]],["refs",[2,4]],["refs",[3,5]]],
+            [["refs",[4,1]],["refs",[5,1]]])
         self.run_case("parent_set",value,"agree_satisfies")
-        bad=copy.deepcopy(value);bad["containment"][-1]=["c0_refs",[2,5]]
+        bad=copy.deepcopy(value);bad["containment"][-1]=["refs",[2,5]]
         self.run_case("parent_set",bad,"agree_violates")
-        both=candidate({"c0_box":[1,2],"c0_child":[3]},
-            [["c0_box",[0,1]],["c0_box",[0,2]],["c0_child",[1,3]],["c0_child",[2,3]]])
+        both=candidate({"box":[1,2],"child":[3]},
+            [["box",[0,1]],["box",[0,2]],["child",[1,3]],["child",[2,3]]])
         self.run_case("nesting",both,"agree_violates")
 
 

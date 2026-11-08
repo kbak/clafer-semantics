@@ -51,7 +51,7 @@ An empty inventory counts zero. Bounds containing zero hold; a positive lower
 bound forces the context extent empty. An empty context satisfies the universal
 predicate vacuously. This deliberately differs from the audited 0.5.3
 `genGroupConst` empty-inventory skip. The current
-[0.5.4 capture profile](resolved-ir-comparison.md#compiler-054-compatibility)
+[0.5.7 capture profile](resolved-ir-comparison.md#compiler-057-compatibility)
 rejects concrete groups whose lower bound cannot be reached, even when their
 context could be empty; abstract groups remain exempt. This compiler rejection
 does not replace the independent zero-count meaning. The

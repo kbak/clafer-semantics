@@ -111,8 +111,9 @@ common-fragment agreement and a complete source/witness inventory. Its finite
 observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 The accepted extension is integrated into `main`; contributions use main-based
-topic branches. Existing structural imports and historical static profiles remain
-supported.
+topic branches. The current structural importer supports the exact reviewed
+0.5.7 revision. Historical static evidence remains reproducible with its original
+repository revision and tools, as specified in the [import contract](resolved-import.md).
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,
 production runtime configuration management, Claferize, post-2014 extensions

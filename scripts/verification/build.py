@@ -6,7 +6,8 @@ import os
 from pathlib import Path
 import subprocess
 import tarfile
-from protocol import ARCHIVE, PIN, digest, encoded
+from protocol import digest, encoded
+from compiler_profile import PIN, ARCHIVE, EXPORTER
 
 
 def require(condition, detail):
@@ -46,7 +47,7 @@ def main():
                     target.chmod(member.mode)
     env = dict(os.environ, STACK_ROOT=str(work / "stack-root"))
     stack = str(args.stack.resolve())
-    exporter = Path(__file__).with_name("Export.hs").resolve()
+    exporter = Path(__file__).with_name(EXPORTER).resolve()
     output = work / "clafer-capture"
     obj = work / "exporter-objects"
     obj.mkdir(exist_ok=True)

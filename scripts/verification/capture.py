@@ -6,7 +6,8 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from protocol import PIN, VERSION, EXPORT_SCHEMA, SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
+from compiler_profile import PIN, VERSION, EXPORT_SCHEMA
+from protocol import SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
 
 
 # [impl->req~clafer-compiler-capture~1]
@@ -15,6 +16,8 @@ def capture(source, exporter, build_file, bounds, output):
     source, exporter, build_file, output = map(Path, (source, exporter, build_file, output))
     build_bytes = build_file.read_bytes()
     build = loads(build_bytes)
+    if build["compiler_commit"] != PIN:
+        reject("build_identity", category="unsupported")
     if build["exporter_binary"] != digest(exporter.read_bytes()):
         reject("exporter_binary_hash")
     before = source.read_bytes()

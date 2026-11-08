@@ -1157,13 +1157,16 @@ local Shapes and the B.5 reduct do not establish whole-model comparison;
 the [structural semantics and checker bridges](structural-checker.md) supply the
 separate whole-model interpretation and finite correctness results.
 
-The current executable dependency is
-[`6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea)
-(package 0.5.4). Its MIT license is unchanged. The
-[0.5.4 assessment](resolved-ir-comparison.md#compiler-054-compatibility) records
-changes to the matrix's names/defaults/groups/positions/options entries while
-retaining the historical audit above. The [import guide](resolved-import.md)
-owns current archive/schema/build identities. The paper remains semantic authority.
+The default structural executable dependency is
+[`f6ca5b887d7bacc09915c6fc0278064c8371beac`](https://github.com/gsdlab/clafer/tree/f6ca5b887d7bacc09915c6fc0278064c8371beac)
+(package 0.5.7, merged PR #113). Its MIT license was inspected. The
+[0.5.7 assessment](resolved-ir-comparison.md#compiler-057-compatibility) records
+the full delta from the retained
+[0.5.4 profile](resolved-ir-comparison.md#compiler-054-compatibility).
+The [import guide](resolved-import.md) owns current archive/schema/build identities;
+old capture imports retain their exact producer pin. This static adapter choice
+leaves the separately qualified behavioral profiles unchanged. The paper remains
+semantic authority.
 
 ## Structural Compile contract
 
@@ -1404,8 +1407,12 @@ boundary from SoSyM §§5.3–5.5 and §6.2.2/Figure 22, with the selected [stru
 interpretation](structural-checker.md). Appendix 3 explains the authored/default metadata gap; imported
 effective values do not establish historical provenance or default correctness.
 
-Compiler evidence is pinned to
-[`gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea).
+Compiler evidence is selected by the exact reviewed
+[structural profile](resolved-ir-comparison.md#compiler-057-compatibility), with
+historical captures replayed using their original repository revision and tools.
+The current adapter supports only 0.5.7. At that merge,
+`Intermediate/UIDs.hs`, `Generator/AlloyNames.hs` and
+`ScopeAnalysis.withEmptyAbstracts` add the identity/zero-scope obligations.
 `Intermediate/Intclafer.hs` owns the serialized types; `Language/Clafer.hs`
 `analyze`/`generate` fixes the paired boundary. `Common.createUidIClaferMap`,
 `Optimizer.optimizeModule`/`optimizeClafer`/`makeZeroUnusedAbs`, and

@@ -60,7 +60,7 @@ Supplementary audited 0.5.3 evidence (MIT; no source copied):
 The compiler keeps ordinary children of abstract parents ordinary. Its wider
 parent-subtyping is not selected; its Telematics fixtures differ from the printed
 model, including names and extra version constraints. Preserve the remaining [comparison boundaries (D1–D8)](resolved-ir-comparison.md#decisions-accepted-locations-and-dependency-boundaries).
-The current [0.5.4 assessment](resolved-ir-comparison.md#compiler-054-compatibility)
+The historical [0.5.4 assessment](resolved-ir-comparison.md#compiler-054-compatibility)
 retains these realization boundaries separately from its default/group fixes.
 
 ## Scoped source-to-core inventory

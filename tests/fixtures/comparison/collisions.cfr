@@ -1,0 +1,16 @@
+sig ->> x 0..1
+x 0..1
+x_ref 0..1
+r_x 0..1
+p_x 0..1
+alive_x 0..1
+plus 0..1
+show 0..1
+assertAt_3_5 0..1
+ib_candidate 0..1
+ib_candidate_ 0..1
+ib_obj_0 0..1
+a' 0..1
+a_prime 0..1
+box 0..1
+  child 0..1
