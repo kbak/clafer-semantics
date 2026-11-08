@@ -54,7 +54,7 @@ Later revisions require a new matrix audit, even if a version string is unchange
 
 ### Compiler 0.5.4 compatibility
 
-The historical executable [import profile](resolved-import.md) uses
+The historical executable [import profile](https://github.com/kbak/clafer-semantics/blob/c183c1c2e4cc22cc9f41ea78733a20fc3610b50b/docs/resolved-import.md) used
 [0.5.4 at `6750e6f591b2131549122c13dee94d3d2257eaea`](https://github.com/gsdlab/clafer/tree/6750e6f591b2131549122c13dee94d3d2257eaea),
 as requested in [the dependency update](https://github.com/kbak/clafer-semantics/issues/115).
 The original matrix and its immutable 0.5.3 locators remain historical evidence;
@@ -74,12 +74,13 @@ The unchanged Alloy group generator retains the documented counting differences
 outside S; these fixes do not establish general group equivalence. HTML escaping,
 CLI import loading and error rendering are outside paired capture. The effective
 core, independent Lean meanings, S combination guards and theorem hypotheses are
-unchanged. Live capture, decoder mutation and bounded comparison tests exercise
-this profile; they supply execution evidence, not source-compiler correctness.
+unchanged. Historical live capture, decoder mutation and bounded comparison
+results supply execution evidence, not source-compiler correctness. Replay uses
+their original source and tools; current validation exercises 0.5.7.
 
 ### Compiler 0.5.7 compatibility
 
-The default structural profile pins the merged
+The sole current structural profile pins the merged
 [PR #113 revision `f6ca5b887d7bacc09915c6fc0278064c8371beac`](https://github.com/gsdlab/clafer/tree/f6ca5b887d7bacc09915c6fc0278064c8371beac),
 package 0.5.7, as selected for [the adapter update](https://github.com/kbak/clafer-semantics/issues/148).
 This audit compares the full 0.5.4-to-merge pipeline, including earlier release
@@ -89,20 +90,20 @@ The exact archive/schema identities are owned by the [import guide](resolved-imp
 | Affected area | Merged revision and adapter disposition |
 | --- | --- |
 | UID assignment and Alloy symbols | `Intermediate/UIDs.hs` assigns qualified, collision-distinct UIDs; `Generator/AlloyNames.hs` separately escapes reserved and derived Alloy symbols. The receipt records the total map, source IR and renamed backend IR. Bounds, fields, pins and witness decoding use that checked bijection, preserving source UIDs and repeated display names. |
-| Serialized modifiers and registry | `Intclafer.hs` adds `_finalReferences`, plural `_refModifiers` and decimal forms. `Common.hs` adds decimal registry metadata. Exact profile-selected schemas require empty modifier lists and reject all primitive values; no inherited-reference or temporal domain is added. |
+| Serialized modifiers and registry | `Intclafer.hs` adds `_finalReferences`, plural `_refModifiers` and decimal forms. `Common.hs` adds decimal registry metadata. The exact pinned schema requires empty modifier lists and rejects all primitive values; no inherited-reference or temporal domain is added. |
 | Pipeline and actual consumed state | `Language.Clafer.generate` renames after the string pass and rebuilds the UID map only when names change. Both branches are checked, including optimized global cards/unused abstracts in the rebuilt map. String transformation must remain empty; source options, `explicit_model` and `decimal_digits` stay fixed. |
 | Empty abstract scopes | `ScopeAnalysis.withEmptyAbstracts` emits zero scopes even with strategy `None`. S admits only the independently checked unused abstract leaves. Capture retains this command; comparison validates its resolved AST then substitutes explicit experiment bounds and guards. |
 | Static generated declarations/facts | `genRelations`, multiplicities, parent/group facts and set uniqueness retain the restricted structural forms. Changes for nested assertions, union reference targets, conditional expressions, `noclafer`, decimal literals and navigation are behind the existing exclusions. Complete generated-token validation remains mandatory. |
 | Resolution, defaults and excluded forms | Qualified UID assignment and name lookup change spelling/resolution; effective cards and admitted basic inheritance retain their structural contract. Temporal finality, richer references, explicit source forms and arithmetic remain outside S. The AST audit and Lean admission still reject unsupported combinations and hierarchy cycles while admitting reference cycles. |
-| Build and extraction | Package 0.5.7 retains lts-22.44, GHC 9.6.7, Stack 3.11.1 and the two Git dependencies. The exporter is separate from the unchanged 0.5.4 exporter. Source archive/tree/lock hashes and observer assembly checks bind each execution to its profile. |
+| Build and extraction | Package 0.5.7 retains lts-22.44, GHC 9.6.7, Stack 3.11.1 and the two Git dependencies. One exporter serves the pinned revision. Source archive/tree/lock hashes and observer assembly checks bind each execution to that revision; historical exporters remain in their original repository revisions. |
 
 The root temporal-constraint and union-target fixes mentioned in the release
 review are present in this merge but do not enlarge S. Empty-abstract scopes
 are included explicitly; the fix `4c63ddf` already predates the historical
 behavioral `af858ec` pin. None of these observations establishes behavioral
-agreement or resolves the retained S/X/D differences. Actual two-profile tests
-compare effective core rows under their captured identities, exercise positive,
-violating and empty candidates, and reject mixed schemas and altered maps.
+agreement or resolves the retained S/X/D differences. Current 0.5.7 tests preserve
+the existing effective-core regression obligations, exercise positive, violating
+and empty candidates, and reject mixed schemas and altered maps.
 The independently defined Lean semantics and all theorem hypotheses are unchanged.
 
 The compiler is supplementary implementation evidence. Its [MIT license][license]

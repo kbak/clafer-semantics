@@ -1,21 +1,21 @@
 {
   "containment": [
     [
-      "c0_Target",
+      "Target",
       [
         0,
         1
       ]
     ],
     [
-      "c0_refs",
+      "refs",
       [
         0,
         3
       ]
     ],
     [
-      "c0_refs",
+      "refs",
       [
         0,
         4
@@ -24,15 +24,15 @@
   ],
   "members": [
     [
-      "c0_Target",
+      "Target",
       1
     ],
     [
-      "c0_refs",
+      "refs",
       3
     ],
     [
-      "c0_refs",
+      "refs",
       4
     ],
     [
@@ -48,14 +48,14 @@
   ],
   "references": [
     [
-      "c0_refs",
+      "refs",
       [
         3,
         1
       ]
     ],
     [
-      "c0_refs",
+      "refs",
       [
         4,
         1

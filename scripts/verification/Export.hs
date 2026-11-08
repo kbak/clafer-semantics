@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
--- Adapter for gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea.
+-- Adapter for gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac.
 -- External, unproved extraction code. See docs/resolved-import.md.
 module Main where
 
 import Data.Aeson (Value, object, (.=), encode)
 import qualified Data.ByteString.Lazy.Char8 as B
 import Data.Data (Data, gmapQ, toConstr, showConstr)
-import Data.List (isInfixOf, sort, group)
+import Data.List (isInfixOf, intercalate, sort, group)
 import qualified Data.Map.Strict as M
 import qualified Data.StringMap as S
 import System.Environment (getArgs)
@@ -18,6 +18,8 @@ import qualified Language.Clafer.Front.LexClafer as L
 import qualified Language.Clafer.Common as G
 import qualified Language.Clafer.Intermediate.Intclafer as I
 import Language.Clafer.Intermediate.StringAnalyzer (astrModule)
+import Language.Clafer.Generator.AlloyNames (alloyNames, toAlloyNames)
+import Language.Clafer.Intermediate.ScopeAnalysis (getScopeStrategy)
 import qualified Observer as Alloy
 import Language.Clafer.Generator.Concat (flatten)
 
@@ -65,6 +67,7 @@ optionsJSON a = object
   , "flatten_inheritance" .= A.flatten_inheritance a, "timeout_analysis" .= A.timeout_analysis a
   , "no_layout" .= A.no_layout a, "new_layout" .= A.new_layout a
   , "check_duplicates" .= A.check_duplicates a, "skip_resolver" .= A.skip_resolver a
+  , "explicit_model" .= A.explicit_model a, "decimal_digits" .= A.decimal_digits a
   , "keep_unused" .= A.keep_unused a, "no_stats" .= A.no_stats a
   , "validate" .= A.validate a, "tooldir" .= A.tooldir a
   , "alloy_mapping" .= A.alloy_mapping a, "self_contained" .= A.self_contained a
@@ -78,12 +81,13 @@ optionsJSON a = object
   , "file" .= A.file a ]
 
 -- Observations use the actual generator helpers and the actual consumed map.
-observations :: G.GEnv -> I.IModule -> [Value]
-observations g m = concatMap (walk []) (G.getSubclafers (I._mDecls m))
+observations :: M.Map String String -> G.GEnv -> I.IModule -> [Value]
+observations names g m = concatMap (walk []) (G.getSubclafers (I._mDecls m))
   where
+  inverse = M.fromList [(a, u) | (u, a) <- M.toList names]
   env = Alloy.GenEnv options (G.uidClaferMap g) "for 1"
   walk path c = object
-    [ "uid" .= I._uid c
+    [ "uid" .= M.findWithDefault (I._uid c) (I._uid c) inverse
     , "signature" .= I._uid c
     , "fields" .= map flatten (Alloy.genRelations env c)
     , "signature_multiplicity" .= flatten (Alloy.genOptCard c)
@@ -108,10 +112,18 @@ capture src = C.runClafer options $ do
     env <- C.getEnv
     outputs <- C.generate -- Exactly once, in this analyzed environment.
     let (post, sm) = astrModule im
+        names = alloyNames post
+        backend = toAlloyNames names post
+        backendG = if M.null names then g else g{G.uidClaferMap = G.createUidIClaferMap backend}
+        scopes = getScopeStrategy (A.scope_strategy (C.args env)) im
+        rename u = M.findWithDefault u u names
+        bounds = "for 1" ++ (if null scopes then "" else " but " ++ intercalate ", " [show n ++ " " ++ rename u | (u, n) <- scopes])
+        backendEnv = Alloy.GenEnv (C.args env) (G.uidClaferMap backendG) bounds
+        completeNames = [(u, rename u) | (u, _) <- S.toList (G.uidClaferMap g)]
     case (M.lookup A.JSON outputs, M.lookup A.Alloy outputs) of
       (Just j@C.CompilerResult{}, Just a@C.CompilerResult{}) -> pure $ object
         [ "status" .= ("captured" :: String)
-        , "schema" .= ("clafer-generation/1" :: String)
+        , "schema" .= ("clafer-generation/2" :: String)
         , "effective_options" .= optionsJSON (C.args env)
         , "backend" .= C.extension a
         , "source_audit" .= object ["errors" .= errors, "constructors" .= inventory ast,
@@ -119,12 +131,14 @@ capture src = C.runClafer options $ do
         , "post_analysis" .= im, "post_strings" .= post
         , "strings" .= M.toList sm, "output_strings" .= M.toList (C.stringMap a)
         , "scopes" .= C.scopesList a
-        , "consumed_map" .= S.toList (G.uidClaferMap g)
+        , "source_map" .= S.toList (G.uidClaferMap g)
+        , "alloy_names" .= completeNames, "backend_ir" .= backend
+        , "consumed_map" .= S.toList (G.uidClaferMap backendG)
         , "implicit_template" .= S.toList (G.createUidIClaferMap (I.IModule "" []))
-        , "observations" .= observations g im
+        , "observations" .= observations names backendG backend
         , "top_fragments" .= map (flatten . Alloy.genDeclaration
-            (Alloy.GenEnv (C.args env) (G.uidClaferMap g) "for 1")) (I._mDecls post)
-        , "header" .= flatten (Alloy.header (Alloy.GenEnv (C.args env) (G.uidClaferMap g) "for 1") (C.otherTokens env))
+            backendEnv) (I._mDecls backend)
+        , "header" .= flatten (Alloy.header backendEnv (C.otherTokens env))
         , "json" .= C.outputCode j, "alloy" .= C.outputCode a ]
       _ -> pure $ object ["status" .= ("compiler_rejected" :: String), "errors" .= ["static outputs unavailable" :: String]]
 

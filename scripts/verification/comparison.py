@@ -12,7 +12,7 @@ import platform
 
 import alloy_runtime
 from protocol import IDENTIFIER, OPTIONS, Rejection, digest, encoded, exact, import_bundle, loads, reject, unsupported
-from profiles import by_commit
+from compiler_profile import PIN
 from relation import canonical, decode, fresh_symbol, inventory, isomorphism, occurrences, pin, range_argument, validate_candidate
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -55,7 +55,7 @@ def command(original, pin_text, bounds, bitwidth, overall, unpinned=False, obser
             signatures=None, exact_command="run show for 1\n", label="ib_candidate"):
     signatures = signatures if signatures is not None else {u: u for u in bounds}
     # Use the imported S fragment's identifier grammar: a generated symbol such
-    # as c0_ib_candidate does not collide with the added predicate.
+    # as user_ib_candidate does not collide with the added predicate.
     if original.count(exact_command) != 1 or label in re.findall(IDENTIFIER, original):
         reject("original_command")
     if type(overall) is not int or overall < 0:
@@ -265,10 +265,9 @@ def replay(directory, output, runtime=None):
     if m.get("schema") != SCHEMA: unsupported("comparison_version")
     exact(m,{"schema","contract_revision","compiler_commit","paper_sha256","effective_options","fragment","decisions","inputs",
              "compiler_build_sha256","generation_receipt","lean_commit"},"comparison manifest")
-    profile = by_commit(m["compiler_commit"])
-    if profile is None: unsupported("replay_contract_identity")
+    if m["compiler_commit"] != PIN: unsupported("replay_contract_identity")
     expected=dict(contract_revision="52-S/v1",paper_sha256=PAPER,
-                  effective_options=OPTIONS | (dict(explicit_model=False, decimal_digits=None) if profile.modern else {}),
+                  effective_options=OPTIONS,
                   fragment="S",decisions=[f"D{i}" for i in range(1,9)],generation_receipt="capture/generation.json")
     if any(m[k]!=v for k,v in expected.items()):unsupported("replay_contract_identity")
     required={"source.json","core.json","candidate.json","settings.json","language-runtime.json"}
@@ -285,7 +284,7 @@ def replay(directory, output, runtime=None):
         if digest((directory / name).read_bytes()) != identity: reject("replay_input_hash", name)
     if m["compiler_build_sha256"]!=m["inputs"]["capture/build.json"]["sha256"]:reject("replay_build_identity")
     captured = loads((directory/"capture/manifest.json").read_bytes())
-    if type(captured) is not dict or captured.get("compiler_commit") != profile.commit:
+    if type(captured) is not dict or captured.get("compiler_commit") != PIN:
         reject("replay_compiler_identity")
     if loads((directory/"source.json").read_bytes()) != source_snapshot(): unsupported("replay_source_changed")
     if loads((directory/"language-runtime.json").read_bytes()) != dict(python=sys.version,implementation=platform.python_implementation()):

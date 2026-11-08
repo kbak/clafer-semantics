@@ -1,7 +1,6 @@
 """Actual 0.5.7 exports and Alloy runs across the unchanged structural boundary.
 
-The old/new comparison aligns declarations by source traversal solely in tests;
-production transports identities using the captured, checked name map. Receipts
+Production transports identities using the captured, checked name map. Receipts
 are mutated after capture to test rejection, never used as compiler evidence.
 """
 import copy
@@ -19,7 +18,7 @@ import protocol as p
 import comparison
 import alloy_runtime
 from capture import capture
-from profiles import CURRENT, LEGACY
+from compiler_profile import PIN
 from runtime import prepare
 from relation import rename
 
@@ -39,7 +38,6 @@ class CompilerProfileTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.exporter, cls.build = prepare()
-        cls.old_exporter, cls.old_build = prepare(profile=LEGACY)
         cls.runtime = alloy_runtime.prepare()
         evidence = Path(os.environ.get("CLAFER_COMPARISON_EVIDENCE", tempfile.gettempdir())).resolve()
         if evidence.is_relative_to(ROOT):
@@ -56,7 +54,7 @@ class CompilerProfileTests(unittest.TestCase):
             if receipt["status"] != "captured":
                 raise AssertionError((name, receipt))
             receipt = p.seal_receipt(receipt)
-            nodes, _ = p.decode_ir(p.loads(receipt["json"]), CURRENT)
+            nodes, _ = p.decode_ir(p.loads(receipt["json"]))
             bounds = dict(root=1, **{n["uid"]: (3 if n["abstract"] or n["card"][1] == -1 else n["card"][1]) for n in nodes})
             if name == "optional": bounds["x"] = 2
             path = cls.evidence / ("capture-" + name)
@@ -76,18 +74,6 @@ class CompilerProfileTests(unittest.TestCase):
             self.assertTrue(result["faithful"])
         return result, output
 
-    def test_core_contract_preserved_across_actual_versions(self):
-        for name in ("empty", "set_and_bag_references", "identities", "spellings", "cycles", "bounds", "groups", "inheritance", "keywords", "collisions"):
-            with self.subTest(name=name):
-                old = p.loads(subprocess.check_output([str(self.old_exporter), str(self.paths[name])], timeout=120))
-                old_nodes, _ = p.decode_ir(p.loads(old["json"]), LEGACY)
-                new = self.captures[name][1]["declarations"]
-                self.assertEqual(len(old_nodes), len(new))
-                mapping = {a["uid"]: b["uid"] for a,b in zip(old_nodes, new)}
-                translated = [dict(n, **{k: mapping.get(n[k], n[k]) for k in ("uid", "parent", "super", "target")}) for n in old_nodes]
-                self.assertEqual(translated, new)
-                self.assertEqual(self.captures[name][1:], p.import_bundle(self.captures[name][0]))
-
     def test_positive_violating_empty_and_replay(self):
         for name in ("empty", "bag", "optional", "inheritance"):
             self.run_case(name, candidate({}))
@@ -98,7 +84,7 @@ class CompilerProfileTests(unittest.TestCase):
         self.run_case("set", repeated, "agree_violates")
         replay = comparison.replay(path, self.evidence / "replay", runtime=self.runtime)
         self.assertEqual("agree_satisfies", replay["category"])
-        self.assertEqual(CURRENT.commit, p.loads((path / "manifest.json").read_bytes())["compiler_commit"])
+        self.assertEqual(PIN, p.loads((path / "manifest.json").read_bytes())["compiler_commit"])
         self.run_case("bag", rename(repeated, {0: 77, 1: 9, 2: 8, 3: 7, 4: 6}))
         bad = copy.deepcopy(repeated); bad["references"].pop()
         self.run_case("bag", bad, "agree_violates")
@@ -156,7 +142,7 @@ class CompilerProfileTests(unittest.TestCase):
     def rejected_receipt(self, change, code, name="collisions"):
         g = copy.deepcopy(self.receipts[name]); change(g); g = p.seal_receipt(g)
         with self.assertRaises(p.Rejection) as error:
-            p.validate_generation(g, self.paths[name].read_bytes(), g["json"].encode(), g["alloy"].encode(), CURRENT)
+            p.validate_generation(g, self.paths[name].read_bytes(), g["json"].encode(), g["alloy"].encode())
         self.assertEqual(code, error.exception.code)
 
     def test_name_map_and_backend_receipt_tampering(self):
@@ -175,7 +161,7 @@ class CompilerProfileTests(unittest.TestCase):
         self.rejected_receipt(lambda g: g["scopes"].clear(), "empty_abstract_scopes", "inheritance")
         self.rejected_receipt(lambda g: g["scopes"][0].__setitem__(1, 1), "empty_abstract_scopes", "inheritance")
         self.rejected_receipt(lambda g: g["effective_options"].pop("decimal_digits"), "options")
-        self.rejected_receipt(lambda g: g.__setitem__("schema", LEGACY.generation), "generation_version")
+        self.rejected_receipt(lambda g: g.__setitem__("schema", "clafer-generation/1"), "generation_version")
 
     def test_strict_modifiers_and_profile_isolation(self):
         original = p.loads(self.receipts["bag"]["json"])
@@ -188,24 +174,21 @@ class CompilerProfileTests(unittest.TestCase):
                     node = doc["iModule"]["_mDecls"][1]["_iClafer"]
                     node["_modifiers" if field == "_finalReferences" else "_reference"][field] = value
                     with self.assertRaises(p.Rejection) as error:
-                        p.decode_ir(doc, CURRENT)
+                        p.decode_ir(doc)
                     self.assertEqual(category, error.exception.category)
-        with self.assertRaises(p.Rejection): p.decode_ir(original, LEGACY)
-        old = p.loads(subprocess.check_output([str(self.old_exporter), str(self.paths["bag"])], timeout=120))
-        with self.assertRaises(p.Rejection): p.decode_ir(p.loads(old["json"]), CURRENT)
         doc = copy.deepcopy(original)
         node = doc["iModule"]["_mDecls"][1]["_iClafer"]
         node["_reference"]["_refModifier"] = None
-        with self.assertRaises(p.Rejection): p.decode_ir(doc, CURRENT)
+        with self.assertRaises(p.Rejection): p.decode_ir(doc)
         for slot, field in (("_modifiers", "_finalReferences"), ("_reference", "_refModifiers")):
             doc = copy.deepcopy(original)
             del doc["iModule"]["_mDecls"][1]["_iClafer"][slot][field]
             with self.assertRaisesRegex(p.Rejection, "fields"):
-                p.decode_ir(doc, CURRENT)
+                p.decode_ir(doc)
 
     def test_manifest_and_build_profile_mixing_is_rejected(self):
-        for i, changes in enumerate((dict(compiler_commit=LEGACY.commit), dict(compiler_version=LEGACY.version),
-                                     dict(export_schema=LEGACY.export_schema), dict(compiler_commit="0" * 40))):
+        for i, changes in enumerate((dict(compiler_commit="6750e6f591b2131549122c13dee94d3d2257eaea"), dict(compiler_version="0.5.4"),
+                                     dict(export_schema="generic-aeson-0.5.4/1"), dict(compiler_commit="0" * 40))):
             path = self.evidence / f"mixed-profile-{i}"
             shutil.copytree(self.captures["bag"][0], path)
             manifest = p.loads((path / "manifest.json").read_bytes()) | changes
@@ -214,9 +197,12 @@ class CompilerProfileTests(unittest.TestCase):
                 p.import_bundle(path)
         path = self.evidence / "mixed-build"
         shutil.copytree(self.captures["bag"][0], path)
-        (path / "build.json").write_bytes(self.old_build.read_bytes())
+        build = p.loads((path / "build.json").read_bytes())
+        build["compiler_commit"] = "6750e6f591b2131549122c13dee94d3d2257eaea"
+        data = p.encoded(build)
+        (path / "build.json").write_bytes(data)
         manifest = p.loads((path / "manifest.json").read_bytes())
-        manifest["inputs"]["build.json"] = p.digest(self.old_build.read_bytes())
+        manifest["inputs"]["build.json"] = p.digest(data)
         (path / "manifest.json").write_bytes(p.encoded(manifest))
         with self.assertRaisesRegex(p.Rejection, "unsupported:build_identity"):
             p.import_bundle(path)
@@ -227,6 +213,6 @@ class CompilerProfileTests(unittest.TestCase):
             path = self.evidence / f"excluded-{i}.cfr"; path.write_text(source)
             receipt = p.loads(subprocess.check_output([str(self.exporter), str(path)], timeout=120))
             if receipt["status"] == "captured":
-                with self.assertRaises(p.Rejection): p.decode_ir(p.loads(receipt["json"]), CURRENT)
+                with self.assertRaises(p.Rejection): p.decode_ir(p.loads(receipt["json"]))
             else:
                 self.assertIn(receipt["status"], ("unsupported", "compiler_rejected"))

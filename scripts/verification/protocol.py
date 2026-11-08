@@ -11,15 +11,12 @@ import hashlib
 import json
 import re
 import copy
-from profiles import CURRENT, LEGACY, STACK_LOCK, by_commit
+from compiler_profile import PIN, VERSION, ARCHIVE, SOURCE_TREE, EXPORTER, GENERATION, EXPORT_SCHEMA, STACK_LOCK
 from pathlib import Path
 
-# Compatibility exports for callers of the original raw 0.5.4 decoder.
-PIN, VERSION, EXPORT_SCHEMA = LEGACY.commit, LEGACY.version, LEGACY.export_schema
-ARCHIVE, SOURCE_TREE = LEGACY.archive, LEGACY.source_tree
 SCHEMA = "clafer-import/1"
-REGISTRY = {"root", "clafer", "integer", "int", "string", "double", "real", "boolean"}
-# LexClafer.x letters/identifier continuations; UID escaping is profile-specific.
+REGISTRY = {"root", "clafer", "integer", "int", "string", "double", "real", "decimal", "boolean"}
+# LexClafer.x letters/identifier continuations; compiler UIDs and Alloy symbols are checked separately.
 LETTER = r"[A-Za-zÀ-ÖØ-öø-ÿ]"
 IDENTIFIER = LETTER + r"[A-Za-zÀ-ÖØ-öø-ÿ0-9_']*"
 ALLOY_RESERVED = set("abstract after all always and as assert before but check disj else enum eventually exactly expect extends fact for fun historically iden iff implies in Int let lone module no none not once one open or pred private releases run seq set sig since some steps String sum this triggered univ until var".split())
@@ -31,7 +28,7 @@ OPTIONS = dict(mode=["JSON", "Alloy"], console_output=False,
     show_references=False, add_comments=False, ecore2clafer=False,
     trace_len=10, scope_strategy="None", afm=False, meta_data=True,
     minint=None, maxint=None, imports=[], import_root=[], public_imports=False,
-    import_base="", file="input.cfr")
+    import_base="", file="input.cfr", explicit_model=False, decimal_digits=None)
 DECL_FIELDS = {"_cinPos", "_modifiers", "_gcard", "_ident", "_uid", "_parentUID",
                "_super", "_reference", "_card", "_glCard", "_elements"}
 
@@ -149,8 +146,7 @@ def digest(data):
 
 def state_hashes(g):
     keys = ("post_analysis", "post_strings", "consumed_map", "implicit_template", "source_audit")
-    if g.get("schema") == CURRENT.generation:
-        keys += ("source_map", "alloy_names", "backend_ir")
+    keys += ("source_map", "alloy_names", "backend_ir")
     return {key: digest(encoded(g[key])) for key in keys}
 
 
@@ -264,7 +260,7 @@ def checked_names(g, users, registry):
 
 
 @strict_boundary
-def decode_ir(document, profile=LEGACY):
+def decode_ir(document):
     """Preserve preorder and compiler UIDs; never index by display name."""
     if type(document) is not dict:
         reject("fields", "JSON envelope")
@@ -273,7 +269,7 @@ def decode_ir(document, profile=LEGACY):
     exact(document, {"iModule"} | ({"objectives"} if "objectives" in document else set()), "JSON envelope")
     module = exact(document["iModule"], {"_mName", "_mDecls"}, "module")
     string(module["_mName"], "module name")
-    registry = REGISTRY | ({"decimal"} if profile.modern else set())
+    registry = REGISTRY
     nodes, slots, metadata = [], [], []
     seen = set(registry)
     def visit(elements, parent):
@@ -292,9 +288,8 @@ def decode_ir(document, profile=LEGACY):
             name = string(c["_ident"], "name", True)
             if not re.fullmatch(IDENTIFIER, name):
                 reject("name_syntax", uid)
-            mods = exact(c["_modifiers"], {"_abstract", "_initial", "_final"} | ({"_finalReferences"} if profile.modern else set()), uid)
-            if profile.modern:
-                reference_modifiers(mods["_finalReferences"], uid)
+            mods = exact(c["_modifiers"], {"_abstract", "_initial", "_final", "_finalReferences"}, uid)
+            reference_modifiers(mods["_finalReferences"], uid)
             for key in ("_abstract", "_initial", "_final"):
                 boolean(mods[key], uid)
             if mods["_initial"] or mods["_final"]:
@@ -312,13 +307,9 @@ def decode_ir(document, profile=LEGACY):
             sup = None if c["_super"] is None else direct(c["_super"], uid)
             mode, target = "basic", None
             if c["_reference"] is not None:
-                modifier_key = "_refModifiers" if profile.modern else "_refModifier"
-                ref = exact(c["_reference"], {"_isSet", modifier_key, "_ref"}, uid)
+                ref = exact(c["_reference"], {"_isSet", "_refModifiers", "_ref"}, uid)
                 boolean(ref["_isSet"], uid)
-                if profile.modern:
-                    reference_modifiers(ref[modifier_key], uid)
-                elif ref[modifier_key] is not None:
-                    unsupported("reference_modifier", uid)
+                reference_modifiers(ref["_refModifiers"], uid)
                 mode = "set" if ref["_isSet"] else "bag"
                 target = direct(ref["_ref"], uid)
                 slots.append((uid, ref["_ref"]))
@@ -331,12 +322,7 @@ def decode_ir(document, profile=LEGACY):
             visit(c["_elements"], uid)
     visit(module["_mDecls"], None)
     by_id = {n["uid"]: n for n in nodes}
-    symbols = {"show", *ALLOY_RESERVED, *registry}
     for n in nodes:
-        for symbol in ([] if profile.modern else [n["uid"]] + (["r_" + n["uid"]] if n["parent"] in by_id else []) + ([n["uid"] + "_ref"] if n["target"] else [])):
-            if symbol in symbols:
-                reject("backend_symbol_collision", symbol)
-            symbols.add(symbol)
         for target in (n["super"], n["target"]):
             if target in registry:
                 unsupported("predefined_target", target)
@@ -389,30 +375,30 @@ def flatten_ir(module):
 
 @strict_boundary
 # [impl->req~clafer-compiler-capture~1]
-def validate_generation(g, source, ir, alloy, profile=LEGACY):
-    registry = REGISTRY | ({"decimal"} if profile.modern else set())
+def validate_generation(g, source, ir, alloy):
+    registry = REGISTRY
     exact(g, {"status", "schema", "effective_options", "backend", "source_audit", "post_analysis",
         "post_strings", "strings", "output_strings", "scopes", "consumed_map", "implicit_template",
-        "observations", "top_fragments", "header", "json", "alloy", "state_hashes"} |
-        ({"source_map", "alloy_names", "backend_ir"} if profile.modern else set()), "generation")
-    if g["schema"] != profile.generation:
+        "observations", "top_fragments", "header", "json", "alloy", "state_hashes",
+        "source_map", "alloy_names", "backend_ir"}, "generation")
+    if g["schema"] != GENERATION:
         unsupported("generation_version")
     if encoded(g["state_hashes"]) != encoded(state_hashes(g)):
         reject("state_hash")
     if g["status"] != "captured" or g["backend"] != "als":
         unsupported("backend")
     # JSON true == 1 in Python; byte-canonical comparison preserves scalar types.
-    if encoded(g["effective_options"]) != encoded(OPTIONS | (dict(explicit_model=False, decimal_digits=None) if profile.modern else {})):
+    if encoded(g["effective_options"]) != encoded(OPTIONS):
         unsupported("options")
     if g["json"].encode() != ir or g["alloy"].encode() != alloy:
         reject("paired_output")
     parsed = loads(ir)
-    nodes, metadata = decode_ir(parsed, profile)
+    nodes, metadata = decode_ir(parsed)
     if encoded(g["post_analysis"]) != encoded(parsed["iModule"]) or encoded(g["post_strings"]) != encoded(g["post_analysis"]):
         unsupported("string_pass_changed_ir")
-    expected_scopes = [[n["uid"], 0] for n in sorted(nodes, key=lambda n: n["uid"]) if n["unused"]] if profile.modern else []
+    expected_scopes = [[n["uid"], 0] for n in sorted(nodes, key=lambda n: n["uid"]) if n["unused"]]
     if encoded(g["scopes"]) != encoded(expected_scopes):
-        unsupported("empty_abstract_scopes" if profile.modern else "strings_or_inferred_scopes")
+        unsupported("empty_abstract_scopes")
     if any(g[k] != [] for k in ("strings", "output_strings")):
         unsupported("strings_or_inferred_scopes")
     audit = exact(g["source_audit"], {"errors", "constructors", "tokens", "ast"}, "source audit")
@@ -436,7 +422,7 @@ def validate_generation(g, source, ir, alloy, profile=LEGACY):
         if "T_PosLineComment" not in token and "T_PosBlockComment" not in token:
             unsupported("source_token")
     consumed = {}
-    for row in array(g["source_map"] if profile.modern else g["consumed_map"], "source map"):
+    for row in array(g["source_map"], "source map"):
         if type(row) is not list or len(row) != 2 or type(row[0]) is not str or row[0] in consumed:
             reject("consumed_map_keys")
         consumed[row[0]] = row[1]
@@ -451,10 +437,8 @@ def validate_generation(g, source, ir, alloy, profile=LEGACY):
         expected = dict(_cinPos=None, _modifiers=dict(_abstract=False, _initial=True, _final=True),
             _gcard=dict(_isKeyword=False, _interval=[0, -1]), _ident=uid, _uid=uid,
             _parentUID="", _super=None, _reference=None, _card=[1, 1], _glCard=[1, 1], _elements=[])
-        if profile.modern:
-            expected["_modifiers"]["_finalReferences"] = []
-        sup = ({"integer": "decimal", "int": "decimal", "decimal": "real", "double": "real"} if profile.modern else
-               {"integer": "double", "int": "double", "double": "real"}).get(uid)
+        expected["_modifiers"]["_finalReferences"] = []
+        sup = {"integer": "decimal", "int": "decimal", "decimal": "real", "double": "real"}.get(uid)
         if sup:
             expected["_super"] = dict(_iType=None, _pid="", _inPos=None,
                 _exp=dict(tag="IClaferId", _modName="", _sident=sup, _isTop=True,
@@ -499,18 +483,17 @@ def validate_generation(g, source, ir, alloy, profile=LEGACY):
             if encoded(e) != encoded(dict(tag="IEClafer", _iClafer=consumed[e["_iClafer"]["_uid"]])):
                 unsupported("stale_consumed_child_record", uid)
     source_nodes = nodes
-    names = checked_names(g, users, registry) if profile.modern else {u: u for u in set(users) | registry}
+    names = checked_names(g, users, registry)
     inverse = {a: u for u, a in names.items()}
-    if profile.modern:
-        backend_users = flatten_ir(g["backend_ir"])
-        expected_consumed = consumed
-        if any(u != a for u, a in names.items()):
-            expected_consumed = copy.deepcopy(template) | backend_users
-            expected_consumed["root"]["_elements"] = g["backend_ir"]["_mDecls"]
-        if encoded(pairs_map(g["consumed_map"], "consumed_map_keys")) != encoded(expected_consumed):
-            reject("backend_consumed_map")
-        nodes = [dict(n, **{k: names.get(n[k], n[k]) for k in ("uid", "parent", "super", "target")}) for n in source_nodes]
-        users = backend_users
+    backend_users = flatten_ir(g["backend_ir"])
+    expected_consumed = consumed
+    if any(u != a for u, a in names.items()):
+        expected_consumed = copy.deepcopy(template) | backend_users
+        expected_consumed["root"]["_elements"] = g["backend_ir"]["_mDecls"]
+    if encoded(pairs_map(g["consumed_map"], "consumed_map_keys")) != encoded(expected_consumed):
+        reject("backend_consumed_map")
+    nodes = [dict(n, **{k: names.get(n[k], n[k]) for k in ("uid", "parent", "super", "target")}) for n in source_nodes]
+    users = backend_users
     scopes = "" if not expected_scopes else " but " + ", ".join(f"{b} {names[u]}" for u, b in expected_scopes)
     if g["header"] != "open util/integer\npred show {}\nrun show for 1" + scopes + "\n\n":
         reject("backend_header")
@@ -519,8 +502,7 @@ def validate_generation(g, source, ir, alloy, profile=LEGACY):
     if g["header"] + "".join(g["top_fragments"]) != g["alloy"]:
         reject("generation_fragments")
     observations = array(g["observations"], "observations")
-    if profile.modern:
-        observations = [dict(o, uid=names.get(o.get("uid"), o.get("uid"))) for o in observations]
+    observations = [dict(o, uid=names.get(o.get("uid"), o.get("uid"))) for o in observations]
     if [o.get("uid") for o in observations] != [n["uid"] for n in nodes]:
         reject("observations_inventory")
     # Validate all declarations and field owners in the emitted text. The grammar
@@ -637,8 +619,7 @@ def import_bundle(directory):
     p = Path(directory)
     manifest = loads((p / "manifest.json").read_bytes())
     exact(manifest, {"schema", "compiler_commit", "compiler_version", "export_schema", "inputs", "bounds"}, "manifest")
-    profile = by_commit(manifest["compiler_commit"])
-    if profile is None or (manifest["schema"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, profile.version, profile.export_schema):
+    if (manifest["schema"], manifest["compiler_commit"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, PIN, VERSION, EXPORT_SCHEMA):
         unsupported("version")
     exact(manifest["inputs"], {"input.cfr", "analyzed.json", "model.als", "generation.json", "build.json"}, "artifacts")
     files = {}
@@ -649,12 +630,12 @@ def import_bundle(directory):
         files[name] = data
     build = loads(files["build.json"])
     exact(build, {"schema", "compiler_commit", "compiler_archive_sha256", "source_tree_sha256", "resolver", "ghc_version", "stack_version", "stack_lock", "exporter_source", "exporter_binary", "compiler_sources_unchanged"}, "build")
-    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", profile.commit, profile.archive, "lts-22.44", "9.6.7", "3.11.1", True):
+    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", PIN, ARCHIVE, "lts-22.44", "9.6.7", "3.11.1", True):
         unsupported("build_identity")
     boolean(build["compiler_sources_unchanged"], "source matching")
-    if build["source_tree_sha256"] != profile.source_tree or build["stack_lock"] != STACK_LOCK:
+    if build["source_tree_sha256"] != SOURCE_TREE or build["stack_lock"] != STACK_LOCK:
         unsupported("source_or_dependency_pin")
-    exporter = Path(__file__).with_name(profile.exporter).read_bytes()
+    exporter = Path(__file__).with_name(EXPORTER).read_bytes()
     if build["exporter_source"] != digest(exporter):
         unsupported("exporter_revision")
     for key in ("stack_lock", "exporter_binary"):
@@ -662,14 +643,14 @@ def import_bundle(directory):
         natural(build[key]["bytes"], key)
         if not re.fullmatch("[0-9a-f]{64}", build[key]["sha256"]):
             reject("hash_syntax", key)
-    nodes, metadata, ownership = validate_generation(loads(files["generation.json"]), files["input.cfr"], files["analyzed.json"], files["model.als"], profile)
+    nodes, metadata, ownership = validate_generation(loads(files["generation.json"]), files["input.cfr"], files["analyzed.json"], files["model.als"])
     exact(manifest["bounds"], {"root", *(n["uid"] for n in nodes)}, "explicit bounds")
     for uid, bound in manifest["bounds"].items():
         natural(bound, uid)
     if manifest["bounds"]["root"] != 1:
         reject("root_bound")
     generation = loads(files["generation.json"])
-    names = dict(generation["alloy_names"]) if profile.modern else {n["uid"]: n["uid"] for n in nodes}
+    names = dict(generation["alloy_names"])
     return dict(schema=SCHEMA, declarations=nodes), dict(metadata=metadata, fields=ownership,
         bounds=manifest["bounds"], signatures={n["uid"]: names[n["uid"]] for n in nodes},
-        original_command=generation["header"].splitlines()[2] + "\n", compiler_commit=profile.commit)
+        original_command=generation["header"].splitlines()[2] + "\n", compiler_commit=PIN)

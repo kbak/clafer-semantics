@@ -1409,7 +1409,8 @@ effective values do not establish historical provenance or default correctness.
 
 Compiler evidence is selected by the exact reviewed
 [structural profile](resolved-ir-comparison.md#compiler-057-compatibility), with
-0.5.4 retained for historical capture replay. At the 0.5.7 merge,
+historical captures replayed using their original repository revision and tools.
+The current adapter supports only 0.5.7. At that merge,
 `Intermediate/UIDs.hs`, `Generator/AlloyNames.hs` and
 `ScopeAnalysis.withEmptyAbstracts` add the identity/zero-scope obligations.
 `Intermediate/Intclafer.hs` owns the serialized types; `Language/Clafer.hs`

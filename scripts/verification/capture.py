@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from profiles import by_commit
+from compiler_profile import PIN, VERSION, EXPORT_SCHEMA
 from protocol import SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
 
 
@@ -16,8 +16,7 @@ def capture(source, exporter, build_file, bounds, output):
     source, exporter, build_file, output = map(Path, (source, exporter, build_file, output))
     build_bytes = build_file.read_bytes()
     build = loads(build_bytes)
-    profile = by_commit(build["compiler_commit"])
-    if profile is None:
+    if build["compiler_commit"] != PIN:
         reject("build_identity", category="unsupported")
     if build["exporter_binary"] != digest(exporter.read_bytes()):
         reject("exporter_binary_hash")
@@ -40,8 +39,8 @@ def capture(source, exporter, build_file, bounds, output):
              "build.json": build_bytes}
     for name, data in files.items():
         (output / name).write_bytes(data)
-    manifest = dict(schema=SCHEMA, compiler_commit=profile.commit, compiler_version=profile.version,
-                    export_schema=profile.export_schema, inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
+    manifest = dict(schema=SCHEMA, compiler_commit=PIN, compiler_version=VERSION,
+                    export_schema=EXPORT_SCHEMA, inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
     (output / "manifest.json").write_bytes(encoded(manifest))
     return import_bundle(output)
 

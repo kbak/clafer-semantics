@@ -27,4 +27,6 @@ are the deterministic deletion-minimal sensitivity cases paired respectively
 with `set.cfr`, `bag.cfr` and `optional.cfr`. The live tests apply only the named
 injected mutation, compare the original checker candidate, shrink, check equality
 with these fixtures and replay the external result bundle. These fixtures contain
-no execution logs or private paths.
+no execution logs or private paths. Their current UID spellings match 0.5.7;
+object identities, row incidence and semantic expectations are unchanged. The
+original 0.5.4 fixtures remain in the pre-upgrade repository revision.

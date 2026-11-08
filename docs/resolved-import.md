@@ -27,10 +27,6 @@ reuse; a changed builder or exporter rebuilds it. Setup failure stops validation
 
 The wrapper passes the exporter and build record to the test process, so it does
 not depend on environment variables exported by an earlier interactive session.
-The legacy tests additionally prepare the 0.5.4 exporter, using
-`CLAFER_CAPTURE_054` and `CLAFER_CAPTURE_BUILD_054` when supplied.
-Caches are separated by exact compiler commit. `runtime.py --profile 0.5.4 COMMAND`
-and `build.py --profile 0.5.4` select that historical profile explicitly.
 Explicit exporter settings are checked and take precedence; an invalid explicit
 setting fails rather than selecting another producer. Other platforms require
 explicit provisioning.
@@ -81,20 +77,21 @@ its separate output files cannot establish a generation receipt.
 
 ## Artifacts and deterministic admission
 
-`manifest.json` uses schema `clafer-import/1`. Its exact commit selects one of
-these reviewed adapters; version strings or JSON shape alone never select it:
+`manifest.json` uses schema `clafer-import/1`. The current adapter supports only
+the following exact compiler identity; all fields must match:
 
 | Profile | Compiler commit | Export schema | Generation receipt |
 | --- | --- | --- | --- |
-| Default, 0.5.7 | `f6ca5b887d7bacc09915c6fc0278064c8371beac` | `generic-aeson-0.5.7/1` | `clafer-generation/2` |
-| Historical, 0.5.4 | `6750e6f591b2131549122c13dee94d3d2257eaea` | `generic-aeson-0.5.4/1` | `clafer-generation/1` |
+| 0.5.7 | `f6ca5b887d7bacc09915c6fc0278064c8371beac` | `generic-aeson-0.5.7/1` | `clafer-generation/2` |
 
-Other revisions and mixed schemas are rejected. The 0.5.4 archive remains
-SHA-256 `2b9e111e21d979ff331816161738df9b07417658f788e0939f31b84292cae74f`;
-its original `Export.hs` is unchanged, so old capture bundles remain importable.
-Full comparison replay still requires its recorded adapter/runtime source hashes;
-use the original source snapshot for historical comparison results. A new
-comparison of an old capture records the current harness, never a new compiler run.
+Other revisions, including 0.5.4, and mixed schemas are rejected. Historical
+evidence keeps its original compiler, adapter and runtime identities. To import
+or replay a historical bundle, use the repository revision and matching tools
+recorded with that evidence; the [pre-upgrade adapter](https://github.com/kbak/clafer-semantics/tree/c183c1c2e4cc22cc9f41ea78733a20fc3610b50b/scripts/verification)
+retains the 0.5.4 implementation. Do not relabel old captures as 0.5.7 evidence.
+Current regression tests execute fresh 0.5.7 captures. The downstream compiler
+migrates its pinned dependency and comparison tools together under
+[compiler issue #112](https://github.com/kbak/clafer-compiler-lean/issues/112).
 The capture manifest hashes raw bytes of `input.cfr`, `analyzed.json`, `model.als`, `generation.json`
 and `build.json`, and carries explicit bounds. It does not hash itself.
 The receipt retains post-analysis/post-string-pass IR, actual backend-consumed
@@ -108,9 +105,9 @@ these are precisely abstract leaf declarations without concrete descendants;
 all other inferred scopes remain unsupported. Requested comparison bounds stay
 independent experiment metadata.
 
-`Export.hs` and `Export057.hs` each parse once, audit the typed AST and non-parser tokens before
-desugaring, compile once, and request `[JSON, Alloy]` in one `generate` call.
-Each rejects enums, initializers, assertions/goals/constraints, temporal forms,
+`Export.hs` parses once, audits the typed AST and non-parser tokens before
+desugaring, compiles once, and requests `[JSON, Alloy]` in one `generate` call.
+It rejects enums, initializers, assertions/goals/constraints, temporal forms,
 escapes, source option directives and non-direct type expressions. The decoder
 checks every constructor/field, duplicate JSON keys, scalar types, bindings and
 type hierarchies, source/receipt options, root conventions and output ownership.
@@ -118,8 +115,8 @@ Unknown forms are rejected. Reference cycles do not trigger hierarchy traversal.
 Parent/super cycles, dangling/reserved IDs and backend-symbol collisions fail.
 Display names may repeat.
 Latin-1 letters and apostrophes permitted by the pinned lexer remain intact in
-display names. Both profiles preserve the emitted, collision-distinct UIDs,
-including escaped apostrophes. In 0.5.7, UIDs use names and lexical qualification;
+display names. The adapter preserves emitted, collision-distinct UIDs,
+including escaped apostrophes. UIDs use names and lexical qualification;
 the receipt separately records a total UID-to-Alloy-name map, including identity
 entries and the fixed registry. The adapter checks coverage, injectivity, reserved
 and derived symbol collisions, and exact transport of identity-bearing IR slots.
@@ -137,8 +134,8 @@ must be empty/default and source `//# OPTIONS` directives remain rejected;
 multi-file loading is outside this profile.
 
 Compiler `root`, base `clafer` and the primitive registry remain distinct.
-The 0.5.4 registry has six primitive IDs; 0.5.7 adds `decimal` and changes the
-integer/int hierarchy through decimal to real. This is checked registry metadata;
+The registry includes seven primitive IDs and routes the integer/int hierarchy
+through decimal to real. This is checked registry metadata;
 it does not admit primitive values. The 0.5.7 declaration modifiers include
 `_finalReferences`, and references use `_refModifiers` instead of `_refModifier`.
 Both new fields must be lists: known nonempty modifiers are unsupported, unknown
@@ -150,7 +147,7 @@ become absent. Primitive targets are unsupported. Required effective cards use
 exact integer endpoints, with only upper `-1` denoting infinity. `_glCard` and
 `_isKeyword` remain compiler metadata, never authored/default evidence.
 
-The captured source map predates optimization (in 0.5.4 it is also the consumed map). Its topology, type bindings, names,
+The captured source map predates optimization. Its topology, type bindings, names,
 modifiers, groups and child inventories must match the emitted IR. The recorded
 exceptions are the compiler's `_glCard` calculation and zeroing an unused
 abstract's `[0,-1]` card to `[0,0]`; the latter is admitted only when the guarded

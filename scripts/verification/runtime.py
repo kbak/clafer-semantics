@@ -12,9 +12,7 @@ import tempfile
 from urllib.request import urlopen
 
 from protocol import digest, loads
-from profiles import CURRENT, LEGACY, STACK_LOCK, by_version
-
-PIN, ARCHIVE, SOURCE_TREE = CURRENT.commit, CURRENT.archive, CURRENT.source_tree
+from compiler_profile import PIN, ARCHIVE, SOURCE_TREE, EXPORTER, STACK_LOCK
 
 HERE = Path(__file__).resolve().parent
 STACK_ARCHIVE = "1fda71e657cd8d355625cc66b61b352699279dfee2664c014a392163bd19a952"
@@ -25,14 +23,14 @@ def matches(path, sha256):
     return path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == sha256
 
 
-def valid_runtime(executable, build_file, profile=CURRENT):
+def valid_runtime(executable, build_file):
     try:
         build = loads(build_file.read_bytes())
-        expected = dict(schema="clafer-capture-build/1", compiler_commit=profile.commit,
-            compiler_archive_sha256=profile.archive, source_tree_sha256=profile.source_tree,
+        expected = dict(schema="clafer-capture-build/1", compiler_commit=PIN,
+            compiler_archive_sha256=ARCHIVE, source_tree_sha256=SOURCE_TREE,
             resolver="lts-22.44", ghc_version="9.6.7", stack_version="3.11.1",
             stack_lock=STACK_LOCK, compiler_sources_unchanged=True,
-            exporter_source=digest((HERE / profile.exporter).read_bytes()),
+            exporter_source=digest((HERE / EXPORTER).read_bytes()),
             exporter_binary=digest(executable.read_bytes()))
         return build == expected and os.access(executable, os.X_OK)
     except (OSError, ValueError):
@@ -56,10 +54,10 @@ def download(url, path, sha256):
             temporary.unlink(missing_ok=True)
 
 
-def work_directory(work=None, profile=CURRENT):
+def work_directory(work=None):
     if work is None:
         default = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "clafer-capture"
-        work = Path(os.environ.get("CLAFER_CAPTURE_CACHE", default)) / profile.commit
+        work = Path(os.environ.get("CLAFER_CAPTURE_CACHE", default)) / PIN
     work = Path(work).resolve()
     if work.is_relative_to(HERE.parents[1]):
         raise RuntimeError("Exporter cache must be outside the repository")
@@ -67,35 +65,33 @@ def work_directory(work=None, profile=CURRENT):
 
 
 # [impl->req~lean-validation~1]
-def cached_runtime(work, profile=CURRENT):
+def cached_runtime(work):
     """Probe without downloading or building; a cache key alone is insufficient."""
     executable, build = work / "clafer-capture", work / "build.json"
     try:
         recipe = hashlib.sha256((HERE / "build.py").read_bytes()).hexdigest()
-        if valid_runtime(executable, build, profile) and (work / "builder.sha256").read_text() == recipe:
+        if valid_runtime(executable, build) and (work / "builder.sha256").read_text() == recipe:
             return executable, build
     except (OSError, ValueError):
         pass
     return None
 
 
-def prepare(work=None, profile=CURRENT):
-    suffix = "_054" if profile == LEGACY else ""
-    executable_key, build_key = "CLAFER_CAPTURE" + suffix, "CLAFER_CAPTURE_BUILD" + suffix
-    explicit = os.environ.get(executable_key) or shutil.which("clafer-capture" + ("-054" if suffix else ""))
+def prepare(work=None):
+    explicit = os.environ.get("CLAFER_CAPTURE") or shutil.which("clafer-capture")
     if explicit:
         executable = Path(explicit).resolve()
-        build = Path(os.environ.get(build_key, str(executable.with_name("build.json")))).resolve()
-        if not valid_runtime(executable, build, profile):
+        build = Path(os.environ.get("CLAFER_CAPTURE_BUILD", str(executable.with_name("build.json")))).resolve()
+        if not valid_runtime(executable, build):
             raise RuntimeError("Configured exporter/build identities do not match the pinned sources; rebuild with scripts/verification/build.py")
         return executable, build
-    if os.environ.get(build_key):
+    if os.environ.get("CLAFER_CAPTURE_BUILD"):
         raise RuntimeError("CLAFER_CAPTURE_BUILD requires CLAFER_CAPTURE or clafer-capture on PATH")
     if (platform.system(), platform.machine()) != ("Linux", "x86_64"):
         raise RuntimeError("Automatic exporter setup supports Linux x86_64; supply CLAFER_CAPTURE and CLAFER_CAPTURE_BUILD on other platforms")
     import fcntl
 
-    work = work_directory(work, profile)
+    work = work_directory(work)
     work.mkdir(parents=True, exist_ok=True)
     executable, build = work / "clafer-capture", work / "build.json"
     recipe = hashlib.sha256((HERE / "build.py").read_bytes()).hexdigest()
@@ -103,11 +99,11 @@ def prepare(work=None, profile=CURRENT):
     # Independent source snapshots share dependencies, never concurrent writers.
     with (work / "build.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        if cached_runtime(work, profile):
+        if cached_runtime(work):
             print(f"[capture] Reusing verified exporter: {executable}", file=sys.stderr, flush=True)
             return executable, build
         archive = work / "compiler.tar.gz"
-        download(f"https://codeload.github.com/gsdlab/clafer/tar.gz/{profile.commit}", archive, profile.archive)
+        download(f"https://codeload.github.com/gsdlab/clafer/tar.gz/{PIN}", archive, ARCHIVE)
         stack_archive = work / "stack.tar.gz"
         download("https://github.com/commercialhaskell/stack/releases/download/v3.11.1/stack-3.11.1-linux-x86_64.tar.gz",
                  stack_archive, STACK_ARCHIVE)
@@ -122,8 +118,8 @@ def prepare(work=None, profile=CURRENT):
         build.unlink(missing_ok=True)
         print(f"[capture] Building pinned exporter; log: {work / 'build.log'}", file=sys.stderr, flush=True)
         subprocess.run([sys.executable, str(HERE / "build.py"), "--archive", str(archive),
-                        "--stack", str(stack), "--work", str(work), "--profile", profile.version], check=True)
-        if not valid_runtime(executable, build, profile):
+                        "--stack", str(stack), "--work", str(work)], check=True)
+        if not valid_runtime(executable, build):
             raise RuntimeError("Built exporter identities do not match the pinned sources")
         stamp.write_text(recipe)
         return executable, build
@@ -131,32 +127,25 @@ def prepare(work=None, profile=CURRENT):
 
 def main():
     args = sys.argv[1:]
-    profile = CURRENT
-    if len(args) >= 2 and args[0] == "--profile":
-        profile = by_version(args[1])
-        if profile is None:
-            raise RuntimeError("Unknown compiler profile")
-        args = args[2:]
     if not args:
-        raise RuntimeError("Usage: runtime.py [--profile 0.5.4|0.5.7] COMMAND [ARG ...] | --check-cache WORK | --github-env WORK")
+        raise RuntimeError("Usage: runtime.py COMMAND [ARG ...] | --check-cache WORK | --github-env WORK")
     if args[0] in ("--check-cache", "--github-env"):
         if len(args) != 2:
             raise RuntimeError("Cache commands require exactly one external work directory")
-        work = work_directory(args[1], profile)
+        work = work_directory(args[1])
         if args[0] == "--check-cache":
-            return 0 if cached_runtime(work, profile) else 1
+            return 0 if cached_runtime(work) else 1
         destination = os.environ.get("GITHUB_ENV")
         if not destination:
             raise RuntimeError("--github-env requires GITHUB_ENV")
-        executable, build = prepare(work) if profile == CURRENT else prepare(work, profile)
-        suffix = "_054" if profile == LEGACY else ""
-        values = {"CLAFER_CAPTURE" + suffix: str(executable), "CLAFER_CAPTURE_BUILD" + suffix: str(build)}
+        executable, build = prepare(work)
+        values = {"CLAFER_CAPTURE": str(executable), "CLAFER_CAPTURE_BUILD": str(build)}
         if any("\n" in value or "\r" in value for value in values.values()):
             raise RuntimeError("GitHub environment paths must not contain newlines")
         with Path(destination).open("a") as output:
             output.writelines(f"{key}={value}\n" for key, value in values.items())
         return 0
-    executable, build = prepare() if profile == CURRENT else prepare(profile=profile)
+    executable, build = prepare()
     env = dict(os.environ, CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build))
     return subprocess.call(args, env=env)
 

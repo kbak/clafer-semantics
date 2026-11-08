@@ -3178,16 +3178,16 @@ Needs: impl, proof
 Implement the authorized [resolved importer](resolved-import.md) under `Clafer/Verification/`, reusing the
 accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). Import
 only analyzed JSON from the exact reviewed 0.5.7 merge
-`gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac` or historical 0.5.4
-`6750e6f591b2131549122c13dee94d3d2257eaea` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
+`gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
 separately from display names, parent/super/reference identities, effective local
 and group bounds, the exact `-1` unbounded sentinel and set/bag mode. Do not
 fabricate authored/default provenance or enlarge the comparison fragment.
 Validate nullable source spans as metadata, keeping the single-file library
 capture distinct from CLI file-qualified JSON. Preserve apostrophe display names
-and escaped, collision-distinct UIDs. Select schemas by exact commit; reject
-unreviewed revisions and mixed schemas. Preserve historical 0.5.4 capture import.
-For 0.5.7 check the modifier lists, decimal registry and exact default options
+and escaped, collision-distinct UIDs. Reject other compiler revisions, including
+0.5.4, and mixed schemas. Historical capture import and comparison replay use the
+original repository revision and matching tools; preserve their evidence unchanged.
+Check the modifier lists, decimal registry and exact default options
 without adding temporal, inherited-reference or primitive-value support.
 
 Reject duplicate JSON keys, unknown fields/tags, duplicate/reserved/dangling IDs,
@@ -3206,7 +3206,7 @@ checker correctness and selected interpretation; roundtrips alone do not suffice
 Keep JSON/parser/capture and runtime assumptions explicit. Supply kernel/native
 witnesses and actual pinned export tests, including repeated names, repeated-target
 bag/set heads, inheritance, nesting/groups, unused abstracts and malformed versions.
-Exercise 0.5.4 keyword/numeric defaults and unreachable concrete-group rejection
+Exercise 0.5.7 keyword/numeric defaults and unreachable concrete-group rejection
 without adopting them as new Lean semantics; retain the documented differences.
 
 Covers:
