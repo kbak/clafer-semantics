@@ -14,6 +14,10 @@ Runtime captures, hashes, seeds, witnesses and minimized replays are retained
 outside the repository by the executable tests.
 `predicate_name.cfr` checks that a supported name containing `ib_candidate`
 compares and replays without being mistaken for the added predicate itself.
+`collisions.cfr` exercises the 0.5.7 name map for reserved Alloy words, names
+derived for fields/lifetimes, assertion names and the harness's own auxiliary
+names, plus the escaped-name collision `a'` versus `a_prime`. Candidates retain
+source UIDs through renamed Alloy signatures and fields.
 
 The JSON candidates are stable, original MIT-licensed regression inputs:
 `unrelated-overlap.json` preserves the #52 counterexample as a shared semantic

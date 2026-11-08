@@ -14,7 +14,7 @@ realization does not enlarge the import whitelist.
 
 Use Python 3.11+, the pinned Lean toolchain, Stack 3.11.1, GHC 9.6.7 and GMP headers.
 On Linux x86_64, the full `bash scripts/check.sh` command provisions the pinned
-exporter before running Python tests when neither `CLAFER_CAPTURE` nor a
+0.5.7 exporter before running Python tests when neither `CLAFER_CAPTURE` nor a
 `clafer-capture` executable on `PATH` is supplied. Install `libgmp-dev` first on
 Debian/Ubuntu. Automatic setup downloads hash-checked compiler and Stack archives
 and runs the builder below, which obtains the pinned GHC and dependencies.
@@ -27,6 +27,10 @@ reuse; a changed builder or exporter rebuilds it. Setup failure stops validation
 
 The wrapper passes the exporter and build record to the test process, so it does
 not depend on environment variables exported by an earlier interactive session.
+The legacy tests additionally prepare the 0.5.4 exporter, using
+`CLAFER_CAPTURE_054` and `CLAFER_CAPTURE_BUILD_054` when supplied.
+Caches are separated by exact compiler commit. `runtime.py --profile 0.5.4 COMMAND`
+and `build.py --profile 0.5.4` select that historical profile explicitly.
 Explicit exporter settings are checked and take precedence; an invalid explicit
 setting fails rather than selecting another producer. Other platforms require
 explicit provisioning.
@@ -34,8 +38,9 @@ explicit provisioning.
 To build explicitly or use the capture commands independently:
 
 Obtain the compiler source archive for
-`gsdlab/clafer@6750e6f591b2131549122c13dee94d3d2257eaea`, SHA-256
-`2b9e111e21d979ff331816161738df9b07417658f788e0939f31b84292cae74f`.
+`gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac`, SHA-256
+`51e5c8d47c1e8bf05ca89a8432176c25cb1e6df589aeb36386bcf7627ee3d954`.
+This is the merged PR #113 revision (package 0.5.7), not a floating branch or tag.
 Build outside the checkout:
 
 ```sh
@@ -76,23 +81,36 @@ its separate output files cannot establish a generation receipt.
 
 ## Artifacts and deterministic admission
 
-`manifest.json` uses schema `clafer-import/1`, export schema
-`generic-aeson-0.5.4/1`, compiler version `0.5.4` and the exact commit above.
-Older compiler/export identities are rejected. Replay historical bundles with
-their original source-matched adapter/runtime, or capture new bundles with 0.5.4;
-do not relabel historical evidence as a new compiler run.
-It hashes raw bytes of `input.cfr`, `analyzed.json`, `model.als`, `generation.json`
+`manifest.json` uses schema `clafer-import/1`. Its exact commit selects one of
+these reviewed adapters; version strings or JSON shape alone never select it:
+
+| Profile | Compiler commit | Export schema | Generation receipt |
+| --- | --- | --- | --- |
+| Default, 0.5.7 | `f6ca5b887d7bacc09915c6fc0278064c8371beac` | `generic-aeson-0.5.7/1` | `clafer-generation/2` |
+| Historical, 0.5.4 | `6750e6f591b2131549122c13dee94d3d2257eaea` | `generic-aeson-0.5.4/1` | `clafer-generation/1` |
+
+Other revisions and mixed schemas are rejected. The 0.5.4 archive remains
+SHA-256 `2b9e111e21d979ff331816161738df9b07417658f788e0939f31b84292cae74f`;
+its original `Export.hs` is unchanged, so old capture bundles remain importable.
+Full comparison replay still requires its recorded adapter/runtime source hashes;
+use the original source snapshot for historical comparison results. A new
+comparison of an old capture records the current harness, never a new compiler run.
+The capture manifest hashes raw bytes of `input.cfr`, `analyzed.json`, `model.als`, `generation.json`
 and `build.json`, and carries explicit bounds. It does not hash itself.
 The receipt retains post-analysis/post-string-pass IR, actual backend-consumed
 UID map, fixed implicit registry, effective options, AST constructor/token audit,
-empty string maps/scopes, generated fragments and per-declaration backend facts.
+empty string maps, exact recorded scopes, generated fragments and per-declaration backend facts.
 Canonical SHA-256 hashes also identify both IR states, the consumed map,
 implicit registry and source audit inside the raw-byte-hashed receipt.
-Original Alloy bytes and its inert `run show for 1` command are retained.
+Original Alloy bytes and the generated `run show for 1` command are retained,
+including 0.5.7's mandatory `but 0 Name` scopes for unused abstracts. Under S,
+these are precisely abstract leaf declarations without concrete descendants;
+all other inferred scopes remain unsupported. Requested comparison bounds stay
+independent experiment metadata.
 
-`Export.hs` parses once, audits the typed AST and non-parser tokens before
-desugaring, compiles once, and requests `[JSON, Alloy]` in one `generate` call.
-It rejects enums, initializers, assertions/goals/constraints, temporal forms,
+`Export.hs` and `Export057.hs` each parse once, audit the typed AST and non-parser tokens before
+desugaring, compile once, and request `[JSON, Alloy]` in one `generate` call.
+Each rejects enums, initializers, assertions/goals/constraints, temporal forms,
 escapes, source option directives and non-direct type expressions. The decoder
 checks every constructor/field, duplicate JSON keys, scalar types, bindings and
 type hierarchies, source/receipt options, root conventions and output ownership.
@@ -100,9 +118,13 @@ Unknown forms are rejected. Reference cycles do not trigger hierarchy traversal.
 Parent/super cycles, dangling/reserved IDs and backend-symbol collisions fail.
 Display names may repeat.
 Latin-1 letters and apostrophes permitted by the pinned lexer remain intact in
-display names. The compiler replaces UID apostrophes with `__prime__` and assigns
-distinct counters when that spelling collides with a literal name. The importer
-preserves those emitted UIDs and backend symbols without deriving them from names.
+display names. Both profiles preserve the emitted, collision-distinct UIDs,
+including escaped apostrophes. In 0.5.7, UIDs use names and lexical qualification;
+the receipt separately records a total UID-to-Alloy-name map, including identity
+entries and the fixed registry. The adapter checks coverage, injectivity, reserved
+and derived symbol collisions, and exact transport of identity-bearing IR slots.
+It never reconstructs a UID from a display name or guesses a removed suffix.
+The renamed backend IR, actual consumed map and source map have separate hashes.
 Alloy parser/solver acceptance remains outside the import claim.
 
 Positions are either `null` for generated syntax or exact `{start, end}` objects
@@ -114,18 +136,30 @@ file-qualified spans are outside this capture schema. Import-related options
 must be empty/default and source `//# OPTIONS` directives remain rejected;
 multi-file loading is outside this profile.
 
-Compiler `root`, base `clafer` and six primitive IDs remain distinct. Concrete
+Compiler `root`, base `clafer` and the primitive registry remain distinct.
+The 0.5.4 registry has six primitive IDs; 0.5.7 adds `decimal` and changes the
+integer/int hierarchy through decimal to real. This is checked registry metadata;
+it does not admit primitive values. The 0.5.7 declaration modifiers include
+`_finalReferences`, and references use `_refModifiers` instead of `_refModifier`.
+Both new fields must be lists: known nonempty modifiers are unsupported, unknown
+enums or malformed types are malformed, and mixed/extra fields are rejected.
+The two additional options are fixed to `explicit_model=false` and
+`decimal_digits=null`. Concrete
 top-level parents become the synthetic root; abstract top-level `clafer` parents
 become absent. Primitive targets are unsupported. Required effective cards use
 exact integer endpoints, with only upper `-1` denoting infinity. `_glCard` and
 `_isKeyword` remain compiler metadata, never authored/default evidence.
 
-The consumed map predates optimization. Its topology, type bindings, names,
+The captured source map predates optimization (in 0.5.4 it is also the consumed map). Its topology, type bindings, names,
 modifiers, groups and child inventories must match the emitted IR. The recorded
 exceptions are the compiler's `_glCard` calculation and zeroing an unused
 abstract's `[0,-1]` card to `[0,0]`; the latter is admitted only when the guarded
 core has no concrete descendant. The receipt retains both records. These
 exceptions identify the actual pipeline, without asserting optimizer correctness.
+In 0.5.7, `generate` keeps that map when no Alloy names change, but rebuilds it
+from the optimized, renamed module when any name changes. The adapter validates
+this exact branch, including the synthetic root and registry. Backend observations
+use the actual consumed map, while imported core rows retain source UIDs.
 
 External failure categories are `malformed`, `unsupported`, `compiler_rejected`
 and `error`. No failed import gets a semantic verdict. Lean independently checks

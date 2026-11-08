@@ -11,8 +11,9 @@ import time
 import platform
 
 import alloy_runtime
-from protocol import IDENTIFIER, PIN, OPTIONS, Rejection, digest, encoded, exact, import_bundle, loads, reject, unsupported
-from relation import canonical, decode, inventory, isomorphism, occurrences, pin, range_argument, validate_candidate
+from protocol import IDENTIFIER, OPTIONS, Rejection, digest, encoded, exact, import_bundle, loads, reject, unsupported
+from profiles import by_commit
+from relation import canonical, decode, fresh_symbol, inventory, isomorphism, occurrences, pin, range_argument, validate_candidate
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "clafer-structural-comparison/v1"
@@ -50,19 +51,21 @@ def lean(core, candidate):
     return checker_runtime.execute(core,candidate,source_snapshot())[0]
 
 
-def command(original, pin_text, bounds, bitwidth, overall, unpinned=False, observations=None):
-    exact_command = "run show for 1\n"
+def command(original, pin_text, bounds, bitwidth, overall, unpinned=False, observations=None,
+            signatures=None, exact_command="run show for 1\n", label="ib_candidate"):
+    signatures = signatures if signatures is not None else {u: u for u in bounds}
     # Use the imported S fragment's identifier grammar: a generated symbol such
     # as c0_ib_candidate does not collide with the added predicate.
-    if original.count(exact_command) != 1 or "ib_candidate" in re.findall(IDENTIFIER, original):
+    if original.count(exact_command) != 1 or label in re.findall(IDENTIFIER, original):
         reject("original_command")
     if type(overall) is not int or overall < 0:
         unsupported("global_scope")
     effective_bounds = command_bounds(bounds, observations or {})
-    scope = ", ".join(f"{b} {u}" for u, b in sorted(effective_bounds.items()))
-    label = "ib_candidate"
+    scope = ", ".join(f"{b} {signatures[u]}" for u, b in sorted(effective_bounds.items()))
     if unpinned: pin_text = "pred ib_candidate {}\n"
-    guards = "\n".join(f"#{u} <= {b}" for u,b in sorted(bounds.items()) if u != "root") or "no none"
+    if not pin_text.startswith("pred ib_candidate {"): reject("pin_syntax")
+    pin_text = pin_text.replace("pred ib_candidate {", f"pred {label} {{", 1)
+    guards = "\n".join(f"#{signatures[u]} <= {b}" for u,b in sorted(bounds.items()) if u != "root") or "no none"
     # These bounds preserve the manual domain even where Alloy requires scope 1
     # for a 'one sig', or silently derives scopes through abstract children.
     if not pin_text.endswith("}\n"): reject("pin_syntax")
@@ -104,13 +107,15 @@ def compare(bundle, candidate, output, *, bitwidth, overall, runtime=None, timeo
     started = time.monotonic()
     result = dict(schema=SCHEMA, admission=None, lean=None, solver=None, category="inconclusive",
                   diagnostics=[], faithful=None, complete=False, replay=["python3", "scripts/verification/comparison.py", "replay", str(output), str(output.with_name(output.name+"-replay"))])
-    manifest = dict(schema=SCHEMA, contract_revision="52-S/v1", compiler_commit=PIN,
-                    paper_sha256=PAPER, effective_options=OPTIONS, fragment="S", decisions=[f"D{i}" for i in range(1,9)], inputs={})
+    manifest = dict(schema=SCHEMA, contract_revision="52-S/v1", compiler_commit=None,
+                    paper_sha256=PAPER, effective_options=None, fragment="S", decisions=[f"D{i}" for i in range(1,9)], inputs={})
     try:
         # Reuse the exact #51 capture, never independently recapture either side.
         shutil.copytree(bundle, output / "capture")
         core, metadata = import_bundle(output / "capture")
         generation = loads((output / "capture/generation.json").read_bytes())
+        manifest["compiler_commit"] = metadata["compiler_commit"]
+        manifest["effective_options"] = generation["effective_options"]
         metadata["observations"] = {o["uid"]: o for o in generation["observations"]}
         result["admission"] = "admitted"
         manifest["compiler_build_sha256"] = digest((output / "capture/build.json").read_bytes())["sha256"]
@@ -142,7 +147,10 @@ def compare(bundle, candidate, output, *, bitwidth, overall, runtime=None, timeo
                 result["lean"] = verdict["status"]
                 validate_candidate(candidate, core, metadata["bounds"])
             nodes, fields = inventory(core, metadata)
+            signatures = metadata["signatures"]
+            original_command = metadata["original_command"]
             original = (output / "capture/model.als").read_bytes().decode("utf-8")
+            predicate = fresh_symbol("ib_candidate", set(re.findall(IDENTIFIER, original)))
             effective, pin_candidate = original, candidate
             if mutation:
                 from mutations import inject
@@ -159,21 +167,28 @@ def compare(bundle, candidate, output, *, bitwidth, overall, runtime=None, timeo
                 observations = {u:dict(o, signature_multiplicity="") if o["signature_multiplicity"]=="lone " else o for u,o in observations.items()}
             effective_scopes=command_bounds(metadata["bounds"],observations)
             arithmetic = range_argument(original, dict(root=1,**{u:max(b,metadata["bounds"][u]) for u,b in effective_scopes.items()}), bitwidth)
-            model, selected_command = command(effective, pin_text, metadata["bounds"], bitwidth, overall, unpinned, observations)
+            model, selected_command = command(effective, pin_text, metadata["bounds"], bitwidth, overall,
+                unpinned, observations, signatures, original_command, predicate)
             # Include every added constraint, including manual scope guards.
-            pin_text=model[len(effective.replace("run show for 1\n","",1))+1:-len(selected_command)]
+            pin_text=model[len(effective.replace(original_command,"",1))+1:-len(selected_command)]
             (output / "original.als").write_bytes((output / "capture/model.als").read_bytes())
             (output / "comparison.als").write_text(model)
             (output / "pin.als").write_text(pin_text)
-            (output / "command.json").write_bytes(encoded(dict(text=selected_command, original="run show for 1\n",
+            (output / "command.json").write_bytes(encoded(dict(text=selected_command, original=original_command,
+                signatures=signatures,
                 bounds={u: dict(upper=b, exact=False) for u,b in metadata["bounds"].items() if u != "root"},
                 command_bounds=command_bounds(metadata["bounds"],observations),
                 scope_adjustments={u:dict(requested=metadata["bounds"][u],effective=b,reason="intrinsic generated signature multiplicity") for u,b in effective_scopes.items() if b!=metadata["bounds"][u]},
                 overall=overall, bitwidth=bitwidth, arithmetic=arithmetic, pin=digest(pin_text.encode()),
                 derived_occurrences=None if unpinned else occurrences(candidate))))
             runtime = runtime or alloy_runtime.prepare()
-            request = dict(nodes=nodes, fields=fields, bounds=command_bounds(metadata["bounds"],observations),
-                           command="ib_candidate", overall=overall, bitwidth=bitwidth, maximum=arithmetic["maximum"])
+            # The bridge sees backend symbols; candidates and retained bounds use source UIDs.
+            backend_nodes = {signatures[u]: dict(n, super=signatures.get(n["super"])) for u,n in nodes.items()}
+            backend_fields = {s: dict(f, owner=signatures[f["owner"]], target=signatures[f["target"]]) for s,f in fields.items()}
+            request = dict(nodes=backend_nodes, fields=backend_fields,
+                           original_scopes={signatures[u]: b for u,b in generation["scopes"]},
+                           bounds={signatures[u]: b for u,b in effective_scopes.items()},
+                           command=predicate, overall=overall, bitwidth=bitwidth, maximum=arithmetic["maximum"])
             solved = alloy_runtime.solve(runtime, output, request, timeout=timeout, heap_mb=heap_mb)
             result["solver"] = solved["outcome"]
             bridge_failure=solved.get("status") not in (None,"ok")
@@ -250,7 +265,10 @@ def replay(directory, output, runtime=None):
     if m.get("schema") != SCHEMA: unsupported("comparison_version")
     exact(m,{"schema","contract_revision","compiler_commit","paper_sha256","effective_options","fragment","decisions","inputs",
              "compiler_build_sha256","generation_receipt","lean_commit"},"comparison manifest")
-    expected=dict(contract_revision="52-S/v1",compiler_commit=PIN,paper_sha256=PAPER,effective_options=OPTIONS,
+    profile = by_commit(m["compiler_commit"])
+    if profile is None: unsupported("replay_contract_identity")
+    expected=dict(contract_revision="52-S/v1",paper_sha256=PAPER,
+                  effective_options=OPTIONS | (dict(explicit_model=False, decimal_digits=None) if profile.modern else {}),
                   fragment="S",decisions=[f"D{i}" for i in range(1,9)],generation_receipt="capture/generation.json")
     if any(m[k]!=v for k,v in expected.items()):unsupported("replay_contract_identity")
     required={"source.json","core.json","candidate.json","settings.json","language-runtime.json"}
@@ -266,6 +284,9 @@ def replay(directory, output, runtime=None):
             reject("manifest_reference")
         if digest((directory / name).read_bytes()) != identity: reject("replay_input_hash", name)
     if m["compiler_build_sha256"]!=m["inputs"]["capture/build.json"]["sha256"]:reject("replay_build_identity")
+    captured = loads((directory/"capture/manifest.json").read_bytes())
+    if type(captured) is not dict or captured.get("compiler_commit") != profile.commit:
+        reject("replay_compiler_identity")
     if loads((directory/"source.json").read_bytes()) != source_snapshot(): unsupported("replay_source_changed")
     if loads((directory/"language-runtime.json").read_bytes()) != dict(python=sys.version,implementation=platform.python_implementation()):
         unsupported("replay_python_runtime_changed")

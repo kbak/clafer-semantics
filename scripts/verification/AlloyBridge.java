@@ -95,8 +95,17 @@ public final class AlloyBridge {
         stage("original_command_validation");
         require(original.getAllCommands().size() == 1, "original command count");
         Command oc = original.getAllCommands().get(0);
-        require(oc.label.equals("show") && !oc.check && oc.overall == 1 && oc.scope.isEmpty() &&
+        require(oc.label.equals("show") && !oc.check && oc.overall == 1 &&
             oc.bitwidth == -1 && oc.additionalExactScopes.isEmpty(), "original command changed");
+        JsonObject originalScopes = r.getAsJsonObject("original_scopes");
+        require(oc.scope.size() == originalScopes.size(), "original scope count");
+        Set<String> originalScoped = new HashSet<>();
+        for (CommandScope s : oc.scope) {
+            String u = uid(s.sig.label);
+            require(originalScopes.has(u) && originalScoped.add(u) && !s.isExact &&
+                s.startingScope == originalScopes.get(u).getAsInt() &&
+                s.endingScope == s.startingScope && s.increment == 1, "original scope mismatch: " + u);
+        }
         out.put("original_command",command(oc));
         stage("comparison_parse");
         CompModule model = CompUtil.parseEverything_fromFile(reporter, null, "comparison.als");
@@ -187,7 +196,7 @@ public final class AlloyBridge {
             // They introduce no atoms/fields; record all of them for inspection.
             Map<String,Object> skolems=new TreeMap<>();
             for(ExprVar sk:solution.getAllSkolems()) {
-                supported(sk.label.startsWith("$ib_candidate_ib_obj_"),"unclassified skolem: " + sk.label);
+                supported(sk.label.startsWith("$" + r.get("command").getAsString() + "_ib_obj_"),"unclassified skolem: " + sk.label);
                 skolems.put(sk.label,tuples((A4TupleSet)solution.eval(sk)));
             }
             require(solution.eval(Sig.STRING).size()==0 && solution.eval(Sig.SEQIDX).size()==0,"unexpected auxiliary atoms");

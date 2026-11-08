@@ -296,12 +296,13 @@ links need the current path; a commit-pinned URL retains the historical document
 
 ## Pinned import validation prerequisites
 
-The importer tests execute the pinned Haskell exporter as well as Lean. On Linux
+The importer tests execute both reviewed Haskell exporter profiles as well as Lean. On Linux
 x86_64, `bash scripts/check.sh` prepares it automatically in an external cache when
 no exporter is configured. Install GMP headers (`libgmp-dev` on Debian/Ubuntu)
 and allow the first build to download the pinned Stack, GHC and dependencies.
 For explicit provisioning, build in external scratch and set `CLAFER_CAPTURE`
-and `CLAFER_CAPTURE_BUILD` as described in
+and `CLAFER_CAPTURE_BUILD` for the default 0.5.7 profile, plus
+`CLAFER_CAPTURE_054` and `CLAFER_CAPTURE_BUILD_054` for 0.5.4, as described in
 [the import guide](docs/resolved-import.md#build-and-replay).
 Keep source archives, GHC/Stack caches, binaries and evidence outside the repository.
 Setup failures fail the check; saved JSON fixtures do not substitute for compiler

@@ -59,10 +59,14 @@ alone does not establish reverse comparison or complete enumeration.
 
 The reviewed symbol relation uses the signature and field inventory from the
 [importer's capture receipt](resolved-import.md),
-owners, binary arities and target UIDs. It never strips guessed suffixes. When
+owners, binary arities and target UIDs. For 0.5.7 it additionally checks the
+captured total source-UID-to-Alloy-name bijection. Candidate tables and manual
+bounds retain source UIDs; the Alloy bridge receives mapped signature and endpoint
+names, and decoding applies the checked inverse. It never strips guessed suffixes. When
 reference and containment have identical endpoints, the reference is the first
 field according to pinned `Generator/Alloy.hs`, `genRelations` (lines 170–180 at
-`6750e6f591b2131549122c13dee94d3d2257eaea`). Receipt order and the reviewed capture's
+`6750e6f591b2131549122c13dee94d3d2257eaea`, with the same ordering at
+`f6ca5b887d7bacc09915c6fc0278064c8371beac`). Receipt order and the reviewed capture's
 provenance are explicit external assumptions. S excludes inherited fields;
 inherited membership is supported without allocating super objects. Unknown
 signatures, fields and auxiliaries cannot be ignored.
@@ -86,9 +90,11 @@ Every signature, including abstracts, has an explicit requested upper bound.
 Every actual command scope is inspected through Alloy's resolved AST, including
 exactness, range and increment. The harness emits no explicit exact scopes.
 All original facts/declarations remain byte-for-byte intact; only the recorded
-`run show for 1` command is replaced and the recorded comparison predicate added.
-Predicate collision checks compare complete identifiers using the admitted
-fragment's grammar; names such as `c0_ib_candidate` remain valid.
+generated `run show for 1` command, including any checked zero-abstract scopes,
+is replaced and the recorded comparison predicate added. The bridge checks those
+original scopes separately from the requested comparison scopes. Predicate and
+object-variable names avoid complete source/backend identifiers, so declarations
+named `ib_candidate` or `ib_obj_0` remain usable.
 Every added constraint, including `#signature <= requested_bound`, is in `pin.als`.
 
 Pinned Alloy `ScopeComputer` rejects a scope other than 1 for `one sig`, and a

@@ -143,15 +143,22 @@ def occurrences(candidate):
                   for v, (head, t) in candidate["references"] if u == v and h == head)
 
 
+def fresh_symbol(base, used):
+    name = base
+    while name in used:
+        name += "_"
+    return name
+
+
 # [impl->req~clafer-alloy-representation~1]
 def pin(candidate, core, metadata):
     nodes, fields = inventory(core, metadata)
+    signatures = metadata.get("signatures", {u: u for u in nodes})
     validate_candidate(candidate, core, metadata["bounds"])
     root = candidate["root"]
     objects = sorted(o for o in candidate["objects"] if o != root)
-    names = {o: f"ib_obj_{i}" for i, o in enumerate(objects)}
-    if set(names.values()) & (set(nodes) | set(fields)):
-        unsupported("pin_variable_collision")
+    used = set(signatures.values()) | set(fields)
+    names = {o: fresh_symbol(f"ib_obj_{i}", used) for i, o in enumerate(objects)}
     clauses = []
     # These are exactly the virtual-root decoding convention, not a second
     # satisfaction definition. An incompatible candidate has no representation.
@@ -166,14 +173,14 @@ def pin(candidate, core, metadata):
         clauses.append("some none")
     for uid in nodes:
         members = [names[o] for u, o in candidate["members"] if u == uid and o != root]
-        clauses.append(f"{uid} = ({' + '.join(sorted(members)) or 'none'})")
+        clauses.append(f"{signatures[uid]} = ({' + '.join(sorted(members)) or 'none'})")
     for symbol, field in fields.items():
         tuples = [f"{names[a]}->{names[b]}" for u, (a, b) in candidate[field["table"]]
                   if u == field["uid"] and a != root and b != root]
         clauses.append(f"@{symbol} = ({' + '.join(sorted(tuples)) or 'none->none'})")
     body = "\n    ".join(clauses) or "no none"
     if objects:
-        universe = " + ".join(sorted(nodes)) or "none"
+        universe = " + ".join(sorted(signatures.values())) or "none"
         body = f"some disj {', '.join(names.values())}: ({universe}) | {{\n    {body}\n  }}"
     return "pred ib_candidate {\n  " + body + "\n}\n"
 
@@ -201,12 +208,15 @@ def range_argument(original, bounds, bitwidth):
 # [impl->req~clafer-alloy-representation~1]
 def decode(witness, core, metadata):
     nodes, fields = inventory(core, metadata)
-    if set(witness["signatures"]) != set(nodes) or set(witness["fields"]) != set(fields):
+    signatures = metadata.get("signatures", {u: u for u in nodes})
+    inverse = {name: uid for uid, name in signatures.items()}
+    if set(witness["signatures"]) != set(inverse) or set(witness["fields"]) != set(fields):
         reject("witness_inventory")
     atoms = sorted({a for extent in witness["signatures"].values() for a in extent})
     labels = {a: i + 1 for i, a in enumerate(atoms)}
     c = dict(objects=list(range(len(atoms) + 1)), root=0, members=[["root", 0]], containment=[], references=[])
-    for uid, extent in witness["signatures"].items():
+    for symbol, extent in witness["signatures"].items():
+        uid = inverse[symbol]
         if len(set(extent)) != len(extent):
             reject("duplicate_witness_atom")
         for atom in extent:

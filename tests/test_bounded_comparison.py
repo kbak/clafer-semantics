@@ -23,6 +23,7 @@ from capture import capture
 import protocol as p
 import relation
 from runtime import prepare
+from profiles import LEGACY
 
 FIXTURES=ROOT / "tests/fixtures/comparison"
 
@@ -133,9 +134,10 @@ class SourceIdentityTests(unittest.TestCase):
         # compiler. Malformed candidate bytes stop before checker/solver setup.
         for name in ("input.cfr","analyzed.json","model.als","build.json","manifest.json"):
             (self.bundle/name).write_bytes(b"{}\n")
-        (self.bundle/"generation.json").write_bytes(p.encoded(dict(observations=[])))
+        (self.bundle/"generation.json").write_bytes(p.encoded(dict(observations=[],effective_options=p.OPTIONS)))
+        (self.bundle/"manifest.json").write_bytes(p.encoded(dict(compiler_commit=LEGACY.commit)))
         self.enterContext(patch.object(c,"ROOT",self.source))
-        self.enterContext(patch.object(c,"import_bundle",return_value=({},{})))
+        self.enterContext(patch.object(c,"import_bundle",return_value=({},dict(compiler_commit=LEGACY.commit))))
 
     def git(self,*args,cwd=None):
         return subprocess.check_output(["git",*args],cwd=cwd or self.source,text=True,
@@ -246,7 +248,7 @@ class SourceIdentityTests(unittest.TestCase):
 class LiveComparisonTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.exporter,cls.build=prepare()
+        cls.exporter,cls.build=prepare(profile=LEGACY)
         cls.runtime=alloy_runtime.prepare()
         evidence=Path(os.environ.get("CLAFER_COMPARISON_EVIDENCE",tempfile.gettempdir())).resolve()
         if evidence.is_relative_to(ROOT):raise RuntimeError("comparison evidence must be external")

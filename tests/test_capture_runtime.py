@@ -22,7 +22,8 @@ class CaptureRuntimeTests(unittest.TestCase):
         self.root = Path(scratch.name)
         self.here = self.root / "checkout/scripts/verification"
         self.here.mkdir(parents=True)
-        (self.here / "Export.hs").write_text("exporter source")
+        (self.here / r.CURRENT.exporter).write_text("exporter source")
+        (self.here / r.LEGACY.exporter).write_text("historical exporter source")
         (self.here / "build.py").write_text("builder source")
         self.cache = self.root / "cache"
         self.work = self.cache / r.PIN
@@ -34,18 +35,39 @@ class CaptureRuntimeTests(unittest.TestCase):
             mock.start()
             self.addCleanup(mock.stop)
 
-    def write_runtime(self, directory):
+    def write_runtime(self, directory, profile=r.CURRENT):
         directory.mkdir(parents=True, exist_ok=True)
         executable, build = directory / "clafer-capture", directory / "build.json"
         executable.write_text("test executable")
         executable.chmod(0o755)
-        build.write_bytes(encoded(dict(schema="clafer-capture-build/1", compiler_commit=r.PIN,
-            compiler_archive_sha256=r.ARCHIVE, source_tree_sha256=r.SOURCE_TREE,
+        build.write_bytes(encoded(dict(schema="clafer-capture-build/1", compiler_commit=profile.commit,
+            compiler_archive_sha256=profile.archive, source_tree_sha256=profile.source_tree,
             resolver="lts-22.44", ghc_version="9.6.7", stack_version="3.11.1",
             stack_lock=r.STACK_LOCK, compiler_sources_unchanged=True,
-            exporter_source=r.digest((self.here / "Export.hs").read_bytes()),
+            exporter_source=r.digest((self.here / profile.exporter).read_bytes()),
             exporter_binary=r.digest(executable.read_bytes()))))
         return executable, build
+
+    def test_profiles_select_distinct_producers_and_reject_mixing(self):
+        current = self.write_runtime(self.root / "current")
+        old = self.write_runtime(self.root / "old", r.LEGACY)
+        with patch.dict(os.environ, CLAFER_CAPTURE=str(current[0]), CLAFER_CAPTURE_BUILD=str(current[1]),
+                        CLAFER_CAPTURE_054=str(old[0]), CLAFER_CAPTURE_BUILD_054=str(old[1])):
+            self.assertEqual(current, r.prepare())
+            self.assertEqual(old, r.prepare(profile=r.LEGACY))
+            self.assertFalse(r.valid_runtime(*old))
+            self.assertFalse(r.valid_runtime(*current, r.LEGACY))
+            with patch.dict(os.environ, CLAFER_CAPTURE=str(old[0]), CLAFER_CAPTURE_BUILD=str(old[1])):
+                with self.assertRaisesRegex(RuntimeError, "Configured exporter"):
+                    r.prepare()
+        self.assertNotEqual(r.work_directory(profile=r.LEGACY), r.work_directory())
+        output = self.root / "legacy-env"
+        with patch.dict(os.environ, GITHUB_ENV=str(output)), \
+             patch.object(sys, "argv", ["runtime.py", "--profile", "0.5.4", "--github-env", str(self.root / "old")]), \
+             patch.object(r, "prepare", return_value=old) as prepare:
+            self.assertEqual(0, r.main())
+            prepare.assert_called_once_with(self.root / "old", r.LEGACY)
+            self.assertEqual(output.read_text(), f"CLAFER_CAPTURE_054={old[0]}\nCLAFER_CAPTURE_BUILD_054={old[1]}\n")
 
     def fake_download(self, url, path, sha256):
         if path.name == "stack.tar.gz":
@@ -67,7 +89,7 @@ class CaptureRuntimeTests(unittest.TestCase):
             self.assertEqual(r.prepare(), first)
             self.assertEqual(build.call_count, 1)
             # Both a fresh snapshot's exporter and its builder must be current.
-            (self.here / "Export.hs").write_text("new exporter source")
+            (self.here / r.CURRENT.exporter).write_text("new exporter source")
             r.prepare()
             self.assertEqual(build.call_count, 2)
             (self.here / "build.py").write_text("new builder source")
@@ -117,7 +139,7 @@ class CaptureRuntimeTests(unittest.TestCase):
             recipe = hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest()
             stamp.write_text(recipe)
             self.assertEqual(r.main(), 0)
-            for path in (executable, build, stamp, self.here / "Export.hs", self.here / "build.py"):
+            for path in (executable, build, stamp, self.here / r.CURRENT.exporter, self.here / "build.py"):
                 with self.subTest(path=path):
                     original = path.read_bytes()
                     path.write_bytes(original + b"changed")

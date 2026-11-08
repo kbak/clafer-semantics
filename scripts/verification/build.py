@@ -6,7 +6,8 @@ import os
 from pathlib import Path
 import subprocess
 import tarfile
-from protocol import ARCHIVE, PIN, digest, encoded
+from protocol import digest, encoded
+from profiles import CURRENT, by_version
 
 
 def require(condition, detail):
@@ -23,10 +24,12 @@ def main():
     p.add_argument("--archive", required=True, type=Path)
     p.add_argument("--stack", required=True, type=Path)
     p.add_argument("--work", required=True, type=Path)
+    p.add_argument("--profile", choices=("0.5.4", "0.5.7"), default=CURRENT.version)
     args = p.parse_args()
+    profile = by_version(args.profile)
     work = args.work.resolve()
     work.mkdir(parents=True, exist_ok=True)
-    require(hashlib.sha256(args.archive.read_bytes()).hexdigest() == ARCHIVE, "wrong source archive")
+    require(hashlib.sha256(args.archive.read_bytes()).hexdigest() == profile.archive, "wrong source archive")
     source = work / "compiler"
     with tarfile.open(args.archive) as archive:
         members = archive.getmembers()
@@ -46,7 +49,7 @@ def main():
                     target.chmod(member.mode)
     env = dict(os.environ, STACK_ROOT=str(work / "stack-root"))
     stack = str(args.stack.resolve())
-    exporter = Path(__file__).with_name("Export.hs").resolve()
+    exporter = Path(__file__).with_name(profile.exporter).resolve()
     output = work / "clafer-capture"
     obj = work / "exporter-objects"
     obj.mkdir(exist_ok=True)
@@ -66,7 +69,7 @@ def main():
     ghc = subprocess.check_output([stack, "exec", "--", "ghc", "--numeric-version"], cwd=source, env=env, text=True).strip()
     stack_version = subprocess.check_output([stack, "--numeric-version"], text=True).strip()
     require(ghc == "9.6.7" and stack_version == "3.11.1", "wrong build tools")
-    build = dict(schema="clafer-capture-build/1", compiler_commit=PIN, compiler_archive_sha256=ARCHIVE,
+    build = dict(schema="clafer-capture-build/1", compiler_commit=profile.commit, compiler_archive_sha256=profile.archive,
         source_tree_sha256=hashlib.sha256(encoded(originals)).hexdigest(), resolver="lts-22.44",
         ghc_version=ghc, stack_version=stack_version, stack_lock=digest((source / "stack.yaml.lock").read_bytes()),
         exporter_source=digest(exporter.read_bytes()), exporter_binary=digest(output.read_bytes()),

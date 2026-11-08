@@ -18,12 +18,9 @@ FIXTURES = ROOT / "tests/fixtures/importer"
 
 
 def runtime():
-    executable = os.environ.get("CLAFER_CAPTURE") or shutil.which("clafer-capture")
-    if not executable:
-        raise RuntimeError("Build the pinned exporter with scripts/verification/build.py and set CLAFER_CAPTURE; see docs/resolved-import.md")
-    executable = Path(executable)
-    build = Path(os.environ.get("CLAFER_CAPTURE_BUILD", str(executable.with_name("build.json"))))
-    return executable, build
+    from runtime import prepare
+    from profiles import LEGACY
+    return prepare(profile=LEGACY)
 
 
 # [utest->req~clafer-compiler-capture~1]
