@@ -118,6 +118,21 @@ The eventual persistence condition excludes the entry guard. Disappearing source
 or context can violate it while the parent remains alive; only parent loss
 cancels the obligation. Reappearance creates new attached obligations.
 
+For an immediate relational value rule `this.dref = v --> this.dref = w`,
+an enabled source and a surviving parent force the **same identity** to exist
+at the next state. [AbsentReference.valueTransition_live](../Clafer/Behavioral/AbsentReference.lean)
+derives this from the existing expansion and singleton equality. `counter_alive`
+iterates the consequence for any total next-value function, including increment
+and reset: it requires a live initial identity, a persistent parent, an integer
+singleton observation at each live state, and the corresponding rule issued
+there. Replacement and later rebirth cannot discharge a missed step. The
+[counter witnesses](../Clafer/Behavioral/AbsentReferenceExamples.lean) check a
+repeating two-value counter, rejection on child loss/replacement, and cancellation
+on parent loss, including the last-to-loop edge. A disabled transition or a model
+without a future value obligation can permit disappearance. The
+[absent-reference contract](behavioral-formulas.md#absent-references-and-value-obligations)
+keeps these relational claims separate from empty-to-zero arithmetic coercion.
+
 `declaration` supplies `this` as source and context for a declaration arrow.
 The frontend must attach this expansion to that declaration's instances, retaining
 each actual parent, and conjoin additional outgoing constraints. The generic

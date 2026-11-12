@@ -521,6 +521,16 @@ aggregation, zero-divisor, quantifier, cancellation and absent-context witnesses
 Backend agreement retains explicit nonzero-divisor and intermediate-range
 obligations with the encoding owner; it is not a source wraparound rule.
 
+Absent and never-live heads have no raw reference tuples under state typedness;
+observation filtering must not repair a malformed candidate. Prove empty raw,
+inherited and captured dereference images under their respective hypotheses.
+Keep relational equality/inequality, empty-to-zero coercion, strict extraction
+and undefined arithmetic distinct: empty differs from every singleton, coerces
+to zero, fails strict extraction, and is a zero divisor after coercion. Undefined
+atoms have neither source polarity at active observations. Do not infer presence
+from every arithmetic comparison or promise elimination of unrelated trace
+symmetries.
+
 Covers:
 - `intent~formalization-foundation~1`
 
@@ -541,8 +551,8 @@ Observe an inherited dereference by restricting the owner's current relation to
 the subtype's existing head extent. Prove agreement between views sharing an
 owner on shared head identities, own-reference agreement, functionality and live
 target validity under the existing trace-validity hypotheses, and emptiness at
-an absent head. Check nearest ownership, two bag heads at one target, changing
-targets and disappearance. These observations do not assert richer structural
+an absent head, including an empty target-image set. Check nearest ownership,
+two bag heads at one target, changing targets and disappearance. These observations do not assert richer structural
 admission or agreement between distinct redeclared reference owners; those are
 separate structural compatibility obligations in the [audit](behavioral-structure.md).
 
@@ -749,6 +759,16 @@ its left operand before cancellation. Initial/final anchors refer to the context
 birth/last-live state, including zero and repeated lifetimes. State the exact
 root/persistent-parent laws and attachment distinctions.
 
+Under the [accepted absent-reference reading](behavioral-formulas.md#absent-references-and-value-obligations),
+prove the same-identity next-state value obligation, its contradiction with
+required child disappearance, and the contradiction between next-state values
+3 and 4 while the parent survives. Distinguish a rejected candidate from
+whole-model UNSAT: the latter requires an issued obligation and forced
+disappearance in every candidate. Later child rebirth cannot repair a missed
+next-state obligation; parent rebirth cannot resume a cancelled one. Retain
+positive witnesses for survival, parent cancellation, empty-set inequality and
+disappearance without a future obligation.
+
 Follow the [formula contract](behavioral-formulas.md), behavioral paper §5
 Definitions 4–5 and §6.1 as changed by T2/T3/T7. Prove operator lowering and
 context/lifetime rules and provide valid-trace cancellation, reappearance,
@@ -801,7 +821,10 @@ starts at its fixed identity. Preserve bag-head identities and actual parent
 identity independently of targets and declaration roles.
 
 Prove capture, shadowing, absence and navigation equations, with changing-reference
-and absent-context witnesses. Record the deliberate departure from the paper's
+and absent-context witnesses. A captured absent identity remains in its stored
+singleton while its current dereference image is empty; a replacement identity
+with the required value cannot discharge the original identity's obligation.
+Record the deliberate departure from the paper's
 snapshot-tagged environment. Keep observations total on the stated set domain.
 Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged
@@ -855,7 +878,12 @@ are entry tests. Prove both signed meanings and reduction/normalization,
 retaining the original strict partial domain. Supply the resolved presence
 adapter and record the generic caller's attachment obligation. Check valid
 chains and mutations with missing intermediate states/guards, context/source
-loss, cancellation and reappearance. See the [surface contract](behavioral-surface.md).
+loss, cancellation and reappearance. Prove that an enabled immediate relational
+singleton-value transition keeps the same instance alive when its parent survives.
+For a counter, retain explicit current singleton-integer observations, issued
+transition rules and parent persistence as hypotheses; a disabled rule or absent
+future obligation must still permit disappearance. Check ordinary and loop-edge
+states. See the [surface contract](behavioral-surface.md).
 
 Covers:
 - `intent~formalization-foundation~1`
