@@ -487,6 +487,48 @@ Covers:
 
 Needs: impl, proof, utest
 
+## Behavioral initializer contract and supported forms
+
+`req~behavioral-initializer-contract~1`
+
+Maintain the accepted [initializer contract](behavioral-initializers.md), including
+authored/defaulted multiplicity provenance, inherited clocks and original collection
+scope, global time-zero initialization for parentless abstracts with explicit
+unrestricted bounds, bag target-set equality, and the independent presence guard,
+head cardinality, reference totality and key obligations. Reuse ordinary child and
+inherited group defaults; constraints on counts must not reclassify initializers.
+Conjoin own and inherited obligations without replacement.
+
+Supply an independent resolved classifier and explicit unsupported-form diagnostics.
+Parentless abstract initializers admit omitted or explicit unrestricted bounds only.
+Per-instance abstract initializers require a scalar RHS in static and temporal
+models. Justify a conservative bound analysis against the existing partial evaluator,
+with declaration/navigation leaf certificates independent of initializer satisfaction.
+Admit duplicate literals and intersections with scalar operands; do not use arbitrary
+constraints to prove scalarity or discard partial operand obligations. Preserve source
+name/type/range errors independently of presence; well-formed constraint conflicts
+remain model constraints, not unsupported forms.
+
+Prove aggregate/per-instance static agreement in a shared original environment,
+using scalar RHS observations for abstracts or at-most-one head bounds for concrete
+singles, and root-context reduction to time zero. Keep the stable
+observation assumptions of the existing constant-trace theorems explicit. Retain
+the multi-target abstract counterexample and structurally admitted positive/negative
+witnesses for late births, removal, exactly-one replacement, two clocks, global
+cross-parent/late-parent initialization, bag repetition and cardinality conflicts.
+Cover defaulting, finite parentless-bound rejection, scalar admission and diagnostic
+distinctions. Do not equate an impossible nonempty birth with a permanently absent
+declaration or an unsatisfiable whole model.
+
+These modules consolidate source contracts and candidate proofs. Production
+elaboration, full source environment transport and backend preservation remain
+separate obligations; the historical production initializer profile is unchanged.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
 ## Behavioral references and partial atoms
 
 `req~behavioral-reference-atoms~1`

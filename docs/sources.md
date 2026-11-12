@@ -1579,6 +1579,33 @@ Their static output-equivalence examples do not establish partial-arithmetic
 agreement. Candidate proofs retain the historical profile and installed compiler
 pin; production adoption belongs to the separate initializer integration.
 
+## Initializer supported-form decisions
+
+The [initializer contract](behavioral-initializers.md) consolidates the accepted
+#170 decisions: [inherited clocks and bag target sets](https://github.com/kbak/clafer-semantics/issues/170#issuecomment-6828814089),
+[narrowing and explicit abstract multiplicities](https://github.com/kbak/clafer-semantics/issues/170#issuecomment-6829541813),
+[global initialization and scalar RHSs](https://github.com/kbak/clafer-semantics/issues/170#issuecomment-6831046961),
+and [ordinary defaulting and diagnostics](https://github.com/kbak/clafer-semantics/issues/170#issuecomment-6831423636).
+The clock/lifecycle foundation is behavioral §5 Definitions 2–5 and §6.1, T7/T9;
+structural heads, reference keys and multiplicities retain SoSyM §§5.3–5.5 and
+Appendix 3, with the separately adopted child-default evolution above.
+
+Global time-zero initialization for parentless abstracts, scalar-only admission
+for per-instance abstract initializers, and rejection of other authored parentless
+bounds are explicit accepted supported-form decisions. They are not consequences
+claimed verbatim from either paper. Existing parentless Shapes acquire no source
+map or global key. The source comparison remains pinned to
+[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a);
+`Desugarer.desugarInit`, `ResolverInheritance.analyzeCard` and the initializer
+account are supplementary evidence. The accepted scalar admission/diagnostic
+policy is not a claim that the inspected compiler enforces it.
+
+`InitializerBounds` proves conditional scalar soundness against the existing
+partial evaluator and aggregate/singleton agreement with one shared RHS environment.
+`InitializerClassification` preserves authored provenance and inherited obligations.
+The focused contract records exact assumptions and fixture scope. These modules
+leave the production initializer API and the historical SoSyM profile unchanged.
+
 ## Absent-reference decision and consequences
 
 The [accepted absent-reference decision](https://github.com/kbak/clafer-semantics/issues/168#issuecomment-6812362878)

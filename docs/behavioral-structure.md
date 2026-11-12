@@ -278,11 +278,13 @@ retain structural-validity proofs and exact head/target observations. A separate
 expression-level counterexample evaluates actual division by zero and contrasts
 the candidate guard with the current strict implication.
 
-These results do not yet derive stable observations for every source expression,
-transport parent environments into child constraints, classify inherited/defaulted
-multiplicities, or choose bag initializer syntax. The sampled reference snapshots
-preserve occurrences but do not select that syntax. They establish no whole-source
-model or Haskell/Alloy preservation theorem. The candidate modules are directly
+These results do not derive stable observations for every source expression or
+transport parent environments into child constraints. The separately consolidated
+[initializer contract](behavioral-initializers.md) now supplies the accepted
+inherited/defaulted classification, bag target-set reading, global clock and scalar
+RHS restriction, with independent bounds and lifecycle results. Neither layer
+establishes a whole-source model or Haskell/Alloy preservation theorem. The
+candidate modules are directly
 importable and checked by module discovery; they are not added to the production
 `Clafer.Behavioral` entry point. The [initializer integration task](https://github.com/kbak/clafer-semantics/issues/173)
 owns adoption of the revised equations and the remaining preservation obligations.

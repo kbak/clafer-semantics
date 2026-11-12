@@ -42,6 +42,37 @@ def SingleBirths (τ : Trace C U) (heads : Nat → Set U)
     (target : Nat → U → U) (rhs : Nat → U → Option (Set U)) : Prop :=
   ∀ t x, x ∈ heads t → τ.Starts t x → rhs t x = some {target t x}
 
+-- [proof->req~behavioral-initializer-contract~1]
+/-- A permanent root (or any context continuously present from time zero)
+checks its collection only at time zero, independent of concrete parent births. -/
+theorem permanent_context_iff (τ : Trace C U) (p : U)
+    (present : ∀ t, p ∈ τ.live t) (heads targets : Nat → U → Set U)
+    (rhs : Nat → U → Option (Set U)) :
+    CollectionBirths τ (fun _ => {p}) heads targets rhs ↔
+      Guarded (heads 0 p) (targets 0 p) (rhs 0 p) := by
+  constructor
+  · intro h
+    exact h 0 p rfl ((τ.starts_zero p).mpr (present 0))
+  · intro h t x hx birth
+    have eq : x = p := hx
+    subst x
+    rcases birth.2 with ht | ⟨k, _, absent⟩
+    · simpa only [ht] using h
+    · exact (absent (present k)).elim
+
+/-- Only observations at applicable births affect collection initialization.
+Later removal, replacement and changing/undefined RHS values impose no new
+initializer equation during the same parent lifetime. -/
+theorem collection_birth_congr (τ : Trace C U) (contexts : Nat → Set U)
+    (h₁ h₂ t₁ t₂ : Nat → U → Set U) (r₁ r₂ : Nat → U → Option (Set U))
+    (atBirth : ∀ t p, p ∈ contexts t → τ.Starts t p →
+      h₁ t p = h₂ t p ∧ t₁ t p = t₂ t p ∧ r₁ t p = r₂ t p) :
+    CollectionBirths τ contexts h₁ t₁ r₁ ↔ CollectionBirths τ contexts h₂ t₂ r₂ := by
+  constructor <;> intro h t p hp birth <;>
+    obtain ⟨hh, ht, hr⟩ := atBirth t p hp birth
+  · simpa only [hh, ht, hr] using h t p hp birth
+  · simpa only [hh, ht, hr] using h t p hp birth
+
 -- [proof->req~behavioral-reference-atoms~1]
 @[simp] theorem empty_guard (targets : Set U) (rhs : Option (Set U)) :
     Guarded ∅ targets rhs := by simp [Guarded]

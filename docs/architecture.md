@@ -69,6 +69,11 @@ adds resolved mathematical arithmetic, extrema and occurrence-indexed folds.
 The separately imported `InitializerCandidate` analyzes the
 [revised declaration guards](behavioral-structure.md#candidate-initializer-equations)
 and their exact constant-trace agreement without changing that production API.
+`InitializerClassification` and `InitializerBounds` consolidate the accepted
+[initializer contract](behavioral-initializers.md), with resolved admission,
+scalar-bound soundness and aggregate/singleton agreement. Separate lifecycle and
+contract examples verify inherited clocks and collection observations on admitted
+structures. These modules remain outside the production aggregator.
 These source modules do not import Compile or Verification.
 
 Source meaning is independent of executable IR and target semantics. The upstream

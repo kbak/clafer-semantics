@@ -104,7 +104,10 @@ derive same-identity value obligations and counter persistence with explicit
 parent-lifetime and arithmetic boundaries. Separate
 [candidate initializer equations](behavioral-structure.md#candidate-initializer-equations)
 analyze presence-guarded definedness and constant-trace agreement before production
-elaboration adopts birth-only initialization. The [finite behavioral checker](behavioral-verification.md)
+elaboration adopts birth-only initialization. The accepted
+[initializer contract](behavioral-initializers.md) specifies inherited clocks,
+defaulting, bag target sets, global initialization, scalar admission and diagnostics,
+with independent classification and bound proofs. The [finite behavioral checker](behavioral-verification.md)
 adds history-aware lassos, executable normalized-core evaluation and agreement
 with infinite meaning, including a proved total set-observation adapter. The
 [surface contract](behavioral-surface.md) adds inherited lifetime modifiers,
@@ -174,6 +177,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Behavioral surface](behavioral-surface.md) | Modifier/anchor, transition and pattern meaning, source decisions, property quantification and reduction APIs |
 | [Behavioral qualification](behavioral-qualification.md) | Full model/core composition, strict finite observations, static common fragment, complete feature witnesses and source-profile acceptance boundary |
 | [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
+| [Initializer contract](behavioral-initializers.md) | Accepted collection clocks, defaulting, scalar bounds, diagnostics and candidate verification boundary |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |
