@@ -13,6 +13,7 @@ public import Clafer.Behavioral.StructuralBinding
 public import Clafer.Behavioral.StructuralSnapshot
 public import Clafer.Behavioral.StaticObservation
 public import Clafer.Behavioral.Initializers
+public import Clafer.Behavioral.AbsentReference
 
 public import Clafer.Behavioral.Anchors
 public import Clafer.Behavioral.Modifiers

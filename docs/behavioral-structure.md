@@ -39,6 +39,13 @@ reference totality/coherence, set keys, individual multiplicities, inherited
 groups, declaration disjointness and root reachability of every live identity.
 Unused pool identities still have fixed well-typed direct types and parents.
 
+State typedness also rules out every raw reference tuple from an absent or
+never-live head. The [absent-reference consequences](behavioral-formulas.md#absent-references-and-value-obligations)
+derive empty raw/inherited images and their interaction with captured identities,
+pending next-state values and arithmetic. Live filtering in an observation does
+not repair a malformed candidate. The static common-fragment bridge below is
+unchanged.
+
 Behavioral §5 Definition 2 has one partial link function per identity. Refined
 reference declarations therefore constrain the same target on a shared head;
 they do not introduce independent assignments. The static generator's

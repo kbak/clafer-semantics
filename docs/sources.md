@@ -1566,6 +1566,41 @@ attachment state. Behavioral §6.1 p.2:29 does not make it a birth-only initiali
 The frontend must diagnose the unsupported form and preserve the resolved
 presence/value views. All implementations and proofs are independently authored.
 
+## Absent-reference decision and consequences
+
+The [accepted absent-reference decision](https://github.com/kbak/clafer-semantics/issues/168#issuecomment-6812362878)
+selects no reference tuples for absent instances, including never-live identities.
+Its A–F cases qualify the original examples: relational next-state equality
+retains the same identity and requires its presence when its parent survives;
+empty-set inequality can hold during absence, and a model without a pending
+obligation may allow disappearance. Their combination establishes model
+unsatisfiability when every candidate must issue a value obligation and then lose
+that child while its parent survives.
+Later child rebirth cannot repair the missed next state; a parent gap permanently
+cancels that obligation. Numeric coercion remains the separate D3 empty-to-zero
+policy, so these relational claims do not apply to every arithmetic comparison.
+
+Behavioral §5 Definitions 2–3 (pp. 2:25–26) supply state/link validity;
+Definitions 4–5 (pp. 2:27–28) and §6.1 (pp. 2:29–32), amended by T2/T7/T11,
+supply identity, attachment and lifetime meaning. The decision makes their
+absent-reference interaction explicit. It requires no change to the existing
+Lean definitions: `ReferenceObservation.absent_head_no_deref`,
+`InheritedReference.absent_head`, `Structural.StateValid.typed`, current
+navigation and the parent interval already provide the premises.
+[AbsentReference](../Clafer/Behavioral/AbsentReference.lean) proves the derived
+empty-image, literal equality, strict-domain, counter and whole-model
+consequences; the [formula contract](behavioral-formulas.md#absent-references-and-value-obligations)
+states the hypotheses and fixture limits.
+
+The [comparison recorded on the decision](https://github.com/kbak/clafer-semantics/issues/168#issuecomment-6807930922)
+reports that `AlloyLtl.genConstraints` at
+`gsdlab/clafer@d275c97c8b537a9bfb419b7c3ef2a01cf7cea18c` still guards reference
+constraints by head presence without imposing absent-head emptiness. This is
+retained comparison provenance, not a new compiler run or an updated source pin.
+The Lean proofs are independent of that translation. Compiler adoption and
+initializer semantics retain their separate owners. Removing hidden tuples
+does not establish elimination of other symmetry-equivalent traces.
+
 ## Behavioral arithmetic comparison
 
 The [D3 conversion decision](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729)

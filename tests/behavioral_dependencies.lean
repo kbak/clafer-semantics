@@ -43,6 +43,10 @@ run_cmd do
 #check Clafer.Behavioral.Formula.satisfies_iff_lowered
 #check Clafer.Behavioral.StaticObservation.signed_atom_agrees
 #check Clafer.Behavioral.Initializers.default_rejected
+#check Clafer.Behavioral.AbsentReference.raw_empty
+#check Clafer.Behavioral.AbsentReference.next_equalValue_live
+#check Clafer.Behavioral.AbsentReference.counter_alive
+#check Clafer.Behavioral.AbsentReference.forced_disappearance_unsat
 #check Clafer.Behavioral.Formula.checkedCore_agrees
 #check Clafer.Behavioral.Properties.Model.behavioral_core_iff
 #check Clafer.Behavioral.Properties.Model.constant_iff
