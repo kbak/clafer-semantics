@@ -222,6 +222,64 @@ operands can therefore contribute repeatedly. Agreement with a deduplicated unio
 requires disjointness, or the frontend must retain separate operand occurrences.
 Neither the selector nor the fold makes the whole primitive domain finite.
 
+## Candidate initializer equations
+
+The [presence-guard decision](https://github.com/kbak/clafer-semantics/issues/169)
+and [collection extension](https://github.com/kbak/clafer-semantics/issues/170)
+require an initializer RHS only when its head collection is nonempty. This
+applies to the static equations for both `=` and `:=`, and to temporal collection
+`:=` at each parent birth. Per-instance `:=` checks each reference head's own
+birth. Later additions in the same parent lifetime receive no collection
+initialization. A new parent lifetime checks the collection again. These rules
+do not waive multiplicities, reference totality or other model constraints.
+
+[`InitializerCandidate`](../Clafer/Behavioral/InitializerCandidate.lean) supplies
+independent observation-level equations in `Initializers.Candidate`. For known
+head and target sets `H` and `T`, and a partial RHS observation `r`, the equation is
+`H.Nonempty → r = some T`. This is a declaration guard outside object-language
+Boolean evaluation. `none` remains undefined; `some ∅` is a defined empty set.
+Empty heads satisfy the guard with either observation. Nonempty valid reference
+heads have a nonempty target image, so they satisfy neither an undefined RHS
+nor equality with the empty target set.
+
+`collection_constant_iff` equates the parent-birth rule and the every-live rule
+with the static guarded equation. Its hypotheses separately fix live identities,
+applicable contexts, head sets, target sets and partial RHS observations across
+time. RHS stability permits `none`; it does not assume the desired definedness.
+`single_constant_iff` gives the corresponding result for the singleton target of
+each head. The clock argument is `starts_constant_live`: under constant live
+membership, exactly the live identities are born, at time zero only. Unused
+identities can remain absent. `structural_collection_iff` specializes the result
+to the existing `StaticCorrespondence.constant` embedding, whose structural
+validity retains the independent hypotheses of `constant_valid`.
+
+`primitive_equation_iff` identifies the equation with existing strict primitive
+equality when the left target observation is defined, without assuming RHS
+definedness. `guarded_primitive_iff` places that equality inside the declaration
+guard. `old_constant_rejects_undefined` shows why the existing Boolean presence
+implication cannot implement this extension: its RHS must be defined even with
+no heads. General Boolean implication keeps that strict domain.
+
+The [candidate witnesses](../Clafer/Behavioral/InitializerCandidateExamples.lean)
+check defined-empty versus undefined RHSs, matching and mismatching values,
+undefinedness before a late birth and after a valid birth, and failure at a new
+birth with a different target. A parent that survives while its initially empty
+collection gains heads demonstrates the timing difference: collection `:=`
+permits an undefined RHS throughout; every-live equality and per-instance birth
+initialization reject the relevant nonempty observations. The snapshot witnesses
+retain structural-validity proofs and exact head/target observations. A separate
+expression-level counterexample evaluates actual division by zero and contrasts
+the candidate guard with the current strict implication.
+
+These results do not yet derive stable observations for every source expression,
+transport parent environments into child constraints, classify inherited/defaulted
+multiplicities, or choose bag initializer syntax. The sampled reference snapshots
+preserve occurrences but do not select that syntax. They establish no whole-source
+model or Haskell/Alloy preservation theorem. The candidate modules are directly
+importable and checked by module discovery; they are not added to the production
+`Clafer.Behavioral` entry point. The [initializer integration task](https://github.com/kbak/clafer-semantics/issues/173)
+owns adoption of the revised equations and the remaining preservation obligations.
+
 ## Source dispositions and downstream obligations
 
 | Source item | Disposition |

@@ -98,7 +98,9 @@ parent-bounded evaluation, identity-capturing environments and proved normalizat
 and lowering over total observations. The [structural and atom contract](behavioral-structure.md)
 adds nested/refined structural admission, inherited references, full current-state
 bindings, captured static expressions and strict partial temporal observations,
-with exact common-fragment agreement. The [finite behavioral checker](behavioral-verification.md)
+with exact common-fragment agreement. Separate [candidate initializer equations](behavioral-structure.md#candidate-initializer-equations)
+analyze presence-guarded definedness and constant-trace agreement before production
+elaboration adopts birth-only initialization. The [finite behavioral checker](behavioral-verification.md)
 adds history-aware lassos, executable normalized-core evaluation and agreement
 with infinite meaning, including a proved total set-observation adapter. The
 [surface contract](behavioral-surface.md) adds inherited lifetime modifiers,

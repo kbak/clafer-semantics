@@ -66,6 +66,9 @@ transports richer inherited groups and reference observations to live carriers.
 explicit environment and definedness hypotheses, while `PrimitiveExpression`
 adds resolved mathematical arithmetic, extrema and occurrence-indexed folds.
 `Initializers` implements the reviewed constant-equation/default-rejection profile.
+The separately imported `InitializerCandidate` analyzes the
+[revised declaration guards](behavioral-structure.md#candidate-initializer-equations)
+and their exact constant-trace agreement without changing that production API.
 These source modules do not import Compile or Verification.
 
 Source meaning is independent of executable IR and target semantics. The upstream

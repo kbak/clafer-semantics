@@ -131,6 +131,8 @@ class PublicLibrariesTest(unittest.TestCase):
             "Clafer.Behavioral.QualificationExamples",
             "Clafer.Behavioral.StaticObservation",
             "Clafer.Behavioral.Initializers",
+            "Clafer.Behavioral.InitializerCandidate",
+            "Clafer.Behavioral.InitializerCandidateExamples",
             "Clafer.Behavioral.Anchors", "Clafer.Behavioral.AnchorExamples",
             "Clafer.Behavioral.Modifiers", "Clafer.Behavioral.ModifierExamples",
             "Clafer.Behavioral.ModifierBoundaryExamples",
