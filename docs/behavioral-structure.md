@@ -25,7 +25,7 @@ T8/T10/T11 denote temporal errata.
 | Captured variables, this and quantification; B07–B08 | `Structural.observed` supplies inherited current relations to the accepted D1 set evaluator. `CapturedStatic.agrees` covers every static constructor on singleton-compatible environments with live this. Quantifiers evaluate their domain before pushing singleton identities. | C6 supplies resolved lexical metadata and runtime typing. Stored sets/absent identities are not automatically static-admissible. |
 | Primitive observations; B31 | `PrimitiveExpression` composes strict extraction, finite-set coercion, cardinality, scalar operations, extrema and indexed folds. `finite_reference_operand` derives definedness from finite captured heads and target-domain typing. | C8 proves bounded-backend correspondence with nonzero divisors and sufficient ranges for every intermediate value. |
 | Partial temporal atoms; B08/B31 | `PartialObservation`, `Formula.Defined` and `Satisfies` keep strict definedness separate from signed truth. `StaticObservation` embeds typed static expressions; the primitive adapter embeds the new arithmetic grammar. | Lasso/encoding tasks must preserve the original formula's definedness as well as signed truth. |
-| Declaration initializers; B32 | The reviewed profile supports `=` as an ordinary presence-guarded equation and explicitly rejects `:=`. `Initializers.elaborate`, `constant_truth` and `every_live_state` expose that contract. | C6/C7 issue an unsupported-form diagnostic for `:=`; no default override semantics or birth-only initialization is inferred. |
+| Declaration initializers; B32 | The [initializer contract](behavioral-initializers.md) supplies every-live aggregate `=` and classified hard `:=`, preserving original RHS environments and independent declaration guards. | C6/C7 retain resolved provenance, admission certificates and static-first temporal classification; unsupported forms have explicit diagnostics. |
 
 ## Structural meaning and historical agreement
 
@@ -276,18 +276,14 @@ permits an undefined RHS throughout; every-live equality and per-instance birth
 initialization reject the relevant nonempty observations. The snapshot witnesses
 retain structural-validity proofs and exact head/target observations. A separate
 expression-level counterexample evaluates actual division by zero and contrasts
-the candidate guard with the current strict implication.
+the declaration guard with the historical strict implication.
 
-These results do not derive stable observations for every source expression or
-transport parent environments into child constraints. The separately consolidated
-[initializer contract](behavioral-initializers.md) now supplies the accepted
-inherited/defaulted classification, bag target-set reading, global clock and scalar
-RHS restriction, with independent bounds and lifecycle results. Neither layer
-establishes a whole-source model or Haskell/Alloy preservation theorem. The
-candidate modules are directly
-importable and checked by module discovery; they are not added to the production
-`Clafer.Behavioral` entry point. The [initializer integration task](https://github.com/kbak/clafer-semantics/issues/173)
-owns adoption of the revised equations and the remaining preservation obligations.
+The production [initializer contract](behavioral-initializers.md) composes these
+equations with classification, original-context transport and structural/static
+bridges. Primitive observations are stable on the canonical constant embedding;
+full temporal value conditions retain their separate stability requirements.
+Neither the candidate equations nor production semantic elaboration establish a
+frontend name-resolution or Haskell/Alloy preservation theorem.
 
 ## Source dispositions and downstream obligations
 
@@ -302,25 +298,22 @@ owns adoption of the revised equations and the remaining preservation obligation
 | S10 | Keep source-permitted concrete supers. Do not import the pinned compiler's abstract-super-only restriction into source validity. |
 | S11 | Use the adopted mathematical integer and partial arithmetic rules above. Other numeric types are outside the accepted profile; finite encoding ranges remain compiler obligations. |
 | T8 | Supply inherited heads, assignments and target images; S5 owns final/finalref/finaltarget predicates. |
-| B32/D4 | Support constant `=`; explicitly reject `:=` in this profile. |
+| B32/D4 | Adopt classified hard `:=` and every-live `=` with declaration-level presence guards; retain the strict historical API in `Legacy`. |
 
-The [accepted initializer disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
-uses the pinned desugarer's presence implication in the enclosing attachment
-context. `Initializers.constant` takes separately resolved head and value views,
-and builds `some heads => left = value`. Ordinary attachment checks it at every
-live context state; no `initially` wrapper is inserted. Operand definedness is
-strict even when the presence guard is false. The CheatSheet explicitly says no
-backend supports `:=`, and emitting an assertion does not define override/default
-semantics. C6/C7 must reject that syntax explicitly for this profile. This reviewed
-restriction does not remove default multiplicity/group elaboration.
+The [original initializer disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296)
+is retained in `Initializers.Legacy`, including its strict Boolean implication
+and rejection of `:=`. The [current contract](behavioral-initializers.md) adopts
+the later reviewed guard and initialization rules. General Boolean implication
+remains strict; empty declaration heads impose no RHS definedness obligation.
+Defaults, structural validity, assertions and backend preservation remain separate.
 
 The source interfaces above compose with the [surface contract](behavioral-surface.md)
 for modifiers, transitions and patterns. The compiler owns parsing, name resolution, implicit
 views, initializer diagnostics and elaboration preservation; C8 owns bounded
 arithmetic/reference encoding correspondence. The [qualification contract](behavioral-qualification.md)
 preserves the partial domain as well as signed truth in finite composition.
-No backend correctness or complete
-behavioral implementation follows from structural compatibility alone.
+No backend correctness or complete behavioral implementation follows from structural
+compatibility alone.
 
 Covers:
 - `req~behavioral-profile~1`

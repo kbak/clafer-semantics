@@ -188,7 +188,7 @@ theorem strict_guard_counterexample :
     Structural.Valid model trace ∧
     Guarded ∅ ∅ (PrimitiveExpression.collection model.toEffectiveCore
       (Structural.observed model trace) integers (.closed (.inl 0)) 0 zeroDiv) ∧
-    ¬ (Initializers.constant (.set .empty) (.set .empty) zeroDiv).Satisfies trace
+    ¬ (Initializers.Legacy.constant (.set .empty) (.set .empty) zeroDiv).Satisfies trace
       (.primitives model trace integers) true (.closed (.inl 0)) 0 := by
   dsimp only
   refine ⟨valid, empty_guard _ _, ?_⟩
