@@ -467,6 +467,21 @@ wrong-group, authored-abstract, reference-key and endpoint witnesses. No require
 structural matrix row may be left without an implementation or a reviewed
 disposition and named downstream obligation.
 
+Alongside that versioned production profile, supply the selected
+[candidate initializer result](behavioral-structure.md#candidate-initializer-equations).
+Its declaration-level presence guard requires RHS definedness and target-image
+equality only for nonempty heads, including collections at parent birth. Static
+`=` and `:=` use the same guard. Single-reference temporal initialization checks
+each head's birth; collection initialization checks each parent's birth and
+imposes no later obligation within that parent lifetime. Keep general Boolean
+definedness strict and cardinality/reference validity independent of the guard.
+Prove exact static/constant-trace and every-live agreement under explicit stable
+live/context/head/target/RHS observations, allowing a constantly undefined RHS
+behind an empty guard. Retain the old strict-implication counterexample and
+defined-empty, undefined, late-birth and rebirth witnesses. These are candidate
+equations; production elaboration, environment transport, supported-form
+classification and compiler preservation require their separate integration.
+
 Covers:
 - `intent~formalization-foundation~1`
 

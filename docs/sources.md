@@ -1566,6 +1566,19 @@ attachment state. Behavioral §6.1 p.2:29 does not make it a birth-only initiali
 The frontend must diagnose the unsupported form and preserve the resolved
 presence/value views. All implementations and proofs are independently authored.
 
+The later [initializer definedness decision](https://github.com/kbak/clafer-semantics/issues/169)
+and [collection presence-guard extension](https://github.com/kbak/clafer-semantics/issues/170)
+select declaration-level definedness guards for both single references and
+collections. The [candidate equations and exact proof boundary](behavioral-structure.md#candidate-initializer-equations)
+combine behavioral §5 Definitions 3–5 and §6.1 with T7/T9 birth/attachment
+semantics. The partial-definedness guard is an adopted extension, not a rule
+derived from the paper. The source comparison is pinned to
+[`initial-value.md` at fca0deb](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/initial-value.md)
+and [T14](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md#t14-the-initializer--is-the-initial-value-of-a-reference-change).
+Their static output-equivalence examples do not establish partial-arithmetic
+agreement. Candidate proofs retain the historical profile and installed compiler
+pin; production adoption belongs to the separate initializer integration.
+
 ## Absent-reference decision and consequences
 
 The [accepted absent-reference decision](https://github.com/kbak/clafer-semantics/issues/168#issuecomment-6812362878)
