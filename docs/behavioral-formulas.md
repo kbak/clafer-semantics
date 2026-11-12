@@ -126,6 +126,71 @@ anchor atoms retain absolute trace history; no loop-periodicity assumption is
 made for finite evaluation; the [lasso clock](behavioral-verification.md#initial-history-and-exact-temporal-evaluation)
 retains that history explicitly.
 
+## Absent references and value obligations
+
+An absent instance has no reference tuples, including when it never appears.
+The [accepted reading and A–F cases](https://github.com/kbak/clafer-semantics/issues/168#issuecomment-6812362878)
+follow the existing live-endpoint and parent-lifetime definitions. No new
+reference representation or temporal cancellation rule is needed.
+[AbsentReference](../Clafer/Behavioral/AbsentReference.lean) exports their
+consequences without importing a compiler or finite checker.
+
+`raw_empty` requires state typedness, available from both validity interfaces;
+it rejects hidden raw tuples. `inherited_empty` follows from the head restriction
+in inherited lookup. `captured_empty` keeps a captured singleton identity and
+returns an empty current dereference image. The latter observation law holds
+even on raw inputs because navigation filters live endpoints; it does not make
+an invalid input trace valid.
+
+For `X (this.dref = 3)` issued by a live child `c` of `P`, equality compares
+reference **sets**. The exact outcomes are:
+
+| Next state | Outcome |
+| --- | --- |
+| A: same `c`, value 3, surviving `P` | Satisfies the obligation |
+| B: `c` absent, surviving `P` | Violates the obligation |
+| C: original `c` absent, replacement at value 3, surviving `P` | Violates the obligation on the original identity |
+| D: both `P` and `c` absent | Parent absence cancels the obligation |
+| E: `X (this.dref != 3)` with `c` absent | Satisfies it: empty differs from `{3}` |
+| F: `c` disappears without a pending future obligation | Permitted, subject to the model's other constraints |
+
+`next_equalValue_live` derives presence from a surviving parent and next-state
+singleton equality. `next_disappearance_contradiction` combines that equality
+with actual `X (no this)`; `next_distinct_values` excludes simultaneous 3/4
+equalities whenever the parent survives. Neither theorem assumes child survival.
+`forced_disappearance_unsat` quantifies over whole `Properties.Model` traces:
+an attached equality and an issued, forced disappearing context in every
+satisfying candidate imply no model trace exists. Without forced disappearance,
+a surviving value-3 trace can satisfy the obligation. Rejection of one candidate
+does not establish whole-model UNSAT.
+
+Later same-identity rebirth cannot repair a failure at `t + 1`. Parent rebirth
+does not restart an earlier obligation: `Lifetime.not_through_after_end` and
+`always_before_end` exclude later states from the old interval. `next_cancel`
+also removes the next operand's strict definedness requirement at a parent gap.
+An absent child starts no new attached obligation, but its absence alone leaves
+previously issued obligations active.
+
+Arithmetic is separate. `absent_arithmetic` proves that the empty image coerces
+to zero and fails strict extraction. `absent_zero_comparison` gives a defined,
+true numeric comparison with zero; relational equality with `{0}` still fails.
+`absent_divisor` rejects division by the coerced empty image, including `0/0`.
+An active undefined atom has neither source polarity. Thus not every numeric
+comparison forces existence.
+
+[AbsentReferenceExamples](../Clafer/Behavioral/AbsentReferenceExamples.lean)
+checks A–E and immediate transition outcomes at ordinary and last-to-loop edges
+of structurally valid lassos, and transfers A–E to infinite source judgments.
+Its finite target identities represent distinct singleton values; a separate
+admitted fixture with the entire mathematical integer domain checks literal 3
+success and literal 4 failure. F has a whole-model disappearance witness.
+Child gaps, replacements, parent gaps, rebirth, hidden absent/never-live tuples,
+strict extraction and coercion have separate witnesses. The
+[counter contract](behavioral-surface.md#transitions-and-attachment)
+states the additional hypotheses that make a value rule preserve existence.
+Eliminating hidden tuples removes that source of duplicate displayed traces;
+it makes no claim about other identity symmetries.
+
 ## Signed source meaning and normalization
 
 `Formula.denote` directly defines positive and negative source judgments by
