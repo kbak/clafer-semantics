@@ -19,8 +19,10 @@ Covers:
 ## Reviewed source choices
 
 The [review summary in #127](https://github.com/kbak/clafer-semantics/issues/127)
-collects these decisions for Clafer developers. The compiler comparison is pinned
-at `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
+collects these decisions for Clafer developers. The distinguishing historical
+comparison below uses `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
+The [current 0.5.8 profile](sources.md#qualified-058-source-and-comparison-profile)
+includes the later pattern/modifier corrections without rewriting these witnesses.
 
 | Choice | Adopted source meaning | Distinguishing trace / provenance |
 | --- | --- | --- |

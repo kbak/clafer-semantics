@@ -1,4 +1,4 @@
-"""Live build-only 0.5.8 qualification, without widening default import admission."""
+"""Live 0.5.8 build qualification and comparison with the historical 0.5.7 producer."""
 import copy
 import json
 import os
@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/verification"))
 import candidate_profile as candidate
 import compiler_profile as current
+import legacy_profile as historical
 import protocol as p
 from capture import capture
 from runtime import prepare, valid_runtime
@@ -33,8 +34,8 @@ def encoder_bytes(value):
 class CandidateCaptureTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.exporter, cls.build = prepare(profile=candidate)
-        cls.legacy, cls.legacy_build = prepare()
+        cls.exporter, cls.build = prepare()
+        cls.legacy, cls.legacy_build = prepare(profile=historical)
         cls.probe = cls.exporter.with_name("metadata-probe")
         parent = os.environ.get("CLAFER_CANDIDATE_EVIDENCE")
         if parent:
@@ -64,8 +65,8 @@ class CandidateCaptureTests(unittest.TestCase):
             with self.subTest(fixture=name):
                 self.assertEqual(receipt, p.loads(subprocess.check_output(
                     [str(self.exporter), str(source)], timeout=120)))
-                # Shared guarded fixtures validate with the same strict fieldwise
-                # receipt relation; this does not admit a candidate manifest.
+                # Both exact producers retain the same fieldwise representation
+                # on these shared guarded fixtures; manifests distinguish them.
                 p.validate_generation(p.seal_receipt(receipt), source.read_bytes(),
                     receipt["json"].encode(), receipt["alloy"].encode())
                 legacy = p.loads(subprocess.check_output([str(self.legacy), str(source)], timeout=120))
@@ -79,9 +80,14 @@ class CandidateCaptureTests(unittest.TestCase):
     def test_negative_capture_and_source_audit(self):
         cases = [("constraint", "A\n[ some A ]\n", "unsupported"),
                  ("initializer", "value -> integer = 1\n", "unsupported"),
+                 ("initial-value", "value -> integer := 1\n", "unsupported"),
+                 ("path-super", "abstract A\n  abstract T\nx : A.T\n", "unsupported"),
+                 ("concrete-super", "A\nx : A\n", "compiler_rejected"),
+                 ("continuation", "a ->\nb\n", "compiler_rejected"),
                  ("temporal", "initial A\n", "unsupported"),
                  ("syntax", "A ->\n", "error"),
                  ("missing", "A : Missing\n", "compiler_rejected"),
+                 ("ambiguous", "abstract A\n  abstract T\nabstract B\n  abstract T\nx : T\n", "compiler_rejected"),
                  ("empty-group", "xor Empty\n", "compiler_rejected")]
         for name, text, expected in cases:
             with self.subTest(case=name):
@@ -95,13 +101,15 @@ class CandidateCaptureTests(unittest.TestCase):
         self.assertEqual([node["card"] for node in nodes], [[1, 1], [1, 1], [0, 1], [0, 1]])
         self.assertEqual(nodes[1]["group"], [2, 3])
 
-    def test_candidate_does_not_replace_default_profile(self):
-        self.assertEqual(current.PIN, "f6ca5b887d7bacc09915c6fc0278064c8371beac")
+    def test_adopted_identity_and_legacy_isolation(self):
+        self.assertEqual(current.PIN, "fca0deb9c766261f5c0d2ae57af4ba9b07e1279a")
         self.assertTrue(valid_runtime(self.exporter, self.build, candidate))
-        self.assertFalse(valid_runtime(self.exporter, self.build))
-        self.assertFalse(valid_runtime(self.legacy, self.legacy_build, candidate))
+        self.assertTrue(valid_runtime(self.exporter, self.build))
+        self.assertTrue(valid_runtime(self.legacy, self.legacy_build, historical))
+        self.assertFalse(valid_runtime(self.legacy, self.legacy_build))
+        self.assertFalse(valid_runtime(self.exporter, self.build, historical))
         with self.assertRaisesRegex(p.Rejection, "build_identity"):
-            capture(FIXTURES / "identities.cfr", self.exporter, self.build, {}, self.evidence / "not-admitted")
+            capture(FIXTURES / "identities.cfr", self.legacy, self.legacy_build, {}, self.evidence / "not-admitted")
         self.assertFalse((self.evidence / "not-admitted").exists())
 
     def test_candidate_receipt_mutations_stay_rejected(self):

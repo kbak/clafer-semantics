@@ -59,14 +59,15 @@ alone does not establish reverse comparison or complete enumeration.
 
 The reviewed symbol relation uses the signature and field inventory from the
 [importer's capture receipt](resolved-import.md),
-owners, binary arities and target UIDs. For 0.5.7 it additionally checks the
+owners, binary arities and target UIDs. The selected 0.5.8 profile checks the
 captured total source-UID-to-Alloy-name bijection. Candidate tables and manual
 bounds retain source UIDs; the Alloy bridge receives mapped signature and endpoint
 names, and decoding applies the checked inverse. It never strips guessed suffixes. When
 reference and containment have identical endpoints, the reference is the first
 field according to pinned `Generator/Alloy.hs`, `genRelations` (lines 170–180 at
 `6750e6f591b2131549122c13dee94d3d2257eaea`, with the same ordering at
-`f6ca5b887d7bacc09915c6fc0278064c8371beac`). Receipt order and the reviewed capture's
+`f6ca5b887d7bacc09915c6fc0278064c8371beac` and the selected
+`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`). Receipt order and the reviewed capture's
 provenance are explicit external assumptions. S excludes inherited fields;
 inherited membership is supported without allocating super objects. Unknown
 signatures, fields and auxiliaries cannot be ignored.

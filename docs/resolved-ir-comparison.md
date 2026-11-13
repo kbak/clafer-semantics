@@ -76,11 +76,12 @@ CLI import loading and error rendering are outside paired capture. The effective
 core, independent Lean meanings, S combination guards and theorem hypotheses are
 unchanged. Historical live capture, decoder mutation and bounded comparison
 results supply execution evidence, not source-compiler correctness. Replay uses
-their original source and tools; current validation exercises 0.5.7.
+their original source and tools; current validation exercises the selected
+[0.5.8 profile](#compiler-058-compatibility).
 
 ### Compiler 0.5.7 compatibility
 
-The sole current structural profile pins the merged
+The historical 0.5.7 structural profile pins the merged
 [PR #113 revision `f6ca5b887d7bacc09915c6fc0278064c8371beac`](https://github.com/gsdlab/clafer/tree/f6ca5b887d7bacc09915c6fc0278064c8371beac),
 package 0.5.7, as selected for [the adapter update](https://github.com/kbak/clafer-semantics/issues/148).
 This audit compares the full 0.5.4-to-merge pipeline, including earlier release
@@ -101,10 +102,37 @@ The root temporal-constraint and union-target fixes mentioned in the release
 review are present in this merge but do not enlarge S. Empty-abstract scopes
 are included explicitly; the fix `4c63ddf` already predates the historical
 behavioral `af858ec` pin. None of these observations establishes behavioral
-agreement or resolves the retained S/X/D differences. Current 0.5.7 tests preserve
+agreement or resolves the retained S/X/D differences. The 0.5.7 qualification tests preserved
 the existing effective-core regression obligations, exercise positive, violating
 and empty candidates, and reject mixed schemas and altered maps.
 The independently defined Lean semantics and all theorem hypotheses are unchanged.
+
+### Compiler 0.5.8 compatibility
+
+The current structural profile selects
+[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a),
+an immutable prerelease. The [complete source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
+compares it with both the 0.5.7 structural merge and the historical behavioral pin.
+The [import guide](resolved-import.md) fixes archive, schema, toolchain and receipt
+identities. The effective core, S combination guards and Lean theorem hypotheses
+are unchanged.
+
+The static Alloy generator differs from the 0.5.7 merge only by the reviewed
+StringMap-to-Map access. UID maps remain ascending. Source parsing now attaches a
+leading group cardinality to its own sibling line and rejects same-indent
+expression continuation; effective bounds are captured as emitted. The
+`group_layout` fixture checks the resulting child defaults and exact positive
+and violating candidates. Initializers, constraints, temporal syntax and
+qualified type paths remain rejected by the pre-desugaring source audit.
+Nested/inherited abstract lookup stays outside S; ordinary admitted inheritance
+retains the checked resolved identities. Concrete-super rejection in Haskell
+remains a comparison limit, not a restriction on richer Lean source semantics.
+
+All current import/comparison tests run the selected 0.5.8 producer. Legacy/mixed
+manifest, compiler, toolchain, dependency-lock, metadata and schema identities are
+rejected. The retained 0.5.7 source snapshot and matching tools replay historical
+captures without relabeling them. Current bounded results still establish only
+agreement on the supplied candidates and explicit scopes.
 
 The compiler is supplementary implementation evidence. Its [MIT license][license]
 was inspected (Generative Software Development Lab, 2012–2019; Intelligent

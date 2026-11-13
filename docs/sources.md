@@ -1408,9 +1408,10 @@ interpretation](structural-checker.md). Appendix 3 explains the authored/default
 effective values do not establish historical provenance or default correctness.
 
 Compiler evidence is selected by the exact reviewed
-[structural profile](resolved-ir-comparison.md#compiler-057-compatibility), with
+[structural profile](resolved-ir-comparison.md#compiler-058-compatibility), with
 historical captures replayed using their original repository revision and tools.
-The default import adapter supports only 0.5.7. At that merge,
+The default import adapter supports only the selected 0.5.8 revision. It retains
+the obligations introduced by the earlier 0.5.7 merge:
 `Intermediate/UIDs.hs`, `Generator/AlloyNames.hs` and
 `ScopeAnalysis.withEmptyAbstracts` add the identity/zero-scope obligations.
 `Intermediate/Intclafer.hs` owns the serialized types; `Language/Clafer.hs`
@@ -1436,8 +1437,10 @@ selects immutable compiler
 [`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
 and claferIG
 [`7942789d84939e98da38d4219cefbbd5b9e0d184`](https://github.com/gsdlab/claferIG/tree/7942789d84939e98da38d4219cefbbd5b9e0d184).
-This qualifies build/extraction tooling; the default structural and behavioral
-source profiles retain their existing identities and semantic boundaries.
+The [source/profile adoption](#qualified-058-source-and-comparison-profile) uses
+this qualified build for current structural captures. Behavioral source identity
+is updated with explicit dispositions; its independent meanings and proof
+boundaries remain unchanged.
 
 At the compiler pin, `Common.UIDIClaferMap` and
 `ResolverInheritance` use `Data.Map`; `createUidIClaferMap` and the generator's
@@ -1469,9 +1472,100 @@ parser's EOF `ErrorCall` is retained as an execution-error boundary.
 
 These observations establish neither compiler preservation nor general
 0.5.8 semantic agreement. Initializer, temporal `let`, absent-reference and
-resolution changes require the separate [profile upgrade disposition](https://github.com/kbak/clafer-semantics/issues/175).
-The candidate group-layout fixture records effective output only. SoSyM
+resolution changes retain the [profile dispositions](#qualified-058-source-and-comparison-profile).
+The structural comparison also checks exact group-layout candidates. SoSyM
 §§5.3–5.5 and §6.2.2/Figure 22 still ground the accepted structural interpretation.
+
+## Qualified 0.5.8 source and comparison profile
+
+`impl~compiler-058-profile-disposition~1`
+
+The current source profile is **behavioral-0.5.8/v1**, based on immutable
+[`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+and the existing independently defined meanings, D1–D5 decisions and
+[hard-initializer contract](behavioral-initializers.md). This revision is marked
+unreleased. It also supplies the sole current structural import/comparison pin;
+the [build contract](resolved-import.md#candidate-build-qualification) fixes the
+exporter, Stack/GHC, dependency lock and claferIG JSON boundary. A later release
+requires a new delta review. No version label admits different source bytes.
+
+The comparison uses exact source endpoints: structural
+`f6ca5b887d7bacc09915c6fc0278064c8371beac` and behavioral
+`af858ec0fe3ce2ceacb7fd120947c058233086d6`. The behavioral history diverges, so a
+merge-base diff alone would not identify that endpoint's changes. The historical
+[0.5.7 behavioral sources](#behavioral-profile-sources),
+[PR113 comparisons](#pr113-root-binding-and-final-comparison-disposition),
+SoSyM checkpoint and saved capture identities remain unchanged.
+
+| Area / classification | Selected revision and disposition |
+| --- | --- |
+| Initializer T14 — semantic | `Desugarer.desugarInit` now emits hard constraints and uses a static-first pass. Adopt the already proved initializer contract, including independent declaration presence guards, original RHS environments, inherited clocks, collection scope, global initialization and scalar admission. Neither static output equality nor this source implementation proves agreement on undefined RHSs or all supported abstract forms. Initializers remain excluded from structural captures. |
+| Parent-context RHS — semantic / frontend | `ResolverName.resolvePExp` resolves `initvalue` in `parentEnv`; `fromParent` rewrites resolved `this`. Our transport preserves the entire original observation, including temporal attachment and captures. The accepted temporal-condition counterexample prevents treating name-only rebasing as general preservation. Frontend/backend proof remains with compiler #126. |
+| Conjunctive inheritance and finality — semantic | The initializer account records A and retention of the initial value under `finalref`/`final`. Keep both inherited and own equations; conflicts can force optional absence. Per-instance `:=`/`=` agreement still needs within-life RHS stability and admission assumptions. Collections keep their different clock. |
+| Inherited-`=` warning — frontend diagnostic | `fixedInitialValues`/`showFixedInitialValues` warns without comparing RHSs. Its blanket “has no effect” wording is not adopted. Only established redundancy/conflict justifies the targeted diagnostics in the accepted contract; a warning must not remove an equation. |
+| Parent-birth collections and bags — semantic | Explicit multivalued multiplicity selects parent initialization in the compiler. Preserve the accepted classifier's authored/default provenance, full inherited declaration scope and distinct-target bag equality. The additional parentless/scalar rules remain explicit source decisions, not claimed Haskell validation. |
+| `let` — semantic / comparison boundary | Capture-avoiding substitution fixes parsing/elaboration, but re-evaluates changing expressions and erases unused undefined bindings. Preserve D1/D3 and the [executed temporal-let exclusions](#temporal-let-substitution). Defined same-state and stable-domain cases retain their stated agreement conditions. |
+| Absent references — semantic / comparison boundary | `AlloyLtl.genConstraints` still constrains reference totality only under live-head implication; it does not require an absent head's reference relation to be empty. Preserve the [accepted absence consequences](behavioral-formulas.md#absent-references-and-value-obligations). Exclude comparisons that rely on hidden absent-head tuples, value obligations after disappearance or their disappearance/replacement effects until a reviewed reference fix or exact-case qualification. Parent cancellation and ordinary arithmetic rules remain separate. |
+| Group-cardinality/layout — adapter / frontend | `LayoutResolver` inserts a sibling-line separator; a leading `2..3` belongs to that line's group, not the preceding declaration. Same-indent expression continuation is rejected. Capture effective bounds without inventing authored provenance or changing Lean defaults; `group_layout` tests exact positive/negative candidates, and the capture tests retain the syntax rejection. |
+| Ambiguous super diagnostics — frontend | `ResolverInheritance.resolveN` carries ancestor paths into uniqueness checking. Missing/ambiguous names remain compiler rejections, distinct from unsupported input and semantic violations. The importer still admits only its guarded resolved hierarchy. |
+| Qualified supers and name precedence — frontend / comparison boundary | `resolveNSuper` chooses enclosing/global path roots, own before inherited children, and sibling before inherited plain-name supers. The source audit rejects qualified type paths; nested abstract/inherited lookup is outside S. The broader adoption/audit belongs to [compiler #129](https://github.com/kbak/clafer-compiler-lean/issues/129) and #128. Concrete supers remain permitted by richer Lean semantics despite the Haskell abstract-only check (S10). |
+| S9 resolution order — frontend | The updated static errata records the accepted [Ancestors-before-Targets decision](https://github.com/kbak/clafer-semantics/issues/121). The resolved semantic API does not implement lookup. This established decision is distinct from the newer qualified-super audit. |
+| Maps, JSON and dependencies — adapter | `Data.Map` replaces StringMap, preserving ascending UID extraction; aeson replaces json-builder. The [adapter assessment](#compiler-058-adapter-sources) records metadata order and decoded-string agreement, including differing backspace/form-feed escape bytes. The qualified route uses Stack 3.11.1/GHC 9.12.4 and its exact nightly lock; regenerated lexer/parser and removed dependencies do not relax identity checks. |
+| Static Alloy — oracle | Relative to the structural 0.5.7 merge, `Generator/Alloy.hs` changes only map access. Preserve the same name bijection, complete token/field/receipt checks, effective-core admission and candidate relation. Fresh positive, violating, malformed and mixed-profile cases exercise the selected producer; no universal compiler theorem follows. |
+| Patterns and reference modifiers since the behavioral baseline — semantic correspondence | The [PR113 corrections](#pr113-modifier-and-pattern-revisions) are present: response-between covers later triggers, precedence-after uses the first opener, finaltarget fixes parent images, and combined modifiers survive. They align with the existing D2/D5 meanings. Historical mutant witnesses remain; source inspection does not supply unrestricted temporal backend agreement. |
+| Root, empty collections, names and explicit output since the behavioral baseline — frontend / oracle | Preserve the [PR113 root/union disposition](#pr113-root-binding-and-final-comparison-disposition), UID/Alloy-name separation and existing empty-collection meaning. `noclafer`, static `clafer`, normalized navigation and explicit output do not expand the structural capture whitelist. Temporal explicit normalization and complete trace decoding remain downstream. |
+| Previously retained temporal discrepancies — oracle boundary | The selected 0.5.8 delta leaves `AlloyLtl.hs` unchanged from the structural 0.5.7 merge. It supplies no resolution of the retained inherited-set key, union-dead-target or unsupported root-navigation comparisons. Keep those exact-case limitations alongside absence/let; do not turn a new pin into a full agreement claim. |
+| Choco declaration ordering — oracle-only | `Generator/Choco.hs` separates supers, references and constraints so later-declared reference targets can be refined. Current captures generate JSON/static Alloy, not Choco. No Choco backend or Choco equivalence claim is added. |
+| Graph/HTML quoting and links — outside this repository's semantic implementation | DOT output quotes names/labels and HTML fixes qualified-super links. These output modes are outside the import/comparison options and add no semantic capability here. |
+| Decimal/string arithmetic, optimizations and tooling — outside the selected profiles | Earlier 0.5.7 pipeline changes include decimal registry/options and explicit output; the existing exclusions and fixed options still apply. No new primitive, optimization, parser, scope-inference or solver support follows. Upstream prose about formalization is a secondary account, not evidence of unrestricted correctness or absence of defects. |
+
+The behavioral paper §5 Definitions 1–5 and §§6.1–6.2 remains the primary
+behavioral meaning; SoSyM §§5.3–5.5, §6.2.2/Figure 22 and Appendix 3 ground the
+unchanged structural fragment. T1–T13 and S1–S12 retain their reviewed
+qualifications; T14 is accounted for by B32 and the hard-initializer extension.
+The selected errata's expanded finality explanation matches D5. Its added
+formalization summaries do not strengthen any theorem's assumptions or scope.
+
+The exact selected bytes below supplement the retained historical source table.
+The compiler and associated documentation are MIT licensed; the profile and
+matrix are independently authored.
+
+| Source at selected revision | SHA-256 | Role |
+| --- | --- | --- |
+| [temporal-semantics-errata.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md) | `cf57eaaebee0d953ed0ef992417d9e54661873901cfcb8e0a6bf47bf99f60068` | T1–T14 and finality clarification |
+| [static-semantics-errata.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/static-semantics-errata.md) | `e4857625ce309061621dcb200bcc7dba45a79cf1505517a80ff1c4815fc195aa` | S1–S12 and accepted S9 lookup order |
+| [CheatSheet.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/CheatSheet.md) | `456a329a26e536decd1d6fb6b0b281010dc496b53eda9d91d6804cff35e89b8c` | Surface inventory |
+| [initial-value.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/initial-value.md) | `68abb48483ffe2c01f93f6cbbfe0fe0ccc9671051bdd7fffcc3b87488ca20dbb` | Supplementary initializer account |
+| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Generator/AlloyLtl.hs) | `c2586dd6abd1061f5419500499455b3cf75d1d1b3255924a140975359ba3fa19` | Temporal generator and retained comparison boundaries |
+| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/Desugarer.hs) | `9e5a26f4e8a7549ddcac6f8d4ff7b21766cc5801b6aa520ece2a643c343171ab` | Initializer clocks, patterns and let substitution |
+| [ResolverInheritance.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/ResolverInheritance.hs) | `0a5978364250d65d32e90db9d7f017f4c4c528157032c31eb8a0d7fd41156ce8` | Super lookup and multiplicity defaults |
+| [ResolverName.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/ResolverName.hs) | `dce63a0803855f1556b39ff34c8e3cd3fab073bccc180062f5623e9ce685050e` | Original-name resolution and parent rebasing |
+| [LICENSE](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms |
+
+Current full validation executes live 0.5.8 captures, guarded exact-candidate
+Alloy comparisons and current replay. Paired fixtures compare the immutable
+0.5.7 producer without admitting its manifests. Historical comparison replay
+uses the original repository revision and tools, never rewritten receipts.
+The [import protocol](resolved-import.md) and [bounded comparison contract](bounded-comparison.md)
+retain source-stability, solver, arithmetic and representation assumptions.
+
+Downstream [compiler #128](https://github.com/kbak/clafer-compiler-lean/issues/128)
+consumes the accepted immutable semantics commit, this profile and the build
+identities, retaining its separate lookup prerequisite. Compiler
+[#125](https://github.com/kbak/clafer-compiler-lean/issues/125),
+[#126](https://github.com/kbak/clafer-compiler-lean/issues/126) and
+[#127](https://github.com/kbak/clafer-compiler-lean/issues/127) own absent-reference
+adoption, initializer elaboration and final feature qualification.
+This profile does not complete those tasks or prove Haskell
+preservation.
+
+Covers:
+- `req~behavioral-profile~1`
+- `req~behavioral-source-correspondence~1`
+- `req~resolved-ir-comparison-contract~1`
+- `req~clafer-resolved-import~1`
+- `req~clafer-bounded-comparison~1`
+- `req~clafer-comparison-replay~1`
 
 ## Reusable semantic foundations
 
@@ -1499,13 +1593,13 @@ source obligations. No source correction, supported fragment or comparison pin c
 
 `impl~behavioral-profile-sources~1`
 
-The [behavioral contract](behavioral-profile.md) proposes the versioned
-`behavioral-0.5.7-candidate/v1` profile. Its source candidate is
+The historical `behavioral-0.5.7-candidate/v1` profile used source candidate
 `gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`, the unmerged candidate
 of [release PR 113](https://github.com/gsdlab/clafer/pull/113).
-A later release must be compared against these exact bytes, with semantic,
-fixture and dependency changes reviewed before replacing the pin. No static
-oracle or historical SoSyM identity is changed by this profile.
+These exact bytes remain the provenance for the original semantic decisions
+and historical regression mutants. The [current source/profile disposition](#qualified-058-source-and-comparison-profile)
+records their endpoint comparison with 0.5.8. The historical SoSyM identity and
+all recorded execution identities remain unchanged.
 
 The behavioral primary reference is Juodisius, Sarkar, Mukkamala, Antkiewicz,
 Czarnecki and Wąsowski, *Clafer: Lightweight Modeling of Structure, Behaviour,
@@ -1935,7 +2029,7 @@ separate from temporal re-evaluation and backend arithmetic conventions.
 The primary meaning remains behavioral §5 Definitions 2–5 and §§6.1–6.2,
 with the accepted [D2/D5 dispositions](behavioral-profile.md#decisions-requiring-contract-review).
 The following immutable compiler patches are supplementary, MIT-licensed source
-comparisons. They do not change `behavioral-0.5.7-candidate/v1` or the historical
+comparisons. They do not rewrite `behavioral-0.5.7-candidate/v1` or the historical
 `af858ec0fe3ce2ceacb7fd120947c058233086d6` source and oracle identities.
 
 | Boundary | At historical pin `af858ec0fe3ce2ceacb7fd120947c058233086d6` | Later inspected correction and retained regression |
@@ -1964,7 +2058,7 @@ execution evidence.
 
 `impl~behavioral-integration-sources~1`
 
-The accepted primary profile remains `behavioral-0.5.7-candidate/v1` at
+This historical comparison retained the primary `behavioral-0.5.7-candidate/v1` at
 `af858ec0fe3ce2ceacb7fd120947c058233086d6`, including the adopted D1–D5
 dispositions. The separate compiler comparison profile
 `behavioral-pr113-c7a2fb7/v1` pins

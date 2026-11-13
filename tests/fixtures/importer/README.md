@@ -12,8 +12,9 @@ numeric bounds. `cycles` keeps reference cycles; `empty` imports only the root.
 `spellings` retains Latin-1 letters and apostrophes in display names, with escaped
 UIDs and collisions between apostrophes and literal `__prime__` names.
 `analyzed.json` retains the historical 0.5.4 bytes and checks legacy-schema
-rejection. `analyzed-057.json` comes from the pinned 0.5.7 exporter; a live-export
-assertion keeps it aligned.
+rejection. `analyzed-057.json` retains the historical 0.5.7 exporter bytes. Live 0.5.8
+exports are checked against it on this unchanged guarded fixture; that equality
+does not relabel its original provenance or establish general byte equivalence.
 See [the import protocol](../../../docs/resolved-import.md) for replay and trust
 boundaries. Malformed/unsupported cases are deterministic mutations in
 `tests/test_resolved_import.py`, including every rejected tag/modifier family.

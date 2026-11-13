@@ -121,9 +121,11 @@ common-fragment agreement and a complete source/witness inventory. Its finite
 observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 The accepted extension is integrated into `main`; contributions use main-based
-topic branches. The current structural importer supports the exact reviewed
-0.5.7 revision; separate [0.5.8 build qualification](resolved-import.md#candidate-build-qualification)
-prepares an explicit adapter without adopting its source/comparison profile.
+topic branches. The current structural importer supports the exact reviewed 0.5.8 prerelease
+revision. The [source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
+retains the independent behavioral meanings and explicit reference differences;
+[build qualification](resolved-import.md#candidate-build-qualification) fixes the
+compiler, exporter and JSON boundary identities.
 Historical static evidence remains reproducible with its original
 repository revision and tools, as specified in the [import contract](resolved-import.md).
 
@@ -176,7 +178,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Key proved properties](proved-properties.md) | Curated guarantees, significance, hypotheses and exact theorem links; distinguishes general results, concrete proofs and empirical evidence |
 | [From structure to behavior](structure-and-behavior.md) | Conceptual bridge between the papers: configurations, shared identities, changing references, captured environments and lifetime-scoped temporal obligations |
 | [Getting started](getting-started.md) | One Lean model walkthrough and a pinned downstream Lake example; language learning links to clafer.org |
-| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned 0.5.7 contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
+| [Behavioral profile](behavioral-profile.md), [traces](behavioral-traces.md), [formulas](behavioral-formulas.md) and [finite verification](behavioral-verification.md) | Versioned behavioral contract, identity/snapshot foundation, signed temporal meaning, exact-lasso checking, remaining feature obligations and integration gates |
 | [Behavioral surface](behavioral-surface.md) | Modifier/anchor, transition and pattern meaning, source decisions, property quantification and reduction APIs |
 | [Behavioral qualification](behavioral-qualification.md) | Full model/core composition, strict finite observations, static common fragment, complete feature witnesses and source-profile acceptance boundary |
 | [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |

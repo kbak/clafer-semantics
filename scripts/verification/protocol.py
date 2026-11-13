@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 import copy
+import compiler_profile as profile
 from compiler_profile import PIN, VERSION, ARCHIVE, SOURCE_TREE, EXPORTER, GENERATION, EXPORT_SCHEMA, STACK_LOCK
 from pathlib import Path
 
@@ -629,8 +630,8 @@ def import_bundle(directory):
             reject("artifact_hash", name)
         files[name] = data
     build = loads(files["build.json"])
-    exact(build, {"schema", "compiler_commit", "compiler_archive_sha256", "source_tree_sha256", "resolver", "ghc_version", "stack_version", "stack_lock", "exporter_source", "exporter_binary", "compiler_sources_unchanged"}, "build")
-    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", PIN, ARCHIVE, "lts-22.44", "9.6.7", "3.11.1", True):
+    exact(build, {"schema", "compiler_commit", "compiler_archive_sha256", "source_tree_sha256", "resolver", "ghc_version", "stack_version", "stack_lock", "exporter_source", "exporter_binary", "compiler_sources_unchanged", "instance_generator_commit", "instance_generator_archive_sha256", "metadata_source", "metadata_binary"}, "build")
+    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", PIN, ARCHIVE, profile.RESOLVER, profile.GHC_VERSION, profile.STACK_VERSION, True):
         unsupported("build_identity")
     boolean(build["compiler_sources_unchanged"], "source matching")
     if build["source_tree_sha256"] != SOURCE_TREE or build["stack_lock"] != STACK_LOCK:
@@ -638,7 +639,11 @@ def import_bundle(directory):
     exporter = Path(__file__).with_name(EXPORTER).read_bytes()
     if build["exporter_source"] != digest(exporter):
         unsupported("exporter_revision")
-    for key in ("stack_lock", "exporter_binary"):
+    if (build["instance_generator_commit"], build["instance_generator_archive_sha256"]) != (profile.IG_PIN, profile.IG_ARCHIVE):
+        unsupported("instance_generator_pin")
+    if build["metadata_source"] != digest(Path(__file__).with_name(profile.METADATA_PROBE).read_bytes()):
+        unsupported("metadata_revision")
+    for key in ("stack_lock", "exporter_binary", "metadata_binary"):
         exact(build[key], {"bytes", "sha256"}, key)
         natural(build[key]["bytes"], key)
         if not re.fullmatch("[0-9a-f]{64}", build[key]["sha256"]):

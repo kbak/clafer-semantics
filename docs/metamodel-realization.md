@@ -211,7 +211,7 @@ point or an interpretation of arbitrary metamodels in one universal context.
 
 The [source identities and historical audit](sources.md#historical-translation-evidence)
 separate the early reports, July 2011 snapshot, and audited 0.5.3 compiler.
-The [current 0.5.7 capture assessment](resolved-ir-comparison.md#compiler-057-compatibility)
+The [current capture assessment](resolved-ir-comparison.md#compiler-058-compatibility)
 does not extend these metamodel or expression claims.
 The [Diskin assessment](sources.md#generalized-sketches-and-model-reduct-coherence)
 retains the limits of inspected browser statements and missing source pages.

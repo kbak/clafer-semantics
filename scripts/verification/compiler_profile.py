@@ -1,19 +1,16 @@
-"""Exact identity of the sole supported structural compiler revision."""
+"""Exact identity of the sole admitted structural compiler revision.
+
+The immutable 0.5.8 prerelease build was qualified separately. Its original
+candidate selector remains available; only this module selects current admission.
+"""
+from candidate_profile import (
+    VERSION, PIN, ARCHIVE, SOURCE_TREE, EXPORTER, RESOLVER, GHC_VERSION,
+    STACK_VERSION, STACK_LOCK, PACKAGES, IG_PIN, IG_ARCHIVE, METADATA_PROBE,
+)
 
 # [impl->req~clafer-compiler-capture~1]
-VERSION = "0.5.7"
-PIN = "f6ca5b887d7bacc09915c6fc0278064c8371beac"
-ARCHIVE = "51e5c8d47c1e8bf05ca89a8432176c25cb1e6df589aeb36386bcf7627ee3d954"
-SOURCE_TREE = "5ed4d4fdc704f198e311e4d6055b59b98789dcf10ff652305c3c863c167f03ca"
-EXPORTER = "Export057.hs"
+# [impl->req~clafer-resolved-import~1]
+NAME = "0.5.8"
 GENERATION = "clafer-generation/2"
-EXPORT_SCHEMA = "generic-aeson-0.5.7/1"
-STACK_LOCK = {"bytes": 1410, "sha256": "2bed95387bc9ad79df4f70de77a9c7e468125c10a09a68a42da233434b59acff"}
-
-# Build selection is separate from protocol admission.
-NAME = "0.5.7"
-RESOLVER = "lts-22.44"
-GHC_VERSION = "9.6.7"
-STACK_VERSION = "3.11.1"
-PACKAGES = ("clafer", "aeson", "data-stringmap")
+EXPORT_SCHEMA = "generic-aeson-0.5.8/1"
 CAPTURE_ENV = "CLAFER_CAPTURE"

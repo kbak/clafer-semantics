@@ -12,9 +12,9 @@ realization does not enlarge the import whitelist.
 
 ## Build and replay
 
-Use Python 3.11+, the pinned Lean toolchain, Stack 3.11.1, GHC 9.6.7 and GMP headers.
+Use Python 3.11+, the pinned Lean toolchain, Stack 3.11.1, GHC 9.12.4 and GMP headers.
 On Linux x86_64, the full `bash scripts/check.sh` command provisions the pinned
-0.5.7 exporter before running Python tests when neither `CLAFER_CAPTURE` nor a
+0.5.8 exporter before running Python tests when neither `CLAFER_CAPTURE` nor a
 `clafer-capture` executable on `PATH` is supplied. Install `libgmp-dev` first on
 Debian/Ubuntu. Automatic setup downloads hash-checked compiler and Stack archives
 and runs the builder below, which obtains the pinned GHC and dependencies.
@@ -34,20 +34,22 @@ explicit provisioning.
 To build explicitly or use the capture commands independently:
 
 Obtain the compiler source archive for
-`gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac`, SHA-256
-`51e5c8d47c1e8bf05ca89a8432176c25cb1e6df589aeb36386bcf7627ee3d954`.
-This is the merged PR #113 revision (package 0.5.7), not a floating branch or tag.
+`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, SHA-256
+`fcf7bf883723e7eb22ff2f3c1b6538f0c967cb5eace3a00a89f5fcd2e4a4edc5`, and
+the matching claferIG archive identified below. This exact 0.5.8 revision is
+marked unreleased; neither a moving branch nor a later release is admitted automatically.
 Build outside the checkout:
 
 ```sh
 python3 scripts/verification/build.py --archive /path/to/compiler.tar.gz \
+  --ig-archive /path/to/claferIG.tar.gz \
   --stack /path/to/stack --work /path/to/scratch
 export CLAFER_CAPTURE=/path/to/scratch/clafer-capture
 export CLAFER_CAPTURE_BUILD=/path/to/scratch/build.json
 ```
 
 The builder checks the archive, every original source before and after building,
-GHC/Stack versions, original `lts-22.44` resolver and Git dependency pins. It
+GHC/Stack versions, original `nightly-2026-11-11` resolver and dependency lock. It
 retains the source-tree digest, original generated lockfile digest, exporter
 source/binary digests and build log. The compiler library sources remain unchanged.
 An observational copy of `Generator/Alloy.hs` exposes its private helpers by
@@ -78,10 +80,11 @@ its separate output files cannot establish a generation receipt.
 ## Candidate build qualification
 
 [Build/exporter qualification](https://github.com/kbak/clafer-semantics/issues/167)
-provides an explicit `0.5.8-candidate` build profile. The default importer and
-bounded comparison still admit only the 0.5.7 identity below. Adoption of the
-candidate's source semantics, manifest identity and comparison profile belongs to
-the [profile upgrade](https://github.com/kbak/clafer-semantics/issues/175).
+supplies the selected 0.5.8 build, now used by default import and bounded
+comparison. The original `0.5.8-candidate` selector remains a build alias for the
+same immutable identity; its name grants no additional source admission. The
+[source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
+records the adopted boundaries and retained semantic differences.
 Historical receipts remain unchanged; `Export057.hs` preserves the original
 0.5.7 exporter bytes. `Export.hs` uses `Data.Map.Strict.toList` for the candidate's
 source, consumed and implicit maps, retaining ascending UID order and the same
@@ -111,31 +114,35 @@ The candidate build also compiles `Metadata.hs` against the unchanged claferIG
 JSON generator, model and XML data modules. This exercises the real encoding
 boundary without launching its solver. The build receipt includes both source
 archives, the exporter and probe source/binary identities. Cache reuse checks
-these identities, executable permissions and the selected build recipe. Candidate
-settings use `CLAFER_058_CAPTURE` and `CLAFER_058_CAPTURE_BUILD`; default
-`CLAFER_CAPTURE` settings cannot select or substitute the candidate.
+these identities, executable permissions and the selected build recipe. Default
+settings use `CLAFER_CAPTURE` and `CLAFER_CAPTURE_BUILD`. The
+original candidate selector retains `CLAFER_058_CAPTURE` and
+`CLAFER_058_CAPTURE_BUILD`; both validate the same exact producer and probe.
+Historical `--profile 0.5.7` uses `CLAFER_057_CAPTURE` and
+`CLAFER_057_CAPTURE_BUILD` and a separate cache identity. A legacy or unreviewed
+producer supplied as the current exporter fails before capture.
 
 For automatic provisioning and qualification on Linux x86_64:
 
 ```sh
-python3 scripts/verification/runtime.py --profile 0.5.8-candidate \
+python3 scripts/verification/runtime.py \
   python3 -m unittest discover -s tests -p test_candidate_capture.py -v
 ```
 
-The tests also prepare the default exporter for paired fixture comparisons.
+The tests also prepare the historical 0.5.7 exporter for paired fixture comparisons.
 For an explicit build, use the candidate compiler and claferIG archives above:
 
 ```sh
-python3 scripts/verification/build.py --profile 0.5.8-candidate \
+python3 scripts/verification/build.py --profile 0.5.8 \
   --archive /path/to/compiler.tar.gz --ig-archive /path/to/claferIG.tar.gz \
   --stack /path/to/stack --work /path/to/candidate-scratch
 ```
 
 The resulting `clafer-capture input.cfr` emits the raw generation receipt;
 `metadata-probe input.cfr` emits metadata, and `metadata-probe --synthetic` checks
-encoder-only cases. These are build/adapter interfaces for the subsequent profile
-upgrade. Passing their output to the default `capture.py` does not bypass its
-revision checks. The full validation suite executes candidate qualification and
+encoder-only cases. Current `capture.py` accepts only the selected 0.5.8
+manifest/build/schema combination, including the exact metadata source and IG
+archive identities. The full validation suite executes live qualification and
 retains fresh raw captures and metadata externally; `CLAFER_CANDIDATE_EVIDENCE`
 selects their parent directory. CI retains these with the build and IntentBond
 results. Missing tools or qualification failures fail validation.
@@ -146,7 +153,9 @@ receipt relation. Negative cases preserve unsupported source audits and compiler
 rejections. An incomplete expression can throw an upstream `ErrorCall`; the
 candidate exporter forces the receipt before writing and reports `status=error`,
 never a compiler rejection or a semantic verdict. The group-layout regression
-checks the candidate's effective bounds without changing Lean defaults.
+checks effective bounds and exact satisfying/violating candidates without
+changing Lean defaults. Qualified super paths remain rejected by the source audit;
+concrete supers retain the Haskell rejection and the richer Lean source meaning.
 
 The metadata checks preserve `.cfr-map` fields `fqName`, `lpqName`, `uid`,
 `.cfr-scope` fields `lpqName`, `scope`, sorted entries, and claferIG's ordered
@@ -167,16 +176,20 @@ the following exact compiler identity; all fields must match:
 
 | Profile | Compiler commit | Export schema | Generation receipt |
 | --- | --- | --- | --- |
-| 0.5.7 | `f6ca5b887d7bacc09915c6fc0278064c8371beac` | `generic-aeson-0.5.7/1` | `clafer-generation/2` |
+| 0.5.8 prerelease | `fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` | `generic-aeson-0.5.8/1` | `clafer-generation/2` |
 
-Other revisions, including 0.5.4, and mixed schemas are rejected. Historical
+Other revisions, including 0.5.7 and 0.5.4, and mixed schemas are rejected. Historical
 evidence keeps its original compiler, adapter and runtime identities. To import
 or replay a historical bundle, use the repository revision and matching tools
 recorded with that evidence; the [pre-upgrade adapter](https://github.com/kbak/clafer-semantics/tree/c183c1c2e4cc22cc9f41ea78733a20fc3610b50b/scripts/verification)
-retains the 0.5.4 implementation. Do not relabel old captures as 0.5.7 evidence.
-Current regression tests execute fresh 0.5.7 captures. The downstream compiler
-migrates its pinned dependency and comparison tools together under
-[compiler issue #112](https://github.com/kbak/clafer-compiler-lean/issues/112).
+retains the 0.5.4 implementation. Do not relabel old captures as current evidence.
+The last 0.5.7 adapter is retained at [the pre-upgrade revision](https://github.com/kbak/clafer-semantics/tree/a18890612e38872f3fb5842ed323042aea34e1ed);
+replay additionally requires the exact original source snapshot recorded with
+each bundle, which may predate that revision. Current regression tests execute fresh 0.5.8 captures and
+reject legacy identities; paired producer checks keep the historical exporter
+bytes unchanged. The downstream compiler adopts this immutable semantics API and
+its comparison tools under [compiler issue #128](https://github.com/kbak/clafer-compiler-lean/issues/128),
+with initializer/absence qualification remaining separately owned.
 The capture manifest hashes raw bytes of `input.cfr`, `analyzed.json`, `model.als`, `generation.json`
 and `build.json`, and carries explicit bounds. It does not hash itself.
 The receipt retains post-analysis/post-string-pass IR, actual backend-consumed

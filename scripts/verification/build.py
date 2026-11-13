@@ -8,6 +8,7 @@ import subprocess
 import tarfile
 from protocol import digest, encoded
 from build_profiles import PROFILES, select
+from compiler_profile import NAME
 
 
 def require(condition, detail):
@@ -49,7 +50,7 @@ def unchanged(source, originals):
 # [impl->req~clafer-resolved-import~1]
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--profile", choices=PROFILES, default="0.5.7")
+    p.add_argument("--profile", choices=PROFILES, default=NAME)
     p.add_argument("--archive", required=True, type=Path)
     p.add_argument("--ig-archive", type=Path)
     p.add_argument("--stack", required=True, type=Path)
@@ -89,7 +90,7 @@ def main():
              "-outputdir", str(obj), str(exporter), "-o", str(output)], source, env, log)
         extra = {}
         if hasattr(profile, "IG_PIN"):
-            require(args.ig_archive is not None, "candidate requires --ig-archive")
+            require(args.ig_archive is not None, "selected profile requires --ig-archive")
             ig_source = work / "claferIG"
             ig_originals = extract(args.ig_archive, profile.IG_ARCHIVE, ig_source)
             # Compile the real IG JSON/model modules and their XML data dependency.
