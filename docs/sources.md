@@ -1410,7 +1410,7 @@ effective values do not establish historical provenance or default correctness.
 Compiler evidence is selected by the exact reviewed
 [structural profile](resolved-ir-comparison.md#compiler-057-compatibility), with
 historical captures replayed using their original repository revision and tools.
-The current adapter supports only 0.5.7. At that merge,
+The default import adapter supports only 0.5.7. At that merge,
 `Intermediate/UIDs.hs`, `Generator/AlloyNames.hs` and
 `ScopeAnalysis.withEmptyAbstracts` add the identity/zero-scope obligations.
 `Intermediate/Intclafer.hs` owns the serialized types; `Language/Clafer.hs`
@@ -1428,6 +1428,50 @@ The exact copied upstream fixture retains [MIT attribution](../tests/fixtures/im
 The external observational generator copy retains its upstream license header.
 Kernel-checked importer representation is separate from upstream parser/type/
 optimization correctness and from the separate [bounded Alloy comparison](bounded-comparison.md).
+
+## Compiler 0.5.8 adapter sources
+
+The [candidate build contract](resolved-import.md#candidate-build-qualification)
+selects immutable compiler
+[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+and claferIG
+[`7942789d84939e98da38d4219cefbbd5b9e0d184`](https://github.com/gsdlab/claferIG/tree/7942789d84939e98da38d4219cefbbd5b9e0d184).
+This qualifies build/extraction tooling; the default structural and behavioral
+source profiles retain their existing identities and semantic boundaries.
+
+At the compiler pin, `Common.UIDIClaferMap` and
+`ResolverInheritance` use `Data.Map`; `createUidIClaferMap` and the generator's
+consumed-map branch retain the existing extraction obligations. The
+[map implementation](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Common.hs)
+changes the map representation; ascending `toList` order is checked against live
+0.5.7 receipts. `stack.yaml` selects `nightly-2026-11-11` and GHC 9.12.4 with module
+parallelism eight. Its generated lock identifies the exact snapshot; no Git
+extra dependencies remain. The accepted 0.5.7 resolver and its two Git dependencies
+above remain historical build facts.
+
+[`JSONMetaData.hs`](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/JSONMetaData.hs)
+uses aeson's ordered `pairs`/`list` encodings for map/scope metadata, preserving
+field sequence and entry sorting. The matching
+[`JSONGenerator.hs`](https://github.com/gsdlab/claferIG/blob/7942789d84939e98da38d4219cefbbd5b9e0d184/src/Language/Clafer/IG/JSONGenerator.hs)
+uses ordered `Series`, optional super/reference/value fields and nested elements.
+The boundary probe compiles these original MIT-licensed sources externally;
+no third-party implementation is copied into the repository.
+
+The pinned [compiler changelog](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/CHANGES.md)
+reports output equivalence for its positive models and case studies and support
+for both GHC 9.12.4 and 9.6.7. Those are upstream reports. Local qualification
+builds the Stack/GHC 9.12.4 route, compares the repository's common structural
+fixtures with 0.5.7, and exercises the metadata and IG encoders directly. The
+legacy metadata comparison confirms equal decoded strings but different bytes
+for synthetic backspace/form-feed (`\b`/`\f` versus `\u0008`/`\u000c`). Thus the
+reports do not establish byte equality for all encoder inputs. The candidate
+parser's EOF `ErrorCall` is retained as an execution-error boundary.
+
+These observations establish neither compiler preservation nor general
+0.5.8 semantic agreement. Initializer, temporal `let`, absent-reference and
+resolution changes require the separate [profile upgrade disposition](https://github.com/kbak/clafer-semantics/issues/175).
+The candidate group-layout fixture records effective output only. SoSyM
+§§5.3–5.5 and §6.2.2/Figure 22 still ground the accepted structural interpretation.
 
 ## Reusable semantic foundations
 
