@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
--- Adapter for gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac.
+-- Adapter for gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a.
 -- External, unproved extraction code. See docs/resolved-import.md.
 module Main where
 
 import Data.Aeson (Value, object, (.=), encode)
+import Control.Exception (ErrorCall, displayException, evaluate, try)
 import qualified Data.ByteString.Lazy.Char8 as B
 import Data.Data (Data, gmapQ, toConstr, showConstr)
 import Data.List (isInfixOf, intercalate, sort, group)
 import qualified Data.Map.Strict as M
-import qualified Data.StringMap as S
 import System.Environment (getArgs)
 import System.IO (hSetEncoding, stdout, utf8)
 import qualified Language.Clafer as C
@@ -119,7 +119,7 @@ capture src = C.runClafer options $ do
         rename u = M.findWithDefault u u names
         bounds = "for 1" ++ (if null scopes then "" else " but " ++ intercalate ", " [show n ++ " " ++ rename u | (u, n) <- scopes])
         backendEnv = Alloy.GenEnv (C.args env) (G.uidClaferMap backendG) bounds
-        completeNames = [(u, rename u) | (u, _) <- S.toList (G.uidClaferMap g)]
+        completeNames = [(u, rename u) | (u, _) <- M.toList (G.uidClaferMap g)]
     case (M.lookup A.JSON outputs, M.lookup A.Alloy outputs) of
       (Just j@C.CompilerResult{}, Just a@C.CompilerResult{}) -> pure $ object
         [ "status" .= ("captured" :: String)
@@ -131,10 +131,10 @@ capture src = C.runClafer options $ do
         , "post_analysis" .= im, "post_strings" .= post
         , "strings" .= M.toList sm, "output_strings" .= M.toList (C.stringMap a)
         , "scopes" .= C.scopesList a
-        , "source_map" .= S.toList (G.uidClaferMap g)
+        , "source_map" .= M.toList (G.uidClaferMap g)
         , "alloy_names" .= completeNames, "backend_ir" .= backend
-        , "consumed_map" .= S.toList (G.uidClaferMap backendG)
-        , "implicit_template" .= S.toList (G.createUidIClaferMap (I.IModule "" []))
+        , "consumed_map" .= M.toList (G.uidClaferMap backendG)
+        , "implicit_template" .= M.toList (G.createUidIClaferMap (I.IModule "" []))
         , "observations" .= observations names backendG backend
         , "top_fragments" .= map (flatten . Alloy.genDeclaration
             backendEnv) (I._mDecls backend)
@@ -149,7 +149,14 @@ main = do
   case paths of
     [path] -> do
       src <- readFile path
-      case capture src of
-        Left err -> B.putStrLn $ encode $ object ["status" .= ("compiler_rejected" :: String), "errors" .= [show err]]
-        Right value -> B.putStrLn $ encode value
+      let result = encode $ case capture src of
+            Left err -> object ["status" .= ("compiler_rejected" :: String), "errors" .= [show err]]
+            Right value -> value
+      -- The upstream parser can throw ErrorCall at EOF. Force the entire
+      -- result before writing so failures cannot leave a partial JSON receipt.
+      forced <- try (evaluate (B.length result))
+      case forced of
+        Left err -> B.putStrLn $ encode $ object
+          ["status" .= ("error" :: String), "errors" .= [displayException (err :: ErrorCall)]]
+        Right _ -> B.putStrLn result
     _ -> fail "usage: clafer-capture input.cfr"

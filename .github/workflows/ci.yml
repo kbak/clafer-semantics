@@ -133,7 +133,7 @@ jobs:
             ${{ runner.temp }}/clafer-compiler/clafer-capture
             ${{ runner.temp }}/clafer-compiler/build.json
             ${{ runner.temp }}/clafer-compiler/builder.sha256
-          key: clafer-exporter-v1-ubuntu24.04-${{ runner.arch }}-${{ hashFiles('scripts/verification/Export.hs', 'scripts/verification/compiler_profile.py', 'scripts/verification/build.py', 'scripts/verification/runtime.py', 'scripts/verification/protocol.py') }}
+          key: clafer-exporter-v1-ubuntu24.04-${{ runner.arch }}-${{ hashFiles('scripts/verification/Export057.hs', 'scripts/verification/compiler_profile.py', 'scripts/verification/build_profiles.py', 'scripts/verification/build.py', 'scripts/verification/runtime.py', 'scripts/verification/protocol.py') }}
       - name: Check exporter identity
         id: exporter
         if: steps.selection.outputs.mode != 'docs'
@@ -157,6 +157,39 @@ jobs:
       - name: Prepare verified exporter
         if: steps.selection.outputs.mode != 'docs'
         run: python scripts/verification/runtime.py --github-env "$RUNNER_TEMP/clafer-compiler"
+      - name: Cache candidate exporter and metadata probe
+        if: steps.selection.outputs.mode != 'docs'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/clafer-candidate/clafer-capture
+            ${{ runner.temp }}/clafer-candidate/metadata-probe
+            ${{ runner.temp }}/clafer-candidate/build.json
+            ${{ runner.temp }}/clafer-candidate/builder.sha256
+          key: clafer-candidate-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/verification/Export.hs', 'scripts/verification/Metadata.hs', 'scripts/verification/candidate_profile.py', 'scripts/verification/build_profiles.py', 'scripts/verification/build.py', 'scripts/verification/runtime.py') }}
+      - name: Check candidate identity
+        id: candidate
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if python scripts/verification/runtime.py --profile 0.5.8-candidate --check-cache "$RUNNER_TEMP/clafer-candidate"; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Cache candidate compiler dependencies
+        if: steps.selection.outputs.mode != 'docs' && steps.candidate.outputs.ready != 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/clafer-candidate
+          key: clafer-candidate-deps-${{ runner.os }}-${{ runner.arch }}-fca0deb9c766261f5c0d2ae57af4ba9b07e1279a-stack3.11.1-ghc9.12.4
+      - name: Prepare candidate qualification tools
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if [[ '${{ steps.candidate.outputs.ready }}' != true && '${{ steps.exporter.outputs.ready }}' == true ]]; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends libgmp-dev
+          fi
+          python scripts/verification/runtime.py --profile 0.5.8-candidate --github-env "$RUNNER_TEMP/clafer-candidate"
       - name: Cache pinned Alloy download
         if: steps.selection.outputs.mode != 'docs'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -170,6 +203,7 @@ jobs:
           echo "CLAFER_ALLOY_JAR=$RUNNER_TEMP/clafer-alloy/alloy-6.2.0.jar" >> "$GITHUB_ENV"
           echo "CLAFER_ALLOY_CACHE=$RUNNER_TEMP/clafer-alloy-runtime" >> "$GITHUB_ENV"
           echo "CLAFER_COMPARISON_EVIDENCE=$RUNNER_TEMP/clafer-comparison-evidence" >> "$GITHUB_ENV"
+          echo "CLAFER_CANDIDATE_EVIDENCE=$RUNNER_TEMP/clafer-candidate-evidence" >> "$GITHUB_ENV"
       # [impl->req~intentbond-workflow~1]
       - name: Check source, traceability, and selected validation
         env:
@@ -223,7 +257,10 @@ jobs:
             ${{ runner.temp }}/validation-selection.json
             ${{ runner.temp }}/clafer-compiler/build.json
             ${{ runner.temp }}/clafer-compiler/build.log
+            ${{ runner.temp }}/clafer-candidate/build.json
+            ${{ runner.temp }}/clafer-candidate/build.log
             ${{ runner.temp }}/clafer-comparison-evidence/
+            ${{ runner.temp }}/clafer-candidate-evidence/
             ${{ runner.temp }}/python-tests/
           if-no-files-found: warn
           retention-days: 30
