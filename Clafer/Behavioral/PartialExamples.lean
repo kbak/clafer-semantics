@@ -141,13 +141,13 @@ theorem static_partial_extraction_neither :
 
 -- [utest->req~behavioral-structural-compatibility~1]
 theorem initializer_default_refused :
-    Initializers.elaborate (C := Fin 3) (n := 0) .defaultValue
+    Initializers.Legacy.elaborate (C := Fin 3) (n := 0) .defaultValue
       (.set .this) (.set .this) (.literal 3) = none := rfl
 
 open PrimitiveExpressionExamples in
 theorem constant_is_not_birth_only :
     let a : Formula (PrimitiveExpression.Atom (Fin 3)) (CollectionExpr (Fin 3)) 0 :=
-      Initializers.constant (.set .this) (.set (.thisStep (.deref 1))) (.literal 3)
+      Initializers.Legacy.constant (.set .this) (.set (.thisStep (.deref 1))) (.literal 3)
     a.Satisfies trace (.primitives model trace integers) true (.closed (.inl 1)) 0 ∧
     ¬ a.Satisfies trace (.primitives model trace integers) true (.closed (.inl 1)) 1 := by
   have head (t : Nat) : PrimitiveExpression.collection model.toEffectiveCore
@@ -161,9 +161,9 @@ theorem constant_is_not_birth_only :
       ((Environment.closed (.inl 1)).push {.inl 1}) t) = _
     rw [current_target _ _ (Or.inl rfl)]
   dsimp only
-  rw [Initializers.constant_truth model trace integers (.closed (.inl 1)) 0 _ _ _ _ _ _
+  rw [Initializers.Legacy.constant_truth model trace integers (.closed (.inl 1)) 0 _ _ _ _ _ _
       (head 0) (value 0) rfl,
-    Initializers.constant_truth model trace integers (.closed (.inl 1)) 1 _ _ _ _ _ _
+    Initializers.Legacy.constant_truth model trace integers (.closed (.inl 1)) 1 _ _ _ _ _ _
       (head 1) (value 1) rfl]
   simp [integers]
 

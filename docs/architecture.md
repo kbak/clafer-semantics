@@ -65,15 +65,16 @@ transports richer inherited groups and reference observations to live carriers.
 `CapturedStatic`/`StaticObservation` adapt every typed static constructor under
 explicit environment and definedness hypotheses, while `PrimitiveExpression`
 adds resolved mathematical arithmetic, extrema and occurrence-indexed folds.
-`Initializers` implements the reviewed constant-equation/default-rejection profile.
-The separately imported `InitializerCandidate` analyzes the
-[revised declaration guards](behavioral-structure.md#candidate-initializer-equations)
-and their exact constant-trace agreement without changing that production API.
-`InitializerClassification` and `InitializerBounds` consolidate the accepted
-[initializer contract](behavioral-initializers.md), with resolved admission,
-scalar-bound soundness and aggregate/singleton agreement. Separate lifecycle and
-contract examples verify inherited clocks and collection observations on admitted
-structures. These modules remain outside the production aggregator.
+`Initializers` elaborates the accepted hard-initializer clocks and proves agreement
+with the independent equations in `InitializerCandidate`. `InitializerLegacy`
+retains the historical strict API. `InitializerClassification`/`InitializerBounds`
+supply resolved admission and aggregate/singleton agreement; `InitializerTransport`
+retains original RHS environments and temporal attachment. `InitializerStructure`
+derives observations from valid resolved structures. `InitializerCompatibility`,
+`InitializerStatic` and `InitializerFinality` connect production to constant traces
+and conditional lifetime agreement. The [initializer contract](behavioral-initializers.md)
+owns assumptions, source correspondences and downstream obligations. Separate
+lifecycle, contract and production examples retain their structural witness limits.
 These source modules do not import Compile or Verification.
 
 Source meaning is independent of executable IR and target semantics. The upstream

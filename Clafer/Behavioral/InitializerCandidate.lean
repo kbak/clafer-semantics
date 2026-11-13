@@ -1,13 +1,13 @@
 module
 
-public import Clafer.Behavioral.Initializers
+public import Clafer.Behavioral.InitializerLegacy
 public import Clafer.Behavioral.Snapshot
 
 /-! # Candidate presence-guarded initializer equations
 
 Behavioral §5 Definitions 3–5 and §6.1, T7/T9, with the accepted #169/#170
-definedness extension. These equations analyze the proposed initializer contract;
-they do not change `Initializers.elaborate` or select a collection classifier.
+definedness extension. These independent equations ground production initializer
+elaboration; they do not change `Legacy.elaborate` or select a collection classifier.
 Resolved observations retain their enclosing lexical environment. No RHS
 definedness is assumed outside the applicable presence/birth guard.
 -/
@@ -209,7 +209,7 @@ theorem old_constant_rejects_undefined {k n : Nat} (m : Structural.Core k)
     (t : Nat) (heads left value : CollectionExpr (Fin k) n)
     (missing : PrimitiveExpression.collection m.toEffectiveCore (Structural.observed m τ)
       R ρ t value = none) :
-    ¬ (Initializers.constant heads left value).Satisfies τ (.primitives m τ R) true ρ t := by
+    ¬ (Initializers.Legacy.constant heads left value).Satisfies τ (.primitives m τ R) true ρ t := by
   intro h
   obtain ⟨p, hp⟩ := h.1.2
   simp only [PartialObservation.primitives, PrimitiveExpression.Atom.eval, missing] at hp

@@ -6,7 +6,7 @@ public import Clafer.Behavioral.InitializerBounds
 
 SoSyM Appendix 3 defaulting, the adopted numeric-group evolution, behavioral
 §5 Definitions 3–5 / §6.1, and accepted #170 decisions. Classification is an
-independent source contract, not a replacement for Initializers.elaborate.
+independent source contract, reused by production Initializers.elaborate.
 Names/types are checked by the frontend before this interface. -/
 
 @[expose] public section

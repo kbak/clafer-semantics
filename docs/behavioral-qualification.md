@@ -147,7 +147,7 @@ acceptance and downstream frontend/encoding qualification.
 | B29 | Resolved `Formula`, `Chain`, `Pattern`/`Scope`, source expansion and normalization interfaces | Source alias/attachment meaning is explicit; production parsing, precedence, resolution and source-position preservation remain compiler C7 obligations, not a claimed upstream parser |
 | B30 | `Lasso.unfold`, `valid_iff_unfold`, `Core.finite_agrees`, `Program.check_satisfied` | Nonzero prefix, loop-edge birth, first-entry history, capture and cancellation / invalid loop, empty trace, metadata switch; exact supplied lassos only |
 | B31 | `IntegerObservation.coerce`, `Arithmetic.Binary.apply`, `Aggregate.Fold.eval`, `PrimitiveExpression`, `Formula.Defined` | Empty-to-zero versus presence, distinct targets versus repeated folds, arbitrary Int / zero divisors, infinite/wrong-domain sets and undefined operands; finite representation limits above remain explicit |
-| B32 | `Initializers.constant`, `every_live_state`, `default_rejected`, adopted effective defaults | Constant equations persist beyond birth / `:=` explicitly rejected; frontend defaults and temporal birth remain separate |
+| B32 | `Initializers.expansion_agrees`, `Structure.single_fibers`, `Static.production_constant_agreement`, `Finality.production_equivalence` | Classified hard initialization, original RHS context, absent guards, persistent `=`, supported-form diagnostics; frontend provenance and backend preservation remain separate |
 
 The [T1–T13 disposition table](behavioral-profile.md#errata-coverage-and-deliberate-departures)
 is exhaustive: T1/T13 map to B02–B03/B30, T2 to signed meaning and composition,

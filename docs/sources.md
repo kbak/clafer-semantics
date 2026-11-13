@@ -1556,15 +1556,16 @@ paper or either backend specifies partial temporal arithmetic. Completion
 independence and exact total/static compatibility are proved separately from
 source signed truth and from future bounded encoding.
 
-The same review explicitly excludes declaration `:=` from this versioned profile.
+The same review explicitly excludes declaration `:=` from the historical base profile.
 The pinned [CheatSheet initializers](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md#L128)
 says default initializers lack backend support; `desugarInit`/`desugarInitHow`
 ([Desugarer.hs lines 195–211](https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs#L195))
 emits an assertion for `:=`, which supplies no override/default semantics.
 Constant `=` retains its presence-guarded equation at every live enclosing
 attachment state. Behavioral §6.1 p.2:29 does not make it a birth-only initializer.
-The frontend must diagnose the unsupported form and preserve the resolved
-presence/value views. All implementations and proofs are independently authored.
+That base profile requires an unsupported-form diagnostic and preserved resolved
+presence/value views; the extension below supersedes its initializer restriction.
+All implementations and proofs are independently authored.
 
 The later [initializer definedness decision](https://github.com/kbak/clafer-semantics/issues/169)
 and [collection presence-guard extension](https://github.com/kbak/clafer-semantics/issues/170)
@@ -1576,8 +1577,8 @@ derived from the paper. The source comparison is pinned to
 [`initial-value.md` at fca0deb](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/initial-value.md)
 and [T14](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md#t14-the-initializer--is-the-initial-value-of-a-reference-change).
 Their static output-equivalence examples do not establish partial-arithmetic
-agreement. Candidate proofs retain the historical profile and installed compiler
-pin; production adoption belongs to the separate initializer integration.
+agreement. The production initializer extension adopts the reviewed decisions while
+retaining the historical strict API and installed compiler pin.
 
 ## Initializer supported-form decisions
 
@@ -1603,8 +1604,22 @@ policy is not a claim that the inspected compiler enforces it.
 `InitializerBounds` proves conditional scalar soundness against the existing
 partial evaluator and aggregate/singleton agreement with one shared RHS environment.
 `InitializerClassification` preserves authored provenance and inherited obligations.
-The focused contract records exact assumptions and fixture scope. These modules
-leave the production initializer API and the historical SoSyM profile unchanged.
+The focused contract records exact assumptions and fixture scope. Production
+elaboration now composes these results with original-context transport and
+conditional finality agreement; the historical SoSyM profile is unchanged.
+
+The [completed environment review](https://github.com/kbak/clafer-semantics/issues/171)
+fixes conjunctive inheritance, original RHS environments and temporal attachment,
+and the within-lifetime finality conditions. Its source provenance includes
+[`d275c97`](https://github.com/gsdlab/clafer/commit/d275c97c8b537a9bfb419b7c3ef2a01cf7cea18c)
+for conjunctive inheritance and
+[`98682b8`](https://github.com/gsdlab/clafer/commit/98682b8f6e30ec7dba50d3e614f7604945031ef6)
+for the finality correction. Value conditions retain the complete formula's raw
+truth and strict domain, as exposed by the pinned
+[compiler condition evaluator](https://github.com/kbak/clafer-compiler-lean/blob/7c1f78ff7dc17c488e7d645a67d1441cffadc3b6/ClaferCompiler/SemanticsBridge/Behavioral/Expression.lean).
+The independent `InitializerTransport` constructor and its partial-observation
+proof cover that domain without adopting compiler code. These are semantic
+source correspondences, not executed backend comparisons or a full 0.5.8 upgrade.
 
 ## Absent-reference decision and consequences
 

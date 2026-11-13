@@ -459,16 +459,19 @@ unchanged. Prove an exact validity equivalence on the historical guarded common
 fragment without relaxing its guards or changing its snapshot/constant theorems.
 
 Classify every S1–S11/T8/T10/T11 prerequisite in the
-[structural contract](behavioral-structure.md). The reviewed B32 profile rejects
-`:=` explicitly and interprets `=` as an ordinary presence-guarded equation at
-every live attachment state, with strict operand definedness. Preserve the
-historical SoSyM checkpoint. Supply admitted richer structural models and negative
+[structural contract](behavioral-structure.md). B32 adopts the accepted hard
+initializer extension: `=` is an aggregate equation at every live attachment
+state; `:=` uses the classified instance-birth, parent-birth or global time-zero
+clock. Both use a declaration-level presence guard, imposing no RHS definedness
+on empty heads. General Boolean evaluation remains strict. Preserve the
+historical SoSyM checkpoint and explicit `Initializers.Legacy` strict API. Supply admitted richer structural models and negative
 wrong-group, authored-abstract, reference-key and endpoint witnesses. No required
 structural matrix row may be left without an implementation or a reviewed
 disposition and named downstream obligation.
 
-Alongside that versioned production profile, supply the selected
-[candidate initializer result](behavioral-structure.md#candidate-initializer-equations).
+Reuse the independent
+[initializer equations](behavioral-structure.md#candidate-initializer-equations)
+in production elaboration.
 Its declaration-level presence guard requires RHS definedness and target-image
 equality only for nonempty heads, including collections at parent birth. Static
 `=` and `:=` use the same guard. Single-reference temporal initialization checks
@@ -478,9 +481,10 @@ definedness strict and cardinality/reference validity independent of the guard.
 Prove exact static/constant-trace and every-live agreement under explicit stable
 live/context/head/target/RHS observations, allowing a constantly undefined RHS
 behind an empty guard. Retain the old strict-implication counterexample and
-defined-empty, undefined, late-birth and rebirth witnesses. These are candidate
-equations; production elaboration, environment transport, supported-form
-classification and compiler preservation require their separate integration.
+defined-empty, undefined, late-birth and rebirth witnesses. Prove production
+elaboration agreement and derive original-context transport from resolved
+ownership and capture-avoiding frames. Frontend provenance and backend
+preservation remain independent downstream obligations.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -520,9 +524,27 @@ Cover defaulting, finite parentless-bound rejection, scalar admission and diagno
 distinctions. Do not equate an impossible nonempty birth with a permanently absent
 declaration or an unsatisfiable whole model.
 
-These modules consolidate source contracts and candidate proofs. Production
-elaboration, full source environment transport and backend preservation remain
-separate obligations; the historical production initializer profile is unchanged.
+Integrate the classifier and equations into production elaboration. Its resolved
+input retains authored multiplicity and original declaration identity; name/type
+checking and sound leaf certificates precede semantic use. Preserve complete
+partial RHS observations through a separate original-context frame, including
+captured values, binder extension, direct navigation during absence, evaluation
+time, and temporal operators/anchors in full formula value conditions. Value
+conditions use raw truth and strict definedness of the condition and both branches.
+Only generated outer initialization anchors change attachment. Prove agreement
+with the chosen `initially` expansion and with static aggregate meaning on the
+supported domain. Derive stable primitive observations on constant embeddings;
+do not infer stability of temporal conditions from structural constancy alone.
+
+Conjoin all obligations along resolved super edges without reclassification or
+scope narrowing. Prove conditional per-lifetime `finalref`/`=` equivalence using
+stable original RHS observations; keep changing and later-undefined RHS
+counterexamples and the separate `final` head-stability requirement. Retain
+source/elaboration witnesses for temporal attachment, inherited/root contexts,
+parent replacement, simultaneous dependencies and mixed initializer conflicts.
+Initializers remain backend-independent hard constraints. Frontend lookup,
+authored provenance, backend preservation and temporal-let reference compatibility
+remain separately owned; no default optimization or assignment execution is added.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -1074,7 +1096,8 @@ Needs: impl, proof, utest
 Maintain a complete B01–B32 and T1–T13 qualification inventory against immutable
 source locators. Identify actual source declarations, theorem assumptions,
 positive/negative witnesses and exact downstream obligations for every row.
-Preserve reviewed D1–D5 departures and explicit unsupported initializer syntax.
+Preserve reviewed D1–D5 departures, the adopted initializer extension and its
+explicit unsupported-form diagnostics.
 Do not equate compiler observations, trace links or passing automation with
 semantic acceptance. Reconcile the final release against the adopted source pin,
 or record explicit maintainer acceptance of that immutable prerelease profile.

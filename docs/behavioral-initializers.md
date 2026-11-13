@@ -1,13 +1,15 @@
 # Initializer contract
 
-This contract consolidates the accepted collection and supported-form decisions
-in [the initializer review](https://github.com/kbak/clafer-semantics/issues/170).
-It describes hard constraints, not defaults that can be overridden. The
-[candidate equations](behavioral-structure.md#candidate-initializer-equations)
-remain separate from the versioned production `Initializers.elaborate` API.
-Production adoption, source environment transport and compiler preservation are
-tracked in the [integration task](https://github.com/kbak/clafer-semantics/issues/173)
-and [environment review](https://github.com/kbak/clafer-semantics/issues/171).
+This contract defines the hard initializer extension adopted in the
+[definedness](https://github.com/kbak/clafer-semantics/issues/169),
+[supported-form](https://github.com/kbak/clafer-semantics/issues/170) and
+[environment/lifetime](https://github.com/kbak/clafer-semantics/issues/171)
+reviews. These are constraints on a trace; they neither assign values in sequence
+nor provide overridable defaults. Production `Initializers.elaborate` selects the
+accepted clocks and diagnostics. Its generated expansion is proved equivalent to
+the independent [equations](behavioral-structure.md#candidate-initializer-equations).
+The historical strict-implication and `:=` rejection API is explicitly retained in
+`Initializers.Legacy`; the static importer and broader source-profile pin are unchanged.
 
 ## Declaration classification
 
@@ -185,10 +187,87 @@ or silently interpreted per actual parent. To require two global X heads at ever
 state, use an explicit `G (#X = 2)` constraint alongside `X * := 1,2`; initialization
 still checks target equality only at time zero.
 
+## Production transport and proof domain
+
+[`Initializers`](../Clafer/Behavioral/Initializers.lean) separates `Meaning` from
+`expansion`; `expansion_agrees` connects them. It accepts a resolved RHS syntax
+family and its partial observation adapter. Thus full formula conditions are not
+restricted to the older `CollectionExpr` grammar. The adapter must implement its
+source language independently; an arbitrary callback is not a frontend
+preservation certificate. Resolved declaration metadata, names/types and scalar
+leaf bounds remain the caller's obligations. `Structure.metadata` constructs
+classification metadata from the structural declaration and supplied authored
+multiplicity; authored/default provenance is never reconstructed from values.
+
+[`Transport`](../Clafer/Behavioral/InitializerTransport.lean) constructs a frame
+with the child's attachment, a reserved generated-binder slot, the original
+context identity, and unchanged captures in successor slots. `restore_move`,
+`restore_push` and `observation_preserved` prove equality of complete partial
+observations at every time. The restored environment is passed to the whole
+source evaluator, including its temporal operators, anchors and nested binders.
+No equality between independently supplied moved/original observations is assumed.
+`attach_parent` uses fixed actual ownership; `Structure.parent_rhs` derives it
+from containment. A parentless abstract retains root even in a nested realization.
+Names and reference-owner identities are not resolved again during transport.
+
+`Transport.condition` observes a full formula's raw truth after checking its
+strict domain. `choose` requires both branch values. The generated outer
+`initially` tests the child for per-instance initialization; temporal operators
+and anchors inside the RHS still inspect the original context. If Box and x
+disappear after zero, `if X (some flag) then 1 else 2` in Box observes the next
+state under root and yields 2 when flag is absent. A name-only move into x cancels
+X when Box disappears and yields 1. The transport witnesses retain this difference,
+direct navigation through absence and captured-value/binder equations.
+
+[`Structure`](../Clafer/Behavioral/InitializerStructure.lean) constructs complete
+head/target views from valid traces, proves shared inherited targets, and obtains
+original environments from fibers. Effective inheritance retains the complete
+authored obligation, including clock, RHS and scope. `Bundle` conjoins obligations;
+its permutation theorem states simultaneous constraint meaning. Qualified or
+same-name super lookup remains [compiler #129](https://github.com/kbak/clafer-compiler-lean/issues/129).
+A replacement parent cannot own the old child identity; fixed ownership requires
+a different child with a fresh birth obligation.
+
+[`Compatibility`](../Clafer/Behavioral/InitializerCompatibility.lean) connects
+production meaning to aggregate/singleton agreement. Concrete bounds come from
+structural multiplicity; abstract scalar bounds come from the independent
+primitive analysis, and strict conditionals preserve scalarity from both branches.
+[`Static`](../Clafer/Behavioral/InitializerStatic.lean) proves stability of every
+primitive collection/integer/fold constructor on the canonical constant embedding
+and composes it with production/static agreement. Structural validity, the guarded
+common fragment and scalar/head-bound admission stay explicit. Temporal value
+conditions can depend on anchors even on a structurally constant trace; their
+stability is a separate obligation. Empty guards still permit `none`.
+
+## Finality and inherited equations
+
+[`Finality`](../Clafer/Behavioral/InitializerFinality.lean) proves that, on an
+initialized uninterrupted lifetime with fixed target q, every-live equality adds
+exactly the requirement that the original RHS stay defined and equal to q.
+`production_equivalence` obtains `:=`/`=` agreement under `finalref`, within-life
+RHS observation stability and the singleton/scalar admission needed to connect
+aggregate equality. Stability outside that lifetime is unnecessary. This theorem
+does not apply to a collection's different initialization clock.
+
+A changing RHS or one that becomes undefined later separates the forms even
+with final references. Adding `final` fixes heads as well; it does not evaluate a
+later RHS or remove this distinction. Own and inherited equations conjoin even
+when their original environments differ. Contradictory birth equations forbid
+that instance; optional absence can still satisfy the model. Mixed `:=`/`=`
+obligations do not override each other. Reference lookup, source order or names
+cannot introduce an override policy.
+
+Frontend construction of resolved input, static-first temporal classification,
+backend preservation and [temporal-let reference compatibility](https://github.com/kbak/clafer-semantics/issues/174)
+remain downstream. The present transport preserves the adopted captured-value
+semantics and does not assert agreement with Haskell substitution. Pure assertions
+remain separate from model constraints, and soft constraints/default optimization
+remain outside this initializer API.
+
 ## Verification and source correspondence
 
-The resolved classification and bound results are independently importable and
-remain outside the production behavioral aggregator. The lifecycle fixtures in
+The resolved classification, bounds, transport, structural observation and
+production compatibility results are available through `Clafer.Behavioral`. The lifecycle fixtures in
 [`InitializerLifecycleExamples`](../Clafer/Behavioral/InitializerLifecycleExamples.lean)
 retain actual parents, inherited reference ownership, abstract coverage and exact
 head/target observations. Optional and exactly-one multiplicity variants are
@@ -197,6 +276,23 @@ collection to its abstract declaration view; `global_observations` connects the
 parentless collection to all live abstract heads. The fixture has one concrete
 realization, exercised under two actual parents; it is not a source elaboration
 proof for arbitrary subtype families.
+
+Production witnesses additionally exercise the resolved source adapters and the
+generated formulas:
+
+| Obligation | Evidence |
+| --- | --- |
+| Full temporal condition in Box, versus a name-only move into x | [`SourceExamples.temporal_condition_counterexample` and `source_elaboration`](../Clafer/Behavioral/InitializerSourceExamples.lean) |
+| A replaced parent and its fresh child use the new original context | [`ReplacementExamples.replacement_elaboration` and `fresh_parent_child`](../Clafer/Behavioral/InitializerReplacementExamples.lean) |
+| Simultaneous `x := y` and `y := x`, with later changes allowed | [`SimultaneousExamples.both_birth_equations` and `later_change`](../Clafer/Behavioral/InitializerSimultaneousExamples.lean) |
+| Inherited root RHS versus own parent RHS, retained super record, and conflicting own birth/every-live equations | [`ProductionExamples.inherited_context_initializes`, `inherited_record_preserved` and `own_context_conflicts`](../Clafer/Behavioral/InitializerProductionExamples.lean) |
+| Changing or later-undefined RHS under fixed heads and references | [`ProductionExamples.final_does_not_remove_rhs_distinction`](../Clafer/Behavioral/InitializerProductionExamples.lean) |
+| Direct navigation through absence and generated/source binder separation | [`TransportExamples.absent_direct_navigation`, `moved_absent_parent` and `capture_avoiding`](../Clafer/Behavioral/InitializerTransportExamples.lean) |
+
+The inherited-context fixture has one concrete realization; the simultaneous
+fixture has two distinct resolved sibling references. Their source observations
+and structural states are explicit. They establish semantic elaboration, not
+frontend parsing, same-name lookup or reference-compiler compatibility.
 
 The following results in
 [`InitializerContractExamples`](../Clafer/Behavioral/InitializerContractExamples.lean)
@@ -234,5 +330,5 @@ new Haskell/Alloy comparison.
 
 The [source ledger](sources.md#initializer-supported-form-decisions) records the
 accepted decision comments, paper sections and immutable supplementary compiler
-revision. The maintained production profile remains unchanged until the separate
-integration work proves source environment transport and adopts these equations.
+revision. The production extension uses these equations with proved original-context
+transport; the historical strict profile remains available explicitly in `Legacy`.
