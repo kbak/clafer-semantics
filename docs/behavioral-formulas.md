@@ -81,6 +81,64 @@ captures head 3 and observes target 6 at time 3, then target 5 at time 4 without
 a new head lifetime. Capturing target set `{6}` instead retains `{6}`. No general
 equivalence to the paper's historical snapshot-pair evaluator is claimed.
 
+## Let capture and substitution
+
+The accepted D1 meaning of `let x = e in b` at environment ρ and time t first
+computes S = ⟦e⟧(ρ,t), then evaluates b in ρ extended with x ↦ S. Every temporal
+use of x retains S and the original attachment. Dereferencing x later still
+uses the current reference relation. Under D3 the binding expression must be
+defined at t, even when b does not use x.
+
+Capture-avoiding **syntactic substitution** instead replaces free occurrences
+of x in b with the expression e, respecting shadowing and renaming intervening
+binders to avoid changing e's free names. Each inserted expression is evaluated
+where it occurs. Renaming prevents accidental lexical binding; it does not
+retain a previously evaluated value. A defined, correctly resolved same-state
+use can agree, but neither temporal movement nor erasure of an unused partial
+expression is justified by lexical capture avoidance.
+
+For example, with a persistent top-level reference and initial values 1 then 2:
+
+```clafer
+v -> integer
+[ initially (v = 1 && X (v = 2)) ]
+[ initially (let old = v.dref in X (old = 1)) ]
+```
+
+D1 retains `{1}`. Substitution asks for `v.dref = 1` at the next state, where
+the first constraint requires `{2}`. Root attachment excludes parent cancellation.
+Capturing `v` instead and dereferencing that retained head inside X intentionally
+observes the later target; head identity and target value are different captures.
+
+[LetCapture](../Clafer/Behavioral/LetCapture.lean) proves the precise reusable
+law `letSet_next_of_stable`: for total observations, if the domain's values at t
+and t+1 are equal in the original environment, `letSet d (next a)` and
+`next (letSet d a)` agree for any body and either source sign. This is a sufficient
+condition, not a necessary one or a general named-expression substitution theorem.
+It does not license moving a partial binding past a cancelled next: the original
+binding still has a definedness obligation at t. `letSet_truth_defined` and
+`letSet_undefined_neither` retain that obligation even for an unused binding.
+
+[LetCaptureExamples](../Clafer/Behavioral/LetCaptureExamples.lean) uses the
+independently admitted cycling trace to prove that target capture before X
+succeeds while capture inside X fails, with a surviving parent and distinct
+persistent targets. This is a finite-identity relational witness, not a literal
+integer or Haskell-preservation theorem. It also checks same-state target capture,
+current dereference of a stored head, changing extents, retained membership through
+a gap/rebirth and strict unused-binding rejection. Existing `nested_capture`
+checks lexical index extension/shadowing, while `capture_survives_absence`,
+`current_reference_not_snapshot` and `captured_bag_heads` retain absence,
+head/target and occurrence distinctions. A source binder's spelling is absent
+from these resolved APIs; they do not prove frontend alpha-renaming correctness.
+A new evaluation on rebirth may capture a new value, while an earlier environment
+retains its old set; a parent gap still cancels its pending obligation permanently.
+
+The [0.5.8 source disposition](sources.md#temporal-let-substitution) treats temporal
+substitution and erased undefined bindings as explicit comparison exclusions.
+It preserves the accepted source contract and does not adopt a new language
+meaning from compiler output. The [comparison inputs](../tests/fixtures/temporal-let/README.md)
+separate compiler observations, independent controls and kernel-checked source laws.
+
 ## Attachment and cancellation
 
 [`Trace.ParentPresent`](../Clafer/Behavioral/Environment.lean) looks up the fixed

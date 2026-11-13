@@ -1,0 +1,3 @@
+a ?
+[ initially (some a && X no a && X X some a) ]
+[ initially (let old = a in X (some old && X (old = a))) ]

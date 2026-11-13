@@ -1,0 +1,3 @@
+v -> integer
+[ v = 1 ]
+[ let old = 2 in let old = v.dref in old = 1 ]

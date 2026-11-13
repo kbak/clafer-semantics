@@ -1,0 +1,4 @@
+a -> integer
+b -> integer
+[ a = 1 && b = 2 ]
+[ let old = a.dref in all a : b | old = 1 && a.dref = 2 ]

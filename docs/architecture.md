@@ -31,7 +31,10 @@ checked witnesses. The [formula contract](behavioral-formulas.md) adds
 `Environment`/`Formula`, independent signed `Denotation`, interval `Lifetime`
 operators, `Normalization`, and `Lowering` into ordinary temporal `Core`.
 `FormulaExamples` reuses the valid trace fixture to distinguish source signs,
-classical counting barriers, attachment and identity capture. The original
+classical counting barriers, attachment and identity capture. `LetCapture` derives
+the stable-domain next law and strict unused-binding
+consequences; `LetCaptureExamples` distinguishes temporal target capture from
+re-evaluation on an admitted trace. The original
 observation interface remains total. `PartialObservation` and `PartialCompatibility`
 add strict definedness, completion-independent signed satisfaction and exact total
 compatibility. The separate [finite verification API](behavioral-verification.md) adds

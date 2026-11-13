@@ -102,6 +102,7 @@ class PublicLibrariesTest(unittest.TestCase):
             "Clafer.Behavioral.Formula", "Clafer.Behavioral.Denotation",
             "Clafer.Behavioral.Normalization", "Clafer.Behavioral.Lowering",
             "Clafer.Behavioral.FormulaExamples",
+            "Clafer.Behavioral.LetCapture", "Clafer.Behavioral.LetCaptureExamples",
             "Clafer.Behavioral.Orbit", "Clafer.Behavioral.Lasso",
             "Clafer.Behavioral.FiniteEvaluation", "Clafer.Behavioral.LassoValidation",
             "Clafer.Behavioral.FiniteSets", "Clafer.Behavioral.Verification",

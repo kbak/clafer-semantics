@@ -16,6 +16,7 @@ public import Clafer.Behavioral.Initializers
 public import Clafer.Behavioral.InitializerCompatibility
 public import Clafer.Behavioral.InitializerStatic
 public import Clafer.Behavioral.InitializerFinality
+public import Clafer.Behavioral.LetCapture
 public import Clafer.Behavioral.AbsentReference
 
 public import Clafer.Behavioral.Anchors

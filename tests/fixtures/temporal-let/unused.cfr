@@ -1,0 +1,3 @@
+v -> integer
+[ v = 1 ]
+[ let unused = 1 / 0 in some v ]
