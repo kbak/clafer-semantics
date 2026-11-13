@@ -257,8 +257,8 @@ jobs:
             ${{ runner.temp }}/validation-selection.json
             ${{ runner.temp }}/clafer-compiler/build.json
             ${{ runner.temp }}/clafer-compiler/build.log
-            ${{ runner.temp }}/clafer-candidate/build.json
-            ${{ runner.temp }}/clafer-candidate/build.log
+            ${{ runner.temp }}/clafer-legacy/build.json
+            ${{ runner.temp }}/clafer-legacy/build.log
             ${{ runner.temp }}/clafer-comparison-evidence/
             ${{ runner.temp }}/clafer-candidate-evidence/
             ${{ runner.temp }}/python-tests/
