@@ -40,6 +40,8 @@ run_cmd do
 #check Clafer.Behavioral.PrimitiveExpression.finite_reference_operand
 #check Clafer.Behavioral.Formula.extension_agrees
 #check Clafer.Behavioral.Formula.total_agrees
+#check Clafer.Behavioral.Formula.letSet_next_of_stable
+#check Clafer.Behavioral.Formula.letSet_undefined_neither
 #check Clafer.Behavioral.Formula.satisfies_iff_lowered
 #check Clafer.Behavioral.StaticObservation.signed_atom_agrees
 #check Clafer.Behavioral.Initializers.Legacy.default_rejected

@@ -1,0 +1,3 @@
+v -> integer
+[ initially (v = 1 && X (v = 2)) ]
+[ initially (let old = v.dref in old = 1) ]

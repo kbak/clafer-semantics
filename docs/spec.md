@@ -888,7 +888,13 @@ Prove capture, shadowing, absence and navigation equations, with changing-refere
 and absent-context witnesses. A captured absent identity remains in its stored
 singleton while its current dereference image is empty; a replacement identity
 with the required value cannot discharge the original identity's obligation.
-Record the deliberate departure from the paper's
+Distinguish lexical capture avoidance from retaining an evaluated value across
+time. Preserve the [let comparison boundary](behavioral-formulas.md#let-capture-and-substitution):
+prove a sufficient stable-domain law for moving total capture through next and
+retain a valid-trace counterexample when the domain changes. An unused partial
+binding still requires a defined RHS at its binding state; erasing it cannot
+establish D3 agreement. Named-syntax substitution and alpha-renaming correctness
+remain frontend obligations. Record the deliberate departure from the paper's
 snapshot-tagged environment. Keep observations total on the stated set domain.
 Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged

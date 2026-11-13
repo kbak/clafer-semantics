@@ -296,6 +296,14 @@ features cannot disappear through an unsupported-input guard.
 | D4: defaults and structural prerequisites — adopted | The [initializer extension](behavioral-initializers.md) adopts hard `:=` with classified clocks and declaration-level guards for both forms. `=` retains every-live aggregate equality; `Legacy` preserves the original strict disposition. S6 nested abstracts/refined parents and S9 inherited references use the richer independent structural core. S10 concrete supers remain source-permitted. | [S4] supplies admission, common-fragment equivalence, full bindings and initializer transport/preservation APIs. [C6]/[C7] preserve authored provenance, effective defaults, source classification and resolved views, and diagnose unsupported forms. [S5] owns surface modifiers; per-instance `:=` is checked at each birth. |
 | D5: reference modifiers — adopted completion | P §§6.1–6.2 p.2:32 defines final child-set stability and nested lifetime limits, but does not name finalref/finaltarget. T8/CheatSheet distinguish them; the pinned generator uses per-head equality for both. | The [reviewed completion](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) fixes per-head references for finalref, parent target images for finaltarget, and heads plus references for final. Each rule resets at its relevant lifetime gap and includes inherited references. [S5] proves these independent meanings; [C7]/[C8] must retain their distinction. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records parent-image correction in `b2875f3` and retention of all modifiers in `8a12ae7`; neither changes the historical pin. |
 
+The [temporal-let comparison disposition](sources.md#temporal-let-substitution)
+preserves D1 evaluated-set capture and D3 strict RHS definedness. The 0.5.8
+candidate's capture-avoiding substitution is not a general oracle for B07:
+changing values across time and erased undefined bindings require explicit
+comparison exclusions. This does not remove `let` from the source language or
+change either accepted decision; a later source/profile upgrade must retain the
+exclusions or establish a reviewed correction.
+
 The accepted profile excludes the following broader nonbehavioral features:
 decimal/double/real and string computation,
 optimization goals, backend escapes, alternative solvers, inferred-scope correctness,

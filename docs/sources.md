@@ -1833,6 +1833,59 @@ valuation by enumeration, or establish bounded-search completeness. Modifier
 reduction assumes richer structural validity and total set observations; partial
 transition/pattern/property reduction retains the original source domain.
 
+## Temporal let substitution
+
+<!-- [impl->req~behavioral-source-correspondence~1] -->
+
+Behavioral paper §5 Definition 4 (pp. 2:26–28) and §6.1 are interpreted through
+adopted D1 evaluated-set capture and D3 strict definedness, as specified in the
+[formula contract](behavioral-formulas.md#let-capture-and-substitution). The paper's
+snapshot-tagged environment, the accepted identity/current-navigation completion,
+and compiler syntactic substitution are distinct meanings.
+
+The supplementary 0.5.8 candidate at
+[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+retains the `let` change introduced by
+[`5504c86e4253aead4ead5d80f0ac55b5dd1a047f`](https://github.com/gsdlab/clafer/commit/5504c86e4253aead4ead5d80f0ac55b5dd1a047f).
+`Desugarer.hs` lines 592–638 implement `desugarLet`/`substName`: substitute at
+free occurrences, stop below a binder of the substituted name, and rename
+intervening binders whose names occur in the replacement expression. Temporal
+operators receive the substituted expression, not a stored value; an unused
+binding expression disappears. The static `let_binding` fixture establishes no
+temporal capture contract by itself.
+
+The [delta from the issue's d275c97c snapshot](https://github.com/gsdlab/clafer/compare/d275c97c8b537a9bfb419b7c3ef2a01cf7cea18c...fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+contains four commits concerning inherited-initializer warnings, super-path
+resolution and HTML links, and documentation. It changes neither this substitution
+implementation nor the let fixture. This immutable candidate is marked unreleased
+in its `CHANGES.md`; it does not replace the accepted behavioral or structural
+compiler pins.
+
+| Candidate source | SHA-256 | Role |
+| --- | --- | --- |
+| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/Desugarer.hs) | `9e5a26f4e8a7549ddcac6f8d4ff7b21766cc5801b6aa520ece2a643c343171ab` | Capture-avoiding expression substitution |
+| [let_binding.cfr](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/test/positive/let_binding.cfr) | `6333d0ce7f2974f78341356f639a570dfd9911db53d1971ff618769abd040ebd` | Static navigation, arithmetic, shadowing and renamed-binder cases |
+| [CHANGES.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/CHANGES.md) | `ca12632d4aac9a8b700a15c31a6b617b78f256dcc3f6213a8f118ae660c10183` | Unreleased source identity and change descriptions |
+| [LICENSE](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms; the new Lean laws and comparison inputs are original |
+
+**Disposition:** retain the accepted D1/D3 language meaning. This candidate is
+excluded as a general equivalence oracle for time-spanning `let` and unused
+undefined bindings. Defined same-state examples and stable-domain cases remain
+useful comparisons with their hypotheses explicit. A source/profile upgrade must
+carry these exclusions, or review a compiler correction that preserves binding-time
+values and strict RHS definedness. Changing the normative language meaning would
+require a separate explicit decision; this source comparison does not supply one.
+
+[Issue #174](https://github.com/kbak/clafer-semantics/issues/174) owns the investigation
+and execution evidence; [the 0.5.8 upgrade](https://github.com/kbak/clafer-semantics/issues/175)
+consumes this disposition. The [retained comparison inputs](../tests/fixtures/temporal-let/README.md)
+identify the distinguishing models and replay assumptions. The checked
+`Formula.letSet_next_of_stable` law is limited to
+total observations; `LetCaptureExamples.target_capture_distinguishes` supplies an
+admitted relational counterexample. Neither proves Haskell preservation or
+unrestricted agreement for named substitution. Strict-unused-binding failure is
+separate from temporal re-evaluation and backend arithmetic conventions.
+
 ## PR113 modifier and pattern revisions
 
 The primary meaning remains behavioral §5 Definitions 2–5 and §§6.1–6.2,
