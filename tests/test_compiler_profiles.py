@@ -1,4 +1,4 @@
-"""Actual 0.5.7 exports and Alloy runs across the unchanged structural boundary.
+"""Actual 0.5.8 exports and Alloy runs across the unchanged structural boundary.
 
 Production transports identities using the captured, checked name map. Receipts
 are mutated after capture to test rejection, never used as compiler evidence.
@@ -19,6 +19,7 @@ import comparison
 import alloy_runtime
 from capture import capture
 from compiler_profile import PIN
+import legacy_profile as historical
 from runtime import prepare
 from relation import rename
 
@@ -139,6 +140,17 @@ class CompilerProfileTests(unittest.TestCase):
         value["references"].pop()
         self.run_case("renamed-inheritance", value, "agree_violates")
 
+    def test_group_layout_effective_bounds_and_exact_candidates(self):
+        _, core, _ = self.captures["group_layout"]
+        self.assertEqual([d["card"] for d in core["declarations"]], [[1, 1], [1, 1], [0, 1], [0, 1]])
+        self.assertEqual(core["declarations"][1]["group"], [2, 3])
+        value = candidate({"a": [1], "b": [2], "c": [3], "d": [4]},
+            [["a", [0, 1]], ["b", [0, 2]], ["c", [2, 3]], ["d", [2, 4]]])
+        self.run_case("group_layout", value)
+        value = candidate({"a": [1], "b": [2], "c": [3]},
+            [["a", [0, 1]], ["b", [0, 2]], ["c", [2, 3]]])
+        self.run_case("group_layout", value, "agree_violates")
+
     def rejected_receipt(self, change, code, name="collisions"):
         g = copy.deepcopy(self.receipts[name]); change(g); g = p.seal_receipt(g)
         with self.assertRaises(p.Rejection) as error:
@@ -187,7 +199,8 @@ class CompilerProfileTests(unittest.TestCase):
                 p.decode_ir(doc)
 
     def test_manifest_and_build_profile_mixing_is_rejected(self):
-        for i, changes in enumerate((dict(compiler_commit="6750e6f591b2131549122c13dee94d3d2257eaea"), dict(compiler_version="0.5.4"),
+        for i, changes in enumerate((dict(compiler_commit=historical.PIN), dict(compiler_version="0.5.7"),
+                                     dict(export_schema=historical.EXPORT_SCHEMA), dict(compiler_commit="6750e6f591b2131549122c13dee94d3d2257eaea"), dict(compiler_version="0.5.4"),
                                      dict(export_schema="generic-aeson-0.5.4/1"), dict(compiler_commit="0" * 40))):
             path = self.evidence / f"mixed-profile-{i}"
             shutil.copytree(self.captures["bag"][0], path)
@@ -206,6 +219,26 @@ class CompilerProfileTests(unittest.TestCase):
         (path / "manifest.json").write_bytes(p.encoded(manifest))
         with self.assertRaisesRegex(p.Rejection, "unsupported:build_identity"):
             p.import_bundle(path)
+
+    def test_build_probe_and_toolchain_mixing_is_rejected(self):
+        original = self.captures["bag"][0]
+        changes = [dict(instance_generator_commit="0" * 40),
+                   dict(instance_generator_archive_sha256="0" * 64),
+                   dict(metadata_source=dict(bytes=0, sha256="0" * 64)),
+                   dict(metadata_binary=dict(bytes=True, sha256="0" * 64)),
+                   dict(resolver=historical.RESOLVER), dict(ghc_version=historical.GHC_VERSION),
+                   dict(stack_lock=historical.STACK_LOCK)]
+        for i, change in enumerate(changes):
+            path = self.evidence / f"mixed-probe-{i}"
+            shutil.copytree(original, path)
+            build = p.loads((path / "build.json").read_bytes()) | change
+            data = p.encoded(build)
+            (path / "build.json").write_bytes(data)
+            manifest = p.loads((path / "manifest.json").read_bytes())
+            manifest["inputs"]["build.json"] = p.digest(data)
+            (path / "manifest.json").write_bytes(p.encoded(manifest))
+            with self.subTest(change=change), self.assertRaises(p.Rejection):
+                p.import_bundle(path)
 
     def test_excluded_source_forms_remain_excluded(self):
         for i, source in enumerate(("a\nb\nx -> a ++ b\n", "a -> integer\n", "a\n[a]\n", "initial a\n",

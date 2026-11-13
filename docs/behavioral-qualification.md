@@ -149,11 +149,12 @@ acceptance and downstream frontend/encoding qualification.
 | B31 | `IntegerObservation.coerce`, `Arithmetic.Binary.apply`, `Aggregate.Fold.eval`, `PrimitiveExpression`, `Formula.Defined` | Empty-to-zero versus presence, distinct targets versus repeated folds, arbitrary Int / zero divisors, infinite/wrong-domain sets and undefined operands; finite representation limits above remain explicit |
 | B32 | `Initializers.expansion_agrees`, `Structure.single_fibers`, `Static.production_constant_agreement`, `Finality.production_equivalence` | Classified hard initialization, original RHS context, absent guards, persistent `=`, supported-form diagnostics; frontend provenance and backend preservation remain separate |
 
-The [T1–T13 disposition table](behavioral-profile.md#errata-coverage-and-deliberate-departures)
+The [T1–T14 disposition table](behavioral-profile.md#errata-coverage-and-deliberate-departures)
 is exhaustive: T1/T13 map to B02–B03/B30, T2 to signed meaning and composition,
 T3/T4 to transition attachment/chains, T5/T6 to properties/scenarios, T7 to
 anchors, T8 to inherited modifiers, T9 to implicit recurrence, T10/T11 to the
-structural prerequisites, and T12 to the explicit downstream syntax obligation.
+structural prerequisites, T12 to the explicit downstream syntax obligation,
+and T14 to B32 and the qualified initializer contract.
 The [D1–D5 register](behavioral-profile.md#decisions-requiring-contract-review)
 retains every adopted semantic departure; none is reclassified as compiler equality.
 
@@ -162,10 +163,12 @@ Covers:
 
 ## Source disposition and acceptance
 
-The immutable profile remains `behavioral-0.5.7-candidate/v1` at
-`gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`, with the reviewed D1–D5
-dispositions. The [source ledger](sources.md#behavioral-profile-sources) supplies
-exact blob hashes and licenses. This is an independently defined source profile,
+The current immutable profile is `behavioral-0.5.8/v1` at
+`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, preserving D1–D5
+and the hard-initializer extension. The [source disposition](sources.md#qualified-058-source-and-comparison-profile)
+supplies exact hashes, licenses, the endpoint delta and retained comparison limits.
+The original `behavioral-0.5.7-candidate/v1` and its evidence remain historical.
+This is an independently defined source profile,
 not a claim that the Haskell compiler implements all accepted corrections.
 
 The [PR113 modifier/pattern comparison](sources.md#pr113-modifier-and-pattern-revisions)
@@ -193,7 +196,7 @@ records the accepted downstream `c7a2fb7` profile, its retained discrepancies an
 the inspected two-commit delta through `8cfa0f3`. It preserves the primary source
 identity and makes no claim of final-release qualification.
 
-The immutable prerelease profile with D1–D5 is accepted; its qualification
+The historical immutable prerelease profile with D1–D5 was accepted; its qualification
 evidence and acceptance record remain on the [qualification issue](https://github.com/kbak/clafer-semantics/issues/129).
 A later source-profile change still requires explicit delta review and acceptance.
 Main integration requires the concrete candidate's full validation, independent

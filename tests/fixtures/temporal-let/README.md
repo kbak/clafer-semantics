@@ -3,7 +3,7 @@
 These original Clafer inputs distinguish the accepted D1/D3 captured-value
 contract from the syntactic substitution in `gsdlab/clafer` at
 `fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`. They are supplementary investigation
-inputs, not additions to the supported 0.5.7 importer or its default comparison
+inputs, not additions to the supported structural importer or its default comparison
 suite. The [source disposition](../../../docs/sources.md#temporal-let-substitution)
 and [formula contract](../../../docs/behavioral-formulas.md#let-capture-and-substitution)
 own the meaning and limits. Executed comparison evidence belongs to

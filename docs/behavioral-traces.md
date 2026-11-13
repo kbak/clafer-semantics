@@ -132,7 +132,9 @@ under Clafer; the generic lower layers retain their existing contracts.
 The primary behavioral reference is Juodisius et al., §5 Definition 2 and static
 typing on p. 2:25, Definition 3 on pp. 2:25–26, and Definition 5.1/5.3 on p. 2:28.
 The [pinned source ledger](sources.md#behavioral-profile-sources) retains bytes,
-licenses and the exact 0.5.7 candidate. T1 replaces the paper's no-reappearance
+licenses and the exact historical 0.5.7 candidate; the
+[current profile disposition](sources.md#qualified-058-source-and-comparison-profile)
+preserves these trace rules. T1 replaces the paper's no-reappearance
 clause and strengthens parent stability to all lifetimes. T7 supplies time-zero
 birth and repeated lifetime anchors. T11 corrects set-only reference injectivity
 and group counting; this bridge retains the existing supported structural group

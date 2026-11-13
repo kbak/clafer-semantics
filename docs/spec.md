@@ -412,7 +412,8 @@ Needs: impl
 `req~behavioral-profile~1`
 
 Maintain the versioned [behavioral contract](behavioral-profile.md), grounded in
-arXiv 1807.08576v1 §§5–6 and the immutable 0.5.7 candidate's T1–T13 errata,
+arXiv 1807.08576v1 §§5–6 and the reviewed immutable 0.5.8 source profile's
+T1–T14 errata, retaining the historical 0.5.7 profile and adopted D1–D5 meanings,
 with source hashes, licenses and public decision locators. Keep an exhaustive
 disposition matrix for modifiers, transitions/guards/chains, X/F/G/U/W, anchors,
 all patterns/scopes, assertions/scenarios and their static prerequisites. Every
@@ -1099,11 +1100,15 @@ Needs: impl, proof, utest
 
 `req~behavioral-source-correspondence~1`
 
-Maintain a complete B01–B32 and T1–T13 qualification inventory against immutable
+Maintain a complete B01–B32 and T1–T14 qualification inventory against immutable
 source locators. Identify actual source declarations, theorem assumptions,
 positive/negative witnesses and exact downstream obligations for every row.
 Preserve reviewed D1–D5 departures, the adopted initializer extension and its
-explicit unsupported-form diagnostics.
+explicit unsupported-form diagnostics. Maintain the complete 0.5.8 delta and
+comparison dispositions, including temporal-let capture/strict-definedness,
+absent-reference tuples, initializer transport, concrete supers and retained
+PR113 discrepancies. Pin the selected prerelease bytes without claiming general
+Haskell agreement or completing downstream frontend/backend qualification.
 Do not equate compiler observations, trace links or passing automation with
 semantic acceptance. Reconcile the final release against the adopted source pin,
 or record explicit maintainer acceptance of that immutable prerelease profile.
@@ -3291,30 +3296,34 @@ Needs: impl, proof
 
 Implement the authorized [resolved importer](resolved-import.md) under `Clafer/Verification/`, reusing the
 accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). Import
-only analyzed JSON from the exact reviewed 0.5.7 merge
-`gsdlab/clafer@f6ca5b887d7bacc09915c6fc0278064c8371beac` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
+only analyzed JSON from the exact reviewed 0.5.8 prerelease
+`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
 separately from display names, parent/super/reference identities, effective local
 and group bounds, the exact `-1` unbounded sentinel and set/bag mode. Do not
 fabricate authored/default provenance or enlarge the comparison fragment.
 Validate nullable source spans as metadata, keeping the single-file library
 capture distinct from CLI file-qualified JSON. Preserve apostrophe display names
 and escaped, collision-distinct UIDs. Reject other compiler revisions, including
-0.5.4, and mixed schemas. Historical capture import and comparison replay use the
+0.5.7 and 0.5.4, and mixed schemas. Historical capture import and comparison replay use the
 original repository revision and matching tools; preserve their evidence unchanged.
 Check the modifier lists, decimal registry and exact default options
 without adding temporal, inherited-reference or primitive-value support.
 
-Provide the separately selected [0.5.8 build qualification](resolved-import.md#candidate-build-qualification)
-for the exact candidate compiler and matching claferIG JSON boundary. Keep its
-source archives, resolver/dependency lock, GHC/Stack versions, exporter/probe
-identities and caches separate from default admission. Require deterministic
+Use the [qualified 0.5.8 build](resolved-import.md#candidate-build-qualification)
+for the exact compiler and matching claferIG JSON boundary. Validate source
+archives, resolver/dependency lock, GHC/Stack versions and exporter/probe identities
+together in current admission. Keep the historical 0.5.7 producer explicit and
+separate for paired fixture checks; its build availability does not admit old
+manifests or replace the original-revision replay requirement. Require deterministic
 ascending UID-map exports, strict receipt validation on the common fixtures,
 positive/negative captures, metadata/instance JSON order, escaping and schema
 checks. Preserve decoded strings while documenting any differing escape bytes;
 upstream byte-equivalence reports are not local execution evidence. A compiler
-exception remains an execution error. This tooling prerequisite grants no new
-source-profile, temporal, primitive or solver support; candidate manifests remain
-rejected until separately reviewed adoption.
+exception remains an execution error. Profile adoption preserves the guarded structural fragment and grants no
+temporal, primitive or solver support. Require the selected compiler/version/
+export-schema combination and reject mixed receipts. Check the group-layout
+change through effective-bound captures and exact satisfying/violating candidates;
+keep qualified type paths and initializer syntax outside the capture whitelist.
 
 Reject duplicate JSON keys, unknown fields/tags, duplicate/reserved/dangling IDs,
 inconsistent nesting/bindings/type hierarchies, prohibited cycles, missing or
@@ -3332,7 +3341,7 @@ checker correctness and selected interpretation; roundtrips alone do not suffice
 Keep JSON/parser/capture and runtime assumptions explicit. Supply kernel/native
 witnesses and actual pinned export tests, including repeated names, repeated-target
 bag/set heads, inheritance, nesting/groups, unused abstracts and malformed versions.
-Exercise 0.5.7 keyword/numeric defaults and unreachable concrete-group rejection
+Exercise the retained keyword/numeric defaults and unreachable concrete-group rejection
 without adopting them as new Lean semantics; retain the documented differences.
 
 Covers:

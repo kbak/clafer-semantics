@@ -1,4 +1,4 @@
-"""Build-only 0.5.8 qualification; this does not change protocol admission."""
+"""Immutable qualified 0.5.8 prerelease build; the candidate selector is retained."""
 
 # [impl->req~clafer-resolved-import~1]
 NAME = "0.5.8-candidate"

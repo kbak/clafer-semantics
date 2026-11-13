@@ -12,6 +12,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts/verification"))
 import runtime as r
 import candidate_profile as candidate
+import legacy_profile as historical
 from protocol import encoded
 
 
@@ -25,6 +26,8 @@ class CaptureRuntimeTests(unittest.TestCase):
         self.here.mkdir(parents=True)
         (self.here / r.EXPORTER).write_text("exporter source")
         (self.here / "build.py").write_text("builder source")
+        (self.here / historical.EXPORTER).write_text("historical exporter")
+        (self.here / r.current.METADATA_PROBE).write_text("metadata probe")
         self.cache = self.root / "cache"
         self.work = self.cache / r.PIN
         for mock in [patch.object(r, "HERE", self.here),
@@ -35,42 +38,35 @@ class CaptureRuntimeTests(unittest.TestCase):
             mock.start()
             self.addCleanup(mock.stop)
 
-    def write_runtime(self, directory):
+    def write_runtime(self, directory, profile=r.current):
         directory.mkdir(parents=True, exist_ok=True)
         executable, build = directory / "clafer-capture", directory / "build.json"
         executable.write_text("test executable")
         executable.chmod(0o755)
-        build.write_bytes(encoded(dict(schema="clafer-capture-build/1", compiler_commit=r.PIN,
-            compiler_archive_sha256=r.ARCHIVE, source_tree_sha256=r.SOURCE_TREE,
-            resolver="lts-22.44", ghc_version="9.6.7", stack_version="3.11.1",
-            stack_lock=r.STACK_LOCK, compiler_sources_unchanged=True,
-            exporter_source=r.digest((self.here / r.EXPORTER).read_bytes()),
-            exporter_binary=r.digest(executable.read_bytes()))))
-        return executable, build
-
-    def write_candidate(self, directory):
-        executable, build = self.write_runtime(directory)
-        (self.here / candidate.EXPORTER).write_text("candidate exporter")
-        (self.here / candidate.METADATA_PROBE).write_text("metadata probe")
-        probe = directory / "metadata-probe"
-        probe.write_text("probe executable")
-        probe.chmod(0o755)
-        receipt = r.loads(build.read_bytes())
-        receipt.update(compiler_commit=candidate.PIN, compiler_archive_sha256=candidate.ARCHIVE,
-            source_tree_sha256=candidate.SOURCE_TREE, resolver=candidate.RESOLVER,
-            ghc_version=candidate.GHC_VERSION, stack_version=candidate.STACK_VERSION,
-            stack_lock=candidate.STACK_LOCK,
-            exporter_source=r.digest((self.here / candidate.EXPORTER).read_bytes()),
-            instance_generator_commit=candidate.IG_PIN, instance_generator_archive_sha256=candidate.IG_ARCHIVE,
-            metadata_source=r.digest((self.here / candidate.METADATA_PROBE).read_bytes()),
-            metadata_binary=r.digest(probe.read_bytes()))
+        receipt = dict(schema="clafer-capture-build/1", compiler_commit=profile.PIN,
+            compiler_archive_sha256=profile.ARCHIVE, source_tree_sha256=profile.SOURCE_TREE,
+            resolver=profile.RESOLVER, ghc_version=profile.GHC_VERSION, stack_version=profile.STACK_VERSION,
+            stack_lock=profile.STACK_LOCK, compiler_sources_unchanged=True,
+            exporter_source=r.digest((self.here / profile.EXPORTER).read_bytes()),
+            exporter_binary=r.digest(executable.read_bytes()))
+        if hasattr(profile, "IG_PIN"):
+            probe = directory / "metadata-probe"
+            probe.write_text("probe executable")
+            probe.chmod(0o755)
+            receipt.update(instance_generator_commit=profile.IG_PIN,
+                instance_generator_archive_sha256=profile.IG_ARCHIVE,
+                metadata_source=r.digest((self.here / profile.METADATA_PROBE).read_bytes()),
+                metadata_binary=r.digest(probe.read_bytes()))
         build.write_bytes(encoded(receipt))
         return executable, build
 
-    def test_candidate_identity_is_exact_and_never_default(self):
+    def write_candidate(self, directory):
+        return self.write_runtime(directory, candidate)
+
+    def test_adopted_candidate_identity_remains_exact(self):
         executable, build = self.write_candidate(self.root / "candidate")
         self.assertTrue(r.valid_runtime(executable, build, candidate))
-        self.assertFalse(r.valid_runtime(executable, build))
+        self.assertTrue(r.valid_runtime(executable, build))
         original = r.loads(build.read_bytes())
         for field in original:
             with self.subTest(field=field):
@@ -90,25 +86,28 @@ class CaptureRuntimeTests(unittest.TestCase):
         executable.with_name("metadata-probe").chmod(0o644)
         self.assertFalse(r.valid_runtime(executable, build, candidate))
 
-    def test_candidate_environment_and_cache_are_isolated(self):
-        legacy, legacy_build = self.write_runtime(self.root / "legacy")
-        executable, build = self.write_candidate(self.root / "candidate")
-        self.assertNotEqual(r.work_directory(), r.work_directory(profile=candidate))
-        with patch.dict(os.environ, CLAFER_CAPTURE=str(legacy), CLAFER_CAPTURE_BUILD=str(legacy_build),
-                        CLAFER_058_CAPTURE=str(executable), CLAFER_058_CAPTURE_BUILD=str(build)), \
+    def test_historical_environment_and_cache_are_isolated(self):
+        legacy, legacy_build = self.write_runtime(self.root / "legacy", historical)
+        executable, build = self.write_runtime(self.root / "current")
+        self.assertNotEqual(r.work_directory(), r.work_directory(profile=historical))
+        with patch.dict(os.environ, CLAFER_CAPTURE=str(executable), CLAFER_CAPTURE_BUILD=str(build),
+                        CLAFER_057_CAPTURE=str(legacy), CLAFER_057_CAPTURE_BUILD=str(legacy_build)), \
              patch.object(r, "download") as download:
-            self.assertEqual(r.prepare(), (legacy, legacy_build))
-            self.assertEqual(r.prepare(profile=candidate), (executable, build))
-            with patch.dict(os.environ, CLAFER_058_CAPTURE=str(legacy)):
+            self.assertEqual(r.prepare(), (executable, build))
+            self.assertEqual(r.prepare(profile=historical), (legacy, legacy_build))
+            with patch.dict(os.environ, CLAFER_CAPTURE=str(legacy), CLAFER_CAPTURE_BUILD=str(legacy_build)):
                 with self.assertRaisesRegex(RuntimeError, "Configured exporter"):
-                    r.prepare(profile=candidate)
+                    r.prepare()
+            with patch.dict(os.environ, CLAFER_057_CAPTURE=str(executable), CLAFER_057_CAPTURE_BUILD=str(build)):
+                with self.assertRaisesRegex(RuntimeError, "Configured exporter"):
+                    r.prepare(profile=historical)
             download.assert_not_called()
-        stamp = executable.with_name("builder.sha256")
-        stamp.write_text(r.recipe_digest(candidate))
-        self.assertEqual(r.cached_runtime(executable.parent, candidate), (executable, build))
-        self.assertIsNone(r.cached_runtime(executable.parent))
-        with patch.object(candidate, "PACKAGES", ("wrong-package",)):
-            self.assertIsNone(r.cached_runtime(executable.parent, candidate))
+        stamp = legacy.with_name("builder.sha256")
+        stamp.write_text(r.recipe_digest(historical))
+        self.assertEqual(r.cached_runtime(legacy.parent, historical), (legacy, legacy_build))
+        self.assertIsNone(r.cached_runtime(legacy.parent))
+        with patch.object(historical, "PACKAGES", ("wrong-package",)):
+            self.assertIsNone(r.cached_runtime(legacy.parent, historical))
 
     def test_profile_cli_rejects_unknown_and_exports_candidate_variables(self):
         with patch.object(sys, "argv", ["runtime.py", "--profile", "unknown", "runner"]):

@@ -21,14 +21,17 @@ The [qualification contract](behavioral-qualification.md) supplies full source/c
 composition, strict partial finite checking and the complete source-side proof
 and witness inventory, retaining explicit acceptance and downstream boundaries.
 
-Base profile identifier: **behavioral-0.5.7-candidate/v1**, source commit
-`gsdlab/clafer@af858ec0fe3ce2ceacb7fd120947c058233086d6`.
-The [source ledger](sources.md#behavioral-profile-sources) identifies the paper,
-hashes, licenses and decision comments. A later release commit requires an
-explicit delta review; a version number or moving branch is insufficient.
+Current profile identifier: **behavioral-0.5.8/v1**, source commit
+`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` (marked unreleased).
+The [source disposition](sources.md#qualified-058-source-and-comparison-profile)
+records the exact-endpoint review, selected hashes and retained differences.
+The original `behavioral-0.5.7-candidate/v1` at `af858ec0fe3ce2ceacb7fd120947c058233086d6`
+remains a historical profile with unchanged evidence. A later release commit
+requires a new delta review; a version number or moving branch is insufficient.
 The reviewed **hard-initializers/v1** extension updates B32/D4 according to the
 [initializer contract](behavioral-initializers.md) and accepted #169–#172 decisions.
-This focused adoption does not claim the full 0.5.8 source/profile upgrade.
+The 0.5.8 profile preserves these meanings and D1–D5. It does not establish
+unrestricted reference-compiler agreement or complete downstream adoption.
 
 Covers:
 - `req~behavioral-profile~1`
@@ -205,7 +208,8 @@ The current static prerequisite rules are described by
 They are evidence for reuse only on their stated domains. In particular, unreachable
 group lower bounds retain the source meaning of an empty context; the compiler's
 rejection is a separate frontend check (S5). Existing bounded structural importer
-and oracle contracts are not upgraded to temporal or 0.5.7 contracts by this document.
+and oracle contracts remain guarded structural contracts, separately qualified
+for the selected compiler revision.
 
 ## Complete pattern and scope inventory
 
@@ -219,10 +223,10 @@ source locator for each row is the matching `TmpPat*` branch of pinned
 [`translateTmpPatterns`][desugarer], with each column selecting `PatScopeEmpty`,
 `PatScopeBefore`, `PatScopeAfter`, `PatScopeBetweenAnd`, or `PatScopeAfterUntil`.
 The paper supplies the pattern approach, not a complete expansion catalogue.
-The compiler is supplementary: adopted D2 corrects two expansions against the
-independent interval contract. Both historical mismatches have checked regression
-traces. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions)
-records their correction in `b2875f3` without upgrading the source pin.
+The compiler is supplementary: adopted D2 corrected two historical expansions
+against the independent interval contract. Both mismatches retain checked
+regression traces. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions)
+records their correction in `b2875f3`, present in the selected 0.5.8 source.
 
 | Pattern / local positive and negative witness | Whole suffix | Before r | After q | Between q and r | After q until r |
 | --- | --- | --- | --- | --- | --- |
@@ -269,6 +273,7 @@ p states.
 | T11 | B01, B04–B06; adopt corrections/change | Distinct heads and set-only injectivity; effective group over own/inherited children; restore missing bound variable; discard obsolete Def. 5.2 |
 | T12 | B28–B29; frontend obligation | Explicit precedence, transition/declaration ambiguity and quantifier `not` |
 | T13 | B03, B30; analysis boundary | Native Alloy lasso bounds do not characterize all infinite traces or guarantee inferred scopes suffice |
+| T14 | B32; adopted initializer extension with qualifications | Hard initialization, classified clocks, independent declaration guards and complete original RHS transport; static/finality agreement retains the [initializer contract](behavioral-initializers.md) assumptions |
 
 Paper §§5–6 are covered by B01–B32: Definitions 1–3 by B01–B06, expression and
 constraint meaning/Definition 4 by B07–B14, Definition 5 by B02–B03/B15,
@@ -291,27 +296,27 @@ features cannot disappear through an unsupported-input guard.
 | Decision | Evidence / conflict | Required resolution and owners |
 | --- | --- | --- |
 | D1: observations of stored identities — adopted | P §5 pp. 2:26–28 attaches snapshots to environment values; pinned `AlloyLtl.genPExp'` emits bound variables as stable identities and current-state navigation. `thisAlive` filters standalone `this`, whereas direct `this` navigation starts at the identity even after its disappearance. | [Approved disposition](https://github.com/kbak/clafer-semantics/issues/123#issuecomment-6684849831): capture identities/sets and use current relations, retaining standalone-this versus direct-navigation distinction. The [formula contract](behavioral-formulas.md#captured-values-and-current-navigation) and its witnesses give exact rules. [S4]/[C4] must preserve them in adapters; no full agreement with the paper's snapshot-pair evaluator is claimed. |
-| D2: independent scoped patterns — adopted | The paper lacks all 30 equations. Pinned response-between tests p only at q; precedence-after can skip the first q. | [Response disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) requires every p before r to receive s before r. [First-opener disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689399331) starts after at the first q. [S5] supplies the complete signed interval table, general expansion proofs and regression traces in the [surface contract](behavioral-surface.md). [C7]/[C8] preserve these corrections, not the erroneous historical expansions. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records the `b2875f3` corrections. |
+| D2: independent scoped patterns — adopted | The paper lacks all 30 equations. The historical `af858ec` response-between tests p only at q; precedence-after can skip the first q. | [Response disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) requires every p before r to receive s before r. [First-opener disposition](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689399331) starts after at the first q. [S5] supplies the complete signed interval table, general expansion proofs and regression traces in the [surface contract](behavioral-surface.md). [C7]/[C8] preserve these corrections, not the erroneous historical expansions. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records the `b2875f3` corrections. |
 | D3: arithmetic and partial temporal domain — adopted | The [accepted behavioral conversion](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685233729) sums finite integer sets, including empty-to-zero, while preserving relational presence/equality and strict extraction. The [accepted scalar rule](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685442865) uses mathematical Int, truncation toward zero, matching remainder and undefined division/remainder at zero. The [extrema disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6685652746) keeps empty selectors empty; explicit folds retain occurrences, with empty sum 0/product 1. Backend overflow does not change source meaning. The [strict temporal-domain disposition](https://github.com/kbak/clafer-semantics/issues/126#issuecomment-6687520296) requires every operand/member and every active temporal observation defined. | [S4] supplies the [resolved expression and partial-domain interfaces](behavioral-structure.md#captured-static-atoms-and-partial-temporal-composition), finite-observation and agreement proofs. [C6]/[C8] preserve those rules during elaboration/encoding and establish sufficient intermediate ranges. Undefined expressions and wrong-domain/infinite observations must not silently become zero, false or true. |
 | D4: defaults and structural prerequisites — adopted | The [initializer extension](behavioral-initializers.md) adopts hard `:=` with classified clocks and declaration-level guards for both forms. `=` retains every-live aggregate equality; `Legacy` preserves the original strict disposition. S6 nested abstracts/refined parents and S9 inherited references use the richer independent structural core. S10 concrete supers remain source-permitted. | [S4] supplies admission, common-fragment equivalence, full bindings and initializer transport/preservation APIs. [C6]/[C7] preserve authored provenance, effective defaults, source classification and resolved views, and diagnose unsupported forms. [S5] owns surface modifiers; per-instance `:=` is checked at each birth. |
-| D5: reference modifiers — adopted completion | P §§6.1–6.2 p.2:32 defines final child-set stability and nested lifetime limits, but does not name finalref/finaltarget. T8/CheatSheet distinguish them; the pinned generator uses per-head equality for both. | The [reviewed completion](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) fixes per-head references for finalref, parent target images for finaltarget, and heads plus references for final. Each rule resets at its relevant lifetime gap and includes inherited references. [S5] proves these independent meanings; [C7]/[C8] must retain their distinction. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records parent-image correction in `b2875f3` and retention of all modifiers in `8a12ae7`; neither changes the historical pin. |
+| D5: reference modifiers — adopted completion | P §§6.1–6.2 p.2:32 defines final child-set stability and nested lifetime limits, but does not name finalref/finaltarget. T8/CheatSheet distinguish them; the historical `af858ec` generator uses per-head equality for both. | The [reviewed completion](https://github.com/kbak/clafer-semantics/issues/127#issuecomment-6689325093) fixes per-head references for finalref, parent target images for finaltarget, and heads plus references for final. Each rule resets at its relevant lifetime gap and includes inherited references. [S5] proves these independent meanings; [C7]/[C8] must retain their distinction. The [revision comparison](sources.md#pr113-modifier-and-pattern-revisions) records parent-image correction in `b2875f3` and retention of all modifiers in `8a12ae7`; neither changes the historical pin. |
 
 The [temporal-let comparison disposition](sources.md#temporal-let-substitution)
 preserves D1 evaluated-set capture and D3 strict RHS definedness. The 0.5.8
 candidate's capture-avoiding substitution is not a general oracle for B07:
 changing values across time and erased undefined bindings require explicit
 comparison exclusions. This does not remove `let` from the source language or
-change either accepted decision; a later source/profile upgrade must retain the
-exclusions or establish a reviewed correction.
+change either accepted decision. The current profile retains the exclusions;
+a later revision must preserve them or establish a reviewed correction.
 
 The accepted profile excludes the following broader nonbehavioral features:
 decimal/double/real and string computation,
 optimization goals, backend escapes, alternative solvers, inferred-scope correctness,
 and production parser/tooling in this repository. Inheritance from concrete types
-is unimplemented by the pinned compiler (S10); unrestricted name resolution order
-remains the separate [resolution decision](https://github.com/kbak/clafer-semantics/issues/121).
-Resolved inputs and explicit paths permit independent semantics work without
-settling that frontend dispute. No listed exclusion covers an integer/reference/
+is unimplemented by the pinned compiler (S10); the accepted [Ancestors-before-Targets decision](https://github.com/kbak/clafer-semantics/issues/121)
+remains a frontend contract. The newer [qualified-super lookup review](https://github.com/kbak/clafer-compiler-lean/issues/129)
+is separately owned. Resolved inputs keep these frontend obligations distinct
+from the independent semantics. No listed exclusion covers an integer/reference/
 structural prerequisite necessary for the required behavioral rows. Source `let`
 and the paper's static initializer syntax remain accounted for by B07/B32 and D1/D4.
 
@@ -377,10 +382,10 @@ Covers:
 - `req~behavioral-main-integration~1`
 
 [paper]: https://arxiv.org/abs/1807.08576v1
-[temporal]: https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/temporal-semantics-errata.md
-[static]: https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/static-semantics-errata.md
-[cheat]: https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/doc/CheatSheet.md
-[desugarer]: https://github.com/gsdlab/clafer/blob/af858ec0fe3ce2ceacb7fd120947c058233086d6/src/Language/Clafer/Intermediate/Desugarer.hs
+[temporal]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md
+[static]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/static-semantics-errata.md
+[cheat]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/CheatSheet.md
+[desugarer]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/Desugarer.hs
 [S1]: https://github.com/kbak/clafer-semantics/issues/123
 [S2]: https://github.com/kbak/clafer-semantics/issues/124
 [S3]: https://github.com/kbak/clafer-semantics/issues/125
