@@ -75,6 +75,91 @@ no missing-compiler skip is treated as a pass. Test fixtures retain upstream MIT
 attribution. The cached ordinary compiler CLI can additionally exercise exports;
 its separate output files cannot establish a generation receipt.
 
+## Candidate build qualification
+
+[Build/exporter qualification](https://github.com/kbak/clafer-semantics/issues/167)
+provides an explicit `0.5.8-candidate` build profile. The default importer and
+bounded comparison still admit only the 0.5.7 identity below. Adoption of the
+candidate's source semantics, manifest identity and comparison profile belongs to
+the [profile upgrade](https://github.com/kbak/clafer-semantics/issues/175).
+Historical receipts remain unchanged; `Export057.hs` preserves the original
+0.5.7 exporter bytes. `Export.hs` uses `Data.Map.Strict.toList` for the candidate's
+source, consumed and implicit maps, retaining ascending UID order and the same
+`clafer-generation/2` representation.
+
+| Build input | Qualified identity |
+| --- | --- |
+| Compiler | `gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` (0.5.8, marked unreleased) |
+| Compiler archive SHA-256 | `fcf7bf883723e7eb22ff2f3c1b6538f0c967cb5eace3a00a89f5fcd2e4a4edc5` |
+| Original source-tree SHA-256 | `c9009d0fa8fb3d834b307b6d481a0ac99aa02994ac65200a3f25a0391281be8a` |
+| Stack / GHC | `3.11.1` / `9.12.4` |
+| Resolver | `nightly-2026-11-11` |
+| Snapshot SHA-256 | `d128a107636f374493c7cea23dde8ba9fb2235a0ba9eff15be208c43f64a4033` |
+| Generated Stack lock SHA-256 | `4176b38a3b52684cb49761cfa8f98ee251c3a82ed6f03ce7c80c45125dc67b32` |
+| JSON instance boundary | `gsdlab/claferIG@7942789d84939e98da38d4219cefbbd5b9e0d184` |
+| claferIG archive SHA-256 | `bf8e409c6612d81545eb300a7773448faa35b1ccd20d61875f66fba73e903cdd` |
+
+The selected Stack route uses the upstream source configuration unchanged. The
+snapshot pins the remaining dependencies, including the probe's HaXml and
+polyparse packages; neither `data-stringmap` nor `json-builder` is needed.
+Cabal/GHC 9.6.7 support is an upstream claim, not a locally qualified build route.
+The builder checks source archives/trees, Stack/GHC versions and the generated
+lock before adapter compilation and checks original sources and the lock again
+afterwards. Stack's archive and executable retain their existing hash checks.
+
+The candidate build also compiles `Metadata.hs` against the unchanged claferIG
+JSON generator, model and XML data modules. This exercises the real encoding
+boundary without launching its solver. The build receipt includes both source
+archives, the exporter and probe source/binary identities. Cache reuse checks
+these identities, executable permissions and the selected build recipe. Candidate
+settings use `CLAFER_058_CAPTURE` and `CLAFER_058_CAPTURE_BUILD`; default
+`CLAFER_CAPTURE` settings cannot select or substitute the candidate.
+
+For automatic provisioning and qualification on Linux x86_64:
+
+```sh
+python3 scripts/verification/runtime.py --profile 0.5.8-candidate \
+  python3 -m unittest discover -s tests -p test_candidate_capture.py -v
+```
+
+The tests also prepare the default exporter for paired fixture comparisons.
+For an explicit build, use the candidate compiler and claferIG archives above:
+
+```sh
+python3 scripts/verification/build.py --profile 0.5.8-candidate \
+  --archive /path/to/compiler.tar.gz --ig-archive /path/to/claferIG.tar.gz \
+  --stack /path/to/stack --work /path/to/candidate-scratch
+```
+
+The resulting `clafer-capture input.cfr` emits the raw generation receipt;
+`metadata-probe input.cfr` emits metadata, and `metadata-probe --synthetic` checks
+encoder-only cases. These are build/adapter interfaces for the subsequent profile
+upgrade. Passing their output to the default `capture.py` does not bypass its
+revision checks. The full validation suite executes candidate qualification and
+retains fresh raw captures and metadata externally; `CLAFER_CANDIDATE_EVIDENCE`
+selects their parent directory. CI retains these with the build and IntentBond
+results. Missing tools or qualification failures fail validation.
+
+The common structural fixtures compare JSON, Alloy and all UID-map lists with
+live 0.5.7 exports, check deterministic repetition and validate the same strict
+receipt relation. Negative cases preserve unsupported source audits and compiler
+rejections. An incomplete expression can throw an upstream `ErrorCall`; the
+candidate exporter forces the receipt before writing and reports `status=error`,
+never a compiler rejection or a semantic verdict. The group-layout regression
+checks the candidate's effective bounds without changing Lean defaults.
+
+The metadata checks preserve `.cfr-map` fields `fqName`, `lpqName`, `uid`,
+`.cfr-scope` fields `lpqName`, `scope`, sorted entries, and claferIG's ordered
+`ident`, `uid`, optional `super`/`reference`, `cardMin`, `cardMax`, optional `value`,
+`elements` fields. Nested instances, empty collections, signed integers, alias
+strings, Unicode and escaping are exercised against independent expected JSON.
+Local legacy/candidate metadata comparisons match on the common source fixtures.
+For arbitrary encoder inputs, backspace/form-feed change from `\b`/`\f` to
+`\u0008`/`\u000c`; decoded strings are identical, but unrestricted byte equivalence
+is false. Synthetic encoder cases do not extend the accepted identifier grammar,
+primitive support or instance-generation scope. The [source assessment](sources.md#compiler-058-adapter-sources)
+separates these local observations from upstream equivalence reports.
+
 ## Artifacts and deterministic admission
 
 `manifest.json` uses schema `clafer-import/1`. The current adapter supports only
@@ -105,7 +190,7 @@ these are precisely abstract leaf declarations without concrete descendants;
 all other inferred scopes remain unsupported. Requested comparison bounds stay
 independent experiment metadata.
 
-`Export.hs` parses once, audits the typed AST and non-parser tokens before
+`Export057.hs` parses once, audits the typed AST and non-parser tokens before
 desugaring, compiles once, and requests `[JSON, Alloy]` in one `generate` call.
 It rejects enums, initializers, assertions/goals/constraints, temporal forms,
 escapes, source option directives and non-direct type expressions. The decoder

@@ -122,7 +122,9 @@ observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 The accepted extension is integrated into `main`; contributions use main-based
 topic branches. The current structural importer supports the exact reviewed
-0.5.7 revision. Historical static evidence remains reproducible with its original
+0.5.7 revision; separate [0.5.8 build qualification](resolved-import.md#candidate-build-qualification)
+prepares an explicit adapter without adopting its source/comparison profile.
+Historical static evidence remains reproducible with its original
 repository revision and tools, as specified in the [import contract](resolved-import.md).
 
 Exclude production instance generation, general Alloy/SMT/SAT integration,

@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts/verification"))
 import runtime as r
+import candidate_profile as candidate
 from protocol import encoded
 
 
@@ -46,6 +47,83 @@ class CaptureRuntimeTests(unittest.TestCase):
             exporter_source=r.digest((self.here / r.EXPORTER).read_bytes()),
             exporter_binary=r.digest(executable.read_bytes()))))
         return executable, build
+
+    def write_candidate(self, directory):
+        executable, build = self.write_runtime(directory)
+        (self.here / candidate.EXPORTER).write_text("candidate exporter")
+        (self.here / candidate.METADATA_PROBE).write_text("metadata probe")
+        probe = directory / "metadata-probe"
+        probe.write_text("probe executable")
+        probe.chmod(0o755)
+        receipt = r.loads(build.read_bytes())
+        receipt.update(compiler_commit=candidate.PIN, compiler_archive_sha256=candidate.ARCHIVE,
+            source_tree_sha256=candidate.SOURCE_TREE, resolver=candidate.RESOLVER,
+            ghc_version=candidate.GHC_VERSION, stack_version=candidate.STACK_VERSION,
+            stack_lock=candidate.STACK_LOCK,
+            exporter_source=r.digest((self.here / candidate.EXPORTER).read_bytes()),
+            instance_generator_commit=candidate.IG_PIN, instance_generator_archive_sha256=candidate.IG_ARCHIVE,
+            metadata_source=r.digest((self.here / candidate.METADATA_PROBE).read_bytes()),
+            metadata_binary=r.digest(probe.read_bytes()))
+        build.write_bytes(encoded(receipt))
+        return executable, build
+
+    def test_candidate_identity_is_exact_and_never_default(self):
+        executable, build = self.write_candidate(self.root / "candidate")
+        self.assertTrue(r.valid_runtime(executable, build, candidate))
+        self.assertFalse(r.valid_runtime(executable, build))
+        original = r.loads(build.read_bytes())
+        for field in original:
+            with self.subTest(field=field):
+                build.write_bytes(encoded(dict(original, **{field: None})))
+                self.assertFalse(r.valid_runtime(executable, build, candidate))
+        build.write_bytes(encoded(dict(original, compiler_sources_unchanged=1)))
+        self.assertFalse(r.valid_runtime(executable, build, candidate))
+        build.write_bytes(encoded(dict(original, unknown=True)))
+        self.assertFalse(r.valid_runtime(executable, build, candidate))
+        build.write_bytes(encoded(original))
+        for path in (executable, executable.with_name("metadata-probe"),
+                     self.here / candidate.EXPORTER, self.here / candidate.METADATA_PROBE):
+            data = path.read_bytes()
+            path.write_bytes(data + b"changed")
+            self.assertFalse(r.valid_runtime(executable, build, candidate))
+            path.write_bytes(data)
+        executable.with_name("metadata-probe").chmod(0o644)
+        self.assertFalse(r.valid_runtime(executable, build, candidate))
+
+    def test_candidate_environment_and_cache_are_isolated(self):
+        legacy, legacy_build = self.write_runtime(self.root / "legacy")
+        executable, build = self.write_candidate(self.root / "candidate")
+        self.assertNotEqual(r.work_directory(), r.work_directory(profile=candidate))
+        with patch.dict(os.environ, CLAFER_CAPTURE=str(legacy), CLAFER_CAPTURE_BUILD=str(legacy_build),
+                        CLAFER_058_CAPTURE=str(executable), CLAFER_058_CAPTURE_BUILD=str(build)), \
+             patch.object(r, "download") as download:
+            self.assertEqual(r.prepare(), (legacy, legacy_build))
+            self.assertEqual(r.prepare(profile=candidate), (executable, build))
+            with patch.dict(os.environ, CLAFER_058_CAPTURE=str(legacy)):
+                with self.assertRaisesRegex(RuntimeError, "Configured exporter"):
+                    r.prepare(profile=candidate)
+            download.assert_not_called()
+        stamp = executable.with_name("builder.sha256")
+        stamp.write_text(r.recipe_digest(candidate))
+        self.assertEqual(r.cached_runtime(executable.parent, candidate), (executable, build))
+        self.assertIsNone(r.cached_runtime(executable.parent))
+        with patch.object(candidate, "PACKAGES", ("wrong-package",)):
+            self.assertIsNone(r.cached_runtime(executable.parent, candidate))
+
+    def test_profile_cli_rejects_unknown_and_exports_candidate_variables(self):
+        with patch.object(sys, "argv", ["runtime.py", "--profile", "unknown", "runner"]):
+            with self.assertRaisesRegex(ValueError, "Unknown compiler"):
+                r.main()
+        paths = self.write_candidate(self.root / "candidate")
+        destination = self.root / "env"
+        with patch.dict(os.environ, GITHUB_ENV=str(destination)), \
+             patch.object(sys, "argv", ["runtime.py", "--profile", candidate.NAME,
+                                        "--github-env", str(paths[0].parent)]), \
+             patch.object(r, "prepare", return_value=paths) as prepare:
+            self.assertEqual(r.main(), 0)
+            prepare.assert_called_once_with(paths[0].parent, candidate)
+            self.assertIn("CLAFER_058_CAPTURE=", destination.read_text())
+            self.assertNotIn("CLAFER_CAPTURE=", destination.read_text())
 
     def test_legacy_and_unreviewed_producers_are_rejected(self):
         executable, build = self.write_runtime(self.root / "explicit")
@@ -108,7 +186,7 @@ class CaptureRuntimeTests(unittest.TestCase):
     def test_small_cache_reuses_without_build_dependencies(self):
         work = self.root / "ci work"
         expected = self.write_runtime(work)
-        (work / "builder.sha256").write_text(hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest())
+        (work / "builder.sha256").write_text(r.recipe_digest())
         with patch.object(r, "download") as download, patch.object(r.subprocess, "run") as build:
             self.assertEqual(r.cached_runtime(work), expected)
             self.assertEqual(r.prepare(work), expected)
@@ -126,7 +204,7 @@ class CaptureRuntimeTests(unittest.TestCase):
             executable, build = self.write_runtime(work)
             stamp = work / "builder.sha256"
             self.assertEqual(r.main(), 1)
-            recipe = hashlib.sha256((self.here / "build.py").read_bytes()).hexdigest()
+            recipe = r.recipe_digest()
             stamp.write_text(recipe)
             self.assertEqual(r.main(), 0)
             for path in (executable, build, stamp, self.here / r.EXPORTER, self.here / "build.py"):

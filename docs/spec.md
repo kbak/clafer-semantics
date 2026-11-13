@@ -3304,6 +3304,18 @@ original repository revision and matching tools; preserve their evidence unchang
 Check the modifier lists, decimal registry and exact default options
 without adding temporal, inherited-reference or primitive-value support.
 
+Provide the separately selected [0.5.8 build qualification](resolved-import.md#candidate-build-qualification)
+for the exact candidate compiler and matching claferIG JSON boundary. Keep its
+source archives, resolver/dependency lock, GHC/Stack versions, exporter/probe
+identities and caches separate from default admission. Require deterministic
+ascending UID-map exports, strict receipt validation on the common fixtures,
+positive/negative captures, metadata/instance JSON order, escaping and schema
+checks. Preserve decoded strings while documenting any differing escape bytes;
+upstream byte-equivalence reports are not local execution evidence. A compiler
+exception remains an execution error. This tooling prerequisite grants no new
+source-profile, temporal, primitive or solver support; candidate manifests remain
+rejected until separately reviewed adoption.
+
 Reject duplicate JSON keys, unknown fields/tags, duplicate/reserved/dangling IDs,
 inconsistent nesting/bindings/type hierarchies, prohibited cycles, missing or
 invalid cards, excluded modifiers and unsupported combinations. Preserve reference
