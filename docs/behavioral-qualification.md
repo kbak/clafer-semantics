@@ -163,11 +163,15 @@ Covers:
 
 ## Source disposition and acceptance
 
-The current immutable profile is `behavioral-0.5.8/v1` at
-`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, preserving D1–D5
+The current immutable profile is `behavioral-0.5.8/v2` at
+`gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d`, preserving D1–D5
 and the hard-initializer extension. The [source disposition](sources.md#qualified-058-source-and-comparison-profile)
 supplies exact hashes, licenses, the endpoint delta and retained comparison limits.
-The original `behavioral-0.5.7-candidate/v1` and its evidence remain historical.
+The original `behavioral-0.5.7-candidate/v1` and prerelease
+`behavioral-0.5.8/v1` at `fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` retain
+their historical evidence. The release fixes reference refinement, inherited
+set keys, absent-reference tuples and original initializer temporal context;
+its source correspondence does not supply temporal execution evidence here.
 This is an independently defined source profile,
 not a claim that the Haskell compiler implements all accepted corrections.
 

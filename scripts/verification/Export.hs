@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
--- Adapter for gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a.
+-- Adapter for gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d.
 -- External, unproved extraction code. See docs/resolved-import.md.
 module Main where
 
@@ -94,7 +94,7 @@ observations names g m = concatMap (walk []) (G.getSubclafers (I._mDecls m))
     , "parent_fact" .= flatten (Alloy.genParentConst path c)
     , "group_fact" .= flatten (Alloy.genGroupConst env c)
     , "reference_refinement" .= flatten (Alloy.genRefSubrelationConstriant (G.uidClaferMap g) c)
-    , "set_uniqueness" .= map flatten (Alloy.genSetUniquenessConstraint c)
+    , "set_uniqueness" .= map flatten (Alloy.genSetUniquenessConstraint (G.uidClaferMap g) c)
     ] : concatMap (walk (I._uid c : path)) (G.getSubclafers (I._elements c))
 
 capture :: String -> Either [C.ClaferErr] Value

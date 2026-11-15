@@ -1434,7 +1434,7 @@ optimization correctness and from the separate [bounded Alloy comparison](bounde
 
 The [candidate build contract](resolved-import.md#candidate-build-qualification)
 selects immutable compiler
-[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+[`dbc06d37ef23eb9186d1016e3bf678858621e92d`](https://github.com/gsdlab/clafer/tree/dbc06d37ef23eb9186d1016e3bf678858621e92d)
 and claferIG
 [`7942789d84939e98da38d4219cefbbd5b9e0d184`](https://github.com/gsdlab/claferIG/tree/7942789d84939e98da38d4219cefbbd5b9e0d184).
 The [source/profile adoption](#qualified-058-source-and-comparison-profile) uses
@@ -1445,14 +1445,14 @@ boundaries remain unchanged.
 At the compiler pin, `Common.UIDIClaferMap` and
 `ResolverInheritance` use `Data.Map`; `createUidIClaferMap` and the generator's
 consumed-map branch retain the existing extraction obligations. The
-[map implementation](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Common.hs)
+[map implementation](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Common.hs)
 changes the map representation; ascending `toList` order is checked against live
 0.5.7 receipts. `stack.yaml` selects `nightly-2026-11-11` and GHC 9.12.4 with module
 parallelism eight. Its generated lock identifies the exact snapshot; no Git
 extra dependencies remain. The accepted 0.5.7 resolver and its two Git dependencies
 above remain historical build facts.
 
-[`JSONMetaData.hs`](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/JSONMetaData.hs)
+[`JSONMetaData.hs`](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/JSONMetaData.hs)
 uses aeson's ordered `pairs`/`list` encodings for map/scope metadata, preserving
 field sequence and entry sorting. The matching
 [`JSONGenerator.hs`](https://github.com/gsdlab/claferIG/blob/7942789d84939e98da38d4219cefbbd5b9e0d184/src/Language/Clafer/IG/JSONGenerator.hs)
@@ -1460,7 +1460,7 @@ uses ordered `Series`, optional super/reference/value fields and nested elements
 The boundary probe compiles these original MIT-licensed sources externally;
 no third-party implementation is copied into the repository.
 
-The pinned [compiler changelog](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/CHANGES.md)
+The pinned [compiler changelog](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/CHANGES.md)
 reports output equivalence for its positive models and case studies and support
 for both GHC 9.12.4 and 9.6.7. Those are upstream reports. Local qualification
 builds the Stack/GHC 9.12.4 route, compares the repository's common structural
@@ -1480,16 +1480,21 @@ The structural comparison also checks exact group-layout candidates. SoSyM
 
 `impl~compiler-058-profile-disposition~1`
 
-The current source profile is **behavioral-0.5.8/v1**, based on immutable
-[`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a)
+The current source profile is **behavioral-0.5.8/v2**, based on immutable
+[`gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d`](https://github.com/gsdlab/clafer/tree/dbc06d37ef23eb9186d1016e3bf678858621e92d)
 and the existing independently defined meanings, D1–D5 decisions and
-[hard-initializer contract](behavioral-initializers.md). This revision is marked
-unreleased. It also supplies the sole current structural import/comparison pin;
+[hard-initializer contract](behavioral-initializers.md). This is the merged 0.5.8
+release. It supplies the sole current structural import/comparison pin;
 the [build contract](resolved-import.md#candidate-build-qualification) fixes the
-exporter, Stack/GHC, dependency lock and claferIG JSON boundary. A later release
-requires a new delta review. No version label admits different source bytes.
+exporter, Stack/GHC, dependency lock and claferIG JSON boundary. Other source
+revisions require a new delta review. No version label admits different source bytes.
+The prior `behavioral-0.5.8/v1` profile at
+`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` retains its historical evidence.
 
-The comparison uses exact source endpoints: structural
+The release review compares exact source contents with the previously admitted
+`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, independently of the squash-merge
+history in [upstream PR #119](https://github.com/gsdlab/clafer/pull/119). The
+original adoption also compared exact source endpoints: structural
 `f6ca5b887d7bacc09915c6fc0278064c8371beac` and behavioral
 `af858ec0fe3ce2ceacb7fd120947c058233086d6`. The behavioral history diverges, so a
 merge-base diff alone would not identify that endpoint's changes. The historical
@@ -1500,21 +1505,21 @@ SoSyM checkpoint and saved capture identities remain unchanged.
 | Area / classification | Selected revision and disposition |
 | --- | --- |
 | Initializer T14 — semantic | `Desugarer.desugarInit` now emits hard constraints and uses a static-first pass. Adopt the already proved initializer contract, including independent declaration presence guards, original RHS environments, inherited clocks, collection scope, global initialization and scalar admission. Neither static output equality nor this source implementation proves agreement on undefined RHSs or all supported abstract forms. Initializers remain excluded from structural captures. |
-| Parent-context RHS — semantic / frontend | `ResolverName.resolvePExp` resolves `initvalue` in `parentEnv`; `fromParent` rewrites resolved `this`. Our transport preserves the entire original observation, including temporal attachment and captures. The accepted temporal-condition counterexample prevents treating name-only rebasing as general preservation. Frontend/backend proof remains with compiler #126. |
+| Parent-context RHS — semantic / frontend | `ResolverName.resolvePExp` retains `initvalue` around temporal RHSs; `ResolverType` preserves its type and `AlloyLtl` evaluates its operators using the fixed parent instance and original temporal attachment ([upstream #123](https://github.com/gsdlab/clafer/issues/123)). `Desugarer`/`ChocoModel` erase the marker only for display. This addresses the accepted temporal-condition counterexample at source level. Our transport still preserves the entire partial observation, including captures; general frontend/backend proof remains with compiler #126. |
 | Conjunctive inheritance and finality — semantic | The initializer account records A and retention of the initial value under `finalref`/`final`. Keep both inherited and own equations; conflicts can force optional absence. Per-instance `:=`/`=` agreement still needs within-life RHS stability and admission assumptions. Collections keep their different clock. |
-| Inherited-`=` warning — frontend diagnostic | `fixedInitialValues`/`showFixedInitialValues` warns without comparing RHSs. Its blanket “has no effect” wording is not adopted. Only established redundancy/conflict justifies the targeted diagnostics in the accepted contract; a warning must not remove an equation. |
-| Parent-birth collections and bags — semantic | Explicit multivalued multiplicity selects parent initialization in the compiler. Preserve the accepted classifier's authored/default provenance, full inherited declaration scope and distinct-target bag equality. The additional parentless/scalar rules remain explicit source decisions, not claimed Haskell validation. |
+| Inherited-`=` warning — frontend diagnostic | `fixedInitialValues`/`showFixedInitialValues` now states that both equations hold: an equal value repeats the inherited one and a conflicting value leaves no instance ([upstream #124](https://github.com/gsdlab/clafer/issues/124)). It no longer claims “no effect.” The warning does not compare RHSs or remove an equation; targeted semantic diagnostics retain their proof obligations. |
+| Parent-birth collections and bags — semantic | Explicit multivalued multiplicity selects parent initialization in the compiler. The release CheatSheet records that each inherited initializer retains its own per-instance or parent clock, following #170. Preserve the accepted classifier's authored/default provenance, full inherited declaration scope and distinct-target bag equality. Parentless/scalar rules and undefined-RHS agreement remain explicit source decisions, not claimed Haskell validation. |
 | `let` — semantic / comparison boundary | Capture-avoiding substitution fixes parsing/elaboration, but re-evaluates changing expressions and erases unused undefined bindings. Preserve D1/D3 and the [executed temporal-let exclusions](#temporal-let-substitution). Defined same-state and stable-domain cases retain their stated agreement conditions. |
-| Absent references — semantic / comparison boundary | `AlloyLtl.genConstraints` still constrains reference totality only under live-head implication; it does not require an absent head's reference relation to be empty. Preserve the [accepted absence consequences](behavioral-formulas.md#absent-references-and-value-obligations). Exclude comparisons that rely on hidden absent-head tuples, value obligations after disappearance or their disappearance/replacement effects until a reviewed reference fix or exact-case qualification. Parent cancellation and ordinary arithmetic rules remain separate. |
+| Absent references — semantic / comparison boundary | `AlloyLtl.genConstraints` adds `always (this not in alive_x implies no this.@x_ref)` for declared references ([upstream #122](https://github.com/gsdlab/clafer/issues/122)), including abstract owners of inherited references. This implements the accepted empty-relation absence policy and removes the previous hidden-tuple defect at source level. Preserve the [accepted absence consequences](behavioral-formulas.md#absent-references-and-value-obligations), strict definedness and parent cancellation. Exact temporal value-obligation/replacement comparisons still need their own execution and domain qualification. |
 | Group-cardinality/layout — adapter / frontend | `LayoutResolver` inserts a sibling-line separator; a leading `2..3` belongs to that line's group, not the preceding declaration. Same-indent expression continuation is rejected. Capture effective bounds without inventing authored provenance or changing Lean defaults; `group_layout` tests exact positive/negative candidates, and the capture tests retain the syntax rejection. |
 | Ambiguous super diagnostics — frontend | `ResolverInheritance.resolveN` carries ancestor paths into uniqueness checking. Missing/ambiguous names remain compiler rejections, distinct from unsupported input and semantic violations. The importer still admits only its guarded resolved hierarchy. |
 | Qualified supers and name precedence — frontend / comparison boundary | `resolveNSuper` chooses enclosing/global path roots, own before inherited children, and sibling before inherited plain-name supers. The source audit rejects qualified type paths; nested abstract/inherited lookup is outside S. The broader adoption/audit belongs to [compiler #129](https://github.com/kbak/clafer-compiler-lean/issues/129) and #128. Concrete supers remain permitted by richer Lean semantics despite the Haskell abstract-only check (S10). |
 | S9 resolution order — frontend | The updated static errata records the accepted [Ancestors-before-Targets decision](https://github.com/kbak/clafer-semantics/issues/121). The resolved semantic API does not implement lookup. This established decision is distinct from the newer qualified-super audit. |
 | Maps, JSON and dependencies — adapter | `Data.Map` replaces StringMap, preserving ascending UID extraction; aeson replaces json-builder. The [adapter assessment](#compiler-058-adapter-sources) records metadata order and decoded-string agreement, including differing backspace/form-feed escape bytes. The qualified route uses Stack 3.11.1/GHC 9.12.4 and its exact nightly lock; regenerated lexer/parser and removed dependencies do not relax identity checks. |
-| Static Alloy — oracle | Relative to the structural 0.5.7 merge, `Generator/Alloy.hs` changes only map access. Preserve the same name bijection, complete token/field/receipt checks, effective-core admission and candidate relation. Fresh positive, violating, malformed and mixed-profile cases exercise the selected producer; no universal compiler theorem follows. |
+| Static Alloy — oracle | `Common.setReferenceKey` selects the own or nearest inherited set reference, excludes at-most-one multiplicities and top-level abstracts, and is shared by both Alloy generators ([upstream #121](https://github.com/gsdlab/clafer/issues/121)/[upstream #125](https://github.com/gsdlab/clafer/issues/125)). Thus different subclafers may share a target without an abstract global key. The exporter passes the consumed UID map. Reference-bearing abstracts and inherited references remain outside S, so the strict receipt equations and Lean admission stay unchanged; fresh direct set/bag comparisons and raw out-of-fragment key observations exercise the boundary. |
 | Patterns and reference modifiers since the behavioral baseline — semantic correspondence | The [PR113 corrections](#pr113-modifier-and-pattern-revisions) are present: response-between covers later triggers, precedence-after uses the first opener, finaltarget fixes parent images, and combined modifiers survive. They align with the existing D2/D5 meanings. Historical mutant witnesses remain; source inspection does not supply unrestricted temporal backend agreement. |
 | Root, empty collections, names and explicit output since the behavioral baseline — frontend / oracle | Preserve the [PR113 root/union disposition](#pr113-root-binding-and-final-comparison-disposition), UID/Alloy-name separation and existing empty-collection meaning. `noclafer`, static `clafer`, normalized navigation and explicit output do not expand the structural capture whitelist. Temporal explicit normalization and complete trace decoding remain downstream. |
-| Previously retained temporal discrepancies — oracle boundary | The selected 0.5.8 delta leaves `AlloyLtl.hs` unchanged from the structural 0.5.7 merge. It supplies no resolution of the retained inherited-set key, union-dead-target or unsupported root-navigation comparisons. Keep those exact-case limitations alongside absence/let; do not turn a new pin into a full agreement claim. |
+| Previously retained temporal discrepancies — oracle boundary | The release adds live reference-refinement inclusion in `AlloyLtl.genConstraints` ([upstream #120](https://github.com/gsdlab/clafer/issues/120)) and inherited set keys ([upstream #121](https://github.com/gsdlab/clafer/issues/121)), addressing those reported defects at source level. Union-dead-target and unsupported root-navigation comparisons are not repaired by this delta. Preserve temporal `let` and partial-definedness limitations; source fixes do not establish full temporal agreement. |
 | Choco declaration ordering — oracle-only | `Generator/Choco.hs` separates supers, references and constraints so later-declared reference targets can be refined. Current captures generate JSON/static Alloy, not Choco. No Choco backend or Choco equivalence claim is added. |
 | Graph/HTML quoting and links — outside this repository's semantic implementation | DOT output quotes names/labels and HTML fixes qualified-super links. These output modes are outside the import/comparison options and add no semantic capability here. |
 | Decimal/string arithmetic, optimizations and tooling — outside the selected profiles | Earlier 0.5.7 pipeline changes include decimal registry/options and explicit output; the existing exclusions and fixed options still apply. No new primitive, optimization, parser, scope-inference or solver support follows. Upstream prose about formalization is a secondary account, not evidence of unrestricted correctness or absence of defects. |
@@ -1527,20 +1532,28 @@ The selected errata's expanded finality explanation matches D5. Its added
 formalization summaries do not strengthen any theorem's assumptions or scope.
 
 The exact selected bytes below supplement the retained historical source table.
+The complete source archive and tree identities are in the
+[build contract](resolved-import.md#candidate-build-qualification).
 The compiler and associated documentation are MIT licensed; the profile and
 matrix are independently authored.
 
 | Source at selected revision | SHA-256 | Role |
 | --- | --- | --- |
-| [temporal-semantics-errata.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md) | `cf57eaaebee0d953ed0ef992417d9e54661873901cfcb8e0a6bf47bf99f60068` | T1–T14 and finality clarification |
-| [static-semantics-errata.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/static-semantics-errata.md) | `e4857625ce309061621dcb200bcc7dba45a79cf1505517a80ff1c4815fc195aa` | S1–S12 and accepted S9 lookup order |
-| [CheatSheet.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/CheatSheet.md) | `456a329a26e536decd1d6fb6b0b281010dc496b53eda9d91d6804cff35e89b8c` | Surface inventory |
-| [initial-value.md](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/initial-value.md) | `68abb48483ffe2c01f93f6cbbfe0fe0ccc9671051bdd7fffcc3b87488ca20dbb` | Supplementary initializer account |
-| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Generator/AlloyLtl.hs) | `c2586dd6abd1061f5419500499455b3cf75d1d1b3255924a140975359ba3fa19` | Temporal generator and retained comparison boundaries |
-| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/Desugarer.hs) | `9e5a26f4e8a7549ddcac6f8d4ff7b21766cc5801b6aa520ece2a643c343171ab` | Initializer clocks, patterns and let substitution |
-| [ResolverInheritance.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/ResolverInheritance.hs) | `0a5978364250d65d32e90db9d7f017f4c4c528157032c31eb8a0d7fd41156ce8` | Super lookup and multiplicity defaults |
-| [ResolverName.hs](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/ResolverName.hs) | `dce63a0803855f1556b39ff34c8e3cd3fab073bccc180062f5623e9ce685050e` | Original-name resolution and parent rebasing |
-| [LICENSE](https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms |
+| [temporal-semantics-errata.md](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/temporal-semantics-errata.md) | `cc0196d5ede3fcf961364100995ec546ae4f5f0aaab0126ad15d61f813740ca7` | T1–T14 and finality clarification |
+| [static-semantics-errata.md](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/static-semantics-errata.md) | `e4857625ce309061621dcb200bcc7dba45a79cf1505517a80ff1c4815fc195aa` | S1–S12 and accepted S9 lookup order |
+| [CheatSheet.md](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/CheatSheet.md) | `794d3a909721698807d56bea07ceac2566d22681f7910df95c76b27ec2838c90` | Surface inventory |
+| [initial-value.md](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/initial-value.md) | `4e1c0047b657b6d61879cbb3c1ff84f257520992981550e173aa8af6ab88072a` | Supplementary initializer account |
+| [AlloyLtl.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Generator/AlloyLtl.hs) | `b4c413c9522d14bf71859a0e00c37a7ee39535e896f836a50d0a1f80d25ff886` | Temporal generator and retained comparison boundaries |
+| [Desugarer.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Intermediate/Desugarer.hs) | `f357d83735bc7a1da6bcef1d3428d9a728fde6804a732506f3be8307c30308d6` | Initializer clocks, patterns and let substitution |
+| [ResolverInheritance.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Intermediate/ResolverInheritance.hs) | `0a5978364250d65d32e90db9d7f017f4c4c528157032c31eb8a0d7fd41156ce8` | Super lookup and multiplicity defaults |
+| [ResolverName.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Intermediate/ResolverName.hs) | `1a7cb47b7bf4fcec98d8dfc9f4f5a0e84c374c4f70d70838cb3e775eb790c191` | Original-name resolution and parent rebasing |
+| [Common.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Common.hs) | `0bef392268bf77ce57aa0791f65823cf6b026ae6d895f94291120302197243e2` | Shared parent-local set-key selection |
+| [Alloy.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Generator/Alloy.hs) | `55de24092ebc792d11f5cd6c80ef2cf50e473b09e9c12deb3a9c44d926088e08` | Static set keys and observational adapter boundary |
+| [ResolverType.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Intermediate/ResolverType.hs) | `73cc35c6db87595ace96a1b098d066b9939e9ee4ed6c348a9b7a7cb7c45f0c41` | Initializer marker type preservation |
+| [Clafer.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer.hs) | `7274332dbb551cf3e28d079a5b5b7dacf652488dfae7d12ab29d8602b2dd50db` | Inherited-initializer warning |
+| [ChocoModel.hs](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Generator/ChocoModel.hs) | `41d7649488983f13f97ecbbadf947afa69502d44a67a2cb351a0aa3715a2e323` | Initializer marker display |
+| [CHANGES.md](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/CHANGES.md) | `ccb3fbba29d723abb181ffb45d1a31f8891dd6425dc75f0aadeb61e0b523ffd4` | Release corrections and declared release date |
+| [LICENSE](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/LICENSE) | `c630ca360518868845360498ff7b2ba02c6bd39cc718ff403e5eef4d875667be` | MIT terms |
 
 Current full validation executes live 0.5.8 captures, guarded exact-candidate
 Alloy comparisons and current replay. Paired fixtures compare the immutable

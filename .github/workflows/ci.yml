@@ -149,7 +149,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ runner.temp }}/clafer-compiler
-          key: clafer-compiler-${{ runner.os }}-${{ runner.arch }}-fca0deb9c766261f5c0d2ae57af4ba9b07e1279a-stack3.11.1-ghc9.12.4
+          # This cache includes compiler sources; follow the admitted profile's
+          # source and toolchain identities whenever either profile file changes.
+          key: clafer-compiler-v2-ubuntu24.04-${{ runner.arch }}-${{ hashFiles('scripts/verification/candidate_profile.py', 'scripts/verification/compiler_profile.py') }}
       - name: Install exporter build prerequisites
         if: steps.selection.outputs.mode != 'docs' && steps.exporter.outputs.ready != 'true'
         run: |
