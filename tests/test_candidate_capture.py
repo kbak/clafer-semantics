@@ -102,7 +102,7 @@ class CandidateCaptureTests(unittest.TestCase):
         self.assertEqual(nodes[1]["group"], [2, 3])
 
     def test_adopted_identity_and_legacy_isolation(self):
-        self.assertEqual(current.PIN, "fca0deb9c766261f5c0d2ae57af4ba9b07e1279a")
+        self.assertEqual(current.PIN, "dbc06d37ef23eb9186d1016e3bf678858621e92d")
         self.assertTrue(valid_runtime(self.exporter, self.build, candidate))
         self.assertTrue(valid_runtime(self.exporter, self.build))
         self.assertTrue(valid_runtime(self.legacy, self.legacy_build, historical))
@@ -111,6 +111,24 @@ class CandidateCaptureTests(unittest.TestCase):
         with self.assertRaisesRegex(p.Rejection, "build_identity"):
             capture(FIXTURES / "identities.cfr", self.legacy, self.legacy_build, {}, self.evidence / "not-admitted")
         self.assertFalse((self.evidence / "not-admitted").exists())
+
+    def test_release_set_keys_and_unchanged_import_boundary(self):
+        # T11 / upstream #121 and #125: keys belong to each concrete
+        # declaration's parent fiber, including an inherited reference.
+        receipt = self.run_source(
+            "Target 2\nabstract Ref -> Target\nr : Ref 2\na : Ref\n"
+            "abstract BagRef ->> Target\nb : BagRef 2\n"
+            "P\n  nested : Ref 2\n", "release-set-keys")
+        self.assertEqual(receipt["status"], "captured")
+        keys = {row["uid"]: row["set_uniqueness"] for row in receipt["observations"]}
+        self.assertEqual(keys["r"], [" all disj x, y : r | (x.@Ref_ref) != (y.@Ref_ref) "])
+        self.assertEqual(keys["nested"],
+                         ["all disj x, y : this.@r_nested | (x.@Ref_ref) != (y.@Ref_ref) "])
+        for uid in ("Ref", "a", "BagRef", "b"):
+            self.assertEqual(keys[uid], [], uid)
+        # These raw observations do not admit reference-bearing abstracts to S.
+        with self.assertRaisesRegex(p.Rejection, "unsupported:abstract_fragment"):
+            p.decode_ir(p.loads(receipt["json"]))
 
     def test_candidate_receipt_mutations_stay_rejected(self):
         receipt = self.receipts["set_and_bag_references"]

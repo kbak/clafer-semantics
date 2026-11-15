@@ -21,12 +21,14 @@ The [qualification contract](behavioral-qualification.md) supplies full source/c
 composition, strict partial finite checking and the complete source-side proof
 and witness inventory, retaining explicit acceptance and downstream boundaries.
 
-Current profile identifier: **behavioral-0.5.8/v1**, source commit
-`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` (marked unreleased).
+Current profile identifier: **behavioral-0.5.8/v2**, source commit
+`gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d` (0.5.8 release).
 The [source disposition](sources.md#qualified-058-source-and-comparison-profile)
 records the exact-endpoint review, selected hashes and retained differences.
 The original `behavioral-0.5.7-candidate/v1` at `af858ec0fe3ce2ceacb7fd120947c058233086d6`
-remains a historical profile with unchanged evidence. A later release commit
+and `behavioral-0.5.8/v1` at
+`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` remain historical profiles with
+unchanged evidence. A later source commit
 requires a new delta review; a version number or moving branch is insufficient.
 The reviewed **hard-initializers/v1** extension updates B32/D4 according to the
 [initializer contract](behavioral-initializers.md) and accepted #169–#172 decisions.
@@ -270,7 +272,7 @@ p states.
 | T8 | B17–B19; adopt with reference-view review | Finality is shallow and lifetime-scoped; inherit modifiers and references; enum literals final dynamically |
 | T9 | B15, B26; adopt clarification | Implicit always applies to patterns too; recurrence differs from one anchored occurrence |
 | T10 | B05, B32; reuse adopted static policy | `opt` children optional; numeric defaults retain the separately adopted S1 language evolution |
-| T11 | B01, B04–B06; adopt corrections/change | Distinct heads and set-only injectivity; effective group over own/inherited children; restore missing bound variable; discard obsolete Def. 5.2 |
+| T11 | B01, B04–B06; adopt corrections/change | Distinct heads and declaration-local set keys, including inherited references; no global key on parentless abstracts; coherent refined references and empty absent-reference relations; effective group over own/inherited children; restore missing bound variable; discard obsolete Def. 5.2 |
 | T12 | B28–B29; frontend obligation | Explicit precedence, transition/declaration ambiguity and quantifier `not` |
 | T13 | B03, B30; analysis boundary | Native Alloy lasso bounds do not characterize all infinite traces or guarantee inferred scopes suffice |
 | T14 | B32; adopted initializer extension with qualifications | Hard initialization, classified clocks, independent declaration guards and complete original RHS transport; static/finality agreement retains the [initializer contract](behavioral-initializers.md) assumptions |
@@ -382,10 +384,10 @@ Covers:
 - `req~behavioral-main-integration~1`
 
 [paper]: https://arxiv.org/abs/1807.08576v1
-[temporal]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/temporal-semantics-errata.md
-[static]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/static-semantics-errata.md
-[cheat]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/doc/CheatSheet.md
-[desugarer]: https://github.com/gsdlab/clafer/blob/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a/src/Language/Clafer/Intermediate/Desugarer.hs
+[temporal]: https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/temporal-semantics-errata.md
+[static]: https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/static-semantics-errata.md
+[cheat]: https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/doc/CheatSheet.md
+[desugarer]: https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/src/Language/Clafer/Intermediate/Desugarer.hs
 [S1]: https://github.com/kbak/clafer-semantics/issues/123
 [S2]: https://github.com/kbak/clafer-semantics/issues/124
 [S3]: https://github.com/kbak/clafer-semantics/issues/125

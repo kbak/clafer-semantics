@@ -1,7 +1,7 @@
 """Exact identity of the sole admitted structural compiler revision.
 
-The immutable 0.5.8 prerelease build was qualified separately. Its original
-candidate selector remains available; only this module selects current admission.
+The immutable 0.5.8 release replaces the previously qualified prerelease. The
+candidate selector remains an alias; only this module selects current admission.
 """
 from candidate_profile import (
     VERSION, PIN, ARCHIVE, SOURCE_TREE, EXPORTER, RESOLVER, GHC_VERSION,

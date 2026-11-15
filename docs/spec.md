@@ -1107,11 +1107,11 @@ Preserve reviewed D1–D5 departures, the adopted initializer extension and its
 explicit unsupported-form diagnostics. Maintain the complete 0.5.8 delta and
 comparison dispositions, including temporal-let capture/strict-definedness,
 absent-reference tuples, initializer transport, concrete supers and retained
-PR113 discrepancies. Pin the selected prerelease bytes without claiming general
+PR113 discrepancies. Pin the selected immutable source bytes without claiming general
 Haskell agreement or completing downstream frontend/backend qualification.
 Do not equate compiler observations, trace links or passing automation with
-semantic acceptance. Reconcile the final release against the adopted source pin,
-or record explicit maintainer acceptance of that immutable prerelease profile.
+semantic acceptance. Reconcile each release against the adopted source pin and
+require semantic review before accepting its profile.
 Keep source hashes and current contracts in maintained documentation, and run
 evidence and acceptance records externally or in the public issue/PR.
 
@@ -3296,16 +3296,17 @@ Needs: impl, proof
 
 Implement the authorized [resolved importer](resolved-import.md) under `Clafer/Verification/`, reusing the
 accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). Import
-only analyzed JSON from the exact reviewed 0.5.8 prerelease
-`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
+only analyzed JSON from the exact reviewed 0.5.8 release
+`gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
 separately from display names, parent/super/reference identities, effective local
 and group bounds, the exact `-1` unbounded sentinel and set/bag mode. Do not
 fabricate authored/default provenance or enlarge the comparison fragment.
 Validate nullable source spans as metadata, keeping the single-file library
 capture distinct from CLI file-qualified JSON. Preserve apostrophe display names
 and escaped, collision-distinct UIDs. Reject other compiler revisions, including
-0.5.7 and 0.5.4, and mixed schemas. Historical capture import and comparison replay use the
-original repository revision and matching tools; preserve their evidence unchanged.
+the previous 0.5.8 prerelease, 0.5.7 and 0.5.4, and mixed schemas. Historical
+capture import and comparison replay use the original repository revision and
+matching tools; preserve their evidence unchanged.
 Check the modifier lists, decimal registry and exact default options
 without adding temporal, inherited-reference or primitive-value support.
 
@@ -3324,6 +3325,10 @@ temporal, primitive or solver support. Require the selected compiler/version/
 export-schema combination and reject mixed receipts. Check the group-layout
 change through effective-bound captures and exact satisfying/violating candidates;
 keep qualified type paths and initializer syntax outside the capture whitelist.
+Exercise the release set-key helper with the actual consumed UID map. Preserve
+direct set/bag comparisons and raw observations of inherited keys and the
+parentless abstract exemption without admitting those richer forms to the
+structural fragment.
 
 Reject duplicate JSON keys, unknown fields/tags, duplicate/reserved/dangling IDs,
 inconsistent nesting/bindings/type hierarchies, prohibited cycles, missing or

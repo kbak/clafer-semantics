@@ -1,11 +1,11 @@
-"""Immutable qualified 0.5.8 prerelease build; the candidate selector is retained."""
+"""Immutable 0.5.8 release build; the candidate selector is retained as an alias."""
 
 # [impl->req~clafer-resolved-import~1]
 NAME = "0.5.8-candidate"
 VERSION = "0.5.8"
-PIN = "fca0deb9c766261f5c0d2ae57af4ba9b07e1279a"
-ARCHIVE = "fcf7bf883723e7eb22ff2f3c1b6538f0c967cb5eace3a00a89f5fcd2e4a4edc5"
-SOURCE_TREE = "c9009d0fa8fb3d834b307b6d481a0ac99aa02994ac65200a3f25a0391281be8a"
+PIN = "dbc06d37ef23eb9186d1016e3bf678858621e92d"
+ARCHIVE = "cce8e723fce067687ec9434682b445edc364698dece8fdf49d22b8184bde413c"
+SOURCE_TREE = "d6822ede588ed020045e1630872c186361b61aa6538c64198da1cf2edc4ac0a1"
 EXPORTER = "Export.hs"
 RESOLVER = "nightly-2026-11-11"
 GHC_VERSION = "9.12.4"

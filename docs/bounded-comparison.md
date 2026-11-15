@@ -67,7 +67,7 @@ reference and containment have identical endpoints, the reference is the first
 field according to pinned `Generator/Alloy.hs`, `genRelations` (lines 170–180 at
 `6750e6f591b2131549122c13dee94d3d2257eaea`, with the same ordering at
 `f6ca5b887d7bacc09915c6fc0278064c8371beac` and the selected
-`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`). Receipt order and the reviewed capture's
+`dbc06d37ef23eb9186d1016e3bf678858621e92d`). Receipt order and the reviewed capture's
 provenance are explicit external assumptions. S excludes inherited fields;
 inherited membership is supported without allocating super objects. Unknown
 signatures, fields and auxiliaries cannot be ignored.

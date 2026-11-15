@@ -34,10 +34,11 @@ explicit provisioning.
 To build explicitly or use the capture commands independently:
 
 Obtain the compiler source archive for
-`gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, SHA-256
-`fcf7bf883723e7eb22ff2f3c1b6538f0c967cb5eace3a00a89f5fcd2e4a4edc5`, and
-the matching claferIG archive identified below. This exact 0.5.8 revision is
-marked unreleased; neither a moving branch nor a later release is admitted automatically.
+`gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d`, SHA-256
+`cce8e723fce067687ec9434682b445edc364698dece8fdf49d22b8184bde413c`, and
+the matching claferIG archive identified below. This is the immutable 0.5.8 release merged through
+[upstream PR #119](https://github.com/gsdlab/clafer/pull/119); moving branches and
+other revisions are not admitted automatically.
 Build outside the checkout:
 
 ```sh
@@ -79,22 +80,26 @@ its separate output files cannot establish a generation receipt.
 
 ## Candidate build qualification
 
-[Build/exporter qualification](https://github.com/kbak/clafer-semantics/issues/167)
-supplies the selected 0.5.8 build, now used by default import and bounded
-comparison. The original `0.5.8-candidate` selector remains a build alias for the
+The [release adoption](https://github.com/kbak/clafer-semantics/issues/185)
+uses the [qualified build route](https://github.com/kbak/clafer-semantics/issues/167)
+for the selected 0.5.8 release in default import and bounded comparison. The
+original `0.5.8-candidate` selector remains a build alias for the
 same immutable identity; its name grants no additional source admission. The
 [source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
 records the adopted boundaries and retained semantic differences.
 Historical receipts remain unchanged; `Export057.hs` preserves the original
 0.5.7 exporter bytes. `Export.hs` uses `Data.Map.Strict.toList` for the candidate's
 source, consumed and implicit maps, retaining ascending UID order and the same
-`clafer-generation/2` representation.
+`clafer-generation/2` representation. Its set-key observation passes the actual
+consumed UID map to the release generator helper. Reference-bearing abstracts
+and inherited references remain outside the admitted structural fragment; live
+raw-capture regressions inspect their corrected keys without admitting them.
 
 | Build input | Qualified identity |
 | --- | --- |
-| Compiler | `gsdlab/clafer@fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` (0.5.8, marked unreleased) |
-| Compiler archive SHA-256 | `fcf7bf883723e7eb22ff2f3c1b6538f0c967cb5eace3a00a89f5fcd2e4a4edc5` |
-| Original source-tree SHA-256 | `c9009d0fa8fb3d834b307b6d481a0ac99aa02994ac65200a3f25a0391281be8a` |
+| Compiler | `gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d` (0.5.8 release) |
+| Compiler archive SHA-256 | `cce8e723fce067687ec9434682b445edc364698dece8fdf49d22b8184bde413c` |
+| Original source-tree SHA-256 | `d6822ede588ed020045e1630872c186361b61aa6538c64198da1cf2edc4ac0a1` |
 | Stack / GHC | `3.11.1` / `9.12.4` |
 | Resolver | `nightly-2026-11-11` |
 | Snapshot SHA-256 | `d128a107636f374493c7cea23dde8ba9fb2235a0ba9eff15be208c43f64a4033` |
@@ -176,13 +181,17 @@ the following exact compiler identity; all fields must match:
 
 | Profile | Compiler commit | Export schema | Generation receipt |
 | --- | --- | --- | --- |
-| 0.5.8 prerelease | `fca0deb9c766261f5c0d2ae57af4ba9b07e1279a` | `generic-aeson-0.5.8/1` | `clafer-generation/2` |
+| 0.5.8 release | `dbc06d37ef23eb9186d1016e3bf678858621e92d` | `generic-aeson-0.5.8/1` | `clafer-generation/2` |
 
-Other revisions, including 0.5.7 and 0.5.4, and mixed schemas are rejected. Historical
-evidence keeps its original compiler, adapter and runtime identities. To import
+Other revisions, including the earlier 0.5.8 prerelease
+`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`, 0.5.7 and 0.5.4, and mixed schemas
+are rejected. The version string alone does not identify an admitted producer.
+Historical evidence keeps its original compiler, adapter and runtime identities. To import
 or replay a historical bundle, use the repository revision and matching tools
 recorded with that evidence; the [pre-upgrade adapter](https://github.com/kbak/clafer-semantics/tree/c183c1c2e4cc22cc9f41ea78733a20fc3610b50b/scripts/verification)
 retains the 0.5.4 implementation. Do not relabel old captures as current evidence.
+The last 0.5.8 prerelease adapter is retained at
+[the prerelease adoption](https://github.com/kbak/clafer-semantics/tree/e96284c98b103fe0871c00eb96210a40e5c1ea67).
 The last 0.5.7 adapter is retained at [the pre-upgrade revision](https://github.com/kbak/clafer-semantics/tree/a18890612e38872f3fb5842ed323042aea34e1ed);
 replay additionally requires the exact original source snapshot recorded with
 each bundle, which may predate that revision. Current regression tests execute fresh 0.5.8 captures and
@@ -203,7 +212,7 @@ these are precisely abstract leaf declarations without concrete descendants;
 all other inferred scopes remain unsupported. Requested comparison bounds stay
 independent experiment metadata.
 
-`Export057.hs` parses once, audits the typed AST and non-parser tokens before
+`Export.hs` parses once, audits the typed AST and non-parser tokens before
 desugaring, compiles once, and requests `[JSON, Alloy]` in one `generate` call.
 It rejects enums, initializers, assertions/goals/constraints, temporal forms,
 escapes, source option directives and non-direct type expressions. The decoder

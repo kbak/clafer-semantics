@@ -110,15 +110,20 @@ The independently defined Lean semantics and all theorem hypotheses are unchange
 ### Compiler 0.5.8 compatibility
 
 The current structural profile selects
-[`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a),
-an immutable prerelease. The [complete source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
-compares it with both the 0.5.7 structural merge and the historical behavioral pin.
+[`dbc06d37ef23eb9186d1016e3bf678858621e92d`](https://github.com/gsdlab/clafer/tree/dbc06d37ef23eb9186d1016e3bf678858621e92d),
+the immutable 0.5.8 release. The [complete source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
+compares it with the previous 0.5.8 prerelease, the 0.5.7 structural merge and
+the historical behavioral pin.
 The [import guide](resolved-import.md) fixes archive, schema, toolchain and receipt
 identities. The effective core, S combination guards and Lean theorem hypotheses
 are unchanged.
 
-The static Alloy generator differs from the 0.5.7 merge only by the reviewed
-StringMap-to-Map access. UID maps remain ascending. Source parsing now attaches a
+The static Alloy generator uses the reviewed StringMap-to-Map access and the
+release's parent-local set-key helper. The latter removes the global key on a
+top-level abstract and includes keys for inherited references. Both affected
+forms remain outside S; admitted direct set/bag references retain their keys
+and multiplicities. The exporter supplies the helper's actual consumed UID map.
+UID maps remain ascending. Source parsing now attaches a
 leading group cardinality to its own sibling line and rejects same-indent
 expression continuation; effective bounds are captured as emitted. The
 `group_layout` fixture checks the resulting child defaults and exact positive

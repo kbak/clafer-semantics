@@ -199,7 +199,8 @@ class CompilerProfileTests(unittest.TestCase):
                 p.decode_ir(doc)
 
     def test_manifest_and_build_profile_mixing_is_rejected(self):
-        for i, changes in enumerate((dict(compiler_commit=historical.PIN), dict(compiler_version="0.5.7"),
+        for i, changes in enumerate((dict(compiler_commit="fca0deb9c766261f5c0d2ae57af4ba9b07e1279a"),
+                                     dict(compiler_commit=historical.PIN), dict(compiler_version="0.5.7"),
                                      dict(export_schema=historical.EXPORT_SCHEMA), dict(compiler_commit="6750e6f591b2131549122c13dee94d3d2257eaea"), dict(compiler_version="0.5.4"),
                                      dict(export_schema="generic-aeson-0.5.4/1"), dict(compiler_commit="0" * 40))):
             path = self.evidence / f"mixed-profile-{i}"
@@ -222,7 +223,8 @@ class CompilerProfileTests(unittest.TestCase):
 
     def test_build_probe_and_toolchain_mixing_is_rejected(self):
         original = self.captures["bag"][0]
-        changes = [dict(instance_generator_commit="0" * 40),
+        changes = [dict(compiler_commit="fca0deb9c766261f5c0d2ae57af4ba9b07e1279a"),
+                   dict(instance_generator_commit="0" * 40),
                    dict(instance_generator_archive_sha256="0" * 64),
                    dict(metadata_source=dict(bytes=0, sha256="0" * 64)),
                    dict(metadata_binary=dict(bytes=True, sha256="0" * 64)),

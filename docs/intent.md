@@ -90,7 +90,7 @@ The [behavioral profile](behavioral-profile.md) supplies a separate
 extension under `Clafer/Behavioral`: independent infinite-trace meaning, lifetime
 and signed temporal obligations, surface reductions and justified lasso checking.
 Its complete feature/disposition matrix and two-repository ownership contract
-retain the accepted prerelease source identity and explicit proof boundaries.
+retain the reviewed immutable release source identity and explicit proof boundaries.
 The [trace foundation](behavioral-traces.md) supplies
 shared identities, lifetime boundaries and the guarded structural snapshot/constant
 bridge. The [signed formula contract](behavioral-formulas.md) supplies independent
@@ -121,7 +121,7 @@ common-fragment agreement and a complete source/witness inventory. Its finite
 observation restrictions and remaining acceptance gates stay explicit.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 The accepted extension is integrated into `main`; contributions use main-based
-topic branches. The current structural importer supports the exact reviewed 0.5.8 prerelease
+topic branches. The current structural importer supports the exact reviewed 0.5.8 release
 revision. The [source/profile disposition](sources.md#qualified-058-source-and-comparison-profile)
 retains the independent behavioral meanings and explicit reference differences;
 [build qualification](resolved-import.md#candidate-build-qualification) fixes the
