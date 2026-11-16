@@ -266,6 +266,12 @@ remain outside this initializer API.
 
 ## Verification and source correspondence
 
+The [past-based birth test](behavioral-past.md#initializer-birth-tests) is proved
+equivalent to the independent per-instance equations under stable declaration
+membership and enclosing presence. It retains the partial RHS observation and
+does not justify replacing the declaration guard by ordinary strict implication.
+The contract there records the remaining syntax/core integration obligation.
+
 The resolved classification, bounds, transport, structural observation and
 production compatibility results are available through `Clafer.Behavioral`. The lifecycle fixtures in
 [`InitializerLifecycleExamples`](../Clafer/Behavioral/InitializerLifecycleExamples.lean)

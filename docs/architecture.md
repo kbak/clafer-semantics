@@ -80,6 +80,12 @@ owns assumptions, source correspondences and downstream obligations. Separate
 lifecycle, contract and production examples retain their structural witness limits.
 These source modules do not import Compile or Verification.
 
+The [past-time foundation](behavioral-past.md) adds independent ordinary and
+parent-bounded interval operators in `Past`, plus guarded initializer birth-test
+equivalence in `InitializerPast`. Both are exposed by `Clafer.Behavioral` without
+extending the existing `Formula`/`Core` grammar. `PastExamples` exhibits the
+strict-definedness and finite-history obligations for that later integration.
+
 Source meaning is independent of executable IR and target semantics. The upstream
 extension owns infinite traces, stable identity/parent data, lifetime meaning,
 normalization proofs and a justified finite-lasso checker. The downstream compiler

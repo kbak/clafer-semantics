@@ -2148,3 +2148,38 @@ compiler preservation. Historical static and SoSyM identities remain unchanged.
 
 Covers:
 - `req~behavioral-source-correspondence~1`
+
+## Past-time extension
+
+The [past-time contract](behavioral-past.md) extends the behavioral paper §5
+Definitions 3–5 / §6.1 with independently defined history intervals. The
+[selected lifetime decision](https://github.com/kbak/clafer-semantics/issues/187)
+bounds history by the original attachment's parent's current lifetime. This
+mirrors the existing future attachment and permits events before a child's birth;
+an absent parent separates histories. Context-lifetime anchors retain their
+existing meanings. The birth-test theorem states its stable-selection and
+enclosing-presence hypotheses rather than identifying the two lifetime policies.
+
+The [Alloy 6 connective reference](https://alloytools.org/alloy6.html#meaning-of-temporal-connectives)
+supplies ordinary previous, once, historically and since. Triggered uses the
+conventional `¬(¬a since ¬b)` dual, including the right operand at the current
+state. Source interval definitions, guarded encoding theorems and boundary
+witnesses are original Lean artifacts; no third-party source is copied.
+
+Supplementary compiler evidence is pinned to
+[`gsdlab/clafer@186d8e0a350e4c8895b1c489eb587fa3a1bc2b61`](https://github.com/gsdlab/clafer/tree/186d8e0a350e4c8895b1c489eb587fa3a1bc2b61):
+[`Intermediate/Initializers.hs`](https://github.com/gsdlab/clafer/blob/186d8e0a350e4c8895b1c489eb587fa3a1bc2b61/src/Language/Clafer/Intermediate/Initializers.hs)
+retains the parent frame and generates the captured previous-membership test;
+[`test/patterns/check-patterns.py`](https://github.com/gsdlab/clafer/blob/186d8e0a350e4c8895b1c489eb587fa3a1bc2b61/test/patterns/check-patterns.py)
+records the independent monitor comparison;
+[`doc/rich-and-core-explicit.md`](https://github.com/gsdlab/clafer/blob/186d8e0a350e4c8895b1c489eb587fa3a1bc2b61/doc/rich-and-core-explicit.md)
+describes the representation boundary. These source observations do not establish
+Lean/compiler agreement or qualify a newer Haskell release. The existing
+[selected compiler/profile](#qualified-058-source-and-comparison-profile) is unchanged.
+
+The strict inactive-RHS guard and the finite-history witness in the past contract
+are obligations for [formula/core integration](https://github.com/kbak/clafer-semantics/issues/188)
+and [downstream compiler adoption](https://github.com/kbak/clafer-compiler-lean/issues/141).
+Ordinary implication cannot erase source definedness, and a repeated lasso slot
+cannot be assumed to have identical nested past truth. Kernel-checked pointwise
+operator and guarded birth-test laws do not replace these composition obligations.
