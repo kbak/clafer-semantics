@@ -58,3 +58,15 @@ private def atomQ : Core (fun _ => Bool) (fun _ => Empty) 0 := .atom (.source fa
                 throw (IO.userError s!"past mismatch: states={states}, loop={loop.val}, p={p}, q={q}, t={t}")
               cases := cases + 1
   IO.println s!"behavioral past: {cases} exhaustive history checks passed"
+
+-- [utest->req~behavioral-past-verification~1]
+-- A tiny reachable orbit with a huge valid bound must finish immediately. This
+-- catches eager construction of fuel-sized continuation chains in native code.
+#eval show IO Unit from do
+  let bound := 2 ^ 80
+  let step : Bool → Bool := Bool.not
+  unless FiniteOrbit.untilB bound step (fun _ => true) (fun _ => false) false == false do
+    throw (IO.userError "unreachable goal on a repeated orbit")
+  unless FiniteOrbit.untilB bound step (fun _ => true) id false do
+    throw (IO.userError "reachable goal on a repeated orbit")
+  IO.println "behavioral past: large certified bound uses only the reachable orbit"

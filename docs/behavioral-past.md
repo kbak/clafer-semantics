@@ -98,6 +98,9 @@ operators differ. The [finite evaluator](behavioral-verification.md) therefore u
 machine state containing the necessary history. `Core.machine_agrees` proves
 equality with infinite meaning at every absolute time. Future search detects
 repetition of the complete state, and quantifiers/lets retain captured values.
+The certified cardinality bound supplies termination fuel; the evaluator inspects
+each reachable state before recursing, so it does not allocate a continuation
+chain proportional to that potentially enormous bound.
 `PastIntegrationExamples` checks this distinction through mixed operators,
 parent gaps, captures, partial observations and guarded initializer lowering.
 
