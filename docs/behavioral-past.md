@@ -1,4 +1,4 @@
-# Past-time foundation
+# Past-time formulas and core lowering
 
 The past-time foundation defines previous, once, historically, since and triggered
 within the **original attachment's parent's current lifetime**. A child may look
@@ -9,11 +9,11 @@ identity without changing attachment.
 
 This extends the behavioral paper §5 Definitions 3–5 / §6.1, following the
 [selected source and lifetime decision](sources.md#past-time-extension).
-It supplies independent interval laws and initializer birth tests through
-`Clafer.Behavioral`. The existing `Formula`/`Core` grammar, signed normalization,
-strict partial domains, finite checker and compiler profiles remain unchanged;
-their [integration task](https://github.com/kbak/clafer-semantics/issues/188)
-must discharge the obligations below before admitting past syntax end to end.
+Independent interval laws, source formulas, signed normalization, strict partial
+domains and initializer lowering are exposed through `Clafer.Behavioral`. The
+[formula/core integration](https://github.com/kbak/clafer-semantics/issues/188)
+adds exact finite evaluation through history-carrying machines. Downstream parser
+and backend adoption and Haskell comparison qualification remain separate.
 
 ## Independent meanings and ordinary encoding
 
@@ -81,8 +81,12 @@ does not demand an RHS value at inactive births. Ordinary source implication
 remains strict. `strict_implication_requires_rhs` and its witness show that an
 undefined RHS fails even under a false ordinary antecedent. Consequently the
 birth-test theorem alone does not justify emitting a plain source implication
-for arbitrary partial RHSs. Core integration must preserve the guard and its
-domain separately; narrowing silently to total values is not an accepted repair.
+for arbitrary partial RHSs. `InitializerLowering.lowerCore` preserves the guard and its domain separately.
+`expandAnchors` replaces starts with `present ∧ ¬ previous present` and ends with
+`present ∧ next ¬present`. `lowerCore_agrees` relates the result to independent
+initializer equations for all four clocks, assuming the root remains live. The
+RHS stays in its original resolved frame. The result covers arbitrary partial
+observations; a finite implementation still needs a certified observation adapter.
 
 ## Verification boundary
 
@@ -90,7 +94,22 @@ domain separately; narrowing silently to total values is not an accepted repair.
 boundaries, history before child birth, parent gaps and rebirth, and the strict
 initializer-domain distinction. It also gives a one-state lasso whose existing
 predecessor-bearing clock is equal at times one and two while two nested previous
-operators differ. Thus the [current finite evaluator](behavioral-verification.md)
-cannot gain arbitrary past support by reusing that clock unchanged. Follow-up
-integration requires a justified history construction, source/core composition
-proofs and exact evaluation; the present laws claim none of those results.
+operators differ. The [finite evaluator](behavioral-verification.md) therefore uses a composed
+machine state containing the necessary history. `Core.machine_agrees` proves
+equality with infinite meaning at every absolute time. Future search detects
+repetition of the complete state, and quantifiers/lets retain captured values.
+`PastIntegrationExamples` checks this distinction through mixed operators,
+parent gaps, captures, partial observations and guarded initializer lowering.
+
+`Formula` retains all six operators. Both signs normalize before lifetime
+guards are inserted; negative previous becomes weak previous, once/historically
+and since/triggered are signed dual pairs. Completion independence and strict
+partial checking extend to every constructor. Previous demands its operand only
+at an available predecessor; other past operators demand every operand throughout
+the active history, including now, regardless of an earlier truth witness.
+`Core` needs only ordinary previous and since, with classical derived forms.
+
+Opaque observations remain subject to all-time finite agreement. A temporal RHS
+condition whose truth differs at equal base clocks cannot be supplied as an
+unproved clock-only atom; clients must expose its temporal syntax or provide a
+separately justified finite representation.

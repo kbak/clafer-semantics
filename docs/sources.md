@@ -2177,9 +2177,11 @@ describes the representation boundary. These source observations do not establis
 Lean/compiler agreement or qualify a newer Haskell release. The existing
 [selected compiler/profile](#qualified-058-source-and-comparison-profile) is unchanged.
 
-The strict inactive-RHS guard and the finite-history witness in the past contract
-are obligations for [formula/core integration](https://github.com/kbak/clafer-semantics/issues/188)
-and [downstream compiler adoption](https://github.com/kbak/clafer-compiler-lean/issues/141).
-Ordinary implication cannot erase source definedness, and a repeated lasso slot
-cannot be assumed to have identical nested past truth. Kernel-checked pointwise
-operator and guarded birth-test laws do not replace these composition obligations.
+The [selected integration](https://github.com/kbak/clafer-semantics/issues/188#issuecomment-6924419619)
+adds signed source/core preservation, strict partial history domains, guarded
+initializer lowering and finite machines with exact reachable-orbit search.
+Ordinary implication still cannot erase source definedness, and equal lasso slots
+are not identified when their history states differ. The independent interval
+meanings, kernel-checked composition theorems and executable regressions are
+separate evidence. [Downstream adoption](https://github.com/kbak/clafer-compiler-lean/issues/141)
+must preserve the same attachment and partial-domain assumptions.

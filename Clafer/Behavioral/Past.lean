@@ -43,6 +43,27 @@ theorem triggered_dual (a b : Signal) (t : Nat) :
     by_contra hb
     exact h ⟨j, hj, hb, ha⟩
 
+@[simp] theorem since_zero (a b : Signal) : since a b 0 ↔ b 0 := by
+  simp [since]
+  intros
+  omega
+
+theorem since_succ (a b : Signal) (t : Nat) :
+    since a b (t + 1) ↔ b (t + 1) ∨ (a (t + 1) ∧ since a b t) := by
+  constructor
+  · rintro ⟨j, hj, hb, ha⟩
+    rcases Nat.eq_or_lt_of_le hj with rfl | hlt
+    · exact Or.inl hb
+    · exact Or.inr ⟨ha (t + 1) hlt le_rfl, j, by omega, hb,
+        fun k hjk hkt => ha k hjk (by omega)⟩
+  · rintro (hb | ⟨ha, j, hj, hb, rest⟩)
+    · exact ⟨t + 1, le_rfl, hb, by intros; omega⟩
+    · refine ⟨j, by omega, hb, ?_⟩
+      intro k hjk hkt
+      rcases Nat.eq_or_lt_of_le hkt with rfl | hlt
+      · exact ha
+      · exact rest k hjk (by omega)
+
 end Temporal
 
 namespace Lifetime
@@ -247,6 +268,52 @@ theorem since_reset {P a b : Signal} {t : Nat} (absent : ¬ P t) :
       simpa only [eq] using hp
     · intro k hk hkt
       omega
+
+/-- Completion independence only needs the active preceding state. -/
+theorem previous_congr {P a b : Signal} {t : Nat}
+    (h : weakPrevious P (fun j => a j ↔ b j) t) : previous P a t ↔ previous P b t := by
+  cases t with
+  | zero => rfl
+  | succ t => exact and_congr_right h
+
+theorem weakPrevious_congr {P a b : Signal} {t : Nat}
+    (h : weakPrevious P (fun j => a j ↔ b j) t) : weakPrevious P a t ↔ weakPrevious P b t := by
+  cases t with
+  | zero => rfl
+  | succ t => exact imp_congr_right h
+
+theorem once_congr {P a b : Signal} {t : Nat}
+    (h : ∀ j, j ≤ t → Through P j t → (a j ↔ b j)) : once P a t ↔ once P b t :=
+  exists_congr fun j => and_congr_right fun hj => and_congr_right fun live => h j hj live
+
+theorem historically_congr {P a b : Signal} {t : Nat}
+    (h : ∀ j, j ≤ t → Through P j t → (a j ↔ b j)) : historically P a t ↔ historically P b t :=
+  forall_congr' fun j => imp_congr_right fun hj => imp_congr_right fun live => h j hj live
+
+theorem since_congr {P a b c d : Signal} {t : Nat}
+    (ha : ∀ j, j ≤ t → Through P j t → (a j ↔ c j))
+    (hb : ∀ j, j ≤ t → Through P j t → (b j ↔ d j)) : since P a b t ↔ since P c d t := by
+  apply exists_congr
+  intro j
+  apply and_congr_right
+  intro hj
+  apply and_congr_right
+  intro live
+  apply and_congr (hb j hj live)
+  apply forall_congr'
+  intro k
+  apply imp_congr_right
+  intro hjk
+  apply imp_congr_right
+  intro hkt
+  exact ha k hkt (fun l hkl hlt => live l (by omega) hlt)
+
+theorem triggered_congr {P a b c d : Signal} {t : Nat}
+    (ha : ∀ j, j ≤ t → Through P j t → (a j ↔ c j))
+    (hb : ∀ j, j ≤ t → Through P j t → (b j ↔ d j)) : triggered P a b t ↔ triggered P c d t := by
+  rw [triggered_dual, triggered_dual]
+  exact not_congr (since_congr (fun j hj hp => not_congr (ha j hj hp))
+    (fun j hj hp => not_congr (hb j hj hp)))
 
 end Lifetime
 end Clafer.Behavioral

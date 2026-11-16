@@ -119,9 +119,10 @@ The [qualification contract](behavioral-qualification.md) composes full source
 models, strict partial domains and finite core checking, with exact static
 common-fragment agreement and a complete source/witness inventory. Its finite
 observation restrictions and remaining acceptance gates stay explicit.
-The [past-time foundation](behavioral-past.md) adds parent-lifetime interval laws
-and initializer birth tests. Its formula/core, strict-domain and finite-history
-integration obligations remain separate from the existing supported profile.
+The [past-time contract](behavioral-past.md) adds parent-lifetime formulas, strict
+history domains and ordinary previous/since core lowering. Finite machines retain
+history across repeated lasso visits, and initializer lowering preserves separate
+birth and RHS-domain guards. Compiler adoption remains a downstream obligation.
 The optional `Clafer.Behavioral` entry point stays within the same Lake package.
 The accepted extension is integrated into `main`; contributions use main-based
 topic branches. The current structural importer supports the exact reviewed 0.5.8 release
@@ -186,7 +187,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Behavioral qualification](behavioral-qualification.md) | Full model/core composition, strict finite observations, static common fragment, complete feature witnesses and source-profile acceptance boundary |
 | [Behavioral structural prerequisites](behavioral-structure.md) | Richer structural/partial-atom APIs, exact agreement domains, source decisions and downstream obligations |
 | [Initializer contract](behavioral-initializers.md) | Accepted collection clocks, defaulting, scalar bounds, diagnostics and candidate verification boundary |
-| [Past-time foundation](behavioral-past.md) | Parent-lifetime past laws, initializer birth tests and remaining formula/finite-history obligations |
+| [Past-time contract](behavioral-past.md) | Parent-lifetime formulas, strict history domains, initializer lowering and exact finite history |
 | [Requirements](spec.md) | Normative promises, acceptance obligations and stable OFT IDs |
 | [Architecture](architecture.md) | Representation choices, module boundaries, roadmap and theorem status |
 | [Source map](sources.md) | Paper correspondence, immutable source citations, decisions and audit limits |

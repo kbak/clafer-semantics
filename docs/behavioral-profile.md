@@ -123,11 +123,12 @@ and integer range evidence remain explicit. No finite identity/step bound implie
 completeness over all infinite traces; scopes bound identities across the whole
 trace, not maximum simultaneous population.
 
-The separate [past-time foundation](behavioral-past.md) supplies the selected
-parent-lifetime laws and initializer birth tests. It does not add past operators
-to this profile's accepted formula grammar or finite checker. The checked
-repeated-clock witness and strict initializer-domain boundary constrain their
-subsequent integration.
+The [past-time contract](behavioral-past.md) extends source formulas and strict
+domains with parent-lifetime past operators. Core lowering uses ordinary previous
+and since; the finite checker retains history in compositional machines.
+Initializer lowering expands lifetime anchors while retaining the separate domain
+guard and original RHS environment. This is a selected semantic extension; it
+does not silently qualify a newer Haskell comparison profile.
 
 ## Parent lifetime and source polarity
 

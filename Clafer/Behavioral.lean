@@ -17,6 +17,7 @@ public import Clafer.Behavioral.Initializers
 public import Clafer.Behavioral.InitializerCompatibility
 public import Clafer.Behavioral.InitializerStatic
 public import Clafer.Behavioral.InitializerFinality
+public import Clafer.Behavioral.InitializerLowering
 public import Clafer.Behavioral.InitializerPast
 public import Clafer.Behavioral.LetCapture
 public import Clafer.Behavioral.AbsentReference

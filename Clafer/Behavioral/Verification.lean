@@ -47,7 +47,7 @@ def checkAt (m : Semantics.EffectiveCore n) (cert : CoreCertificate n)
   else if ¬ L.identityChecks m then .malformed
   else match adapter with
     | none => .unsupported
-    | some F => if decide (L.checks m) && a.finite L F.observations ρ (L.clock t)
+    | some F => if decide (L.checks m) && a.finite L F.observations ρ t
         then .satisfied else .violated
 
 /-- `none` is an empty/malformed decoded trace. `RawLasso.admit` rejects invalid
@@ -69,8 +69,20 @@ theorem checkAt_correct (m : Semantics.EffectiveCore n) (cert : CoreCertificate 
     checkAt m cert L (some F) a ρ t = .satisfied ↔
       L.unfold.Valid m ∧ a.eval L.unfold O ρ.realize t := by
   by_cases hi : L.identityChecks m
-  · simp [checkAt, hc, hs, hi, Lasso.checks_iff, Lasso.valid_iff_unfold,
-      Core.finite_agrees L F.observations O F.agrees]
+  · have agrees : (decide (L.checks m) && a.finite L F.observations ρ t) = true ↔
+        L.unfold.Valid m ∧ a.eval L.unfold O ρ.realize t := by
+      rw [Bool.and_eq_true, decide_eq_true_eq, Lasso.checks_iff, Lasso.valid_iff_unfold,
+        Core.finite_agrees L F.observations O F.agrees]
+    simp only [checkAt, hc, hs, hi, not_true_eq_false, ↓reduceIte]
+    split
+    · rename_i h
+      exact ⟨fun _ => agrees.mp h, fun _ => rfl⟩
+    · rename_i h
+      constructor
+      · intro eq
+        cases eq
+      · intro yes
+        exact (h (agrees.mpr yes)).elim
   · have hv : ¬ L.unfold.Valid m := fun h => hi ((Lasso.identityChecks_iff m L).mpr h.identities)
     simp [checkAt, hc, hs, hi, hv]
 
@@ -89,10 +101,14 @@ variable {A D : Nat → Type} {C : Type} {size last : Nat}
 -- [impl->req~behavioral-finite-checker~1]
 /-- Implicit always over live applicable contexts, with attachment retained by
 all inner binders. Context applicability must have its own source agreement. -/
+@[simp] def attachedMachine (L : Lasso C size last) (F : FiniteObservation A D size last)
+    (contexts : Lasso.Clock last → Finset (Fin size)) (a : Core A D 0) : FiniteMachine Bool :=
+  ((clockMachine L id).pair (FiniteMachine.family (fun c => a.machine L F (.closed c)))).map
+    (fun p => decide (∀ c ∈ contexts p.1, L.live p.1.1 c = true → p.2 c = true))
+
 def attachedFinite (L : Lasso C size last) (F : FiniteObservation A D size last)
     (contexts : Lasso.Clock last → Finset (Fin size)) (a : Core A D 0) : Bool :=
-  Orbit.every L.step (fun s => decide (∀ c ∈ contexts s, L.live s.1 c = true →
-    a.finite L F (.closed c) s = true)) Lasso.start
+  (a.attachedMachine L F contexts).always.run 0
 
 -- [proof->req~behavioral-finite-checker~1]
 theorem attachedFinite_agrees (L : Lasso C size last) (F : FiniteObservation A D size last)
@@ -100,16 +116,11 @@ theorem attachedFinite_agrees (L : Lasso C size last) (F : FiniteObservation A D
     (contexts : Lasso.Clock last → Finset (Fin size)) (a : Core A D 0) :
     a.attachedFinite L F contexts = true ↔ ∀ t c, c ∈ contexts (L.clock t) →
       c ∈ L.unfold.live t → a.eval L.unfold O (.closed c) t := by
-  rw [attachedFinite, Orbit.every_iff]
-  constructor
-  · intro H t c hc hl
-    simpa only [FiniteEnvironment.realize_closed] using
-      (finite_agrees L F O h a (.closed c) t).mp ((of_decide_eq_true (H t)) c hc hl)
-  · intro H t
-    apply decide_eq_true_eq.mpr
-    intro c hc hl
-    apply (finite_agrees L F O h a (.closed c) t).mpr
-    simpa only [FiniteEnvironment.realize_closed] using H t c hc hl
+  simp only [attachedFinite, FiniteMachine.always_agrees, attachedMachine, Nat.zero_add,
+    FiniteMachine.run_map, FiniteMachine.run_pair, run_clockMachine, id_eq,
+    decide_eq_true_eq, FiniteMachine.run_family, machine_agrees L F O h,
+    FiniteEnvironment.realize_closed, Lasso.unfold]
+  rfl
 
 -- [proof->req~behavioral-finite-checker~1]
 theorem normalized_attached_agrees (L : Lasso C size last) (F : FiniteObservation A D size last)

@@ -16,6 +16,7 @@ inductive Quantifier where
   deriving DecidableEq
 
 -- [impl->req~behavioral-formula-denotation~1]
+-- [impl->req~behavioral-past-formulas~1]
 inductive Formula (A D : Nat → Type) : Nat → Type where
   | truth : Formula A D n
   | atom (a : A n) : Formula A D n
@@ -31,6 +32,12 @@ inductive Formula (A D : Nat → Type) : Nat → Type where
   | always (a : Formula A D n) : Formula A D n
   | strongUntil (a b : Formula A D n) : Formula A D n
   | weakUntil (a b : Formula A D n) : Formula A D n
+  | previous (a : Formula A D n) : Formula A D n
+  | weakPrevious (a : Formula A D n) : Formula A D n
+  | once (a : Formula A D n) : Formula A D n
+  | historically (a : Formula A D n) : Formula A D n
+  | since (a b : Formula A D n) : Formula A D n
+  | triggered (a b : Formula A D n) : Formula A D n
   | initially (a : Formula A D n) : Formula A D n
   | finally (a : Formula A D n) : Formula A D n
   | quant (q : Quantifier) (domain : D n) (body : Formula A D (n + 1)) : Formula A D n

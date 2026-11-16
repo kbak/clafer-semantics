@@ -17,6 +17,7 @@ universe u
 inductive LowerAtom (A : Nat → Type) (n : Nat) where
   | source (a : A n)
   | parentPresent
+  | contextPresent
   | starts
   | ends
 
@@ -32,6 +33,8 @@ inductive Core (A D : Nat → Type) : Nat → Type where
   | always (a : Core A D n) : Core A D n
   | strongUntil (a b : Core A D n) : Core A D n
   | weakUntil (a b : Core A D n) : Core A D n
+  | previous (a : Core A D n) : Core A D n
+  | since (a b : Core A D n) : Core A D n
   | quant (q : Quantifier) (d : D n) (a : Core A D (n + 1)) : Core A D n
   | letSet (d : D n) (a : Core A D (n + 1)) : Core A D n
 
@@ -42,6 +45,7 @@ noncomputable def eval (τ : Trace C U) (O : Observation A D U) {n} : Core A D n
   | .truth, _, _ => True
   | .atom (.source a), ρ, t => O.atom a ρ t
   | .atom .parentPresent, ρ, t => τ.ParentPresent ρ.this t
+  | .atom .contextPresent, ρ, t => ρ.this ∈ τ.live t
   | .atom .starts, ρ, t => τ.Starts t ρ.this
   | .atom .ends, ρ, t => τ.Ends t ρ.this
   | .not a, ρ, t => ¬ a.eval τ O ρ t
@@ -52,6 +56,8 @@ noncomputable def eval (τ : Trace C U) (O : Observation A D U) {n} : Core A D n
   | .always a, ρ, t => Temporal.always (a.eval τ O ρ) t
   | .strongUntil a b, ρ, t => Temporal.strongUntil (a.eval τ O ρ) (b.eval τ O ρ) t
   | .weakUntil a b, ρ, t => Temporal.weakUntil (a.eval τ O ρ) (b.eval τ O ρ) t
+  | .previous a, ρ, t => Temporal.previous (a.eval τ O ρ) t
+  | .since a b, ρ, t => Temporal.since (a.eval τ O ρ) (b.eval τ O ρ) t
   | .quant q d a, ρ, t => q.eval (O.domain d ρ t) (fun x => a.eval τ O (ρ.push {x}) t)
   | .letSet d a, ρ, t => a.eval τ O (ρ.push (O.domain d ρ t)) t
 end Core
@@ -60,6 +66,7 @@ namespace Formula
 variable {A D : Nat → Type}
 
 -- [impl->req~behavioral-signed-normalization~1]
+-- [impl->req~behavioral-past-formulas~1]
 noncomputable def lower {n} : Formula A D n → Core A D n
   | .truth => .truth
   | .atom a => .atom (.source a)
@@ -78,6 +85,13 @@ noncomputable def lower {n} : Formula A D n → Core A D n
   | .weakUntil a b => .or
       (.weakUntil (.and (.atom .parentPresent) a.lower) (.not (.atom .parentPresent)))
       (.strongUntil (.and (.atom .parentPresent) a.lower) (.or (.not (.atom .parentPresent)) b.lower))
+  | .previous a => .previous (.and (.atom .parentPresent) a.lower)
+  | .weakPrevious a => .not (.previous (.and (.atom .parentPresent) (.not a.lower)))
+  | .once a => .since (.atom .parentPresent) (.and (.atom .parentPresent) a.lower)
+  | .historically a => .not (.since (.atom .parentPresent) (.and (.atom .parentPresent) (.not a.lower)))
+  | .since a b => .since (.and (.atom .parentPresent) a.lower) (.and (.atom .parentPresent) b.lower)
+  | .triggered a b => .not (.since (.and (.atom .parentPresent) (.not a.lower))
+      (.and (.atom .parentPresent) (.not b.lower)))
   | .initially a => .or (.not (.atom .starts)) a.lower
   | .finally a => .or (.not (.atom .ends)) a.lower
   | .quant q d a => .quant q d a.lower
@@ -92,11 +106,14 @@ theorem lower_agrees {C : Type} {U : Type u} (τ : Trace C U)
     simp_all [lower, Core.eval, raw, Quantifier.eval, Lifetime.weakUntil,
       Lifetime.next_lower, Lifetime.eventually_lower, Lifetime.always_lower,
       Lifetime.until_lower, Temporal.next, Temporal.eventually, Temporal.strongUntil,
-      Temporal.weakUntil, Temporal.always]
+      Temporal.weakUntil, Temporal.always, Lifetime.previous_lower, Lifetime.weakPrevious_lower,
+      Lifetime.once_lower, Lifetime.historically_lower, Lifetime.since_lower, Lifetime.triggered_lower,
+      Temporal.previous, Temporal.since]
   all_goals tauto
 
 -- [proof->req~behavioral-signed-normalization~1]
 /-- End-to-end source agreement: signs are processed *before* parent guards. -/
+-- [proof->req~behavioral-past-formulas~1]
 theorem normalize_lower_agrees {C : Type} {U : Type u} (τ : Trace C U)
     (O : Observation A D U) {n} (a : Formula A D n) (s : Bool)
     (ρ : Environment U n) (t : Nat) :
