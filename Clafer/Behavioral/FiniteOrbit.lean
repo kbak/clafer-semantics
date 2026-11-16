@@ -44,7 +44,7 @@ theorem until_step (f : S → S) (a b : S → Bool) (s : S) :
 returns a function can eagerly build a closure for every unit of the cardinality
 bound before inspecting the first state. This fixpoint visits only the reachable
 prefix, even when the certified product-state bound is enormous. -/
-def scan (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) : Bool :=
+def scanReachable (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) : Bool :=
   (measure (fun p : Nat × Finset S × S => p.1)).wf.fix
     (C := fun _ => Bool)
     (fun p next => match p with
@@ -56,17 +56,38 @@ def scan (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S)
           next (n, insert current visited, f current) (by decreasing_tactic)
         else false) (fuel, seen, s)
 
-@[simp] theorem scan_zero (f : S → S) (a b : S → Bool) (seen : Finset S) (s : S) :
-    scan f a b 0 seen s = false := by
-  rw [scan, WellFounded.fix_eq]
+@[simp] theorem scanReachable_zero (f : S → S) (a b : S → Bool) (seen : Finset S) (s : S) :
+    scanReachable f a b 0 seen s = false := by
+  rw [scanReachable, WellFounded.fix_eq]
 
-theorem scan_succ (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) :
-    scan f a b (fuel + 1) seen s =
+theorem scanReachable_succ (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) :
+    scanReachable f a b (fuel + 1) seen s =
       if s ∈ seen then false
       else if b s then true
-      else if a s then scan f a b fuel (insert s seen) (f s) else false := by
-  rw [scan, WellFounded.fix_eq]
+      else if a s then scanReachable f a b fuel (insert s seen) (f s) else false := by
+  rw [scanReachable, WellFounded.fix_eq]
   rfl
+
+-- [impl->req~behavioral-past-verification~1]
+/-- The structurally recursive specification remains reducible in kernel proofs. -/
+def scan (f : S → S) (a b : S → Bool) : Nat → Finset S → S → Bool :=
+  Nat.rec (fun _ _ => false) (fun _ next seen s =>
+    if s ∈ seen then false
+    else if b s then true
+    else if a s then next (insert s seen) (f s) else false)
+
+-- [proof->req~behavioral-past-verification~1]
+/-- Lean's standard proof-checked compiler replacement keeps runtime execution
+short-circuiting without changing kernel reduction or the agreement theorem. -/
+@[csimp] theorem scan_eq_scanReachable : @scan = @scanReachable := by
+  funext S inst f a b fuel seen s
+  induction fuel generalizing seen s with
+  | zero => rw [scanReachable_zero]; rfl
+  | succ fuel ih =>
+    rw [scanReachable_succ]
+    change (if s ∈ seen then false else if b s then true
+      else if a s then scan f a b fuel (insert s seen) (f s) else false) = _
+    simp only [ih]
 
 omit [DecidableEq S] in
 private theorem no_goal_of_closed (f : S → S) (b : S → Bool) (seen : Finset S)
@@ -103,12 +124,12 @@ theorem scan_agrees [Finite S] (f : S → S) (a b : S → Bool) (fuel : Nat)
       have hcard := (insert s seen).card_le_univ
       simp only [Finset.card_insert_of_notMem h, ← Nat.card_eq_fintype_card] at hcard
       omega
-    rw [scan_zero]
+    change false = true ↔ Until f a b s
     simp only [Bool.false_eq_true, false_iff]
     exact repeated seen s closed noGoal hs
   | succ fuel ih =>
     by_cases hs : s ∈ seen
-    · simp only [scan_succ, ite_eq_left hs, Bool.false_eq_true, false_iff]
+    · simp only [scan, ite_eq_left hs, Bool.false_eq_true, false_iff]
       exact repeated seen s closed noGoal hs
     · have stepClosed : ∀ x ∈ insert s seen, f x ∈ insert s seen ∨ f x = f s := by
         intro x hx
@@ -117,7 +138,7 @@ theorem scan_agrees [Finite S] (f : S → S) (a b : S → Bool) (fuel : Nat)
         · exact Or.inl ((closed x hx).elim (fun h => Finset.mem_insert_of_mem h)
             (fun h => h.symm ▸ Finset.mem_insert_self _ _))
       by_cases hb : b s = true
-      · simp only [scan_succ, ite_eq_right hs, hb, ↓reduceIte, true_iff]
+      · simp only [scan, ite_eq_right hs, hb, ↓reduceIte, true_iff]
         exact (until_step f a b s).mpr (Or.inl hb)
       · have hb' : b s = false := by simpa using hb
         have stepNoGoal : ∀ x ∈ insert s seen, b x = false := by
@@ -129,12 +150,12 @@ theorem scan_agrees [Finite S] (f : S → S) (a b : S → Bool) (fuel : Nat)
           rw [Finset.card_insert_of_notMem hs]
           omega
         by_cases ha : a s = true
-        · simp only [scan_succ, ite_eq_right hs, hb', ha, ↓reduceIte]
+        · simp only [scan, ite_eq_right hs, hb', ha, ↓reduceIte]
           exact (ih _ _ stepClosed stepNoGoal stepBudget).trans (by
             rw [until_step f a b s]
             simp only [hb', ha, Bool.false_eq_true, false_or, true_and])
         · have ha' : a s = false := by simpa using ha
-          simp only [scan_succ, ite_eq_right hs, hb', ha', ↓reduceIte, Bool.false_eq_true, false_iff]
+          simp only [scan, ite_eq_right hs, hb', ha', ↓reduceIte, Bool.false_eq_true, false_iff]
           rw [until_step]
           simp [hb', ha']
 
