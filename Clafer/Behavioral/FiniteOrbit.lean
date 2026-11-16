@@ -40,11 +40,54 @@ theorem until_step (f : S → S) (a b : S → Bool) (s : S) :
         | succ i => simpa only [Function.iterate_succ_apply] using rest i (by omega)
 
 -- [impl->req~behavioral-past-verification~1]
+/-- Keep fuel and orbit data in the same recursive argument. A recursor that
+returns a function can eagerly build a closure for every unit of the cardinality
+bound before inspecting the first state. This fixpoint visits only the reachable
+prefix, even when the certified product-state bound is enormous. -/
+def scanReachable (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) : Bool :=
+  (measure (fun p : Nat × Finset S × S => p.1)).wf.fix
+    (C := fun _ => Bool)
+    (fun p next => match p with
+      | (0, _, _) => false
+      | (n + 1, visited, current) =>
+        if current ∈ visited then false
+        else if b current then true
+        else if a current then
+          next (n, insert current visited, f current) (by decreasing_tactic)
+        else false) (fuel, seen, s)
+
+@[simp] theorem scanReachable_zero (f : S → S) (a b : S → Bool) (seen : Finset S) (s : S) :
+    scanReachable f a b 0 seen s = false := by
+  rw [scanReachable, WellFounded.fix_eq]
+
+theorem scanReachable_succ (f : S → S) (a b : S → Bool) (fuel : Nat) (seen : Finset S) (s : S) :
+    scanReachable f a b (fuel + 1) seen s =
+      if s ∈ seen then false
+      else if b s then true
+      else if a s then scanReachable f a b fuel (insert s seen) (f s) else false := by
+  rw [scanReachable, WellFounded.fix_eq]
+  rfl
+
+-- [impl->req~behavioral-past-verification~1]
+/-- The structurally recursive specification remains reducible in kernel proofs. -/
 def scan (f : S → S) (a b : S → Bool) : Nat → Finset S → S → Bool :=
   Nat.rec (fun _ _ => false) (fun _ next seen s =>
     if s ∈ seen then false
     else if b s then true
     else if a s then next (insert s seen) (f s) else false)
+
+-- [proof->req~behavioral-past-verification~1]
+/-- Lean's standard proof-checked compiler replacement keeps runtime execution
+short-circuiting without changing kernel reduction or the agreement theorem. -/
+@[csimp] theorem scan_eq_scanReachable : @scan = @scanReachable := by
+  funext S inst f a b fuel seen s
+  induction fuel generalizing seen s with
+  | zero => rw [scanReachable_zero]; rfl
+  | succ fuel ih =>
+    rw [scanReachable_succ]
+    change (if s ∈ seen then false else if b s then true
+      else if a s then scan f a b fuel (insert s seen) (f s) else false) = _
+    simp only [ih]
 
 omit [DecidableEq S] in
 private theorem no_goal_of_closed (f : S → S) (b : S → Bool) (seen : Finset S)

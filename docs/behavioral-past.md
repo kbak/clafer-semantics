@@ -98,6 +98,13 @@ operators differ. The [finite evaluator](behavioral-verification.md) therefore u
 machine state containing the necessary history. `Core.machine_agrees` proves
 equality with infinite meaning at every absolute time. Future search detects
 repetition of the complete state, and quantifiers/lets retain captured values.
+The certified cardinality bound supplies termination fuel; the evaluator inspects
+each reachable state before recursing, so it does not allocate a continuation
+chain proportional to that potentially enormous bound.
+`FiniteOrbit.scan_eq_scanReachable` proves the runtime replacement equal to the
+structurally recursive specification and registers it with Lean's standard
+`@[csimp]` mechanism (also used by `Init/Data/Nat/Fold.lean`). Kernel reduction
+and the finite-orbit agreement theorem continue to use the original specification.
 `PastIntegrationExamples` checks this distinction through mixed operators,
 parent gaps, captures, partial observations and guarded initializer lowering.
 
