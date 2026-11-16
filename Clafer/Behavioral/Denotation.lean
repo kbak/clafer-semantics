@@ -1,7 +1,7 @@
 module
 
 public import Clafer.Behavioral.Formula
-public import Clafer.Behavioral.Lifetime
+public import Clafer.Behavioral.Past
 
 /-!
 # Independent signed source meaning
@@ -23,6 +23,7 @@ variable {A D : Nat → Type} {C : Type} {U : Type u}
 -- [impl->req~behavioral-formula-denotation~1]
 /-- Classical Boolean interpretation of a body, with T2-bounded temporal nodes.
 Only counting barriers use this directly as source meaning. -/
+-- [impl->req~behavioral-past-formulas~1]
 noncomputable def raw (τ : Trace C U) (O : Observation A D U) {n} :
     Formula A D n → Environment U n → Nat → Prop
   | .truth, _, _ => True
@@ -40,6 +41,12 @@ noncomputable def raw (τ : Trace C U) (O : Observation A D U) {n} :
   | .always a, ρ, t => Lifetime.always (τ.ParentPresent ρ.this) (a.raw τ O ρ) t
   | .strongUntil a b, ρ, t => Lifetime.strongUntil (τ.ParentPresent ρ.this) (a.raw τ O ρ) (b.raw τ O ρ) t
   | .weakUntil a b, ρ, t => Lifetime.weakUntil (τ.ParentPresent ρ.this) (a.raw τ O ρ) (b.raw τ O ρ) t
+  | .previous a, ρ, t => Lifetime.previous (τ.ParentPresent ρ.this) (a.raw τ O ρ) t
+  | .weakPrevious a, ρ, t => Lifetime.weakPrevious (τ.ParentPresent ρ.this) (a.raw τ O ρ) t
+  | .once a, ρ, t => Lifetime.once (τ.ParentPresent ρ.this) (a.raw τ O ρ) t
+  | .historically a, ρ, t => Lifetime.historically (τ.ParentPresent ρ.this) (a.raw τ O ρ) t
+  | .since a b, ρ, t => Lifetime.since (τ.ParentPresent ρ.this) (a.raw τ O ρ) (b.raw τ O ρ) t
+  | .triggered a b, ρ, t => Lifetime.triggered (τ.ParentPresent ρ.this) (a.raw τ O ρ) (b.raw τ O ρ) t
   | .initially a, ρ, t => τ.Starts t ρ.this → a.raw τ O ρ t
   | .finally a, ρ, t => τ.Ends t ρ.this → a.raw τ O ρ t
   | .quant q d a, ρ, t => q.eval (O.domain d ρ t) (fun x => a.raw τ O (ρ.push {x}) t)
@@ -92,6 +99,24 @@ noncomputable def denote (τ : Trace C U) (O : Observation A D U) {n} :
       Lifetime.weakUntil (τ.ParentPresent ρ.this) (a.denote τ O true ρ) (b.denote τ O true ρ) t else
       Lifetime.strongUntil (τ.ParentPresent ρ.this) (b.denote τ O false ρ)
         (fun j => a.denote τ O false ρ j ∧ b.denote τ O false ρ j) t
+  | .previous a, s, ρ, t => if s then
+      Lifetime.previous (τ.ParentPresent ρ.this) (a.denote τ O true ρ) t else
+      Lifetime.weakPrevious (τ.ParentPresent ρ.this) (a.denote τ O false ρ) t
+  | .weakPrevious a, s, ρ, t => if s then
+      Lifetime.weakPrevious (τ.ParentPresent ρ.this) (a.denote τ O true ρ) t else
+      Lifetime.previous (τ.ParentPresent ρ.this) (a.denote τ O false ρ) t
+  | .once a, s, ρ, t => if s then
+      Lifetime.once (τ.ParentPresent ρ.this) (a.denote τ O true ρ) t else
+      Lifetime.historically (τ.ParentPresent ρ.this) (a.denote τ O false ρ) t
+  | .historically a, s, ρ, t => if s then
+      Lifetime.historically (τ.ParentPresent ρ.this) (a.denote τ O true ρ) t else
+      Lifetime.once (τ.ParentPresent ρ.this) (a.denote τ O false ρ) t
+  | .since a b, s, ρ, t => if s then
+      Lifetime.since (τ.ParentPresent ρ.this) (a.denote τ O true ρ) (b.denote τ O true ρ) t else
+      Lifetime.triggered (τ.ParentPresent ρ.this) (a.denote τ O false ρ) (b.denote τ O false ρ) t
+  | .triggered a b, s, ρ, t => if s then
+      Lifetime.triggered (τ.ParentPresent ρ.this) (a.denote τ O true ρ) (b.denote τ O true ρ) t else
+      Lifetime.since (τ.ParentPresent ρ.this) (a.denote τ O false ρ) (b.denote τ O false ρ) t
   | .initially a, s, ρ, t => τ.Starts t ρ.this → a.denote τ O s ρ t
   | .finally a, s, ρ, t => τ.Ends t ρ.this → a.denote τ O s ρ t
   | .quant .all d a, s, ρ, t => if s then

@@ -103,15 +103,15 @@ inductive Result where
 def check {a : Formula A D n} {sign : Bool} (p : a.Program sign)
     (L : Lasso C size last) (F : FinitePartialObservation A D size last)
     (ρ : FiniteEnvironment size n) (t : Nat) : Result :=
-  if p.domain.finite L F.checked ρ (L.clock t) then
-    if p.value.finite L F.checked ρ (L.clock t) then .satisfied else .violated
+  if p.domain.finite L F.checked ρ t then
+    if p.value.finite L F.checked ρ t then .satisfied else .violated
   else .undefined
 
 -- [proof->req~behavioral-qualification~1]
 theorem domain_agrees {a : Formula A D n} {sign : Bool} (p : a.Program sign)
     (L : Lasso C size last) {O : PartialObservation A D (Fin size)}
     (F : FinitePartialAdapter L O) (ρ : FiniteEnvironment size n) (t : Nat) :
-    p.domain.finite L F.observations.checked ρ (L.clock t) = true ↔
+    p.domain.finite L F.observations.checked ρ t = true ↔
       a.Defined L.unfold O ρ.realize t := by
   rw [Core.finite_agrees L _ _ (F.observations.checked_agrees L O F.agrees),
     p.domain_eq, lower_agrees, domainFormula_agrees]
@@ -119,7 +119,7 @@ theorem domain_agrees {a : Formula A D n} {sign : Bool} (p : a.Program sign)
 theorem value_agrees {a : Formula A D n} {sign : Bool} (p : a.Program sign)
     (L : Lasso C size last) {O : PartialObservation A D (Fin size)}
     (F : FinitePartialAdapter L O) (ρ : FiniteEnvironment size n) (t : Nat) :
-    p.value.finite L F.observations.checked ρ (L.clock t) = true ↔
+    p.value.finite L F.observations.checked ρ t = true ↔
       a.denote L.unfold O.canonical sign ρ.realize t := by
   rw [Core.finite_agrees L _ _ (F.observations.checked_agrees L O F.agrees), p.value_eq,
     Core.mapAtoms_agrees L.unfold O.canonical O.checked CheckedAtom.value
@@ -137,8 +137,7 @@ theorem check_undefined {a : Formula A D n} {sign : Bool} (p : a.Program sign)
     (F : FinitePartialAdapter L O) (ρ : FiniteEnvironment size n) (t : Nat) :
     p.check L F.observations ρ t = .undefined ↔ ¬ a.Defined L.unfold O ρ.realize t := by
   simp only [check, ← p.domain_agrees L F ρ t]
-  split <;> simp_all
-  split <;> simp_all
+  split_ifs <;> simp_all
 
 theorem check_violated {a : Formula A D n} {sign : Bool} (p : a.Program sign)
     (L : Lasso C size last) {O : PartialObservation A D (Fin size)}

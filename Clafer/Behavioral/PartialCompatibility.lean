@@ -44,6 +44,24 @@ theorem raw_extension_agrees {n} (a : Formula A D n) (ρ : Environment U n) (t :
   | weakUntil a b iha ihb =>
     exact Lifetime.weakUntil_congr (fun j hj hp => iha ρ j (defined j hj hp).1)
       (fun j hj hp => ihb ρ j (defined j hj hp).2)
+  | previous a ih =>
+    apply Lifetime.previous_congr
+    cases t with
+    | zero => trivial
+    | succ t => exact fun hp => ih ρ t (defined hp)
+  | weakPrevious a ih =>
+    apply Lifetime.weakPrevious_congr
+    cases t with
+    | zero => trivial
+    | succ t => exact fun hp => ih ρ t (defined hp)
+  | once a ih => exact Lifetime.once_congr (fun j hj hp => ih ρ j (defined j hj hp))
+  | historically a ih => exact Lifetime.historically_congr (fun j hj hp => ih ρ j (defined j hj hp))
+  | since a b iha ihb =>
+    exact Lifetime.since_congr (fun j hj hp => iha ρ j (defined j hj hp).1)
+      (fun j hj hp => ihb ρ j (defined j hj hp).2)
+  | triggered a b iha ihb =>
+    exact Lifetime.triggered_congr (fun j hj hp => iha ρ j (defined j hj hp).1)
+      (fun j hj hp => ihb ρ j (defined j hj hp).2)
   | initially a ih | «finally» a ih => exact imp_congr_right (fun ht => ih ρ t (defined ht))
   | quant q d a ih =>
     obtain ⟨S, hs, bodies⟩ := defined
@@ -56,6 +74,7 @@ theorem raw_extension_agrees {n} (a : Formula A D n) (ρ : Environment U n) (t :
 
 -- [proof->req~behavioral-reference-atoms~1]
 include left right in
+-- [proof->req~behavioral-past-formulas~1]
 theorem extension_agrees {n} (a : Formula A D n) (s : Bool) (ρ : Environment U n) (t : Nat)
     (defined : a.Defined τ O ρ t) : a.denote τ L s ρ t ↔ a.denote τ R s ρ t := by
   induction a generalizing s t with
@@ -97,6 +116,46 @@ theorem extension_agrees {n} (a : Formula A D n) (s : Bool) (ρ : Environment U 
         (fun j hj hp => and_congr (iha false ρ j (defined j hj hp).1)
           (ihb false ρ j (defined j hj hp).2))
     · exact Lifetime.weakUntil_congr (fun j hj hp => iha true ρ j (defined j hj hp).1)
+        (fun j hj hp => ihb true ρ j (defined j hj hp).2)
+  | previous a ih =>
+    cases s
+    · apply Lifetime.weakPrevious_congr
+      cases t with
+      | zero => trivial
+      | succ t => exact fun hp => ih false ρ t (defined hp)
+    · apply Lifetime.previous_congr
+      cases t with
+      | zero => trivial
+      | succ t => exact fun hp => ih true ρ t (defined hp)
+  | weakPrevious a ih =>
+    cases s
+    · apply Lifetime.previous_congr
+      cases t with
+      | zero => trivial
+      | succ t => exact fun hp => ih false ρ t (defined hp)
+    · apply Lifetime.weakPrevious_congr
+      cases t with
+      | zero => trivial
+      | succ t => exact fun hp => ih true ρ t (defined hp)
+  | once a ih =>
+    cases s
+    · exact Lifetime.historically_congr (fun j hj hp => ih false ρ j (defined j hj hp))
+    · exact Lifetime.once_congr (fun j hj hp => ih true ρ j (defined j hj hp))
+  | historically a ih =>
+    cases s
+    · exact Lifetime.once_congr (fun j hj hp => ih false ρ j (defined j hj hp))
+    · exact Lifetime.historically_congr (fun j hj hp => ih true ρ j (defined j hj hp))
+  | since a b iha ihb =>
+    cases s
+    · exact Lifetime.triggered_congr (fun j hj hp => iha false ρ j (defined j hj hp).1)
+        (fun j hj hp => ihb false ρ j (defined j hj hp).2)
+    · exact Lifetime.since_congr (fun j hj hp => iha true ρ j (defined j hj hp).1)
+        (fun j hj hp => ihb true ρ j (defined j hj hp).2)
+  | triggered a b iha ihb =>
+    cases s
+    · exact Lifetime.since_congr (fun j hj hp => iha false ρ j (defined j hj hp).1)
+        (fun j hj hp => ihb false ρ j (defined j hj hp).2)
+    · exact Lifetime.triggered_congr (fun j hj hp => iha true ρ j (defined j hj hp).1)
         (fun j hj hp => ihb true ρ j (defined j hj hp).2)
   | initially a ih | «finally» a ih => exact imp_congr_right (fun ht => ih s ρ t (defined ht))
   | quant q d a ih =>

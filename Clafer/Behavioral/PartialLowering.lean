@@ -34,6 +34,7 @@ noncomputable def mapAtoms (f : ∀ {n}, A n → B n) {n} : Core A D n → Core 
   | .truth => .truth
   | .atom (.source a) => .atom (.source (f a))
   | .atom .parentPresent => .atom .parentPresent
+  | .atom .contextPresent => .atom .contextPresent
   | .atom .starts => .atom .starts
   | .atom .ends => .atom .ends
   | .not a => .not (a.mapAtoms f)
@@ -44,6 +45,8 @@ noncomputable def mapAtoms (f : ∀ {n}, A n → B n) {n} : Core A D n → Core 
   | .always a => .always (a.mapAtoms f)
   | .strongUntil a b => .strongUntil (a.mapAtoms f) (b.mapAtoms f)
   | .weakUntil a b => .weakUntil (a.mapAtoms f) (b.mapAtoms f)
+  | .previous a => .previous (a.mapAtoms f)
+  | .since a b => .since (a.mapAtoms f) (b.mapAtoms f)
   | .quant q d a => .quant q d (a.mapAtoms f)
   | .letSet d a => .letSet d (a.mapAtoms f)
 
@@ -56,7 +59,7 @@ theorem mapAtoms_agrees (τ : Trace C U) (O : Observation A D U)
   induction a generalizing t with
   | atom a => cases a <;> simp [mapAtoms, eval, atoms]
   | _ => simp_all [mapAtoms, eval, Quantifier.eval, Temporal.next,
-      Temporal.eventually, Temporal.always, Temporal.strongUntil, Temporal.weakUntil]
+      Temporal.eventually, Temporal.always, Temporal.strongUntil, Temporal.weakUntil, Temporal.previous, Temporal.since]
 
 end Core
 
@@ -66,6 +69,7 @@ variable {A D : Nat → Type} {C : Type} {U : Type u}
 -- [impl->req~behavioral-qualification~1]
 /-- Domain obligations use all members even for `some`, `no`, `one` and `lone`,
 and the entire active parent suffix even for an already-witnessed eventuality. -/
+-- [impl->req~behavioral-past-formulas~1]
 noncomputable def domainFormula {n} : Formula A D n → Formula (CheckedAtom A D) D n
   | .truth => .truth
   | .atom a => .atom (.atomDefined a)
@@ -76,6 +80,9 @@ noncomputable def domainFormula {n} : Formula A D n → Formula (CheckedAtom A D
   | .next a => .next a.domainFormula
   | .eventually a | .always a => .always a.domainFormula
   | .strongUntil a b | .weakUntil a b => .always (.and a.domainFormula b.domainFormula)
+  | .previous a | .weakPrevious a => .weakPrevious a.domainFormula
+  | .once a | .historically a => .historically a.domainFormula
+  | .since a b | .triggered a b => .historically (.and a.domainFormula b.domainFormula)
   | .initially a => .initially a.domainFormula
   | .finally a => .finally a.domainFormula
   | .quant _ d a => .and (.atom (.domainDefined d)) (.quant .all d a.domainFormula)
@@ -96,7 +103,7 @@ theorem domainFormula_agrees (τ : Trace C U) (O : PartialObservation A D U)
       refine ⟨⟨S, hs⟩, ?_⟩
       simpa [PartialObservation.checked, PartialObservation.canonical, PartialObservation.complete, hs] using h
   | _ => simp_all [domainFormula, raw, Defined, PartialObservation.checked,
-      Lifetime.next, Lifetime.always]
+      Lifetime.next, Lifetime.always, Lifetime.historically, Lifetime.weakPrevious]
 
 -- [impl->req~behavioral-qualification~1]
 /-- Lower the strict source domain and signed truth together. This is a source
@@ -105,6 +112,7 @@ noncomputable def checkedCore {n} (a : Formula A D n) (sign : Bool) : Core (Chec
   .and a.domainFormula.lower ((a.normalize sign).lower.mapAtoms CheckedAtom.value)
 
 -- [proof->req~behavioral-qualification~1]
+-- [proof->req~behavioral-past-formulas~1]
 theorem checkedCore_agrees (τ : Trace C U) (O : PartialObservation A D U)
     {n} (a : Formula A D n) (sign : Bool) (ρ : Environment U n) (t : Nat) :
     (a.checkedCore sign).eval τ O.checked ρ t ↔ a.Satisfies τ O sign ρ t := by

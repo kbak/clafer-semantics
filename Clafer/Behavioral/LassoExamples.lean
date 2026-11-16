@@ -41,7 +41,7 @@ abbrev D := SetExpr (Fin 4)
 abbrev K := Core A D 0
 
 def evaluate (L : Lasso (Fin 4) 8 3) (a : K) (context : Fin 8 := 3) (t : Nat := 0) : Bool :=
-  a.finite L (FiniteObservation.sets model L) (.closed context) (L.clock t)
+  a.finite L (FiniteObservation.sets model L) (.closed context) t
 
 def fNever : K := .eventually (.or (.not (.atom .parentPresent)) (.not .truth))
 def gTrue : K := .weakUntil (.and (.atom .parentPresent) .truth) (.not (.atom .parentPresent))

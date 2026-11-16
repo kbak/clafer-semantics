@@ -69,7 +69,7 @@ theorem observations_agree (v : Valuation) : (finiteObservation v).Agrees trace 
 
 noncomputable def checkFormula (a : F) (v : Valuation) (positive : Bool := true)
     (context : Fin 8 := 0) (time : Nat := 0) : Bool :=
-  (a.normalize positive).lower.finite trace (finiteObservation v) (.closed context) (trace.clock time)
+  (a.normalize positive).lower.finite trace (finiteObservation v) (.closed context) time
 
 noncomputable def check (row : Fin 6) (column : Fin 5) (good positive : Bool) : Bool :=
   checkFormula (expand (pattern row) (scope column)) (matrix row good) positive
