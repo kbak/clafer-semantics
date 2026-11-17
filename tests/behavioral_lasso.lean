@@ -46,7 +46,7 @@ private def atomQ : Core (fun _ => Bool) (fun _ => Unit) 0 := .atom (.source fal
             let eventuallyP := offsets.any P
             let alwaysP := offsets.all P
             let untilPQ := offsets.any (fun k => Q k && (List.range k).all P)
-            let eval := fun a => Core.finite L F a (.closed 1) (L.clock t)
+            let eval := fun a => Core.finite L F a (.closed 1) t
             let expected : List (Core (fun _ => Bool) (fun _ => Unit) 0 × Bool) := [
               (.next atomP, P 1),
               (.eventually atomP, eventuallyP),

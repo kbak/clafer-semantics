@@ -59,6 +59,7 @@ namespace Formula
 variable {A D : Nat → Type} {C : Type} {U : Type u}
 
 -- [impl->req~behavioral-reference-atoms~1]
+-- [impl->req~behavioral-past-formulas~1]
 noncomputable def Defined (τ : Trace C U) (O : PartialObservation A D U) {n} :
     Formula A D n → Environment U n → Nat → Prop
   | .truth, _, _ => True
@@ -73,6 +74,12 @@ noncomputable def Defined (τ : Trace C U) (O : PartialObservation A D U) {n} :
   | .strongUntil a b, ρ, t | .weakUntil a b, ρ, t =>
       ∀ j, t ≤ j → Lifetime.Through (τ.ParentPresent ρ.this) t j →
         a.Defined τ O ρ j ∧ b.Defined τ O ρ j
+  | .previous a, ρ, t | .weakPrevious a, ρ, t =>
+      Lifetime.weakPrevious (τ.ParentPresent ρ.this) (a.Defined τ O ρ) t
+  | .once a, ρ, t | .historically a, ρ, t =>
+      Lifetime.historically (τ.ParentPresent ρ.this) (a.Defined τ O ρ) t
+  | .since a b, ρ, t | .triggered a b, ρ, t =>
+      Lifetime.historically (τ.ParentPresent ρ.this) (fun j => a.Defined τ O ρ j ∧ b.Defined τ O ρ j) t
   | .initially a, ρ, t => τ.Starts t ρ.this → a.Defined τ O ρ t
   | .finally a, ρ, t => τ.Ends t ρ.this → a.Defined τ O ρ t
   | .quant _ d a, ρ, t => ∃ S, O.domain d ρ t = some S ∧
@@ -97,8 +104,11 @@ theorem undefined_neither (τ : Trace C U) (O : PartialObservation A D U) {n}
 theorem total_defined (τ : Trace C U) (O : Observation A D U) {n}
     (a : Formula A D n) (ρ : Environment U n) (t : Nat) :
     a.Defined τ (.ofTotal O) ρ t := by
-  induction a generalizing t <;> simp_all [Defined, PartialObservation.ofTotal]
-  exact ⟨_, Iff.rfl⟩
+  induction a generalizing t with
+  | atom a => exact ⟨_, rfl⟩
+  | previous a ih | weakPrevious a ih =>
+    cases t <;> simp_all [Defined, Lifetime.weakPrevious]
+  | _ => simp_all [Defined, PartialObservation.ofTotal, Lifetime.historically]
 
 theorem total_agrees (τ : Trace C U) (O : Observation A D U) {n}
     (a : Formula A D n) (s : Bool) (ρ : Environment U n) (t : Nat) :

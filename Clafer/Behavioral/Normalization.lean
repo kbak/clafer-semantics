@@ -16,6 +16,7 @@ namespace Clafer.Behavioral.Formula
 variable {A D : Nat → Type}
 
 -- [impl->req~behavioral-signed-normalization~1]
+-- [impl->req~behavioral-past-formulas~1]
 noncomputable def normalize {n} : Formula A D n → Bool → Formula A D n
   | .truth, s => if s then .truth else .not .truth
   | .atom a, s => if s then .atom a else .not (.atom a)
@@ -42,6 +43,14 @@ noncomputable def normalize {n} : Formula A D n → Bool → Formula A D n
       else .weakUntil (b.normalize false) (.and (a.normalize false) (b.normalize false))
   | .weakUntil a b, s => if s then .weakUntil (a.normalize true) (b.normalize true)
       else .strongUntil (b.normalize false) (.and (a.normalize false) (b.normalize false))
+  | .previous a, s => if s then .previous (a.normalize true) else .weakPrevious (a.normalize false)
+  | .weakPrevious a, s => if s then .weakPrevious (a.normalize true) else .previous (a.normalize false)
+  | .once a, s => if s then .once (a.normalize true) else .historically (a.normalize false)
+  | .historically a, s => if s then .historically (a.normalize true) else .once (a.normalize false)
+  | .since a b, s => if s then .since (a.normalize true) (b.normalize true)
+      else .triggered (a.normalize false) (b.normalize false)
+  | .triggered a b, s => if s then .triggered (a.normalize true) (b.normalize true)
+      else .since (a.normalize false) (b.normalize false)
   | .initially a, s => .initially (a.normalize s)
   | .finally a, s => .finally (a.normalize s)
   | .quant .all d a, s => if s then .quant .all d (a.normalize true)
@@ -57,6 +66,7 @@ noncomputable def normalize {n} : Formula A D n → Bool → Formula A D n
 -- [proof->req~behavioral-signed-normalization~1]
 /-- All constructors, both signs, all environments/times. No compiler/evaluator
 agreement premise is assumed: induction checks the actual translation. -/
+-- [proof->req~behavioral-past-formulas~1]
 theorem normalize_agrees {C : Type} {U : Type u} (τ : Trace C U)
     (O : Observation A D U) {n} (a : Formula A D n) (s : Bool)
     (ρ : Environment U n) (t : Nat) :
@@ -64,15 +74,18 @@ theorem normalize_agrees {C : Type} {U : Type u} (τ : Trace C U)
   induction a generalizing s t with
   | quant q d a ih => cases q <;> cases s <;> simp [normalize, raw, denote, polarity, Quantifier.eval, ih]
   | _ => cases s <;> simp_all [normalize, raw, denote, polarity, Lifetime.next, Lifetime.eventually,
-      Lifetime.always, Lifetime.strongUntil, Lifetime.weakUntil]
+      Lifetime.always, Lifetime.strongUntil, Lifetime.weakUntil, Lifetime.previous,
+      Lifetime.weakPrevious, Lifetime.once, Lifetime.historically, Lifetime.since, Lifetime.triggered]
 
 -- [impl->req~behavioral-signed-normalization~1]
 /-- Normal form outside one/lone barriers; their bodies are deliberately raw. -/
 noncomputable def Normal {n} : Formula A D n → Prop
   | .truth | .atom _ | .not .truth | .not (.atom _) => True
   | .quant .one _ _ | .quant .lone _ _ | .not (.quant .one _ _) | .not (.quant .lone _ _) => True
-  | .and a b | .or a b | .strongUntil a b | .weakUntil a b => a.Normal ∧ b.Normal
-  | .next a | .eventually a | .always a | .initially a | .finally a => a.Normal
+  | .and a b | .or a b | .strongUntil a b | .weakUntil a b
+  | .since a b | .triggered a b => a.Normal ∧ b.Normal
+  | .next a | .eventually a | .always a | .initially a | .finally a
+  | .previous a | .weakPrevious a | .once a | .historically a => a.Normal
   | .quant .all _ a | .quant .some _ a | .letSet _ a => a.Normal
   | _ => False
 
