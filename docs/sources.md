@@ -1976,6 +1976,20 @@ records later supplementary corrections without adopting their compiler pin.
   `inherited_ref_mutation` and `inherited_shallow_final` retain owner and depth
   boundaries. This is a documented compiler mismatch, not paper equivalence.
 
+The [accepted finality reduction](https://github.com/kbak/clafer-semantics/issues/192)
+uses behavioral §5 Definitions 3–5 and §§6.1–6.2 p.2:32 together with that D5
+completion. `ModifierLowering` reuses the existing adjacent-stability and
+expansion proofs, then eliminates rich modifiers and lifetime anchors into
+checked ordinary core obligations. Its independent-meaning equivalence assumes
+richer structural validity and the proved total inherited-set observation;
+arbitrary partial observations retain the expanded strict domain. The
+[surface contract](behavioral-surface.md#common-temporal-core) records the exact
+core boundary and witnesses. The
+[compiler discussion](https://github.com/gsdlab/clafer/issues/127) motivates this
+reduction but supplies neither its correctness definition nor an attribution of
+`finalref`/`finaltarget` to the paper. Executable lowering and interchange remain
+[downstream work](https://github.com/kbak/clafer-compiler-lean/issues/143).
+
 The direct interval/sequence meanings and syntax expansions are separately defined
 and proved equal for both source signs. The complete thirty-cell finite witnesses
 are transported to infinite source meaning through the accepted lasso theorem.

@@ -88,6 +88,18 @@ initializer equations for all four clocks, assuming the root remains live. The
 RHS stays in its original resolved frame. The result covers arbitrary partial
 observations; a finite implementation still needs a certified observation adapter.
 
+## Finality in the same core
+
+The [modifier reduction](behavioral-surface.md#common-temporal-core) reuses
+captured adjacent equality for `final`, `finalref` and `finaltarget`; it does not
+need past operators to express stability. `Modifiers.lowerCore` uses the same
+checked lowering and anchor expansion as initializers, and also handles `initial`
+births through ordinary previous. The resulting bodies contain neither modifier
+operations nor birth/end atoms. Parent-lifetime source next remains unchanged:
+the expansion explicitly tests the attachment's own survival to reset finality
+after its gap. Strict implication continues to demand a defined equality under
+an active parent guard; only the proved total set adapter discharges this demand.
+
 ## Verification boundary
 
 [`PastExamples.lean`](../Clafer/Behavioral/PastExamples.lean) checks all six initial
