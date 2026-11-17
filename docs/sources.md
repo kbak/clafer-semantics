@@ -2199,3 +2199,33 @@ are not identified when their history states differ. The independent interval
 meanings, kernel-checked composition theorems and executable regressions are
 separate evidence. [Downstream adoption](https://github.com/kbak/clafer-compiler-lean/issues/141)
 must preserve the same attachment and partial-domain assumptions.
+
+## Aggregate abstract multiplicity
+
+<!-- [impl->req~behavioral-source-correspondence~1] -->
+
+The [aggregate abstract contract](abstract-multiplicity.md) implements the
+accepted [issue #193 decision](https://github.com/kbak/clafer-semantics/issues/193)
+and [proposal/paper comparison](https://github.com/gsdlab/clafer/issues/129#issuecomment-6921561554).
+SoSyM §5.2 (PDF p.14) supplies interval multiplicity; §5.3.4 (PDF p.15)
+and §5.5 (PDF p.17) supply abstract views and shared-object inheritance.
+The corrected parentless Shape retains its head but lacks parent-dependent
+maps. The extension bounds that entire head, including nested realizations
+under multiple actual parents. This is an accepted language extension beyond
+[D3](resolved-ir-comparison.md#decision-d3), not merely the journal's root-child
+count and not a claim that the paper already supplies this global predicate.
+Nested bounds retain the ordinary declared-parent fiber meaning.
+
+Behavioral §5 Definitions 1, 3 and 5 (pp. 2:23–28) provide the structural and
+every-state setting. `Always` requires the new independent static obligation
+at every state; source identities are shared across inherited views and distinct
+reference heads remain distinct even at one target. The cardinality bridges
+state local finite representation hypotheses without constraining generic
+DPGraph/FormalCD carriers. The source projection keeps authored abstract bounds
+separate from effective optimizer data and finite search scopes.
+
+Historical **behavioral-0.5.8/v2** and static S/importer/checker contracts keep
+their recorded admission. The separately selected **abstract-multiplicity/v1**
+API is independently authored and does not assert agreement with the pinned
+Haskell backend. Bounded initializer-clock admission and downstream compiler
+encoding require their own follow-up and accepted semantic pin.

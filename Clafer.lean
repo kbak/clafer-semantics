@@ -10,6 +10,7 @@ public import Clafer.Compile.GroupSemantics
 public import Clafer.Compile.Realization
 public import Clafer.Compile.ConstraintMeaning
 public import Clafer.Semantics.RealizationCompatibility
+public import Clafer.Semantics.AbstractMultiplicity
 public import Clafer.Semantics.Abstracts
 public import Clafer.Semantics.Reachability
 public import Clafer.Verification.Representation

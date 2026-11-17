@@ -1,5 +1,6 @@
 module
 
+public import Clafer.Behavioral.AbstractMultiplicity
 public import Clafer.Behavioral.Trace
 public import Clafer.Behavioral.Snapshot
 public import Clafer.Behavioral.Lowering
