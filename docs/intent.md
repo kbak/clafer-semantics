@@ -111,7 +111,8 @@ parent-lifetime and arithmetic boundaries. The independent
 [initializer equations](behavioral-structure.md#candidate-initializer-equations)
 ground production presence guards, classified initialization clocks and
 constant-trace agreement. The accepted
-[initializer contract](behavioral-initializers.md) specifies inherited clocks,
+[initializer contract](behavioral-initializers.md) specifies explicit clocks
+independent of multiplicity, preserved shorthand and inherited clocks,
 defaulting, bag target sets, global initialization, scalar admission and diagnostics,
 with classification/bound proofs, original-environment transport, production
 elaboration and conditional lifetime-finality agreement. The [finite behavioral checker](behavioral-verification.md)

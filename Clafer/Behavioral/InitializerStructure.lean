@@ -30,9 +30,10 @@ def metadata (d : Fin k) (authored : Option DPGraph.Predicates.Range) :
 retains authored/default provenance and supplies independently justified scalar
 admission; effective abstractness/group/parent data are read from the core. -/
 def elaborate {V : Type} (d : Fin k) (form : Form)
-    (authored : Option DPGraph.Predicates.Range) (scalar : Bool) (rhs : V) :
+    (authored : Option DPGraph.Predicates.Range) (scalar : Bool) (rhs : V)
+    (choice : Option Classification.Selection := none) :
     Except Classification.Diagnostic (Obligation (Fin k) V) :=
-  Initializers.elaborate d form (metadata m d authored) scalar rhs
+  Initializers.elaborate d form (metadata m d authored) scalar rhs choice
 
 def origin (d : Fin k) : Transport.Origin :=
   if (m.family.parent d).isSome then .parent else .root

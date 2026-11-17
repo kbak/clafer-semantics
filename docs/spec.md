@@ -466,7 +466,11 @@ Classify every S1–S11/T8/T10/T11 prerequisite in the
 [structural contract](behavioral-structure.md). B32 adopts the accepted hard
 initializer extension: `=` is an aggregate equation at every live attachment
 state; `:=` uses the classified instance-birth, parent-birth or global time-zero
-clock. Both use a declaration-level presence guard, imposing no RHS definedness
+clock, with optional explicit selection independent of multiplicity. The
+[clock-selection contract](behavioral-initializers.md#explicit-clocks-and-static-agreement)
+retains per-head static meaning for explicit plural concrete instance clocks;
+aggregate agreement needs scalar-RHS or at-most-one-head premises. Both use a
+declaration-level presence guard, imposing no RHS definedness
 on empty heads. General Boolean evaluation remains strict. Preserve the
 historical SoSyM checkpoint and explicit `Initializers.Legacy` strict API. Supply admitted richer structural models and negative
 wrong-group, authored-abstract, reference-key and endpoint witnesses. No required
@@ -508,7 +512,9 @@ inherited group defaults; constraints on counts must not reclassify initializers
 Conjoin own and inherited obligations without replacement.
 
 Supply an independent resolved classifier and explicit unsupported-form diagnostics.
-Parentless abstract initializers admit omitted or explicit unrestricted bounds only.
+Parentless abstract shorthand admits omitted or explicit unrestricted bounds only;
+the explicit-clock extension below admits other valid authored bounds when
+composed with aggregate abstract multiplicity.
 Per-instance abstract initializers require a scalar RHS in static and temporal
 models. Justify a conservative bound analysis against the existing partial evaluator,
 with declaration/navigation leaf certificates independent of initializer satisfaction.
@@ -524,7 +530,8 @@ observation assumptions of the existing constant-trace theorems explicit. Retain
 the multi-target abstract counterexample and structurally admitted positive/negative
 witnesses for late births, removal, exactly-one replacement, two clocks, global
 cross-parent/late-parent initialization, bag repetition and cardinality conflicts.
-Cover defaulting, finite parentless-bound rejection, scalar admission and diagnostic
+Cover defaulting, rejection of bounded parentless shorthand without a clock,
+scalar admission and diagnostic
 distinctions. Do not equate an impossible nonempty birth with a permanently absent
 declaration or an unsatisfiable whole model.
 
@@ -549,6 +556,46 @@ parent replacement, simultaneous dependencies and mixed initializer conflicts.
 Initializers remain backend-independent hard constraints. Frontend lookup,
 authored provenance, backend preservation and temporal-let reference compatibility
 remain separately owned; no default optimization or assignment execution is added.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Independent initializer clock selection
+
+`req~initializer-clock-selection~1`
+
+Implement the [explicit clock contract](behavioral-initializers.md) of #194.
+An authored instance/collection choice takes precedence over multiplicity-based
+shorthand for its own `:=` only. Instance checks every head birth, including late
+birth and rebirth. Collection checks the complete declaration view at every
+birth of the original declared parent, or globally at time zero for a parentless
+abstract. Actual realization parents must not reclassify global obligations.
+Support both choices across valid finite/unbounded bounds; retain authored
+omission, explicit-bound provenance and every previously supported shorthand.
+Keep `=` and ordinary strict Boolean meaning unchanged.
+
+Compose bounded parentless abstract admission with the accepted aggregate count
+contract, retaining every-state counts independently of initializer satisfaction.
+Require an explicit choice for a parentless abstract `:=` carrying an authored
+bound other than unrestricted, and provide a missing-choice diagnostic. Validate
+ranges before clock choice and retain abstract per-instance scalar admission.
+Admit plural concrete per-instance forms without an additional scalar restriction:
+a multi-target RHS conflicts with each active singleton equation. On a constant
+trace the explicit instance meaning is per-head; aggregate static agreement
+requires an independently established scalar RHS or at-most-one head view.
+Do not extend the old compatibility theorem without those premises or erase the
+explicit choice during static-first elaboration.
+
+Preserve inactive guards, defined-empty versus undefined, complete original RHS
+frames, inherited collection scope and conjunctive own/inherited obligations.
+Prove classification/bound independence, production elaboration and ordinary-core
+truth/domain agreement. Keep old supported-form results and add both-clock
+witnesses across finite/unbounded bounds, late births, head/parent rebirth,
+cross-parent globals, inherited narrowing, duplicate bag targets and inactive
+undefined RHSs. State the extension's source disposition against behavioral §5
+Definitions 3–5 and §6.1, without claiming existing parser or backend agreement.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -871,7 +918,8 @@ state; other past operands require definedness throughout the active parent
 history, including the current state. No missing observation becomes a Boolean
 value. Lower initializer birth guards into separate truth and domain obligations,
 so inactive births do not demand a defined RHS. Retain original attachment and
-captured identities. Follow the [past contract](behavioral-past.md).
+captured identities, including explicit initializer clocks and the independent
+aggregate-count composition. Follow the [past contract](behavioral-past.md).
 
 Expose modifier obligations at the same ordinary core boundary, eliminating
 birth/end anchors as well as rich modifier operations. Finality may reuse
@@ -995,6 +1043,9 @@ Do not coerce undefined static/primitive values to Boolean results: any reuse of
 the static evaluator requires a separate agreement theorem with discharged
 environment and definedness conditions. The separate behavioral references and
 partial-atoms requirement owns that integration under the adopted D3 rules.
+Explicit initializer clocks preserve the original declaration context and partial
+RHS frame; a concrete realization’s actual parent does not replace a parentless
+abstract’s root frame.
 
 Covers:
 - `intent~formalization-foundation~1`

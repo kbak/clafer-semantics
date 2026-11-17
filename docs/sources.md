@@ -1744,7 +1744,7 @@ Appendix 3, with the separately adopted child-default evolution above.
 
 Global time-zero initialization for parentless abstracts, scalar-only admission
 for per-instance abstract initializers, and rejection of other authored parentless
-bounds are explicit accepted supported-form decisions. They are not consequences
+bounds in shorthand are explicit accepted supported-form decisions. They are not consequences
 claimed verbatim from either paper. Existing parentless Shapes acquire no source
 map or global key. The source comparison remains pinned to
 [`fca0deb9c766261f5c0d2ae57af4ba9b07e1279a`](https://github.com/gsdlab/clafer/tree/fca0deb9c766261f5c0d2ae57af4ba9b07e1279a);
@@ -1771,6 +1771,27 @@ truth and strict domain, as exposed by the pinned
 The independent `InitializerTransport` constructor and its partial-observation
 proof cover that domain without adopting compiler code. These are semantic
 source correspondences, not executed backend comparisons or a full 0.5.8 upgrade.
+
+## Explicit initializer clock selection
+
+[Issue #194](https://github.com/kbak/clafer-semantics/issues/194) selects authored
+per-instance/per-collection clocks independently of multiplicity. Behavioral §5
+Definitions 3–5 and §6.1 supply births, repeated lifetimes and temporal constraints;
+they do not supply this syntax extension. SoSyM §5.2, §5.3.4 and §5.5 continue to
+ground bounds, abstract heads and shared inheritance identity, with the
+[aggregate abstract extension](#aggregate-abstract-multiplicity) independently
+bounding the complete parentless view. The **initializer-clocks/v1** interface
+preserves historical shorthand and keeps keyword parsing downstream.
+
+The [clock contract](behavioral-initializers.md#explicit-clocks-and-static-agreement)
+records the static boundary for newly expressible plural concrete per-instance
+forms: each head’s singleton target must equal the entire RHS observation, so a
+multi-target RHS is an admitted constraint conflict. Such a form need not agree
+with aggregate `=` even on a constant trace. The old scalar/head-bound theorem
+retains its premises; the unconditional constant-trace theorem states per-head
+meaning. This disposition is recorded for
+[semantic review](https://github.com/kbak/clafer-semantics/issues/194#issuecomment-6950965748),
+not attributed to the papers or the pinned Haskell compiler.
 
 ## Absent-reference decision and consequences
 
@@ -2227,5 +2248,6 @@ separate from effective optimizer data and finite search scopes.
 Historical **behavioral-0.5.8/v2** and static S/importer/checker contracts keep
 their recorded admission. The separately selected **abstract-multiplicity/v1**
 API is independently authored and does not assert agreement with the pinned
-Haskell backend. Bounded initializer-clock admission and downstream compiler
-encoding require their own follow-up and accepted semantic pin.
+Haskell backend. [Explicit initializer clocks](behavioral-initializers.md) compose
+with this count profile; downstream compiler encoding requires an accepted
+semantic pin.

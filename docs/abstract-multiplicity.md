@@ -57,9 +57,10 @@ over every natural-number time; `Valid` combines this with structural validity
 of the source core, and `Admissible` also requires well-formedness. The
 `model` constructor composes counts with the existing modifiers and attached
 constraints on the same trace. Existing formula and initializer obligations do
-not substitute for these counts. Bounded parentless initializer-clock admission
-remains the separate follow-up in
-[issue #194](https://github.com/kbak/clafer-semantics/issues/194).
+not substitute for these counts. The separate
+[explicit initializer-clock contract](behavioral-initializers.md) admits bounded
+parentless `:=` only with an authored clock choice and composes its meaning with
+this every-state count obligation.
 
 `valid_iff_global` proves that source-core structural validity already enforces
 nested abstract bounds: only the parentless aggregate obligations are additional.

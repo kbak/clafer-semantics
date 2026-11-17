@@ -5,7 +5,9 @@ This contract defines the hard initializer extension adopted in the
 [supported-form](https://github.com/kbak/clafer-semantics/issues/170) and
 [environment/lifetime](https://github.com/kbak/clafer-semantics/issues/171)
 reviews. These are constraints on a trace; they neither assign values in sequence
-nor provide overridable defaults. Production `Initializers.elaborate` selects the
+nor provide overridable defaults. The **initializer-clocks/v1** extension adds
+independent clock selection over [aggregate abstract multiplicity](abstract-multiplicity.md),
+as specified in [#194](https://github.com/kbak/clafer-semantics/issues/194). Production `Initializers.elaborate` selects the
 accepted clocks and diagnostics. Its generated expansion is proved equivalent to
 the independent [equations](behavioral-structure.md#candidate-initializer-equations).
 The historical strict-implication and `:=` rejection API is explicitly retained in
@@ -21,10 +23,23 @@ subtype collections. All members of the original declaration view participate.
 
 The [resolved classifier](../Clafer/Behavioral/InitializerClassification.lean)
 receives authored abstractness, presence of a containment parent, optional authored
-multiplicity and the complete effective parent group. Ordinary top-level declarations
+multiplicity and the complete effective parent group, plus an optional authored
+clock selection. Ordinary top-level declarations
 have the permanent root as their containment parent. Parentless abstracts have no
 such structural parent. Names, types, groups and inheritance must already be valid;
 this interface does not implement a parser or resolver.
+
+An explicit `instance` selection checks every head birth. An explicit `collection`
+selection resolves to parent birth when the **original declaration** has a parent,
+and global time zero otherwise. Both selections accept every valid multiplicity,
+including zero, optional, exact, finite-range and unbounded intervals. Invalid
+ranges are still rejected first; per-instance abstract scalar admission still
+applies after clock selection. Neither the head bound nor RHS size changes an
+explicit clock. The compiler spelling proposed in
+[the grammar discussion](https://github.com/kbak/clafer-semantics/issues/194#issuecomment-6949122683)
+is `:= each e` / `:= together e`; this resolved API implements no keyword grammar.
+
+With no explicit choice, retain this shorthand table exactly:
 
 | Declaration carrying its own initializer | Clock |
 | --- | --- |
@@ -33,7 +48,7 @@ this interface does not implement a parser or resolver.
 | Abstract declaration with omitted multiplicity | Every instance's birth, requiring scalar RHS admission |
 | Parented abstract with explicit upper bound 0 or 1 | Every instance's birth, requiring scalar RHS admission |
 | Parentless abstract with explicit `*` or trailing `0..*` | Global collection at time zero |
-| Parentless abstract with another authored bound | Unsupported in this initializer profile |
+| Parentless abstract with another authored bound | Unsupported without an explicit clock choice |
 
 Explicit bounds override child defaults. Ordinary omitted bounds use the
 [accepted child-default policy](sources.md#current-child-default-policy): numeric
@@ -63,8 +78,9 @@ totality, keys, group constraints and modifiers continue to apply independently.
 A parentless abstract collection includes all live instances of its abstract view,
 across concrete realizations and actual parents. It is attached to the permanent
 root evaluation context and checked at time zero. Concrete parent births and
-rebirths do not restart it. This supplies no structural parent map, global head
-cardinality or global reference key for the abstract. The theorem
+rebirths do not restart it. This clock supplies no structural parent map or global reference key. The
+[aggregate profile](abstract-multiplicity.md) independently enforces authored
+head bounds at every state, including after time zero. The theorem
 `Candidate.permanent_context_iff` proves that the birth equation for any context
 present throughout the trace reduces to its time-zero guard.
 
@@ -155,8 +171,12 @@ absence, so it remains a well-formed constraint conflict.
 
 Invalid names, incompatible types and invalid multiplicity intervals are source
 errors regardless of presence. Frontend checking precedes the resolved classifier.
-Unsupported scalar admission or nontrivial parentless abstract bounds produce
-unsupported-form diagnostics, not an alternative initializer interpretation.
+Unsupported scalar admission produces `scalarNotEstablished`. A parentless
+abstract with an authored bound other than `0..*` and no explicit clock produces
+`parentlessMultiplicity`: report “this parentless abstract initializer requires
+an explicit instance or collection clock.” These are unsupported-form diagnostics,
+not alternative interpretations. Invalid intervals produce `invalidMultiplicity`
+even with an explicit clock.
 
 The scalar diagnostic reports that the supported rules cannot establish an
 at-most-one bound. It must not assert that the model necessarily produces several
@@ -179,13 +199,73 @@ instance: `X * := 1,2` refined to `x ?` can start empty and later gain a head at
 An impossible child configuration may force an optional parent absent rather
 than make the whole model unsatisfiable. No generic “has no effect” warning follows.
 
-Only omitted or explicitly unrestricted multiplicities are admitted on parentless
-abstract initializers. Trailing `0..*` and `*` normalize to the same authored bound;
-omission retains separate provenance. Bounds such as `?`, `1`, `2` and `1..*`
-need a separately accepted global-cardinality contract. They must not be ignored
-or silently interpreted per actual parent. To require two global X heads at every
-state, use an explicit `G (#X = 2)` constraint alongside `X * := 1,2`; initialization
-still checks target equality only at time zero.
+A bounded parentless abstract `:=` is admitted in **initializer-clocks/v1** only
+with an explicit choice and the aggregate multiplicity contract. For
+`abstract Val -> integer 0..3`, an empty initial collection followed by a head
+born at value 7 satisfies `:= together 1` but violates `:= each 1`. The range
+`0..3` remains required at every state for both choices. Trailing `0..*` and `*`
+normalize to the same authored bound; omission retains separate provenance.
+Omitted or explicitly unrestricted parentless shorthand remains supported.
+
+## Explicit clocks and static agreement
+
+Explicit per-instance initialization always means singleton equality at each
+head's birth, including on a constant trace. A plural **concrete** `:= each 1,2`
+is admitted as a hard constraint: a two-target RHS cannot equal any singleton,
+so no active head birth can satisfy it. It does not distribute targets across
+heads or add the abstract scalar restriction to concrete declarations. Undefined
+and defined-empty RHSs also fail active births, while inactive births impose no
+RHS obligation. Abstract per-instance forms retain scalar admission, including
+unused abstracts and explicitly plural bounds.
+
+`Compatibility.single_constant` gives the unconditional constant-trace result:
+per-instance meaning is one singleton equation per initial live head, in the
+original RHS frame. No scalar or at-most-one assumption is needed for that
+result. Agreement with **aggregate** `=` remains conditional on the premises of
+`single_constant_aggregate`: each original context has at most one head **or**
+every defined RHS result there is scalar. Those premises need independent
+structural/bound certificates. A plural concrete head bound alone supplies
+neither premise. On a constant exact-three bag with targets `1,1,2`, aggregate
+equality to `1,2` succeeds while `:= each 1,2` fails. Therefore a frontend must
+not erase an explicit instance choice in a static-first pass.
+
+This compatibility boundary is the
+[explicit disposition for review](https://github.com/kbak/clafer-semantics/issues/194#issuecomment-6950965748).
+It extends the expressible forms without changing `=`, general strict Boolean
+meaning, or any old supported shorthand. Collection static agreement still uses
+`collection_constant` and `global_static`, with their live/context/head/target/RHS
+stability and root premises. Structural constancy alone does not establish
+stability of temporal RHS conditions.
+
+## Definedness for compiler adapters
+
+The clock extension reuses the existing partial evaluator. A backend must lower
+both truth and domain, including for `=` and shorthand `:=`; a total backend
+operator is not a certificate of source definedness. The relevant domains are:
+
+| Operation | Definedness and empty-result rule |
+| --- | --- |
+| Resolved set navigation and dereference | Total set observation on the admitted structural trace; an absent head has an empty dereference image. Direct actual-parent navigation retains its separate captured-identity rule. Absence alone does not make navigation undefined. |
+| Integer-set coercion | A defined finite set entirely in the integer domain; sum distinct targets, with empty set yielding zero. Missing expression results remain undefined. |
+| Strict integer extraction | Exactly one encoded integer. Empty or nonsingleton results are undefined. This differs from coercion. |
+| Cardinality | Defined finite operand; empty has cardinality zero. |
+| Addition, subtraction, multiplication, negation | All integer operands defined; mathematical unbounded integers. |
+| Division and remainder | Both operands defined and divisor nonzero; truncation toward zero with matching remainder. |
+| Minimum/maximum selection | Defined finite integer-domain collection; empty returns a **defined empty set**. Subsequent strict extraction of that result is undefined; coercion yields zero. |
+| Explicit sum/product | Every collection domain defined, the occurrence-index set finite, and the body defined at every occurrence. Empty identities are zero/one. Retain operand positions and head identities, including repeated targets. |
+| `if c then a else b` | Full strict formula domain for `c` and defined values for **both** branches; use the condition's raw truth. |
+| Boolean/temporal formulas | The existing strict `Formula.Defined` clauses; initializer inactivity is a separate outer guard, not a change to ordinary implication. |
+
+These are the existing rules of
+[`PrimitiveExpression`](../Clafer/Behavioral/PrimitiveExpression.lean),
+[`IntegerObservation`](../Clafer/Behavioral/IntegerObservation.lean),
+[`Arithmetic`](../Clafer/Behavioral/Arithmetic.lean),
+[`Aggregate`](../Clafer/Behavioral/Aggregate.lean) and
+[`Transport.condition`/`choose`](../Clafer/Behavioral/InitializerTransport.lean).
+The [formula contract](behavioral-formulas.md) owns temporal/Boolean domains;
+the [arithmetic and aggregate contract](behavioral-structure.md#mathematical-arithmetic)
+owns conversion and numeric details. This map is not a new backend encoding or
+an agreement claim for Alloy/Choco total arithmetic.
 
 ## Production transport and proof domain
 
@@ -198,6 +278,15 @@ preservation certificate. Resolved declaration metadata, names/types and scalar
 leaf bounds remain the caller's obligations. `Structure.metadata` constructs
 classification metadata from the structural declaration and supplied authored
 multiplicity; authored/default provenance is never reconstructed from values.
+The optional explicit choice is passed through the same entry point.
+[`ClockSelection.elaborate`](../Clafer/Behavioral/InitializerClockSelection.lean)
+reads bounds from `AbstractMultiplicity.Core.authoredMultiplicity` and structural
+metadata from its source projection. `ClockSelection.Satisfies` conjoins aggregate
+admission with every obligation's meaning over its complete structural view;
+`core_agrees` proves equivalence to generated ordinary core truth/domain checks.
+`counts_required` makes every-state cardinality independent of initializer
+inactivity explicit. Full source models also conjoin their modifiers and other
+constraints; this initializer composition does not discharge those obligations.
 
 [`Transport`](../Clafer/Behavioral/InitializerTransport.lean) constructs a frame
 with the child's attachment, a reserved generated-binder slot, the original
@@ -338,3 +427,14 @@ The [source ledger](sources.md#initializer-supported-form-decisions) records the
 accepted decision comments, paper sections and immutable supplementary compiler
 revision. The production extension uses these equations with proved original-context
 transport; the historical strict profile remains available explicitly in `Legacy`.
+
+The explicit-clock witnesses in
+[`InitializerClockExamples`](../Clafer/Behavioral/InitializerClockExamples.lean)
+and [`InitializerClockBoundaryExamples`](../Clafer/Behavioral/InitializerClockBoundaryExamples.lean)
+exercise both choices across finite/unbounded bounds, required-choice and scalar
+diagnostics, aggregate admission, empty global birth followed by a late head,
+original cross-parent scope, inherited narrowing, duplicate bag targets, head and
+parent rebirth, and inactive undefined RHSs. The late-head witness also checks
+the generated ordinary core, and the aggregate-profile witness uses the actual
+production structural view. The historical witnesses above continue to check
+unchanged shorthand, simultaneous and conjunctive inheritance behavior.
