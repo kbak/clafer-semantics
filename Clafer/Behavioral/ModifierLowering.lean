@@ -68,7 +68,7 @@ theorem lowerCore_partial_agrees (m : Structural.Core k) (τ : Trace (Fin k) U)
 
 /-- The existing inherited-reference set adapter is total. Arbitrary partial
 adapters use lowerCore_partial_agrees instead of silently filling missing values. -/
-noncomputable def coreObservation (m : Structural.Core k) (τ : Trace (Fin k) U) :
+def coreObservation (m : Structural.Core k) (τ : Trace (Fin k) U) :
     PartialObservation (SetAtom (Fin k)) (SetExpr (Fin k)) U :=
   .ofTotal (.sets m.toEffectiveCore (Structural.observed m τ))
 

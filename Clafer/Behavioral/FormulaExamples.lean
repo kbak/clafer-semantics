@@ -222,7 +222,7 @@ theorem anchor_boundaries :
   · intro h; exact cycling.root_never_ends model cycling_valid 0 h
 
 abbrev SF (n : Nat) := Formula (SetAtom (Fin 4)) (SetExpr (Fin 4)) n
-noncomputable def sets := Observation.sets model cycling
+def sets := Observation.sets model cycling
 
 -- [utest->req~behavioral-environments~1]
 theorem absent_this_and_parent :

@@ -186,7 +186,7 @@ theorem wrong_lifetime_rejects_reset (b : Bool) :
 
 /-- Deliberately incomplete adapter: sets and presence retain their actual
 values, but equality is unavailable, including when the attachment is absent. -/
-noncomputable def missingComparison (b : Bool) :
+def missingComparison (b : Bool) :
     PartialObservation (SetAtom (Fin 5)) (SetExpr (Fin 5)) (Fin 9) where
   atom a ρ t := match a with
     | .equal _ _ => none

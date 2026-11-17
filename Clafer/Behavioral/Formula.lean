@@ -50,10 +50,12 @@ structure Observation (A D : Nat → Type) (U : Type u) where
   atom : ∀ {n}, A n → Environment U n → Nat → Prop
   domain : ∀ {n}, D n → Environment U n → Nat → Set U
 
-noncomputable def Observation.sets {k : Nat} {U : Type u} (m : Semantics.EffectiveCore k)
+def Observation.sets {k : Nat} {U : Type u} (m : Semantics.EffectiveCore k)
     (τ : Trace (Fin k) U) : Observation (SetAtom (Fin k)) (SetExpr (Fin k)) U where
   atom a ρ t := a.eval m τ ρ t
-  domain a ρ t := a.eval m τ ρ t
+  -- Only membership depends on the mathematical evaluator. The finite adapter can
+  -- therefore construct this observation when running the executable checker.
+  domain a ρ t := {x | x ∈ a.eval m τ ρ t}
 
 namespace Quantifier
 -- [impl->req~behavioral-signed-normalization~1]
