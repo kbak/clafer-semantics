@@ -36,14 +36,16 @@ structure Obligation (C V : Type) where
   clock : Clock
   rhs : V
 
+-- [impl->req~initializer-clock-selection~1]
 /-- `=` keeps its aggregate every-live clock. Only `:=` invokes the accepted
 supported-form classifier and abstract scalar admission. -/
 def elaborate {C V : Type} (d : C) (form : Form) (metadata : Classification.Declaration)
-    (scalar : Bool) (rhs : V) : Except Classification.Diagnostic (Obligation C V) :=
+    (scalar : Bool) (rhs : V) (choice : Option Classification.Selection := none) :
+    Except Classification.Diagnostic (Obligation C V) :=
   let origin := if metadata.parented then Origin.parent else Origin.root
   match form with
   | .constant => .ok ⟨d, origin, .everyLive, rhs⟩
-  | .initial => (Classification.classify metadata scalar).map fun clock =>
+  | .initial => (Classification.classify metadata scalar choice).map fun clock =>
       ⟨d, origin, match clock with
         | .instanceBirth => .instanceBirth
         | .parentBirth => .parentBirth

@@ -17,6 +17,18 @@ inductive Clock where
   | instanceBirth | parentBirth | globalZero
   deriving DecidableEq, Repr
 
+-- [impl->req~initializer-clock-selection~1]
+/-- Authored timing, independent of multiplicity. Collection context is the
+original declaration's context, never a realization's actual parent. -/
+inductive Selection where
+  | instance | collection
+  deriving DecidableEq, Repr
+
+def Selection.resolve (choice : Selection) (parented : Bool) : Clock :=
+  match choice with
+  | .instance => .instanceBirth
+  | .collection => if parented then .parentBirth else .globalZero
+
 inductive Diagnostic where
   | invalidMultiplicity | parentlessMultiplicity | scalarNotEstablished
   deriving DecidableEq, Repr
@@ -38,12 +50,15 @@ def plural (r : Range) : Bool := match r.upper with
   | .unbounded => true
 
 -- [impl->req~behavioral-initializer-contract~1]
+-- [impl->req~initializer-clock-selection~1]
 /-- No arbitrary constraints, RHS values or reference-kind flags participate
 in classification. Scalar admission is a separate check for abstract singles. -/
-def classify (d : Declaration) (scalarRhs : Bool) : Except Diagnostic Clock :=
+def classify (d : Declaration) (scalarRhs : Bool) (choice : Option Selection := none) :
+    Except Diagnostic Clock :=
   let invalid := match d.authored with | none => false | some r => !valid r
   let selected : Except Diagnostic Clock :=
-    if d.abstract && !d.parented then
+    if let some explicit := choice then .ok (explicit.resolve d.parented)
+    else if d.abstract && !d.parented then
       match d.authored with
       | none => .ok .instanceBirth
       | some r => if r = unrestricted then .ok .globalZero else .error .parentlessMultiplicity
@@ -56,6 +71,41 @@ def classify (d : Declaration) (scalarRhs : Bool) : Except Diagnostic Clock :=
     | .error e => .error e
     | .ok clock => if d.abstract && decide (clock = .instanceBirth) && !scalarRhs then
         .error .scalarNotEstablished else .ok clock
+
+theorem valid_iff (r : Range) : valid r = true ↔ ValidRange r := by
+  cases r with | mk lo hi => cases hi <;> simp [valid, ValidRange]
+
+-- [proof->req~initializer-clock-selection~1]
+/-- Valid bounds are checked independently; abstract per-instance scalar
+admission still applies after explicit clock selection. -/
+theorem explicit_classification (d : Declaration) (scalar : Bool) (choice : Selection)
+    (ranges : ∀ r, d.authored = some r → ValidRange r) :
+    classify d scalar (some choice) =
+      if d.abstract && decide (choice.resolve d.parented = .instanceBirth) && !scalar then
+        .error .scalarNotEstablished else .ok (choice.resolve d.parented) := by
+  have ok : (match d.authored with | none => false | some r => !valid r) = false := by
+    cases h : d.authored with
+    | none => rfl
+    | some r => simp [(valid_iff r).mpr (ranges r h)]
+  simp only [classify, ok, Bool.false_eq_true, ↓reduceIte]
+
+/-- Altering a valid multiplicity never alters an explicitly selected clock
+or its abstract scalar diagnostic. Authored omission remains stored separately. -/
+theorem explicit_bound_independent (d : Declaration) (a b : Option Range)
+    (ha : ∀ r, a = some r → ValidRange r) (hb : ∀ r, b = some r → ValidRange r)
+    (scalar : Bool) (choice : Selection) :
+    classify { d with authored := a } scalar (some choice) =
+      classify { d with authored := b } scalar (some choice) := by
+  rw [explicit_classification _ _ _ ha, explicit_classification _ _ _ hb]
+
+/-- Choosing collection removes only per-instance scalar admission, not
+independent validity, reference, cardinality or key obligations. -/
+theorem explicit_collection (d : Declaration) (scalar : Bool)
+    (ranges : ∀ r, d.authored = some r → ValidRange r) :
+    classify d scalar (some .collection) =
+      .ok (if d.parented then .parentBirth else .globalZero) := by
+  rw [explicit_classification _ _ _ ranges]
+  cases d.parented <;> simp [Selection.resolve]
 
 /-- A compiled obligation retains its origin and clock through refinement.
 The refined declaration can add a separately classified own obligation. -/
@@ -73,9 +123,6 @@ theorem inherit_clock {O R : Type} (o : Obligation O R) (bound : Range) :
 
 theorem inherit_rhs {O R : Type} (o : Obligation O R) (bound : Range) :
     (inherit o bound).rhs = o.rhs := rfl
-
-theorem valid_iff (r : Range) : valid r = true ↔ ValidRange r := by
-  cases r with | mk lo hi => cases hi <;> simp [valid, ValidRange]
 
 theorem ordinary_default_single (g : GroupCard) :
     classify ⟨false, true, none, g⟩ false = .ok .instanceBirth := by

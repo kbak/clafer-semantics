@@ -37,6 +37,10 @@ The separately composed **abstract-multiplicity/v1** extension adopts
 accepted [issue #193 decision](https://github.com/kbak/clafer-semantics/issues/193).
 Its source API composes every-state counts with structural/modifier/constraint
 meaning; it does not requalify the 0.5.8 Haskell comparison boundary.
+The **initializer-clocks/v1** extension adds explicit per-instance/per-collection
+selection over those aggregate bounds. Its [contract](behavioral-initializers.md)
+retains shorthand, original RHS frames and inherited obligations, with explicit
+static-agreement premises for newly expressible plural concrete instance clocks.
 The 0.5.8 profile preserves its recorded meanings and D1–D5. It does not establish
 unrestricted reference-compiler agreement or complete downstream adoption.
 

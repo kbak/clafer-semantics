@@ -15,6 +15,25 @@ namespace Clafer.Behavioral.Initializers.Compatibility
 universe u
 open Structure
 
+-- [proof->req~initializer-clock-selection~1]
+-- [proof->req~behavioral-structural-compatibility~1]
+/-- Unconditional static meaning of a per-instance clock on a constant live
+carrier. Plural concrete heads and multi-target RHSs are included. Unlike
+aggregate equality, this statement needs no scalar or head-bound premise. -/
+theorem single_constant {C V : Type} {U : Type u} (τ : Trace C U) (v : View U)
+    (source : V → Transport.Value U (Set U) 0) (d : C) (origin : Transport.Origin) (rhs : V)
+    (live : ∀ t, τ.live t = τ.live 0) (headsLive : v.instances 0 ⊆ τ.live 0) :
+    Meaning τ v source ⟨d, origin, .instanceBirth, rhs⟩ ↔
+      ∀ x ∈ v.instances 0, (Transport.original τ.identities origin x).bind
+        (fun p => source rhs (.closed p) 0) = some {v.target 0 x} := by
+  constructor
+  · intro h x hx
+    exact h 0 x hx ((τ.starts_zero x).mpr (headsLive hx))
+  · intro h t x hx birth
+    obtain ⟨_, zero⟩ := (Candidate.starts_constant_live τ live t x).mp birth
+    subst t
+    exact h x hx
+
 -- [proof->req~behavioral-initializer-contract~1]
 /-- A strict conditional preserves a scalar bound from both branches. This
 includes full temporal formula conditions and undefined inactive results. -/

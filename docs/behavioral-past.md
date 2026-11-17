@@ -88,6 +88,11 @@ initializer equations for all four clocks, assuming the root remains live. The
 RHS stays in its original resolved frame. The result covers arbitrary partial
 observations; a finite implementation still needs a certified observation adapter.
 
+The [explicit initializer-clock extension](behavioral-initializers.md) reuses this
+truth/domain lowering for instance, parent and global clocks. Its aggregate-profile
+composition preserves original declaration views and every-state counts; choosing
+an explicit clock does not relax general Boolean definedness.
+
 ## Finality in the same core
 
 The [modifier reduction](behavioral-surface.md#common-temporal-core) reuses
