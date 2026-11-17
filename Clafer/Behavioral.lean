@@ -25,6 +25,7 @@ public import Clafer.Behavioral.AbsentReference
 
 public import Clafer.Behavioral.Anchors
 public import Clafer.Behavioral.Modifiers
+public import Clafer.Behavioral.ModifierLowering
 public import Clafer.Behavioral.Transitions
 public import Clafer.Behavioral.Patterns
 public import Clafer.Behavioral.Properties
