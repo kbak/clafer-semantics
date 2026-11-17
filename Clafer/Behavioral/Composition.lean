@@ -1,6 +1,7 @@
 module
 
 public import Clafer.Behavioral.PartialLowering
+public import Clafer.Behavioral.ModifierLowering
 public import Clafer.Behavioral.Properties
 public import Clafer.Behavioral.StructuralCompatibility
 public import Clafer.Behavioral.Snapshot
@@ -47,6 +48,12 @@ theorem core_iff (m : Structural.Core k) (τ : Trace (Fin k) U)
 theorem holds_empty (m : Structural.Core k) (τ : Trace (Fin k) U) :
     Holds m τ (fun _ => ∅) := by
   simp [Holds, Effective]
+
+-- [proof->req~behavioral-qualification~1]
+theorem loweredHolds_iff_coreHolds (m : Structural.Core k) (τ : Trace (Fin k) U)
+    (h : Structural.Valid m τ) (declared : Fin k → Set Modifier) :
+    LoweredHolds m τ declared (coreObservation m τ) ↔ CoreHolds m τ declared :=
+  (loweredHolds_iff m τ h declared).trans (core_iff m τ h declared).symm
 
 end Modifiers
 
@@ -107,6 +114,24 @@ theorem Model.behavioral_core_iff (m : Structural.Core k)
     exact ⟨hw, hv, (Modifiers.core_iff m τ hv modifiers).mpr hm, hc⟩
   · rintro ⟨hw, hv, hm, hc⟩
     exact ⟨⟨hw, hv, (Modifiers.core_iff m τ hv modifiers).mp hm⟩, hc⟩
+
+-- [proof->req~behavioral-qualification~1]
+/-- Full model composition with the emitted, modifier-free bundles. Ordinary
+constraints retain their checked partial domains on the same trace. -/
+theorem Model.behavioral_lowered_iff (m : Structural.Core k)
+    (modifiers : Fin k → Set Modifiers.Modifier)
+    (O : Trace (Fin k) U → PartialObservation A D U)
+    (constraints : Set (Constraint (Fin k) A D U)) (τ : Trace (Fin k) U) :
+    (Model.behavioral m modifiers O constraints).Satisfies τ ↔
+      m.WellFormed ∧ Structural.Valid m τ ∧
+      Modifiers.LoweredHolds m τ modifiers (Modifiers.coreObservation m τ) ∧
+      ∀ c ∈ constraints, c.CoreHolds τ (O τ) := by
+  rw [Model.behavioral_core_iff]
+  apply and_congr_right
+  intro _
+  apply and_congr_right
+  intro hv
+  exact and_congr (Modifiers.loweredHolds_iff_coreHolds m τ hv modifiers).symm Iff.rfl
 
 -- [proof->req~behavioral-qualification~1]
 theorem Model.common_iff {m : Semantics.EffectiveCore k}

@@ -54,6 +54,9 @@ The [surface layer](behavioral-surface.md) adds `Anchors`, `Modifiers`,
 signed formula core; partial adapters retain the expanded source domain. Only
 fixture modules import finite evaluation, and its agreement theorem transports
 their finite checks to infinite source meaning.
+`ModifierLowering` emits placed checked-core obligations, reusing the existing
+modifier expansion and anchor erasure. `Composition` relates the emitted bundles
+to the full model under structural validity and the total inherited-set adapter.
 Existing structural entry points and the dependency direction
 remain intact; generic temporal machinery in DPGraph/FormalCD is not presumed.
 

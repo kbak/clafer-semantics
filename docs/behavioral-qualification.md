@@ -25,6 +25,15 @@ attached constraint. `Modifiers.CoreHolds` expands every effective modifier,
 including both parts of final. `Constraint.CoreHolds` retains the exact context
 selector and evaluates the original attachment through all inner binders.
 
+`Properties.Model.behavioral_lowered_iff` exposes the same model equivalence
+using the [emitted modifier bundles](behavioral-surface.md#common-temporal-core).
+`Modifiers.loweredHolds_iff_coreHolds` connects them to the existing core API,
+under structural validity and the total inherited-set observation. Every
+effective annotation contributes all its obligations; `final` includes both
+head stability and per-head reference stability. Other attached constraints
+continue through checked partial lowering, with their existing observation
+assumptions. This composition supplies no new executable observation adapter.
+
 [PartialLowering](../Clafer/Behavioral/PartialLowering.lean) introduces
 `CheckedAtom.value`, `atomDefined` and `domainDefined`. `domainFormula` translates
 the original source tree's strict domain; `checkedCore` conjoins that translation
