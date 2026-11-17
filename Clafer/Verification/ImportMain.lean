@@ -1,5 +1,6 @@
 module
 
+public import Lean.Data.Json.Parser
 public import Clafer.Verification.ImportProofs
 public meta import Clafer.Verification.ImportProofs
 

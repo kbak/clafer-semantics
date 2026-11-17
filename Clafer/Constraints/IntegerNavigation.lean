@@ -141,26 +141,26 @@ def Model.versionObjects {U} (m : Model.{u,w} U) (values : Set U) : Set U :=
   navigationImage (m.model.map (support.arrow 3))
     (navigationImage (m.model.map (support.arrow 2)) values)
 
-def Model.serverObjects {U} (m : Model.{u,w} U) (d : Subtype (m.model.obj (0 : support.Vertex))) : Set U :=
+def Model.serverObjects {U} (m : Model.{u,w} U) (d : Set.Elem (m.model.obj (0 : support.Vertex))) : Set U :=
   navigationImage (m.model.map (support.arrow 5))
     (navigationImage (m.model.map (support.arrow 4)) {d.val})
 
 /-- The two reference steps are functional by the head and dereference bounds. -/
-theorem Model.version_singleton {U} (m : Model.{u,w} U) (c : Subtype (m.model.obj (2 : support.Vertex))) :
-    ∃ x : Subtype (m.model.obj (5 : support.Vertex)), m.versionObjects {c.val} = {x.val} := by
+theorem Model.version_singleton {U} (m : Model.{u,w} U) (c : Set.Elem (m.model.obj (2 : support.Vertex))) :
+    ∃ x : Set.Elem (m.model.obj (5 : support.Vertex)), m.versionObjects {c.val} = {x.val} := by
   obtain ⟨v, hv⟩ := navigationImage_one _ m.version_head c
   obtain ⟨x, hx⟩ := navigationImage_one _ m.version_dref v
   exact ⟨x, by unfold versionObjects; rw [hv, hx]⟩
 
-theorem Model.server_singleton {U} (m : Model.{u,w} U) (d : Subtype (m.model.obj (0 : support.Vertex))) :
-    ∃ e : Subtype (m.model.obj (1 : support.Vertex)), m.serverObjects d = {e.val} := by
+theorem Model.server_singleton {U} (m : Model.{u,w} U) (d : Set.Elem (m.model.obj (0 : support.Vertex))) :
+    ∃ e : Set.Elem (m.model.obj (1 : support.Vertex)), m.serverObjects d = {e.val} := by
   obtain ⟨s, hs⟩ := navigationImage_one _ m.server_head d
   obtain ⟨e, he⟩ := navigationImage_one _ m.server_dref s
   exact ⟨e, by unfold serverObjects; rw [hs, he]⟩
 
 /-- Well-definedness for both actual Appendix 6 operands, including inherited
 version access. No absent-server guard is needed or inserted. -/
-theorem Model.operands_defined {U} (m : Model.{u,w} U) (d : Subtype (m.model.obj (0 : support.Vertex))) :
+theorem Model.operands_defined {U} (m : Model.{u,w} U) (d : Set.Elem (m.model.obj (0 : support.Vertex))) :
     m.realization.WellDefined (m.versionObjects {d.val}) ∧
     m.realization.WellDefined (m.versionObjects (m.serverObjects d)) := by
   have hd := m.toIntegerBinding.widen_subset displayWiden d.property
@@ -194,7 +194,7 @@ theorem compareVersions_not_less {U : Type u} (R : IntegerRealization U) (d e : 
 
 -- [proof->req~clafer-version-navigation~1]
 /-- Definedness is independent of whether the comparison is true or false. -/
-theorem Model.comparison_defined {U} (m : Model.{u,w} U) (d : Subtype (m.model.obj (0 : support.Vertex))) :
+theorem Model.comparison_defined {U} (m : Model.{u,w} U) (d : Set.Elem (m.model.obj (0 : support.Vertex))) :
     ∃ result, compareVersions m.realization (m.versionObjects {d.val})
       (m.versionObjects (m.serverObjects d)) = some result := by
   obtain ⟨hd, he⟩ := m.operands_defined d

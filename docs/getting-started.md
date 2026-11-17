@@ -72,7 +72,7 @@ Create a directory outside this repository with these three files:
 `lean-toolchain`:
 
 ```text
-leanprover/lean4:v4.35.0
+leanprover/lean4:v4.36.0
 ```
 
 `lakefile.toml`:

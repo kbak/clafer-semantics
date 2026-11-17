@@ -157,7 +157,7 @@ theorem wellFormed : raw.WellFormed where
   inclusion_name := by intro a b e h; cases e <;> simp_all [raw, edgeMode, edgeName]
   inclusion_decl := by
     intro a b e h
-    cases e <;> simp only [raw, edgeMode] at h <;> try cases h
+    cases e <;> simp only [raw, edgeMode] at h <;> cases h
     · exact declared .predefStrIn
     · exact declared .classIn
     · exact declared .mapIn
@@ -167,7 +167,7 @@ theorem wellFormed : raw.WellFormed where
     · exact declared .inclIn
   ordinary_decl := by
     intro a b e h
-    cases e <;> simp only [raw, edgeMode] at h <;> try cases h
+    cases e <;> simp only [raw, edgeMode] at h <;> cases h
     · exact declared .nameSet
     · exact declared .predefNameSet
     · exact declared .soSet

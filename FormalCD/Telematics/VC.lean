@@ -51,7 +51,7 @@ def VCMeaning {U : Type u} (R : IntegerRealization U)
 
 def vcInterpretation {U : Type u} (R : IntegerRealization U) :
     DPGraph.Interpretation extraSignature (semanticGraph.{u,w} U) where
-  meaning | .vc => VCMeaning R
+  meaning | .vc => {d | VCMeaning R d}
 
 def interpretation {U : Type u} (R : IntegerRealization U) :
     DPGraph.Interpretation vocabulary.signature (semanticGraph.{u,w} U) :=
@@ -113,7 +113,7 @@ theorem inherited_iff_value {U : Type u} (R : IntegerRealization U) {A C B : Set
 /-- A served display must compare with each server; an unserved display is vacuous. -/
 def GuardedComparison {U : Type u} (m : graph ⥤q semanticGraph.{u,w} U)
     (h1 : Inclusion (m.map Edge.i1)) (h2 : Inclusion (m.map Edge.i2))
-    (value : Subtype (m.obj .comp) → Int) : Prop :=
+    (value : Set.Elem (m.obj .comp) → Int) : Prop :=
   ∀ d e, (m.map Edge.server).red d e →
     value (asComponent h1 e) ≤ value (asComponent h2 d)
 

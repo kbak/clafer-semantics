@@ -39,7 +39,7 @@ theorem generated_version_iff (m : glued.carrier ⥤q semanticGraph U)
     (hd : (navigation m).obj (5 : VersionNavigation.support.Vertex) = R.domain) :
     (interpretation R).Satisfies m
       ((promote input (formula input (.inr q))).translate (groupLabel input)) ↔
-      ∀ d : Subtype ((navigation m).obj (0 : VersionNavigation.support.Vertex)),
+      ∀ d : Set.Elem ((navigation m).obj (0 : VersionNavigation.support.Vertex)),
         VersionNavigation.comparison.Holds (versionModel m hm R hd).toIntegerBinding
           (.closed d.val) := by
   erw [Interpretation.satisfies_translate]
@@ -57,7 +57,7 @@ from actual local formulas and the explicit primitive-domain interpretation. -/
 theorem generated_operands_defined (m : glued.carrier ⥤q semanticGraph U)
     (hm : LocalHolds m)
     (hd : (navigation m).obj (5 : VersionNavigation.support.Vertex) = R.domain)
-    (d : Subtype ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
+    (d : Set.Elem ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
     VersionNavigation.comparison.Defined (versionModel m hm R hd).toIntegerBinding
       (.closed d.val) :=
   VersionNavigation.denotation_defined (versionModel m hm R hd) d

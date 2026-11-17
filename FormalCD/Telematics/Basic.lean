@@ -126,12 +126,12 @@ theorem wellFormed : raw.WellFormed where
   inclusion_name := by intro a b e h; cases e <;> simp_all [raw, edgeMode, edgeName]
   inclusion_decl := by
     intro a b e h
-    cases e <;> simp only [raw, edgeMode] at h <;> try cases h
+    cases e <;> simp only [raw, edgeMode] at h <;> cases h
     · exact declared .i1
     · exact declared .i2
   ordinary_decl := by
     intro a b e h
-    cases e <;> simp only [raw, edgeMode] at h <;> try cases h
+    cases e <;> simp only [raw, edgeMode] at h <;> cases h
     · exact declared .serverSet
     · exact declared .displaySet
     · exact declared .versionSet

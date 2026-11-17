@@ -95,14 +95,14 @@ theorem typed : config.Typed core.toEffectiveCore := by
       | inl t =>
         fin_cases d <;> simp [config, heads, targets, references_eq,
           Telematics.Structural.references, ReferenceTo.target]
-        all_goals aesop
+        aesop
 
 theorem inherits : config.Inherits core.toEffectiveCore := by
   intro d c hc x hx
   rw [supers_eq] at hc
   fin_cases d <;> simp [Telematics.Structural.supers] at hc
   all_goals subst c; cases x <;> simp_all [config, heads]
-  all_goals aesop
+  aesop
 
 theorem parents_hold : config.Parents core.toEffectiveCore := by
   intro d p hp x hx

@@ -200,13 +200,13 @@ The [semantics module](../DPGraph/Semantics.lean) states and proves these laws.
 
 ## Supporting sources and licenses
 
-Mathlib is pinned to [56a005855ea17e0b0958f73ec801ae140b0a1679](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679)
-(v4.35.0), with the same Lean v4.35.0 pin. Inspected APIs:
-[Quiver.Basic](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/Combinatorics/Quiver/Basic.lean),
-[Quiver.Prefunctor](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/Combinatorics/Quiver/Prefunctor.lean),
-[Category.Basic](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/CategoryTheory/Category/Basic.lean),
-[Category.Quiv](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/CategoryTheory/Category/Quiv.lean),
-and [Equiv.Basic](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/Logic/Equiv/Basic.lean).
+Mathlib is pinned to [fc4f59e577feb1a4956671bc04ac18aaaf8cd842](https://github.com/leanprover-community/mathlib4/tree/fc4f59e577feb1a4956671bc04ac18aaaf8cd842)
+(v4.36.0), with the same Lean v4.36.0 pin. Inspected APIs:
+[Quiver.Basic](https://github.com/leanprover-community/mathlib4/blob/fc4f59e577feb1a4956671bc04ac18aaaf8cd842/Mathlib/Combinatorics/Quiver/Basic.lean),
+[Quiver.Prefunctor](https://github.com/leanprover-community/mathlib4/blob/fc4f59e577feb1a4956671bc04ac18aaaf8cd842/Mathlib/Combinatorics/Quiver/Prefunctor.lean),
+[Category.Basic](https://github.com/leanprover-community/mathlib4/blob/fc4f59e577feb1a4956671bc04ac18aaaf8cd842/Mathlib/CategoryTheory/Category/Basic.lean),
+[Category.Quiv](https://github.com/leanprover-community/mathlib4/blob/fc4f59e577feb1a4956671bc04ac18aaaf8cd842/Mathlib/CategoryTheory/Category/Quiv.lean),
+and [Equiv.Basic](https://github.com/leanprover-community/mathlib4/blob/fc4f59e577feb1a4956671bc04ac18aaaf8cd842/Mathlib/Logic/Equiv/Basic.lean).
 Mathlib's Apache-2.0 license was checked; it is consumed as a pinned dependency,
 without vendoring its source. Paper definitions are independently formalized with
 citations; publication text and figures are not reproduced.
@@ -481,7 +481,7 @@ was built against this project's Lean/Mathlib pins or added as a dependency.
 
 | Inspected source | Relevant content and suitability limit |
 | --- | --- |
-| [Pinned Mathlib](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679) | `CategoryTheory/Limits/Shapes/Pullback/`, `FiberedCategory/`, `Grothendieck.lean` and `Bicategory/Functor/Pseudofunctor.lean` provide foundations. They do not supply the selected predicate/dependency signature, closure and satisfaction package together; those obligations remain to be specified. |
+| [Mathlib revision inspected](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679) | `CategoryTheory/Limits/Shapes/Pullback/`, `FiberedCategory/`, `Grothendieck.lean` and `Bicategory/Functor/Pseudofunctor.lean` provide foundations. They do not supply the selected predicate/dependency signature, closure and satisfaction package together; those obligations remain to be specified. |
 | [sinhp/LeanFibredCategories at a58604a](https://github.com/sinhp/LeanFibredCategories/tree/a58604a389544523aa171daf890386fb8317568b) | Fibers, Cartesian lifts and Grothendieck examples; README describes upstreaming foundations to Mathlib. Manifest pins Lean v4.4.0-rc1. Relevant background, without the required generalized-sketch layer. |
 | [jacobneu/GeneralizedAlgebra at d2f4029](https://github.com/jacobneu/GeneralizedAlgebra/tree/d2f402944052f7d93d2f600ab1131c13d92d4351) | Generalized algebraic-theory signatures and generated algebra descriptions; Lean v4.13.0. A different specification language, without an inspected DP-sketch interpretation/reduct adapter. |
 | [b-mehta/topos at c9032b1](https://github.com/b-mehta/topos/tree/c9032b11789e36038bc841a1e2b486972421b983) | Topos/pullback foundations; `leanpkg.toml` pins Lean 3.24.0. This is not a directly compatible Lean 4 dependency or a delivered diagram-predicate package. |

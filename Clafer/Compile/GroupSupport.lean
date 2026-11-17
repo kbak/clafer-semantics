@@ -85,10 +85,10 @@ def Objects {U : Type} {p : C} (d : arity f p ⥤q semanticGraph U)
 
 -- [impl->req~clafer-compile-groups~1]
 def meaning {U : Type} (p : Id f) (d : arity f p.val ⥤q semanticGraph U) : Prop :=
-  ∀ x : Subtype (d.obj (context f p.val)),
+  ∀ x : Set.Elem (d.obj (context f p.val)),
     InRange (f.group p.val).effective.range {y : U // Objects f d x.val y}
 
 def interpretation (U : Type) : Interpretation (signature f) (semanticGraph U) :=
-  ⟨meaning f⟩
+  ⟨fun p => {d | meaning f p d}⟩
 
 end Clafer.Compile.Groups

@@ -164,7 +164,7 @@ noncomputable def versionModel (m : glued.carrier ⥤q semanticGraph U)
 theorem operands_defined (m : glued.carrier ⥤q semanticGraph U)
     (hm : LocalHolds m) (R : IntegerRealization U)
     (hd : (navigation m).obj (5 : VersionNavigation.support.Vertex) = R.domain)
-    (d : Subtype ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
+    (d : Set.Elem ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
     R.WellDefined ((versionModel m hm R hd).versionObjects {d.val}) ∧
     R.WellDefined ((versionModel m hm R hd).versionObjects
       ((versionModel m hm R hd).serverObjects d)) :=
@@ -174,7 +174,7 @@ theorem operands_defined (m : glued.carrier ⥤q semanticGraph U)
 theorem comparison_defined (m : glued.carrier ⥤q semanticGraph U)
     (hm : LocalHolds m) (R : IntegerRealization U)
     (hd : (navigation m).obj (5 : VersionNavigation.support.Vertex) = R.domain)
-    (d : Subtype ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
+    (d : Set.Elem ((navigation m).obj (0 : VersionNavigation.support.Vertex))) :
     ∃ b, VersionNavigation.compareVersions R ((versionModel m hm R hd).versionObjects {d.val})
       ((versionModel m hm R hd).versionObjects ((versionModel m hm R hd).serverObjects d)) = some b :=
   (versionModel m hm R hd).comparison_defined d

@@ -278,7 +278,7 @@ theorem reaches (wf : m.toEffectiveCore.WellFormed) (selected : m.Selected)
   have go : ∀ k, ∀ d, rank d = k → ∀ y, y ∈ s.head d → s.Reaches y := by
     intro k
     induction k using Nat.strong_induction_on with
-    | h k ih =>
+    | ind k ih =>
       intro d hd y hy
       cases hab : m.explicitAbstract d with
       | true =>

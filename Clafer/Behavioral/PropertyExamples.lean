@@ -32,7 +32,7 @@ def observes (τ : Trace (Fin 4) (Fin 8)) : Observation A D (Fin 8) where
   domain _ _ _ := ∅
 
 def models : Model (Fin 4) A D (Fin 8) :=
-  ⟨fun τ => τ.Valid Examples.model, fun τ => .ofTotal (observes τ), ∅⟩
+  ⟨{τ | τ.Valid Examples.model}, fun τ => .ofTotal (observes τ), ∅⟩
 
 def startsPresent : Constraint (Fin 4) A D (Fin 8) := Constraint.root error.initially
 

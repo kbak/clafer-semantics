@@ -101,7 +101,7 @@ theorem reachable (wf : m.WellFormed) (support : m.Supported)
       x ∈ τ.live t → (τ.raw m t).Reaches x from fun x hx => this _ x rfl hx
   intro k
   induction k using Nat.strong_induction_on with
-  | h k ih =>
+  | ind k ih =>
     intro x hk hx
     by_cases hr : x = τ.identities.root
     · subst x; exact .refl

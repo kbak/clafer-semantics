@@ -31,7 +31,7 @@ Empty context classes impose no body obligation. External domains are closed
 explicitly; undefined domains are not silently treated as empty collections. -/
 def Constraint.Holds (q : Constraint) (domains : Domains q.support q.locals)
     {U : Type u} (m : IntegerBinding.{u,w} q.support U) : Prop :=
-  ∀ x, (m.model.obj q.support.context : Set U) x →
+  ∀ x, Set.Mem (m.model.obj q.support.context) x →
     (domains.close q.body).Holds m (Environment.closed x)
 
 theorem IntegerBinding.ext {s : Support} {U : Type u}
@@ -51,9 +51,9 @@ noncomputable def predicateInterpretation {ι : Type} (qs : ι → Constraint)
     (domains : ∀ q, Domains (qs q).support (qs q).locals)
     {U : Type u} (R : IntegerRealization U) :
     Interpretation (signature qs) (semanticGraph.{u,w} U) where
-  meaning q diagram := ∃ m : IntegerBinding (qs q).support U,
+  meaning q := {diagram | ∃ m : IntegerBinding (qs q).support U,
     m.realization = R ∧ m.model = diagram ∧ m.Coherent ∧
-      (qs q).Holds (domains q) m
+      (qs q).Holds (domains q) m}
 
 /-- Arity interpretation is exactly independently defined source truth when
 the full diagram has the stated resolved identities and primitive realization. -/
@@ -75,6 +75,6 @@ theorem predicate_meaning_iff {ι : Type} (qs : ι → Constraint)
 theorem closed_constraint_iff (s : Support) {U : Type u}
     (body : Expr s [] .boolean) (m : IntegerBinding.{u,w} s U) :
     (Constraint.mk s [] body).Holds .nil m ↔
-      ∀ x, (m.model.obj s.context : Set U) x → body.Holds m (Environment.closed x) := Iff.rfl
+      ∀ x, Set.Mem (m.model.obj s.context) x → body.Holds m (Environment.closed x) := Iff.rfl
 
 end Clafer.Constraints

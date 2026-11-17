@@ -51,7 +51,7 @@ theorem Expr.Defined.iff {s : Support} {U : Type u} {Γ}
 
 namespace VersionNavigation
 variable {U : Type u} (m : Model.{u,w} U)
-variable (d : Subtype (m.model.obj (0 : support.Vertex)))
+variable (d : Set.Elem (m.model.obj (0 : support.Vertex)))
 
 -- [proof->req~clafer-constraint-denotation~1]
 /-- The general denotation follows the exact existing primitive bridge. -/

@@ -63,7 +63,7 @@ theorem wrong_binding_rejected : wrongBinding ∉ meaning.meaning () := by
   rintro ⟨m, _, hm, _, _⟩
   have he := m.same_id (3 : s.Vertex) (4 : s.Vertex) rfl
   rw [hm] at he
-  have h0 : (wrongBinding.obj (4 : s.Vertex) : Set Int) 0 := by
+  have h0 : Set.Mem (wrongBinding.obj (4 : s.Vertex)) 0 := by
     change (0 : Int) = 0
     rfl
   rw [← he] at h0
