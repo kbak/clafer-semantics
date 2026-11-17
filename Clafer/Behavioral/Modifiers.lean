@@ -106,7 +106,7 @@ def View.expression {n : Nat} : View C → SetExpr C n
   | .reference d => .thisStep (.deref d)
   | .targets d => .step (.deref d) (.thisStep (.child d))
 
-def View.value (v : View (Fin k)) (p : U) (t : Nat) : Set U :=
+noncomputable def View.value (v : View (Fin k)) (p : U) (t : Nat) : Set U :=
   (v.expression : SetExpr (Fin k) 0).eval m.toEffectiveCore (Structural.observed m τ) (.closed p) t
 
 def initialExpansion (d : C) : Formula (SetAtom C) (SetExpr C) 0 :=

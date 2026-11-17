@@ -38,7 +38,7 @@ noncomputable def bundle (L : Lasso (Fin 4) 8 3) : FiniteBundle L constraints :=
   ⟨fun i => Constraint.finiteNested model L 2 _ (program (cancellationBodies i) true)⟩
 def emptyBundle (L : Lasso (Fin 4) 8 3) : FiniteBundle L noModifiers := ⟨fun i => Fin.elim0 i⟩
 
-def observations (τ : Trace (Fin 4) (Fin 8)) : PartialObservation A D (Fin 8) :=
+noncomputable def observations (τ : Trace (Fin 4) (Fin 8)) : PartialObservation A D (Fin 8) :=
   .ofTotal (.sets Examples.model τ)
 def finiteObservations (L : Lasso (Fin 4) 8 3) :=
   FinitePartialObservation.ofTotal (FiniteObservation.sets Examples.model L)
@@ -49,7 +49,7 @@ theorem empty_modifiers : Set.range noModifiers = modifierConstraints model (fun
   ext c
   simp [noModifiers, modifierConstraints, Modifiers.Effective]
 
-def cancellationModel : Model (Fin 4) A D (Fin 8) :=
+noncomputable def cancellationModel : Model (Fin 4) A D (Fin 8) :=
   Model.behavioral model (fun _ => ∅) observations (Set.range constraints)
 
 noncomputable def check (loop : Fin 4) : Bool :=
@@ -107,7 +107,7 @@ theorem effective_is_final (d : Fin 8) (modifier : Modifiers.Modifier)
   · exact ha
   · exact ha.elim
 
-def inheritedModel : Model (Fin 8) (SetAtom (Fin 8)) (SetExpr (Fin 8)) (Fin 7) :=
+noncomputable def inheritedModel : Model (Fin 8) (SetAtom (Fin 8)) (SetExpr (Fin 8)) (Fin 7) :=
   Model.behavioral (StructuralExamples.model false false) inheritedModifiers
     (fun τ => .ofTotal (.sets (StructuralExamples.model false false).toEffectiveCore
       (Structural.observed (StructuralExamples.model false false) τ))) ∅

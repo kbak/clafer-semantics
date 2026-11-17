@@ -151,7 +151,9 @@ fresh, including on cache hits.
 
 Audit declarations by their originating project modules, including private and
 generated declarations regardless of namespace, with complete `import all`
-coverage. Reject unsafe/partial definitions, new axioms and transitive axiom
+coverage. Check Lean’s generated native constructor indices against their registered
+implementation, exact tag-read body and logical result on every constructor.
+Reject all other unsafe/partial definitions, new axioms and transitive axiom
 dependencies outside `propext`, `Classical.choice` and `Quot.sound`; report these
 standard axioms separately. Reject an empty audit or one missing actual `DPGraph`
 declarations. Zero declarations in a future root only indicate scaffolding.

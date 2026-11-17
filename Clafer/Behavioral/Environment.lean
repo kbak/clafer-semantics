@@ -93,7 +93,7 @@ def image {k : Nat} {U : Type u} (m : Semantics.EffectiveCore k)
 end Step
 
 namespace SetExpr
-def eval {k n : Nat} {U : Type u} (m : Semantics.EffectiveCore k)
+noncomputable def eval {k n : Nat} {U : Type u} (m : Semantics.EffectiveCore k)
     (τ : Trace (Fin k) U) (ρ : Environment U n) (t : Nat) : SetExpr (Fin k) n → Set U
   | .empty => ∅
   | .this => {x | x = ρ.this ∧ x ∈ τ.live t}
