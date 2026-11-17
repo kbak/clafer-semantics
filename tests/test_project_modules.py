@@ -29,6 +29,18 @@ class PublicLibrariesTest(unittest.TestCase):
         file.parent.mkdir(parents=True, exist_ok=True)
         file.write_text(content)
 
+    def test_only_import_adapter_may_import_lean_json_parser(self):
+        adapter = "Clafer/Verification/ImportMain.lean"
+        self.write(adapter, "module\npublic import Lean.Data.Json.Parser\n")
+        validate(self.repo)
+        self.write("DPGraph/Core.lean", "module\npublic import Lean.Data.Json.Parser\n")
+        with self.assertRaisesRegex(ValueError, "unsupported dependency"):
+            validate(self.repo)
+        self.write("DPGraph/Core.lean", "module\n")
+        self.write(adapter, "module\npublic import Lean.Elab.Command\n")
+        with self.assertRaisesRegex(ValueError, "unsupported dependency"):
+            validate(self.repo)
+
     def test_permitted_graph_and_unreachable_new_module_are_fully_enumerated(self):
         self.write("FormalCD/Internal/New.lean", "module\nimport DPGraph.Core\n")
         modules, _ = validate(self.repo)

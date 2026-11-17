@@ -27,8 +27,8 @@ def interpretation {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}
     Interpretation vocabulary.signature (semanticGraph.{z,w} U) :=
   Vocabulary.extendInterpretation (Predicates.interpretation U)
     { meaning
-        | .nd => NameDiscipline C.names
-        | .ad => fun d => ArityDiscipline C.arities d (C.describe d) }
+        | .nd => {d | NameDiscipline C.names d}
+        | .ad => {d | ArityDiscipline C.arities d (C.describe d)} }
 
 theorem builtins_unchanged {R : Registry.{p}} {σ : Signature.{s,va,ua}} {G : Quiv.{v,u}}
     {U : Type z} (C : Context.{p,s,va,ua,v,u,z,w} R σ G U) :

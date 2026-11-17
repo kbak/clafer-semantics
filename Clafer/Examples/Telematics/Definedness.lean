@@ -147,7 +147,7 @@ theorem c02_defined (m : IntegerBinding.{u,w} (support 11) U)
     (vd : TargetMultiplicity Clafer.one (m.model.map ((support 11).arrow 23)))
     (sh : TargetMultiplicity Clafer.one (m.model.map ((support 11).arrow 7)))
     (sd : TargetMultiplicity Clafer.one (m.model.map ((support 11).arrow 24)))
-    (x : Subtype (m.model.obj (11 : Fin 28))) :
+    (x : Set.Elem (m.model.obj (11 : Fin 28))) :
     c02.Defined m (.closed x.val) :=
   VersionNavigation.denotation_defined (versionModel m vh vd sh sd) x
 

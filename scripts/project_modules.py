@@ -138,7 +138,10 @@ def validate(repo):
                     raise ValueError(f"{module}: missing project dependency {dependency}")
                 if LEVEL[dep_root] > level:
                     raise ValueError(f"reverse layer import: {module} -> {dependency}")
-            elif not dependency.startswith("Mathlib."):
+            # The runtime adapter calls the Lean toolchain's JSON parser directly.
+            elif not dependency.startswith("Mathlib.") and (module, dependency) != (
+                "Clafer.Verification.ImportMain", "Lean.Data.Json.Parser"
+            ):
                 raise ValueError(f"{module}: unsupported dependency {dependency}")
     # Check cycles, including root/helper paths. Per-edge layer checks imply
     # transitive layer independence even through arbitrarily many helpers.

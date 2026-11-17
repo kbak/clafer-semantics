@@ -24,18 +24,18 @@ open CategoryTheory Arity
 /-- All symbols have explicit meanings in the bounded graph. -/
 def interpretation (U : Type u) : Interpretation signature (semanticGraph.{u,w} U) where
   meaning
-    | .inverse => fun d => Inverse (d.map OppositeEdge.forward) (d.map OppositeEdge.backward)
-    | .commutation => fun d => Commutation (d.map TriangleEdge.first)
-        (d.map TriangleEdge.second) (d.map TriangleEdge.direct)
-    | .key _ => fun d => Key (fun i => d.map (OutEdge.edge i))
-    | .cover _ => fun d => Cover (fun i => d.map (InEdge.edge i))
-    | .disjoint _ => fun d => Disjoint (fun i => d.map (InEdge.edge i))
-    | .setValued => fun d => SetValued (d.map UnaryEdge.arrow)
-    | .total => fun d => Total (d.map UnaryEdge.arrow)
-    | .singleValued => fun d => SingleValued (d.map UnaryEdge.arrow)
-    | .inclusion => fun d => Inclusion (d.map UnaryEdge.arrow)
-    | .targetMultiplicity range => fun d => TargetMultiplicity range (d.map UnaryEdge.arrow)
-    | .sourceMultiplicity range => fun d => SourceMultiplicity range (d.map UnaryEdge.arrow)
+    | .inverse => {d | Inverse (d.map OppositeEdge.forward) (d.map OppositeEdge.backward)}
+    | .commutation => {d | Commutation (d.map TriangleEdge.first)
+        (d.map TriangleEdge.second) (d.map TriangleEdge.direct)}
+    | .key _ => {d | Key (fun i => d.map (OutEdge.edge i))}
+    | .cover _ => {d | Cover (fun i => d.map (InEdge.edge i))}
+    | .disjoint _ => {d | Disjoint (fun i => d.map (InEdge.edge i))}
+    | .setValued => {d | SetValued (d.map UnaryEdge.arrow)}
+    | .total => {d | Total (d.map UnaryEdge.arrow)}
+    | .singleValued => {d | SingleValued (d.map UnaryEdge.arrow)}
+    | .inclusion => {d | Inclusion (d.map UnaryEdge.arrow)}
+    | .targetMultiplicity range => {d | TargetMultiplicity range (d.map UnaryEdge.arrow)}
+    | .sourceMultiplicity range => {d | SourceMultiplicity range (d.map UnaryEdge.arrow)}
 
 /-- A convenient binding for any unary predicate; endpoints remain subsets. -/
 def unaryDiagram {U : Type u} {A B : Set U} (q : Span.{u,u,max u w} A B) :

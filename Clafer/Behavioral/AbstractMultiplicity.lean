@@ -178,8 +178,8 @@ def model {A D : Nat → Type} (modifiers : Fin n → Set Modifiers.Modifier)
     (constraints : Set (Properties.Constraint (Fin n) A D U)) :
     Properties.Model (Fin n) A D U :=
   { Properties.Model.behavioral m.source modifiers O constraints with
-    admissible := fun σ => (Properties.Model.behavioral m.source modifiers O constraints).admissible σ ∧
-      Always m σ }
+    admissible := {σ | σ ∈ (Properties.Model.behavioral m.source modifiers O constraints).admissible ∧
+      Always m σ} }
 
 -- [proof->req~abstract-multiplicity~1]
 theorem model_satisfies_iff {A D : Nat → Type}

@@ -24,7 +24,7 @@ set_option maxRecDepth 4096
 /-- A failed applicable body rejects the exact attached source symbol. -/
 theorem symbol_rejected {V : Type} (q : ConstraintId ast)
     (m : IntegerBinding (input.constraint q).support V) (hc : m.Coherent)
-    (x : V) (hx : (m.model.obj (input.constraint q).support.context : Set V) x)
+    (x : V) (hx : Set.Mem (m.model.obj (input.constraint q).support.context) x)
     (hf : ¬ ((domains q).close (input.constraint q).body).Holds m (.closed x)) :
     ¬ m.model ∈ (ConstraintMeaning.authored input domains m.realization).meaning q := by
   erw [predicate_meaning_iff input.constraint domains m.realization q m rfl hc]
@@ -224,8 +224,8 @@ theorem conflicting_large_options : ¬ (Probe.model 19 none).model ∈
 obligations may fail; this is a focused zero/one/two group boundary witness. -/
 def xorConfig (k : Fin 3) : Semantics.Configuration (Fin 28) (Fin 3) where
   root := 0
-  head d x := (d = 5 ∧ x = 0) ∨ (d = 6 ∧ x = 1 ∧ 1 ≤ k.val) ∨
-    (d = 7 ∧ x = 2 ∧ k.val = 2)
+  head d := {x | (d = 5 ∧ x = 0) ∨ (d = 6 ∧ x = 1 ∧ 1 ≤ k.val) ∨
+    (d = 7 ∧ x = 2 ∧ k.val = 2)}
   contains d x y := (d = 6 ∧ x = 0 ∧ y = 1 ∧ 1 ≤ k.val) ∨
     (d = 7 ∧ x = 0 ∧ y = 2 ∧ k.val = 2)
   deref _ _ _ := False

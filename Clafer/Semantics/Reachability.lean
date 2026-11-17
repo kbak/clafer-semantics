@@ -82,7 +82,7 @@ theorem concrete_reaches (wf : m.WellFormed) (support : m.Supported)
       m.family.isAbstract d = false → s.Reaches x := by
     intro k
     induction k using Nat.strong_induction_on with
-    | h k ih =>
+    | ind k ih =>
       intro d hdepth x hx hd
       by_cases hroot : d = m.family.root
       · subst d

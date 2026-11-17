@@ -61,7 +61,7 @@ class LakeCacheTest(unittest.TestCase):
             for module in ("DPGraph", "FormalCD", "Clafer"):
                 self.assertNotIn(f"Built {module}", warm.stdout)
                 self.assertTrue((warm_repo / f".lake/build/lib/lean/{module}.olean").is_file())
-            kernel = run(warm_repo, "env", "leanchecker", "--verbose",
+            kernel = run(warm_repo, "env", "lean", "-j", "2", "--run", str(REPO / "tests/leanchecker.lean"), "--verbose",
                          "DPGraph", "FormalCD", "Clafer")
             self.assertEqual(kernel.returncode, 0, kernel.stdout)
             self.assertEqual(set(re.findall(r"^replaying (\S+)$", kernel.stdout, re.M)),

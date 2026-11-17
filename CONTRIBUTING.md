@@ -109,7 +109,10 @@ The shared check discovers every project module, rejects reverse dependencies
 including examples. It batches library/module builds in one Lake invocation and
 passes the three public roots to one verbose `leanchecker` invocation, which
 enumerates their compiled descendants, including unimported helpers/examples.
-This avoids repeated directory scans and overlapping module replay. The checker
+The [replay launcher](tests/leanchecker.lean) resolves package roots before
+Lean 4.36 releases the first imported environment, then runs the toolchain's
+checker with its ordinary arguments. This avoids repeated directory scans
+and overlapping module replay. The checker
 thread pool defaults to four threads; set `LEAN_NUM_THREADS` to choose its size.
 It generates an `import all` audit from
 `tests/axiom_audit.lean`. After the build, it runs that audit, the independent public-import test, all Lean
@@ -118,9 +121,12 @@ These gates precede the expensive kernel replay so failures return earlier.
 Every successful full check still replays the complete discovered module inventory.
 Unowned Lean sources are errors; keep validation harnesses under `tests/`.
 The audit permits only Lean's standard logical axioms (`propext`, `Quot.sound`,
-`Classical.choice`) and reports which are used; it rejects new axioms, unsafe or
-partial project declarations, including private/generated declarations selected
-by module origin. The audit rejects empty/missing DPGraph coverage; zero
+`Classical.choice`) and reports which are used. It selects declarations by module
+origin, including private and generated declarations. For [Lean’s native constructor
+indices](https://github.com/leanprover/lean4/blob/v4.36.0/src/lean/Lean/Meta/Constructions/CtorIdx.lean),
+it checks the registered implementation, its exact tag-read body and the kernel
+index of every constructor. All other unsafe or partial declarations fail the audit.
+The audit rejects empty/missing DPGraph coverage; zero
 FormalCD/Clafer declarations mean scaffolding only. Mathlib is pinned in the Lake files. The check
 first tries Mathlib's normal cache for the imports discovered across every project
 module and Lean test, including helpers/examples outside the public entrypoints.

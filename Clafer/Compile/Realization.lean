@@ -167,9 +167,9 @@ noncomputable def interpretation (U : Type)
   meaning
     | .inl p => (DPGraph.Predicates.interpretation U).meaning p
     | .inr (.inl p) => (groupInterpretation i U authored).meaning (.inr p)
-    | .inr (.inr p) => fun d => ∀ x : Subtype (d.obj (Groups.context (family i) p.val)),
+    | .inr (.inr p) => {d | ∀ x : Set.Elem (d.obj (Groups.context (family i) p.val)),
         InRange ((family i).group p.val).effective.range
-          {y : U // Groups.Objects (family i) d x.val y}
+          {y : U // Groups.Objects (family i) d x.val y}}
 
 noncomputable def descend (s : Configuration a.Occurrence U) :
     (glued i).carrier ⥤q semanticGraph U :=

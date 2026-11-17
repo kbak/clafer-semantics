@@ -46,12 +46,12 @@ def push {s U Γ} (ρ : Environment s U Γ) (b : Local s) (x : U) :
 def closed {s U} (x : U) : Environment s U [] := ⟨x, fun v => nomatch v⟩
 
 def Admissible {s U Γ} (ρ : Environment s U Γ) (b : IntegerBinding.{u,w} s U) : Prop :=
-  (b.model.obj s.context : Set U) ρ.this ∧ ∀ x (v : Var Γ x), (b.model.obj x : Set U) (ρ.lookup v)
+  Set.Mem (b.model.obj s.context) ρ.this ∧ ∀ x (v : Var Γ x), Set.Mem (b.model.obj x) (ρ.lookup v)
 
 -- [proof->req~clafer-constraint-environments~1]
 theorem push_admissible {s U Γ} {ρ : Environment s U Γ}
     {m : IntegerBinding.{u,w} s U} (h : ρ.Admissible m) (b : Local s)
-    {x : U} (hx : (m.model.obj b.element : Set U) x) : (ρ.push b x).Admissible m := by
+    {x : U} (hx : Set.Mem (m.model.obj b.element) x) : (ρ.push b x).Admissible m := by
   refine ⟨h.1, ?_⟩
   intro y v
   cases v with

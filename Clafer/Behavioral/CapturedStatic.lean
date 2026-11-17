@@ -131,7 +131,7 @@ raw singleton environments and must not be advertised as a typing theorem. -/
 theorem admissible_push {Γ : List (Local s)} (m : IntegerBinding.{u,w} s U)
     (ρ : Behavioral.Environment U Γ.length) (σ : Constraints.Environment s U Γ)
     (same : Compatible ρ σ) (typed : σ.Admissible m) (b : Local s) {x : U}
-    (member : (m.model.obj b.element : Set U) x) :
+    (member : Set.Mem (m.model.obj b.element) x) :
     Compatible (ρ.push {x}) (σ.push b x) ∧ (σ.push b x).Admissible m :=
   ⟨compatible_push same b x, Constraints.Environment.push_admissible typed b member⟩
 

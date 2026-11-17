@@ -151,7 +151,9 @@ fresh, including on cache hits.
 
 Audit declarations by their originating project modules, including private and
 generated declarations regardless of namespace, with complete `import all`
-coverage. Reject unsafe/partial definitions, new axioms and transitive axiom
+coverage. Check Lean’s generated native constructor indices against their registered
+implementation, exact tag-read body and logical result on every constructor.
+Reject all other unsafe/partial definitions, new axioms and transitive axiom
 dependencies outside `propext`, `Classical.choice` and `Quot.sound`; report these
 standard axioms separately. Reject an empty audit or one missing actual `DPGraph`
 declarations. Zero declarations in a future root only indicate scaffolding.
@@ -1452,7 +1454,7 @@ Needs: impl
 Implement SoSyM Appendix B.4, Definitions 6–9, using Mathlib `Quiver`,
 `Prefunctor` and bundled `CategoryTheory.Quiv`, with explicit independent symbol,
 arity vertex/arrow and carrier vertex/arrow universe parameters. Pin Mathlib to
-56a005855ea17e0b0958f73ec801ae140b0a1679 and preserve Lean v4.35.0. A signature
+fc4f59e577feb1a4956671bc04ac18aaaf8cd842 and use Lean v4.36.0. A signature
 maps symbols to arity graphs; a formula pairs a symbol with a graph morphism from
 its arity to the carrier; a DP-graph has a carrier and a `Set` of typed formulas.
 Retain repeated arguments and isolated arity vertices. Do not impose categorical

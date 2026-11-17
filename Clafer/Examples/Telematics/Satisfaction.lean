@@ -50,7 +50,7 @@ theorem inclusion_subset (i : Fin 34) (h : (maps i).kind = .inclusion) :
     objects (maps i).source ⊆ objects (maps i).target := by
   fin_cases i <;> try { cases h }
   all_goals intro x hx; cases x <;> simp_all [objects,maps,position,config,heads]
-  all_goals aesop
+  aesop
 
 def model (c : Fin 28) : IntegerBinding (support c) U where
   realization := integers
@@ -319,7 +319,7 @@ theorem c02_all (x : U) (hx : x ∈ objects 11) : c02.Holds (model 11) (.closed 
     exact congrArg (Option.map ULift.up) (integers.extract_encoded 2)
   simpa [Expr.Holds,c02] using denotes_ge _ _ _ _ _ _ hd hs
 
-theorem c02_defined (x : Subtype (objects 11)) : c02.Defined (model 11) (.closed x.val) := by
+theorem c02_defined (x : ↥(objects 11)) : c02.Defined (model 11) (.closed x.val) := by
   apply Telematics.Definedness.c02_defined
   · exact (config.head_multiplicity_iff core.toEffectiveCore typed 21 20 rfl).mpr
       (multiplicities 21 20 rfl)

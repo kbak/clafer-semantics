@@ -43,7 +43,7 @@ structure Model (C : Type) (A D : Nat → Type) (U : Type u) where
 def Model.structural {k : Nat} (m : Structural.Core k)
     (O : Trace (Fin k) U → PartialObservation A D U)
     (constraints : Set (Constraint (Fin k) A D U)) : Model (Fin k) A D U :=
-  ⟨fun τ => m.WellFormed ∧ Structural.Valid m τ, O, constraints⟩
+  ⟨{τ | m.WellFormed ∧ Structural.Valid m τ}, O, constraints⟩
 
 /-- Full source admission adds the independently defined effective modifiers;
 surface transitions/patterns enter through their proved constraint expansions. -/
@@ -51,7 +51,7 @@ def Model.behavioral {k : Nat} (m : Structural.Core k)
     (modifiers : Fin k → Set Modifiers.Modifier)
     (O : Trace (Fin k) U → PartialObservation A D U)
     (constraints : Set (Constraint (Fin k) A D U)) : Model (Fin k) A D U :=
-  ⟨fun τ => m.WellFormed ∧ Structural.Valid m τ ∧ Modifiers.Holds m τ modifiers, O, constraints⟩
+  ⟨{τ | m.WellFormed ∧ Structural.Valid m τ ∧ Modifiers.Holds m τ modifiers}, O, constraints⟩
 
 def Model.Satisfies (m : Model C A D U) (τ : Trace C U) : Prop :=
   τ ∈ m.admissible ∧ ∀ c ∈ m.constraints, c.Holds τ (m.observations τ)

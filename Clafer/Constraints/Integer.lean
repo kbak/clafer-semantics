@@ -47,7 +47,7 @@ theorem IntegerBinding.widen_subset {s U} (b : IntegerBinding.{u,w} s U)
 -- [proof->req~clafer-integer-extraction~1]
 /-- A typed integer collection supplies the domain hypothesis, not uniqueness. -/
 theorem IntegerBinding.singleton_defined {s U} (b : IntegerBinding.{u,w} s U)
-    {v} (primitive : s.integer v = true) {x : U} (hx : (b.model.obj v : Set U) x) :
+    {v} (primitive : s.integer v = true) {x : U} (hx : Set.Mem (b.model.obj v) x) :
     b.realization.extract {x} = some (b.realization.decode x) := by
   apply (b.realization.extract_eq_some_iff _ _).mpr
   exact congrArg (fun z : U => ({z} : Set U)) (b.realization.encode_decode ((b.integer_domain v primitive) ▸ hx)).symm

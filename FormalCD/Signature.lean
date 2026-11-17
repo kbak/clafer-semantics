@@ -73,7 +73,7 @@ theorem embed_injective {G : Quiv.{v,u}} : Function.Injective (V.embed (G := G))
 /-- Built-in meanings at any bounded or abstract semantic graph. -/
 def restrict {Ω : Quiv.{vm,um}} (I : DPGraph.Interpretation V.signature Ω) :
     DPGraph.Interpretation DPGraph.Predicates.signature Ω where
-  meaning p d := I.meaning (V.builtin p) ((V.project p).comp d)
+  meaning p := {d | (V.project p).comp d ∈ I.meaning (V.builtin p)}
 
 @[simp] theorem satisfies_embed {G : Quiv.{v,u}} {Ω : Quiv.{vm,um}}
     (I : DPGraph.Interpretation V.signature Ω) (m : G ⥤q Ω)

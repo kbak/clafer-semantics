@@ -18,7 +18,7 @@ def Collection.Typed {s : Support} {U : Type u} (m : IntegerBinding.{u,w} s U)
   match k with
   | .objects x => fun S => S ⊆ (m.model.obj x : Set U)
   | .relation x y => fun S => ∀ p ∈ S,
-      (m.model.obj x : Set U) p.1 ∧ (m.model.obj y : Set U) p.2
+      Set.Mem (m.model.obj x) p.1 ∧ Set.Mem (m.model.obj y) p.2
 
 private def CollectionResult {s : Support} {U : Type u} (m : IntegerBinding.{u,w} s U) :
     (t : Ty s) → Option (Value U t) → Prop
@@ -133,7 +133,7 @@ theorem Expr.all_defined {s : Support} {U : Type u} {Γ}
     (hρ : ρ.Admissible m) (b : Local s) (fresh : ∀ old ∈ Γ, old.id ≠ b.id)
     (domain : Expr s Γ (.collection (.objects b.element)))
     (body : Expr s (b :: Γ) .boolean)
-    (hb : ∀ x, (m.model.obj b.element : Set U) x →
+    (hb : ∀ x, Set.Mem (m.model.obj b.element) x →
       body.Defined m (ρ.push b x)) :
     (Expr.all b fresh domain body).Defined m ρ := by
   obtain ⟨S,hS,hT⟩ := domain.collection_meaning m ρ hρ

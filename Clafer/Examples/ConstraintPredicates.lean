@@ -34,7 +34,7 @@ def formula (s : Support) (body : Expr s [] .boolean) :
 theorem satisfies_iff (s : Support) (body : Expr s [] .boolean)
     (m : IntegerBinding s U) (hr : m.realization = integers) (hc : m.Coherent) :
     (interpreted s body).Satisfies m.model (formula s body) ↔
-      ∀ x, (m.model.obj s.context : Set U) x → body.Holds m (.closed x) := by
+      ∀ x, Set.Mem (m.model.obj s.context) x → body.Holds m (.closed x) := by
   change (Prefunctor.id s.graph).comp m.model ∈
     (interpreted s body).meaning () ↔ _
   rw [Prefunctor.id_comp]
