@@ -109,7 +109,10 @@ The shared check discovers every project module, rejects reverse dependencies
 including examples. It batches library/module builds in one Lake invocation and
 passes the three public roots to one verbose `leanchecker` invocation, which
 enumerates their compiled descendants, including unimported helpers/examples.
-This avoids repeated directory scans and overlapping module replay. The checker
+The [replay launcher](tests/leanchecker.lean) resolves package roots before
+Lean 4.36 releases the first imported environment, then runs the toolchain's
+checker with its ordinary arguments. This avoids repeated directory scans
+and overlapping module replay. The checker
 thread pool defaults to four threads; set `LEAN_NUM_THREADS` to choose its size.
 It generates an `import all` audit from
 `tests/axiom_audit.lean`. After the build, it runs that audit, the independent public-import test, all Lean

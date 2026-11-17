@@ -83,5 +83,4 @@ run_step 'Python tests (including Lean audit fixtures)' \
 # leanchecker recursively enumerates each public root, including unimported
 # helpers/examples. Avoid rescanning every dependency directory for each leaf.
 run_step 'Kernel checks (all discovered modules)' \
-  env LEAN_NUM_THREADS="${LEAN_NUM_THREADS:-4}" \
-  lake env leanchecker --verbose DPGraph FormalCD Clafer
+  lake env lean -j "${LEAN_NUM_THREADS:-4}" --run tests/leanchecker.lean --verbose DPGraph FormalCD Clafer

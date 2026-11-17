@@ -46,7 +46,7 @@ fi
                 ["bash", str(root / "scripts/check.sh")] + (["--preflight"] if preflight else []),
                 env=dict(os.environ, PATH=str(root / "bin") + os.pathsep + os.environ["PATH"],
                          FACTORY_TESTS=str(root / "profile"), CALLS=str(root / "calls"),
-                         FAIL_STEP=fail, PREFETCH_MODULES=dependencies,
+                         FAIL_STEP=fail, PREFETCH_MODULES=dependencies, LEAN_NUM_THREADS="4",
                          CLAFER_TEST_JOBS=jobs,
                          CLAFER_VALIDATION_PLAN=str(root / "plan.json"), SELECTED_MODE=selection),
                 capture_output=True, text=True, check=False,
@@ -82,7 +82,7 @@ fi
             "lake build DPGraph FormalCD Clafer +DPGraph +DPGraph.Internal.New +FormalCD +Clafer",
         ])
         self.assertEqual([call for call in calls if "leanchecker" in call], [
-            "lake env leanchecker --verbose DPGraph FormalCD Clafer",
+            "lake env lean -j 4 --run tests/leanchecker.lean --verbose DPGraph FormalCD Clafer",
         ])
         for source in (".lake/validation/axiom_audit.lean", "tests/public_imports.lean"):
             self.assertIn(f"lake env lean -DwarningAsError=true {source}", calls)
@@ -106,7 +106,7 @@ fi
         self.assertTrue(any("leanchecker" in call for call in calls))
 
     def test_failed_kernel_check_preserves_prior_gates_and_reports_its_exit(self):
-        result, calls = self.run_check(fail="env leanchecker --verbose DPGraph FormalCD Clafer")
+        result, calls = self.run_check(fail="env lean -j 4 --run tests/leanchecker.lean --verbose DPGraph FormalCD Clafer")
         self.assertEqual(result.returncode, 23)
         self.assertTrue(any("axiom_audit.lean" in call for call in calls))
         self.assertIn("lake env python3 -m unittest discover -s tests -v", calls)
