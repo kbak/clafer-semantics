@@ -58,3 +58,9 @@ run_cmd do
 #check Clafer.Behavioral.Initializers.Structure.single_fibers
 #check Clafer.Behavioral.Initializers.Static.production_constant_agreement
 #check Clafer.Behavioral.Initializers.Finality.production_equivalence
+
+-- [utest->req~abstract-multiplicity~1]
+#check Clafer.Behavioral.AbstractMultiplicity.valid_iff_global
+#check Clafer.Behavioral.AbstractMultiplicity.snapshot_iff
+#check Clafer.Behavioral.AbstractMultiplicity.constant_iff
+#check Clafer.Behavioral.AbstractMultiplicity.model_satisfies_iff

@@ -454,7 +454,10 @@ types under concrete parents, refined containment parents, and inherited/refined
 references. Preserve source-permitted concrete supers; S10's backend restriction
 does not narrow source admission. Require rooted live containment, fixed typed
 actual parents, authored-abstract coverage, reference endpoint validity, multiplicity
-and complete effective-group bounds. Context views restrict existing identities
+and complete effective-group bounds. The separately composed
+[aggregate abstract extension](abstract-multiplicity.md) adds authored global
+bounds and reuses nested bounds through its source projection. Context views
+restrict existing identities
 and parents. Keep effective-default elaboration downstream and its adopted policy
 unchanged. Prove an exact validity equivalence on the historical guarded common
 fragment without relaxing its guards or changing its snapshot/constant theorems.
@@ -803,7 +806,9 @@ bag and inherited correspondence witnesses. Check unused atoms and occurrence
 separation. Keep the [precise hypotheses](behavioral-traces.md#projection-and-constant-embedding),
 source locators, actual Lean trace links and independent-import checks together.
 Do not change existing static Compile/checker contracts or claim temporal
-preservation from pointwise structural agreement.
+preservation from pointwise structural agreement. The separately composed
+[aggregate abstract extension](abstract-multiplicity.md) transports complete
+global heads and nested fibers to live snapshots under its richer validity.
 
 Covers:
 - `intent~formalization-foundation~1`
@@ -1189,7 +1194,8 @@ Maintain a complete B01–B32 and T1–T14 qualification inventory against immut
 source locators. Identify actual source declarations, theorem assumptions,
 positive/negative witnesses and exact downstream obligations for every row.
 Preserve reviewed D1–D5 departures, the adopted initializer extension and its
-explicit unsupported-form diagnostics. Maintain the complete 0.5.8 delta and
+explicit unsupported-form diagnostics. Record the separate
+[aggregate abstract extension](abstract-multiplicity.md) and its profile boundary. Maintain the complete 0.5.8 delta and
 comparison dispositions, including temporal-let capture/strict-definedness,
 absent-reference tuples, initializer transport, concrete supers and retained
 PR113 discrepancies. Pin the selected immutable source bytes without claiming general
@@ -3004,12 +3010,50 @@ global obligations absent from local Shapes. Prove the required ordinary-map
 representation, link/fiber count and key correspondences, object/link renaming
 invariance and completeness of the declared finite representation domain. Keep
 `DPGraph` independently importable and unrestricted. Do not claim global SetMap,
-user-expression semantics or full compiler/optimizer/source preservation.
+user-expression semantics or full compiler/optimizer/source preservation. The
+[aggregate abstract extension](abstract-multiplicity.md) supplies separate global
+obligations without changing this guarded historical satisfaction relation.
 
 Covers:
 - `intent~formalization-foundation~1`
 
 Needs: impl, proof
+
+## Aggregate abstract multiplicity
+
+`req~abstract-multiplicity~1`
+
+Implement the accepted [aggregate abstract contract](abstract-multiplicity.md)
+over complete inherited head views. An authored parentless abstract interval
+bounds its entire extent, including nested realizations across actual parents;
+a nested abstract interval bounds each live declared-parent fiber. Count a
+shared identity once along its super chain and distinct reference heads
+separately even at equal targets. Omission is unrestricted. Cover zero, optional,
+exact, finite and unbounded intervals and empty extents without requiring a
+finite ambient universe. Require these independent static obligations at every
+temporal state, with live-snapshot and constant-observation correspondence.
+
+Prove numeric cardinality reductions under explicit finite head/fiber
+representation premises. Retain both lower and upper bounds independently of
+solver scopes. Preserve concrete/group bounds, inherited identity, keys and
+parent-map contracts. Keep authored ranges separate from optimizer-derived
+bounds and unused-abstract zeroing. Reuse nested local multiplicity; the global
+parentless count extends D3 only in the selected abstract-multiplicity profile.
+Preserve historical profiles and record the departure from SoSyM §5.2,
+§5.3.4 and §5.5 and behavioral §5 Definitions 1, 3 and 5.
+
+Aggregate bounds are not subtype-local interval refinement. Do not infer
+aggregate feasibility from sums of local bounds without accounting for
+ancestor presence/multiplicity, abstract chains and shared identities. Include
+positive/negative structural and temporal witnesses for cross-parent counts,
+optional ancestor absence, exact endpoints, repeated targets, inherited identity
+and changes after time zero. Preserve independent semantic review as an
+acceptance obligation.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
 
 ## Finite structural checker and input protocol
 

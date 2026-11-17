@@ -35,6 +35,12 @@ so numeric choices can be optional without annotating every child. This is a
 language evolution from Appendix 3, separate from the accepted paper corrections;
 the historical SoSyM checkpoint preserves the original default convention.
 
+The [aggregate abstract multiplicity extension](abstract-multiplicity.md) bounds
+complete abstract head views globally for parentless declarations and per live
+declared parent for nested declarations, at every temporal state. Authored
+bounds remain separate from optimizer and solver limits; historical profiles
+retain their admission boundaries.
+
 Structural Compile derives MCS validity under its [resolved-input contract](compile.md).
 Role identities, resolved referents and display names remain separate. Gluing
 uses equal referents under incidence/metadata consistency, with complete effective
@@ -136,6 +142,7 @@ repository revision and tools, as specified in the [import contract](resolved-im
 Exclude production instance generation, general Alloy/SMT/SAT integration,
 production runtime configuration management, Claferize, post-2014 extensions
 beyond the adopted child-default policy,
+[aggregate abstract multiplicity](abstract-multiplicity.md),
 [empty-collection extension](constraint-denotation.md#empty-collections) and the
 separately reviewed behavioral profile, a production parser and visualization.
 Keep the foundation reproducible and
@@ -198,6 +205,7 @@ numbers and ticket chains must not substitute for an explanation.
 | [Constraint denotation](constraint-denotation.md) | Explicit environments, core equations and Appendix 6 elaboration |
 | [Complete telematics model](telematics.md) | All twelve constraint bodies, final selections and concrete whole-model satisfaction |
 | [Inherited realization](inherited-realization.md) | Authoritative declaration/constraint inventories, ordinary fields and explicit abstract families |
+| [Aggregate abstract multiplicity](abstract-multiplicity.md) | Authored global/per-parent bounds, temporal invariance, cardinality bridges and specialization limits |
 | [Group compilation](group-compilation.md) | Effective bounds, inherited child unions and augmented declarations |
 | [Representative models](representative-models.md) | Checked integration, source/feature coverage and explicit Appendix 6 omissions |
 | [Integer extraction](integer-extraction.md) | Primitive realization, partial extraction and Appendix 6 navigation assumptions |
