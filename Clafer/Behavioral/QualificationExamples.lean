@@ -158,7 +158,7 @@ noncomputable def check (a : F) (missingAfter : Fin 4) (truth : Bool) (context :
 -- [utest->req~behavioral-qualification~1]
 theorem strict_false_implication : check (.implies (.not .truth) atom) 0 false = .undefined := by
   simp [check, program, atom, Formula.Program.check, Formula.domainFormula, Formula.lower,
-    Formula.normalize, Core.mapAtoms, FinitePartialObservation.checked, table, Lasso.clock_zero, Lasso.start]
+    Formula.normalize, Core.mapAtoms, FinitePartialObservation.checked, table]
 
 theorem early_truth_still_undefined : check atom.eventually 1 true = .undefined := by
   simp [check, program, atom, Formula.Program.check, Formula.domainFormula, Formula.lower,
@@ -178,7 +178,7 @@ theorem rebirth_new_domain : check atom.eventually 2 false 3 3 = .undefined := b
 
 theorem defined_false_distinct : check atom 1 false = .violated := by
   simp [check, program, atom, Formula.Program.check, Formula.domainFormula, Formula.lower,
-    Formula.normalize, Core.mapAtoms, FinitePartialObservation.checked, table, Lasso.clock_zero, Lasso.start]
+    Formula.normalize, Core.mapAtoms, FinitePartialObservation.checked, table, Lasso.start]
 
 def missingDomain : FinitePartialObservation A D 8 3 :=
   { table 3 true with domain := fun _ _ _ => none }

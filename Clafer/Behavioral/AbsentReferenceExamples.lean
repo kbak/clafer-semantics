@@ -48,7 +48,7 @@ def value : F := .atom (.equal (.thisStep (.deref 2)) (.var 0))
 def present : F := .atom (.inhabited .this)
 
 noncomputable def check (L : Lasso (Fin 4) 8 2) (f : F) (t : Nat) : Bool :=
-  (f.normalize true).lower.finite L (FiniteObservation.sets model L) env (L.clock t)
+  (f.normalize true).lower.finite L (FiniteObservation.sets model L) env t
 
 theorem check_agrees (L : Lasso (Fin 4) 8 2) (f : F) (t : Nat) :
     check L f t = true ↔ f.denote L.unfold (.sets model L.unfold) true env.realize t :=

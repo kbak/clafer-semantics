@@ -21,8 +21,9 @@ composition theorem relates that evaluation to signed source meaning.
 and set-valued binder domains are independently supplied families at that depth;
 `Observation` interprets each over an environment and natural-number time.
 Constructors include truth, atoms, source negation, conjunction, disjunction,
-implication, equivalence, xor, Boolean conditionals, X/F/G/U/W, initial/final
-anchors, all/some/no/one/lone, and set capture (`letSet`). The representation uses
+implication, equivalence, xor, Boolean conditionals, X/F/G/U/W, strong/weak
+previous, once, historically, since, triggered, initial/final anchors,
+all/some/no/one/lone, and set capture (`letSet`). The representation uses
 resolved positions, not names or a parser. Multiple binders can be nested; a
 frontend must retain source disjointness restrictions in its resolved domains.
 
@@ -38,7 +39,10 @@ This total interface does not identify undefined values with false. The separate
 provides `StaticObservation` and primitive-expression adapters with explicit
 captured-environment and definedness obligations. `Formula.Defined` requires all
 operands/members and every active temporal observation defined; `Satisfies`
-combines that domain with the signed denotation below. Completion independence
+combines that domain with the signed denotation below. Past-domain clauses demand
+the predecessor only when available, and all active history for the other past
+operators; the [past contract](behavioral-past.md) states the exact intervals.
+Completion independence
 and exact total compatibility justify reuse. The current static `Expr.not` and
 its partial denotation remain unchanged.
 

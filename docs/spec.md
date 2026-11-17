@@ -810,6 +810,91 @@ Covers:
 
 Needs: impl, proof, utest
 
+## Behavioral past-time foundation
+
+`req~behavioral-past-foundation~1`
+
+Define strong/weak previous, once, historically, since and triggered over
+independent inclusive history intervals bounded by the original attachment's
+parent's current lifetime. Prove agreement with guarded ordinary-past encodings,
+the stated dualities and ordinary meanings under a permanently present parent.
+Preserve time zero, current-state endpoints, parent gaps and rebirth; a late-born
+child may observe earlier events in its parent's uninterrupted lifetime. State
+absent-parent behavior explicitly. Check positive and negative boundary witnesses,
+including the insufficiency of the existing predecessor-bearing lasso clock for
+nested past. Follow the [past contract](behavioral-past.md); this foundation does
+not extend the existing formula/core grammar or finite evaluator.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Initializer birth tests with past operators
+
+`req~behavioral-initializer-birth-test~1`
+
+Prove that a currently present head is born exactly when its captured identity
+has no previous declaration membership, assuming stable declaration selection,
+membership/liveness correspondence and enclosing guard presence. Lift this law
+to the accepted independent per-instance initializer equations without changing
+RHS values, original environments or inactive-birth definedness. Include time
+zero and rebirth and state the insufficiency of changing filtered head sets.
+Prove independence from the particular enclosing guard under those hypotheses.
+Retain a checked counterexample to replacing the declaration guard with strict
+source implication when the inactive RHS is undefined. Follow the
+[birth-test contract](behavioral-past.md#initializer-birth-tests); complete syntax
+elimination and compiler preservation remain separate integration obligations.
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Past formulas, domains and core lowering
+
+`req~behavioral-past-formulas~1`
+
+Extend resolved formulas with strong/weak previous, once, historically, since and
+triggered under the selected parent-lifetime policy. Specify both signs before
+lifetime lowering, preserving existing future clauses and raw counting barriers.
+Use ordinary previous and since as core primitives; derived past operations may
+lower into those primitives and classical connectives. Prove normalization and
+lowering for every constructor and preserve completion independence on the strict
+partial domain. Previous requires a defined operand only at an available previous
+state; other past operands require definedness throughout the active parent
+history, including the current state. No missing observation becomes a Boolean
+value. Lower initializer birth guards into separate truth and domain obligations,
+so inactive births do not demand a defined RHS. Retain original attachment and
+captured identities. Follow the [past contract](behavioral-past.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
+## Exact checking of mixed past and future
+
+`req~behavioral-past-verification~1`
+
+Compile mixed formulas into finite deterministic machines carrying sufficient
+history for previous and since. Preserve captured quantifier identities and let
+sets. Prove agreement with independent infinite core meaning at every absolute
+time, including first and repeated loop visits. Future search must use a proved
+finite-state bound and terminate on a repeated complete state; it must not
+identify histories from equal base clocks or use an arbitrary unrolling horizon.
+Avoid enumerating product state spaces merely to obtain their cardinality.
+Compose the evaluator with source normalization, strict partial checking and
+implicit always over attached constraints. Preserve malformed, unsupported,
+undefined, violated and satisfied outcomes. Check nested mixed operators,
+parent rebirth, changed captures and the established future regressions under the
+[finite verification contract](behavioral-verification.md).
+
+Covers:
+- `intent~formalization-foundation~1`
+
+Needs: impl, proof, utest
+
 ## Behavioral formula meaning and attachment
 
 `req~behavioral-formula-denotation~1`

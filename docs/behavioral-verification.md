@@ -46,26 +46,26 @@ throughout starts once even when the lasso loops to state zero. `Ends` uses the
 actual successor, including the final-to-loop edge.
 
 `starts_agrees`, `ends_agrees` and `parentPresent_agrees` relate these finite
-observations to the independent trace definitions at every absolute time. No
-general past-time operator is introduced; the history component is sufficient
-for the accepted core's lifetime anchors. Arbitrary history-dependent source
-atoms need their own finite representation and agreement evidence.
+observations to independent trace definitions at every absolute time. The base
+clock suffices for lifetime anchors and current-state observations. General past
+operators need additional history: nested previous can distinguish visits with
+the same base clock.
 
-For a finite deterministic state space S, `Orbit.representative` proves that each
-future state has a representative at an offset less than `card S` and no later
-than the original visit. The proof removes a repeated segment from a shortest
-visit. `some_iff`, `every_iff` and `until_iff` use that result for eventuality,
-always and strong until. Shortening an until endpoint retains all preceding
-left-operand requirements. Weak until is always-or-strong-until.
+`FiniteMachine` supplies a finite deterministic state, executable cardinality
+bound and proof of that bound. Products, finite families and one-bit previous/
+since memories compose machines without enumerating their full state spaces.
+Future operators search the reachable orbit of the complete machine state.
+`FiniteOrbit.scan_agrees` proves that stopping at a repeated state or the proved
+cardinality bound is exact for until; eventuality and always follow. No arbitrary
+unrolling horizon or first-loop periodicity assumption is used.
 
-`Core.finite` recursively evaluates every accepted core constructor, using these
-finite searches. Its well-founded syntax recursion carries kernel-checked
-decreasing proofs; syntax size is not a runtime cutoff. Constructor equations
-support kernel reduction of concrete examples. With N stored positions the clock
-has N(N+1) states. That bound
-comes from the finite-state proof; it is not a configurable prefix cutoff. This
-implementation favors a simple checked algorithm, without a performance claim
-for large nested formulas. It does not enumerate possible traces.
+`Core.machine` compiles every core constructor by well-founded syntax recursion.
+`Core.finite` runs that machine at an **absolute natural-number time**, not a base
+clock. Constructor equations support kernel reduction of concrete examples.
+`machine_agrees` proves equality with independent infinite meaning, including
+mixed future/past nesting. Search detects only reachable states, but product
+bounds and nested searches can still be costly; this is not a performance claim
+for large formulas. The checker does not enumerate possible traces.
 
 ## Observations, capture and agreement
 
@@ -73,7 +73,10 @@ for large nested formulas. It does not enumerate possible traces.
 `push` preserves the attachment; temporal steps preserve all captures. Quantifiers
 range over distinct identities in a `Finset`, including identities now absent.
 All/some/no/one/lone implement the accepted counting equations, and `letSet`
-captures the complete set at its evaluation time.
+captures the complete set at its evaluation time. Quantification pairs machines
+for every identity with the current domain. A let pairs machines for each base
+clock's captured domain with the current clock; this retains exact captured
+sets without enumerating all subsets of the identity carrier.
 
 `FiniteObservation` supplies total Boolean atoms and finite domains as functions
 of the environment and clock. `Agrees` requires atom equivalence and domain

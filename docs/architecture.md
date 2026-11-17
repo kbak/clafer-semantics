@@ -80,6 +80,16 @@ owns assumptions, source correspondences and downstream obligations. Separate
 lifecycle, contract and production examples retain their structural witness limits.
 These source modules do not import Compile or Verification.
 
+The [past-time contract](behavioral-past.md) adds independent ordinary and
+parent-bounded interval operators in `Past`, integrated into `Formula`, signed
+normalization and strict domains. `Core` uses ordinary previous and since.
+`InitializerLowering` expands birth/end anchors into presence and temporal
+operators, preserving the original RHS frame and inactive-domain guard.
+`FiniteOrbit` proves cycle-aware search; `FiniteMachine` composes history states,
+and `FiniteEvaluation` proves agreement at every absolute time. The source
+entry point imports no finite evaluator. `PastIntegrationExamples` exercises
+mixed formulas, captured binders, partial results and lowered initializers.
+
 Source meaning is independent of executable IR and target semantics. The upstream
 extension owns infinite traces, stable identity/parent data, lifetime meaning,
 normalization proofs and a justified finite-lasso checker. The downstream compiler
