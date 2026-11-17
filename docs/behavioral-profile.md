@@ -32,7 +32,12 @@ unchanged evidence. A later source commit
 requires a new delta review; a version number or moving branch is insufficient.
 The reviewed **hard-initializers/v1** extension updates B32/D4 according to the
 [initializer contract](behavioral-initializers.md) and accepted #169–#172 decisions.
-The 0.5.8 profile preserves these meanings and D1–D5. It does not establish
+The separately composed **abstract-multiplicity/v1** extension adopts
+[authored aggregate abstract bounds](abstract-multiplicity.md) under the
+accepted [issue #193 decision](https://github.com/kbak/clafer-semantics/issues/193).
+Its source API composes every-state counts with structural/modifier/constraint
+meaning; it does not requalify the 0.5.8 Haskell comparison boundary.
+The 0.5.8 profile preserves its recorded meanings and D1–D5. It does not establish
 unrestricted reference-compiler agreement or complete downstream adoption.
 
 Covers:

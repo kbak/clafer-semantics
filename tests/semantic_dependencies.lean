@@ -1,5 +1,6 @@
 module
 
+import Clafer.Semantics.AbstractMultiplicity
 import Clafer.Semantics.Structural
 import Clafer.Constraints.Denotation
 public meta import Lean.Elab.Command
@@ -29,3 +30,7 @@ example {U : Type u} (R : FormalCD.IntegerRealization U) :
 
 example {U : Type u} (R : FormalCD.IntegerRealization U) {x : U} (h : x ∉ R.domain) :
     R.extract {x} = none := R.extract_wrong_domain h
+
+-- [utest->req~abstract-multiplicity~1]
+#check Clafer.Semantics.AbstractMultiplicity.global_fin_iff
+#check Clafer.Semantics.AbstractMultiplicity.perParent_fin_iff

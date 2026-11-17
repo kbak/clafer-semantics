@@ -71,6 +71,17 @@ and reference observations. It does not claim old `StructuralSatisfies` outside
 the historical common domain. Behavioral public imports remain independent of
 Compile and Verification; the owning `Semantics.Groups` predicate is shared.
 
+## Aggregate abstract multiplicity extension
+
+The separately composed **abstract-multiplicity/v1** profile uses
+[`AbstractMultiplicity`](../Clafer/Behavioral/AbstractMultiplicity.lean) to add
+source-authored global counts for parentless abstracts at every state. Its
+source projection reuses existing nested multiplicity and retains ordinary
+effective bounds, groups, keys and parent maps. The
+[aggregate contract](abstract-multiplicity.md) states the static meaning,
+cardinality/snapshot bridges and specialization limits. Historical `Core`,
+`Valid`, `valid_iff_common` and importer admission remain unchanged.
+
 ## Distinguishing cases
 
 The fully admitted [structural fixtures](../Clafer/Behavioral/StructuralExamples.lean)

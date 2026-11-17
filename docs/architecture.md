@@ -109,6 +109,13 @@ the theorem table below. Its [integration gates](behavioral-profile.md#integrati
 record the ordered acceptance obligations fulfilled by the integration into main.
 New contributions use main-based topic branches.
 
+`Semantics.AbstractMultiplicity` defines independent aggregate count obligations
+and local finite-cardinality bridges. `Behavioral.AbstractMultiplicity` composes
+an authored-bound source projection, every-state validity and full source model
+admission; head/fiber equivalences preserve counts on live snapshots. The
+[aggregate contract](abstract-multiplicity.md) owns the extension's provenance,
+specialization and historical-profile boundaries.
+
 ## DPGraph core and models
 
 [Signature.lean](../DPGraph/Signature.lean), [Formula.lean](../DPGraph/Formula.lean)
