@@ -35,7 +35,7 @@ class ScopeMigrationTest(unittest.TestCase):
         self.assertEqual(digest(selected), RENAMED_SHA256)
         for key in self.expanded.keys() - {"name"}:
             self.assertEqual(json.loads(selected)[key], self.expanded[key])
-        self.assertEqual(selected, (Path(__file__).resolve().parent.parent / "scope.json").read_bytes())
+        self.assertEqual(selected, (Path(__file__).resolve().parent.parent / ".intentbond/scope.json").read_bytes())
 
     def test_project_rename_rejects_each_additional_policy_change(self):
         for key in self.renamed:

@@ -51,7 +51,7 @@ python3 scripts/validation.py check --base BASE_COMMIT --candidate worktree --ou
 ```
 
 Choose a fresh external output directory for each run. The wrapper invokes
-`ib check`, using `scope.json` from that baseline and running `scripts/check.sh`
+`ib check`, using `.intentbond/scope.json` from that baseline and running `scripts/check.sh`
 on a captured source snapshot. It retains `/tmp/clafer-check-selection.json`
 beside the evidence directory, with both source manifests, baseline identity and
 selection reason. Add `--full` to require all validation gates. Direct
@@ -82,7 +82,7 @@ python -c 'from importlib.resources import files; print(files("intentbond") / "s
 
 The wrapper and CI select documentation checks only for regular, nonexecutable
 `README.md` or Markdown under `docs/`. Changes to `CONTRIBUTING.md`, scripts,
-tests, dependencies, workflows, agent instructions or `scope.json` require full
+tests, dependencies, workflows, agent instructions or `.intentbond/scope.json` require full
 validation, as do empty diffs and uncertain comparisons. The
 [selection contract](docs/traceability.md#documentation-validation-selection)
 explains source capture, snapshot verification and retained evidence.

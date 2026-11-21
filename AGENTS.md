@@ -23,13 +23,13 @@ realization, constraint meanings and finite verification.
 Every agent must use [IntentBond](https://github.com/kbak/intentbond) for planning,
 implementation, and review. Read the development skill and its relevant references
 from the revision pinned in [requirements/intentbond.txt](requirements/intentbond.txt):
-[IntentBond skill](https://github.com/kbak/intentbond/blob/f9b4f9e40722dc6a83067ac9e62480159322dd09/intentbond/skills/intentbond/SKILL.md).
+[IntentBond skill](https://github.com/kbak/intentbond/blob/778c9c9c0acd78fb8c63a58c39c1a99992e4807c/intentbond/skills/intentbond/SKILL.md).
 Use the installed package's matching skill when available. If tooling is missing,
 follow [CONTRIBUTING.md](CONTRIBUTING.md); report a concrete blocker instead of
 silently skipping IntentBond.
 
 Read [intent](docs/intent.md), the affected [requirements](docs/spec.md), and
-[scope.json](scope.json). Capture the starting Git commit before editing. Maintain
+[.intentbond/scope.json](.intentbond/scope.json). Capture the starting Git commit before editing. Maintain
 affected requirements, source references, implementation, proofs/tests, and trace
 links together. Run `ib check` before handoff and retain its evidence. Exit 4
 means automated checks passed with semantic review pending; it is not approval.

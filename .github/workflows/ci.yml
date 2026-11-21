@@ -54,9 +54,20 @@ jobs:
         run: |
           candidate=$(git rev-parse HEAD)
           baseline=${PR_BASE:-${PUSH_BASE:-$candidate}}
-          if git cat-file -e "$baseline:scope.json" 2>/dev/null; then
-            git show "$baseline:scope.json" > "$RUNNER_TEMP/baseline-scope.json"
-            git show "$candidate:scope.json" > "$RUNNER_TEMP/candidate-scope.json"
+          scope_path() {
+            python3 - "$1" <<'PYTHON'
+          import sys
+          from pathlib import Path
+          from intentbond.config import commit_scope_path
+
+          print(commit_scope_path(Path.cwd(), sys.argv[1]) or "")
+          PYTHON
+          }
+          baseline_scope=$(scope_path "$baseline")
+          candidate_scope=$(scope_path "$candidate")
+          git cat-file blob "$candidate:$candidate_scope" > "$RUNNER_TEMP/candidate-scope.json"
+          if [ -n "$baseline_scope" ]; then
+            git cat-file blob "$baseline:$baseline_scope" > "$RUNNER_TEMP/baseline-scope.json"
             # Exact, reviewed scope migrations only; retain the real baseline.
             python scripts/ci_scope.py --baseline "$RUNNER_TEMP/baseline-scope.json" \
               --candidate "$RUNNER_TEMP/candidate-scope.json" \
@@ -64,7 +75,7 @@ jobs:
           else
             echo 'Initial scope adoption: checking candidate baseline; adoption requires PR review.' >> "$GITHUB_STEP_SUMMARY"
             baseline=$candidate
-            git show "$candidate:scope.json" > "$RUNNER_TEMP/trusted-scope.json"
+            cp "$RUNNER_TEMP/candidate-scope.json" "$RUNNER_TEMP/trusted-scope.json"
           fi
           python scripts/validation.py prepare --repo "$GITHUB_WORKSPACE" \
             --base "$baseline" --candidate "$candidate" --out "$RUNNER_TEMP/validation-selection.json"

@@ -59,7 +59,7 @@ class ValidationTest(unittest.TestCase):
         # additions and deletions must be treated just like edits.
         self.write("README.md", "Documentation changed\n")
         for path in ["DPGraph.lean", "tests/new.lean", "tests/new.py", "scripts/check.sh",
-                     "scope.json", "AGENTS.md", "CONTRIBUTING.md", ".github/workflows/ci.yml",
+                     ".intentbond/scope.json", "AGENTS.md", "CONTRIBUTING.md", ".github/workflows/ci.yml",
                      "lake-manifest.json", "lean-toolchain", "docs/image.png", "docs/run.py"]:
             with self.subTest(path=path):
                 target = self.repo / path
