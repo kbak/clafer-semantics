@@ -4,7 +4,7 @@ The pinned IntentBond imports OFT coverage tags from actual Lean line, nested
 block and documentation comments. Its temporary comment view lets OpenFastTrace
 4.9.0 parse the tags while retaining original `.lean` paths and physical line
 numbers. Strings and escaped identifiers do not supply coverage. Lean source
-remains captured by `scope.json`, built, kernel checked and selected for review.
+remains captured by `.intentbond/scope.json`, built, kernel checked and selected for review.
 
 ## Lean artifacts
 
@@ -110,7 +110,7 @@ the documentation path. Only changes to regular, nonexecutable `README.md` or
 Markdown under `docs/` qualify; uncertainty selects full validation.
 
 This selects the checks run by the existing baseline command; it does not change
-`scope.json`, coverage requirements or review paths. The selection record contains
+`.intentbond/scope.json`, coverage requirements or review paths. The selection record contains
 the baseline commit, source identities and reason; IntentBond's test log records
 the actual path and results. Keep both with the evidence. Documentation checks do
 not supply fresh Lean execution evidence or semantic approval. See

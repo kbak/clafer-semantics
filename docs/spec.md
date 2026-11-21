@@ -98,7 +98,7 @@ only `README.md` or Markdown beneath `docs/` changed. Include additions, deletio
 and nonignored untracked source. Only regular, nonexecutable Markdown qualifies;
 other changed paths or modes, an unavailable baseline, an empty diff or uncertain
 classification require full validation. Validation scripts, workflows, dependencies,
-agent instructions and `scope.json` therefore require the full check.
+agent instructions and `.intentbond/scope.json` therefore require the full check.
 
 Prepare the selection outside captured source and recheck its complete candidate
 manifest inside the IntentBond snapshot before taking the documentation path.
