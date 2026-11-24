@@ -1,5 +1,6 @@
 module
 
+public import Clafer.Behavioral.ExplicitAnchors
 public import Clafer.Behavioral.Anchors
 public import Clafer.Behavioral.FormulaExamples
 
@@ -63,5 +64,50 @@ theorem endless_final_is_vacuous :
   have : c = 0 := hc
   subst c
   exact fun h => h.2 (cycling_valid.root_live (t + 1))
+
+def presentThis {n} : SF n := .atom (.inhabited .this)
+
+private theorem some_this (ρ : Environment (Fin 8) 0) (t : Nat) :
+    presentThis.raw cycling sets ρ t ↔ ρ.this ∈ cycling.live t := by
+  change (∃ x, x = ρ.this ∧ x ∈ cycling.live t) ↔ _
+  simp
+
+/-- The attachment is live at state 2. At states 3 and 4 its parent survives,
+but the context is absent. Testing only predecessor absence invents a birth. -/
+-- [utest->req~behavioral-past-formulas~1]
+theorem nested_initially_requires_current_presence :
+    let ρ : Environment (Fin 8) 0 := .closed 2
+    let p : SF 0 := .not .truth
+    let written := (p.initially.next.next).lower.expandAnchors
+    let printed := ((presentThis.previous.not.implies p).next.next).lower
+    ρ.this ∈ cycling.live 2 ∧ written.eval cycling sets ρ 2 ∧
+      ¬ printed.eval cycling sets ρ 2 ∧ printed.AnchorFree := by
+  dsimp only
+  rw [Core.expandAnchors_agrees, Formula.lower_agrees, Formula.lower_agrees]
+  refine ⟨by simp [Environment.closed, cycling, phaseLive], ?_, ?_, by trivial⟩
+  · simp only [Formula.raw, Lifetime.next, not_true_eq_false]
+    intro _ _ birth
+    exact (by simp [cycling, phaseLive] : (2 : Fin 8) ∉ cycling.live 4) birth.1
+  · simp only [Formula.raw, Lifetime.next, Lifetime.previous, some_this, not_true_eq_false]
+    intro h
+    have parent (t : Nat) : cycling.ParentPresent 2 t :=
+      Or.inr ⟨0, rfl, cycling_valid.root_live t⟩
+    exact h (parent 3) (parent 4) (fun prev =>
+      (by simp [cycling, phaseLive] : (2 : Fin 8) ∉ cycling.live 3) prev.2)
+
+/-- Signed source negation remains inside the anchor. Even an exact classical
+birth test cannot turn a negated inactive anchor into a negated implication. -/
+-- [utest->req~behavioral-past-formulas~1]
+theorem negation_at_inactive_root_birth :
+    let ρ : Environment (Fin 8) 0 := .closed 0
+    (Formula.not (.initially .truth) : SF 0).denote cycling sets true ρ 1 ∧
+    ¬ (Formula.not (.implies (.and presentThis (.not (.previous presentThis))) .truth) : SF 0).denote
+      cycling sets true ρ 1 := by
+  dsimp only
+  constructor
+  · intro birth
+    have := (cycling.root_starts model cycling_valid 1).mp birth
+    contradiction
+  · simp [Formula.denote, polarity]
 
 end Clafer.Behavioral.AnchorExamples
