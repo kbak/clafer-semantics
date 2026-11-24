@@ -93,6 +93,25 @@ truth/domain lowering for instance, parent and global clocks. Its aggregate-prof
 composition preserves original declaration views and every-state counts; choosing
 an explicit clock does not relax general Boolean definedness.
 
+## Explicit surface anchors
+
+At the raw Boolean stage, replace `initially p` with
+`(some this && !(previous (some this))) => p` and `finally p` with
+`(some this && X (no this)) => p`. The [recursive lowering and agreement
+proof](../Clafer/Behavioral/ExplicitAnchors.lean) cover every formula constructor,
+including binders. The presence observation must denote the live context at
+each binding depth, and every live context must have a present parent in the
+sense of `Trace.ParentPresent`. A valid trace supplies the latter premise. Under
+`root_live` the root is born only at zero and never dies.
+
+The [0.6.0 candidate's birth test](https://github.com/gsdlab/clafer/blob/6f3911a9d823ecd647f14168436656c08a4f24d8/src/Language/Clafer/Intermediate/Core.hs#L202-L220)
+omits current presence. Attachment supplies it at entry, but two nested next
+operators can reach the second absent state of a child whose parent survives.
+The [checked example](../Clafer/Behavioral/AnchorExamples.lean) distinguishes
+the two meanings there. Raw agreement applies after resolving polarity and
+definedness: a source negation stays inside the anchor, and an inactive anchor
+demands no defined RHS. Preserve those stages when compiling source formulas.
+
 ## Finality in the same core
 
 The [modifier reduction](behavioral-surface.md#common-temporal-core) reuses
