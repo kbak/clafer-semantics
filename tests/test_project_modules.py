@@ -115,6 +115,7 @@ class PublicLibrariesTest(unittest.TestCase):
             "Clafer.Behavioral.PastIntegrationExamples",
             "Clafer.Behavioral.FiniteOrbit", "Clafer.Behavioral.FiniteMachine",
             "Clafer.Behavioral.InitializerLowering",
+            "Clafer.Behavioral.ExplicitAnchors",
             "Clafer.Behavioral.Formula", "Clafer.Behavioral.Denotation",
             "Clafer.Behavioral.Normalization", "Clafer.Behavioral.Lowering",
             "Clafer.Behavioral.FormulaExamples",
