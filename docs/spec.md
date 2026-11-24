@@ -927,6 +927,11 @@ Expose modifier obligations at the same ordinary core boundary, eliminating
 birth/end anchors as well as rich modifier operations. Finality may reuse
 capture and next; availability of past does not require a past-based encoding.
 
+For raw formulas with total observations, compare recursive surface anchor
+expansion before lowering with expansion in the lowered core. Require an
+anchor-free result at every binding depth, including evaluation outside the
+context's lifetime. Retain the independent signed and partial source contracts.
+
 Covers:
 - `intent~formalization-foundation~1`
 
