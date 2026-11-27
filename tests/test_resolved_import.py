@@ -245,6 +245,33 @@ class PinnedImportTests(unittest.TestCase):
             d["iModule"]["_mDecls"][2]["_iClafer"]["_super"] = copy.deepcopy(d["iModule"]["_mDecls"][1]["_iClafer"]["_super"])
         self.rejected_ir(reference_inheritance, "inheritance_fragment")
 
+    def test_nested_abstract_super_annotations(self):
+        # Mirrors the declaration chains in upstream gi67 and gi78, including
+        # the inferred containment of a syntactically top-level extension.
+        sources = [
+            "abstract P\n  abstract A\nabstract B : A\np : P\n  member : B\n",
+            "abstract O\nabstract P : O\n  abstract A : O\n  abstract B : A\np : P\n  member : B\n",
+        ]
+        for index, text in enumerate(sources):
+            with self.subTest(source=text):
+                source = self.directory / f"nested-abstract-{index}.cfr"
+                source.write_text(text)
+                receipt = p.loads(subprocess.check_output([str(self.exporter), str(source)], timeout=120))
+                self.assertEqual("captured", receipt["status"])
+                with self.assertRaises(p.Rejection) as refusal:
+                    p.validate_generation(p.seal_receipt(receipt), source.read_bytes(),
+                                          receipt["json"].encode(), receipt["alloy"].encode())
+                self.assertEqual(("unsupported", "abstract_fragment"),
+                                 (refusal.exception.category, refusal.exception.code))
+                ir = p.loads(receipt["json"])
+                declarations = p.flatten_ir(ir["iModule"])
+                owner, target = ("member", "B") if index == 0 else ("B", "A")
+                annotation = declarations[owner]["_super"]["_iType"]
+                self.assertEqual([target], annotation["_hi"])
+                annotation["_hi"] = ["forged"]
+                with self.assertRaisesRegex(p.Rejection, "type_hierarchy"):
+                    p.decode_ir(ir)
+
     def test_source_audit_before_desugaring(self):
         cases = ["enum Color = red | blue\n", "x = 1\n", "x -> integer\n",
                  "x\n[ some x ]\n", "x\nassert [ some x ]\n", "x\n<< max #x >>\n",

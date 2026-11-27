@@ -313,9 +313,9 @@ def decode_ir(document):
                 reference_modifiers(ref["_refModifiers"], uid)
                 mode = "set" if ref["_isSet"] else "bag"
                 target = direct(ref["_ref"], uid)
-                slots.append((uid, ref["_ref"]))
+                slots.append((uid, ref["_ref"], False))
             if sup is not None:
-                slots.append((uid, c["_super"]))
+                slots.append((uid, c["_super"], True))
             nodes.append(dict(uid=uid, name=name, parent=c["_parentUID"], abstract=abstract,
                               super=sup, mode=mode, target=target,
                               card=c["_card"], group=group["_interval"]))
@@ -338,12 +338,17 @@ def decode_ir(document):
         ranks[uid] = len(result)
         return result
     hierarchies = {uid: hierarchy(uid) for uid in by_id}
-    for owner, exp in slots:
+    for owner, exp, is_super in slots:
         uid = exp["_exp"]["_sident"]
-        if exp["_iType"]["_hi"] != hierarchies[uid]:
-            reject("type_hierarchy", owner)
-        if exp["_exp"]["_isTop"] != (by_id[uid]["parent"] in {"root", "clafer"}):
+        target = by_id[uid]
+        if exp["_exp"]["_isTop"] != (target["parent"] in {"root", "clafer"}):
             reject("top_flag", owner)
+        annotation = exp["_iType"]["_hi"]
+        if annotation != hierarchies[uid]:
+            # 0.5.8 records only the immediate nested abstract on these supers.
+            if is_super and annotation == [uid] and target["abstract"] and target["parent"] != "clafer":
+                unsupported("abstract_fragment", uid)
+            reject("type_hierarchy", owner)
     # #50's exact S guards, also checked by Lean after finite indexing.
     for n in nodes:
         children = [c for c in nodes if c["parent"] == n["uid"]]
