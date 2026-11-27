@@ -3499,7 +3499,7 @@ Needs: impl, proof
 `req~clafer-resolved-import~1`
 
 Implement the authorized [resolved importer](resolved-import.md) under `Clafer/Verification/`, reusing the
-accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). Import
+accepted [effective core, candidate interface and guarded structural semantics](structural-checker.md). By default import
 only analyzed JSON from the exact reviewed 0.5.8 release
 `gsdlab/clafer@dbc06d37ef23eb9186d1016e3bf678858621e92d` under the versioned [import protocol](resolved-import.md). Preserve compiler UIDs
 separately from display names, parent/super/reference identities, effective local
@@ -3511,6 +3511,11 @@ and escaped, collision-distinct UIDs. Reject other compiler revisions, including
 the previous 0.5.8 prerelease, 0.5.7 and 0.5.4, and mixed schemas. Historical
 capture import and comparison replay use the original repository revision and
 matching tools; preserve their evidence unchanged.
+An explicitly selected [0.6.0 candidate](resolved-import.md#060-candidate-capture-and-replay)
+may capture and replay the same guarded fragment under its own producer,
+generation and export identities. Require the enum flag to be false on user
+declarations and registry entries, check the lowering of unused abstracts and
+the rebuilt backend map, and reject cross-profile bundles in both directions.
 Check the modifier lists, decimal registry and exact default options
 without adding temporal, inherited-reference or primitive-value support.
 

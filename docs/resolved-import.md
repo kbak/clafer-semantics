@@ -10,6 +10,25 @@ harness](bounded-comparison.md) supplies candidate pinning, scoped solver execut
 command replacement and replay; these remain outside the importer theorem. Broader Appendix 6
 realization does not enlarge the import whitelist.
 
+## 0.6.0 candidate capture and replay
+
+Select `--profile 0.6.0-candidate` explicitly on both `capture.py capture` and
+`capture.py import` to qualify a bundle from the 0.6.0 library. Build the
+exporter and matching claferIG metadata probe with the same profile on
+`runtime.py` or `build.py`. The default importer and bounded-comparison
+harness retain the accepted 0.5.8 identity.
+
+The candidate checks rich JSON and static Alloy from one library invocation.
+Every declaration and implicit registry entry has a Boolean `_enum` modifier.
+Only `false` is admissible. The source audit also excludes enum declarations
+before desugaring. The exporter records the rich/core and provenance options.
+For the guarded fragment, the allowed rich-to-backend change before renaming
+is a zero card on unused abstract leaves. The returned declarations retain
+their rich bounds. The backend always rebuilds its UID map after lowering.
+The importer checks this map and the Alloy module returned by the generator
+even when every name maps to itself. See the
+[pinned generator](https://github.com/gsdlab/clafer/blob/a7c58d30a4c04c566e9a53b03d013cff19f192f0/src/Language/Clafer.hs#L632-L710).
+
 ## Build and replay
 
 Use Python 3.11+, the pinned Lean toolchain, Stack 3.11.1, GHC 9.12.4 and GMP headers.
@@ -145,7 +164,7 @@ python3 scripts/verification/build.py --profile 0.5.8 \
 
 The resulting `clafer-capture input.cfr` emits the raw generation receipt;
 `metadata-probe input.cfr` emits metadata, and `metadata-probe --synthetic` checks
-encoder-only cases. Current `capture.py` accepts only the selected 0.5.8
+encoder-only cases. With its default profile, `capture.py` requires the selected 0.5.8
 manifest/build/schema combination, including the exact metadata source and IG
 archive identities. The full validation suite executes live qualification and
 retains fresh raw captures and metadata externally; `CLAFER_CANDIDATE_EVIDENCE`

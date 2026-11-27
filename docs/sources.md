@@ -1435,25 +1435,23 @@ optimization correctness and from the separate [bounded Alloy comparison](bounde
 The public release branches contain three MIT-licensed sources. The
 [Haskell compiler](https://github.com/gsdlab/clafer/tree/a7c58d30a4c04c566e9a53b03d013cff19f192f0)
 supplies the JSON producer. The
-[Java tools](https://github.com/gsdlab/chocosolver/tree/591cbd5963fc7ee0cb4c514ee1f6273327898798)
+[Java tools](https://github.com/gsdlab/chocosolver/tree/01078a7eb357deb7dcb7948d31fbf7e529f8d9b0)
 supply `claferc` for rich/core text and native Alloy output, `clafersg` for
 static Choco instances and temporal Alloy traces, and the `clafer-ls` language
 server. The [VS Code extension](https://github.com/gsdlab/clafer-vscode/blob/26045bf0870395d6f0b744966ee048169c6fd187/extension.js)
 starts that server, invokes Haskell `clafer` for its compile command and offers
 both `clafersg` and `claferIG` for generation. HTML, JSON and Alloy generation
 with an Alloy escape use the Haskell fallback in
-[`claferc`](https://github.com/gsdlab/chocosolver/blob/591cbd5963fc7ee0cb4c514ee1f6273327898798/frontend/src/main/java/org/clafer/frontend/ClaferCommand.java).
+[`claferc`](https://github.com/gsdlab/chocosolver/blob/01078a7eb357deb7dcb7948d31fbf7e529f8d9b0/frontend/src/main/java/org/clafer/frontend/ClaferCommand.java).
 
 In Haskell `-m json` output, an ordinary declaration carries
 `_modifiers._enum = false`. In `enum E = a | b`, the head and both literals
 carry `true`. The [serialized declaration](https://github.com/gsdlab/clafer/blob/a7c58d30a4c04c566e9a53b03d013cff19f192f0/src/Language/Clafer/Intermediate/Intclafer.hs#L143-L152)
 therefore differs even on inputs in the guarded structural fragment.
-[Importer issue #206](https://github.com/kbak/clafer-semantics/issues/206)
-tracks the schema change. The [0.5.8 import contract](resolved-import.md)
-checks an exact modifier record and compiler identity. Admitting 0.6.0 requires
-its own paired exporter, registry and consumed-map checks, including rejection of
-enum-bearing input and mixed-generation receipts. A CLI JSON file alone cannot
-supply those observations. Decimal optimization and temporal trace generation
+The [opt-in 0.6.0 importer](resolved-import.md#060-candidate-capture-and-replay)
+checks the paired exporter, registry and backend UID map. It rejects enum-bearing
+input and mixed-generation receipts. The default profile still requires the
+exact 0.5.8 modifier record and compiler identity. Decimal optimization and temporal trace generation
 also lie outside this structural import contract.
 
 ## Compiler 0.5.8 adapter sources

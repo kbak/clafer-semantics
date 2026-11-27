@@ -11,8 +11,8 @@ import hashlib
 import json
 import re
 import copy
-import compiler_profile as profile
-from compiler_profile import PIN, VERSION, ARCHIVE, SOURCE_TREE, EXPORTER, GENERATION, EXPORT_SCHEMA, STACK_LOCK
+import compiler_profile as current
+import release060_profile
 from pathlib import Path
 
 SCHEMA = "clafer-import/1"
@@ -261,7 +261,7 @@ def checked_names(g, users, registry):
 
 
 @strict_boundary
-def decode_ir(document):
+def decode_ir(document, *, profile=current):
     """Preserve preorder and compiler UIDs; never index by display name."""
     if type(document) is not dict:
         reject("fields", "JSON envelope")
@@ -289,7 +289,12 @@ def decode_ir(document):
             name = string(c["_ident"], "name", True)
             if not re.fullmatch(IDENTIFIER, name):
                 reject("name_syntax", uid)
-            mods = exact(c["_modifiers"], {"_abstract", "_initial", "_final", "_finalReferences"}, uid)
+            fields = {"_abstract", "_initial", "_final", "_finalReferences"}
+            if profile is release060_profile:
+                fields.add("_enum")
+            mods = exact(c["_modifiers"], fields, uid)
+            if profile is release060_profile and boolean(mods["_enum"], uid):
+                unsupported("enum", uid)
             reference_modifiers(mods["_finalReferences"], uid)
             for key in ("_abstract", "_initial", "_final"):
                 boolean(mods[key], uid)
@@ -381,26 +386,37 @@ def flatten_ir(module):
 
 @strict_boundary
 # [impl->req~clafer-compiler-capture~1]
-def validate_generation(g, source, ir, alloy):
+def validate_generation(g, source, ir, alloy, *, profile=current):
     registry = REGISTRY
     exact(g, {"status", "schema", "effective_options", "backend", "source_audit", "post_analysis",
         "post_strings", "strings", "output_strings", "scopes", "consumed_map", "implicit_template",
         "observations", "top_fragments", "header", "json", "alloy", "state_hashes",
         "source_map", "alloy_names", "backend_ir"}, "generation")
-    if g["schema"] != GENERATION:
+    if g["schema"] != profile.GENERATION:
         unsupported("generation_version")
     if encoded(g["state_hashes"]) != encoded(state_hashes(g)):
         reject("state_hash")
     if g["status"] != "captured" or g["backend"] != "als":
         unsupported("backend")
     # JSON true == 1 in Python; byte-canonical comparison preserves scalar types.
-    if encoded(g["effective_options"]) != encoded(OPTIONS):
+    release060 = profile is release060_profile
+    options = dict(OPTIONS, core=False, record_provenance=False) if release060 else OPTIONS
+    if encoded(g["effective_options"]) != encoded(options):
         unsupported("options")
     if g["json"].encode() != ir or g["alloy"].encode() != alloy:
         reject("paired_output")
     parsed = loads(ir)
-    nodes, metadata = decode_ir(parsed)
-    if encoded(g["post_analysis"]) != encoded(parsed["iModule"]) or encoded(g["post_strings"]) != encoded(g["post_analysis"]):
+    nodes, metadata = decode_ir(parsed, profile=profile)
+    solver_ir = parsed["iModule"]
+    if release060:
+        # The rich JSON keeps the authored effective card. The static backend
+        # zeros unused abstract leaves even when --keep_unused retains them.
+        solver_ir = copy.deepcopy(solver_ir)
+        declarations = flatten_ir(solver_ir)
+        for n in nodes:
+            if n["unused"]:
+                declarations[n["uid"]]["_card"] = [0, 0]
+    if encoded(g["post_analysis"]) != encoded(parsed["iModule"]) or encoded(g["post_strings"]) != encoded(solver_ir):
         unsupported("string_pass_changed_ir")
     expected_scopes = [[n["uid"], 0] for n in sorted(nodes, key=lambda n: n["uid"]) if n["unused"]]
     if encoded(g["scopes"]) != encoded(expected_scopes):
@@ -444,6 +460,8 @@ def validate_generation(g, source, ir, alloy):
             _gcard=dict(_isKeyword=False, _interval=[0, -1]), _ident=uid, _uid=uid,
             _parentUID="", _super=None, _reference=None, _card=[1, 1], _glCard=[1, 1], _elements=[])
         expected["_modifiers"]["_finalReferences"] = []
+        if release060:
+            expected["_modifiers"]["_enum"] = False
         sup = {"integer": "decimal", "int": "decimal", "decimal": "real", "double": "real"}.get(uid)
         if sup:
             expected["_super"] = dict(_iType=None, _pid="", _inPos=None,
@@ -483,7 +501,8 @@ def validate_generation(g, source, ir, alloy):
             unsupported("global_card_processing", uid)
         interval(old["_card"], uid)
         n = next(n for n in nodes if n["uid"] == uid)
-        if old["_card"] != c["_card"] and not (n["unused"] and old["_card"] == [0, -1] and c["_card"] == [0, 0]):
+        legacy_zero = profile is current and n["unused"] and old["_card"] == [0, -1] and c["_card"] == [0, 0]
+        if old["_card"] != c["_card"] and not legacy_zero:
             unsupported("stale_consumed_card", uid)
         for e in old["_elements"]:
             if encoded(e) != encoded(dict(tag="IEClafer", _iClafer=consumed[e["_iClafer"]["_uid"]])):
@@ -493,12 +512,13 @@ def validate_generation(g, source, ir, alloy):
     inverse = {a: u for u, a in names.items()}
     backend_users = flatten_ir(g["backend_ir"])
     expected_consumed = consumed
-    if any(u != a for u, a in names.items()):
+    if release060 or any(u != a for u, a in names.items()):
         expected_consumed = copy.deepcopy(template) | backend_users
         expected_consumed["root"]["_elements"] = g["backend_ir"]["_mDecls"]
     if encoded(pairs_map(g["consumed_map"], "consumed_map_keys")) != encoded(expected_consumed):
         reject("backend_consumed_map")
-    nodes = [dict(n, **{k: names.get(n[k], n[k]) for k in ("uid", "parent", "super", "target")}) for n in source_nodes]
+    nodes = [dict(n, card=backend_users[names[n["uid"]]]["_card"],
+                  **{k: names.get(n[k], n[k]) for k in ("uid", "parent", "super", "target")}) for n in source_nodes]
     users = backend_users
     scopes = "" if not expected_scopes else " but " + ", ".join(f"{b} {names[u]}" for u, b in expected_scopes)
     if g["header"] != "open util/integer\npred show {}\nrun show for 1" + scopes + "\n\n":
@@ -621,11 +641,13 @@ def validate_generation(g, source, ir, alloy):
 
 
 @strict_boundary
-def import_bundle(directory):
+def import_bundle(directory, *, profile=current):
+    if profile not in (current, release060_profile):
+        unsupported("version")
     p = Path(directory)
     manifest = loads((p / "manifest.json").read_bytes())
     exact(manifest, {"schema", "compiler_commit", "compiler_version", "export_schema", "inputs", "bounds"}, "manifest")
-    if (manifest["schema"], manifest["compiler_commit"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, PIN, VERSION, EXPORT_SCHEMA):
+    if (manifest["schema"], manifest["compiler_commit"], manifest["compiler_version"], manifest["export_schema"]) != (SCHEMA, profile.PIN, profile.VERSION, profile.EXPORT_SCHEMA):
         unsupported("version")
     exact(manifest["inputs"], {"input.cfr", "analyzed.json", "model.als", "generation.json", "build.json"}, "artifacts")
     files = {}
@@ -636,12 +658,12 @@ def import_bundle(directory):
         files[name] = data
     build = loads(files["build.json"])
     exact(build, {"schema", "compiler_commit", "compiler_archive_sha256", "source_tree_sha256", "resolver", "ghc_version", "stack_version", "stack_lock", "exporter_source", "exporter_binary", "compiler_sources_unchanged", "instance_generator_commit", "instance_generator_archive_sha256", "metadata_source", "metadata_binary"}, "build")
-    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", PIN, ARCHIVE, profile.RESOLVER, profile.GHC_VERSION, profile.STACK_VERSION, True):
+    if (build["schema"], build["compiler_commit"], build["compiler_archive_sha256"], build["resolver"], build["ghc_version"], build["stack_version"], build["compiler_sources_unchanged"]) != ("clafer-capture-build/1", profile.PIN, profile.ARCHIVE, profile.RESOLVER, profile.GHC_VERSION, profile.STACK_VERSION, True):
         unsupported("build_identity")
     boolean(build["compiler_sources_unchanged"], "source matching")
-    if build["source_tree_sha256"] != SOURCE_TREE or build["stack_lock"] != STACK_LOCK:
+    if build["source_tree_sha256"] != profile.SOURCE_TREE or build["stack_lock"] != profile.STACK_LOCK:
         unsupported("source_or_dependency_pin")
-    exporter = Path(__file__).with_name(EXPORTER).read_bytes()
+    exporter = Path(__file__).with_name(profile.EXPORTER).read_bytes()
     if build["exporter_source"] != digest(exporter):
         unsupported("exporter_revision")
     if (build["instance_generator_commit"], build["instance_generator_archive_sha256"]) != (profile.IG_PIN, profile.IG_ARCHIVE):
@@ -653,7 +675,7 @@ def import_bundle(directory):
         natural(build[key]["bytes"], key)
         if not re.fullmatch("[0-9a-f]{64}", build[key]["sha256"]):
             reject("hash_syntax", key)
-    nodes, metadata, ownership = validate_generation(loads(files["generation.json"]), files["input.cfr"], files["analyzed.json"], files["model.als"])
+    nodes, metadata, ownership = validate_generation(loads(files["generation.json"]), files["input.cfr"], files["analyzed.json"], files["model.als"], profile=profile)
     exact(manifest["bounds"], {"root", *(n["uid"] for n in nodes)}, "explicit bounds")
     for uid, bound in manifest["bounds"].items():
         natural(bound, uid)
@@ -663,4 +685,4 @@ def import_bundle(directory):
     names = dict(generation["alloy_names"])
     return dict(schema=SCHEMA, declarations=nodes), dict(metadata=metadata, fields=ownership,
         bounds=manifest["bounds"], signatures={n["uid"]: names[n["uid"]] for n in nodes},
-        original_command=generation["header"].splitlines()[2] + "\n", compiler_commit=PIN)
+        original_command=generation["header"].splitlines()[2] + "\n", compiler_commit=profile.PIN)
