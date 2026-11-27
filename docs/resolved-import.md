@@ -237,6 +237,13 @@ It rejects enums, initializers, assertions/goals/constraints, temporal forms,
 escapes, source option directives and non-direct type expressions. The decoder
 checks every constructor/field, duplicate JSON keys, scalar types, bindings and
 type hierarchies, source/receipt options, root conventions and output ownership.
+The 0.5.8 exporter can annotate a super with just its immediate nested abstract
+target when that target has an ancestor. The importer reports this observed
+shape as `unsupported:abstract_fragment` before instance checking. Every super
+and reference in the admitted fragment still requires the complete hierarchy.
+See the upstream [gi67](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/test/positive/gi67-extending-nested-abstract.cfr)
+and [gi78](https://github.com/gsdlab/clafer/blob/dbc06d37ef23eb9186d1016e3bf678858621e92d/test/positive/gi78-extending-nested-abstract.cfr) models.
+
 Unknown forms are rejected. Reference cycles do not trigger hierarchy traversal.
 Parent/super cycles, dangling/reserved IDs and backend-symbol collisions fail.
 Display names may repeat.
