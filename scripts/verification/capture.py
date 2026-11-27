@@ -6,17 +6,19 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from compiler_profile import PIN, VERSION, EXPORT_SCHEMA
+import compiler_profile as current
+import release060_profile
+from build_profiles import select
 from protocol import SCHEMA, Rejection, digest, encoded, import_bundle, loads, reject, seal_receipt, check_candidate_bounds, strict_boundary
 
 
 # [impl->req~clafer-compiler-capture~1]
 @strict_boundary
-def capture(source, exporter, build_file, bounds, output):
+def capture(source, exporter, build_file, bounds, output, *, profile=current):
     source, exporter, build_file, output = map(Path, (source, exporter, build_file, output))
     build_bytes = build_file.read_bytes()
     build = loads(build_bytes)
-    if build["compiler_commit"] != PIN:
+    if build["compiler_commit"] != profile.PIN:
         reject("build_identity", category="unsupported")
     if build["exporter_binary"] != digest(exporter.read_bytes()):
         reject("exporter_binary_hash")
@@ -39,10 +41,10 @@ def capture(source, exporter, build_file, bounds, output):
              "build.json": build_bytes}
     for name, data in files.items():
         (output / name).write_bytes(data)
-    manifest = dict(schema=SCHEMA, compiler_commit=PIN, compiler_version=VERSION,
-                    export_schema=EXPORT_SCHEMA, inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
+    manifest = dict(schema=SCHEMA, compiler_commit=profile.PIN, compiler_version=profile.VERSION,
+                    export_schema=profile.EXPORT_SCHEMA, inputs={n: digest(d) for n, d in files.items()}, bounds=bounds)
     (output / "manifest.json").write_bytes(encoded(manifest))
-    return import_bundle(output)
+    return import_bundle(output, profile=profile)
 
 
 def main():
@@ -57,12 +59,15 @@ def main():
     r = sub.add_parser("import")
     r.add_argument("bundle", type=Path)
     r.add_argument("--candidate", type=Path)
+    for command in (c, r):
+        command.add_argument("--profile", choices=(current.NAME, release060_profile.NAME), default=current.NAME)
     args = p.parse_args()
+    profile = select(args.profile)
     try:
         if args.command == "capture":
-            core, metadata = capture(args.source, args.exporter, args.build, loads(args.bounds.read_bytes()), args.output)
+            core, metadata = capture(args.source, args.exporter, args.build, loads(args.bounds.read_bytes()), args.output, profile=profile)
         else:
-            core, metadata = import_bundle(args.bundle)
+            core, metadata = import_bundle(args.bundle, profile=profile)
         # Both commands pass the checked external data to Lean admission. Replay
         # uses the existing checker; UID translation of candidate classes is Lean-side.
         candidate = loads(args.candidate.read_bytes()) if args.command == "import" and args.candidate else None
