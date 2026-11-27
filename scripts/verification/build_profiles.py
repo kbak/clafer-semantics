@@ -2,8 +2,9 @@
 import compiler_profile
 import candidate_profile
 import legacy_profile
+import release060_profile
 
-PROFILES = {p.NAME: p for p in (compiler_profile, candidate_profile, legacy_profile)}
+PROFILES = {p.NAME: p for p in (compiler_profile, candidate_profile, legacy_profile, release060_profile)}
 
 
 def select(name):

@@ -203,6 +203,29 @@ jobs:
             sudo apt-get install -y --no-install-recommends libgmp-dev
           fi
           python scripts/verification/runtime.py --profile 0.5.7 --github-env "$RUNNER_TEMP/clafer-legacy"
+      - name: Cache 0.6.0 candidate exporter and metadata probe
+        if: steps.selection.outputs.mode != 'docs'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/clafer-060/clafer-capture
+            ${{ runner.temp }}/clafer-060/build.json
+            ${{ runner.temp }}/clafer-060/metadata-probe
+            ${{ runner.temp }}/clafer-060/builder.sha256
+          key: clafer-060-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/verification/Export060.hs', 'scripts/verification/Metadata.hs', 'scripts/verification/release060_profile.py', 'scripts/verification/build.py', 'scripts/verification/runtime.py') }}
+      - name: Prepare 0.6.0 candidate capture
+        if: steps.selection.outputs.mode != 'docs'
+        run: |
+          if ! python scripts/verification/runtime.py --profile 0.6.0-candidate --check-cache "$RUNNER_TEMP/clafer-060"; then
+            if ! dpkg-query -W -f='${db:Status-Status}' libgmp-dev 2>/dev/null | grep -qx installed; then
+              sudo apt-get update
+              sudo apt-get install -y --no-install-recommends libgmp-dev
+            fi
+            # Both releases use the same pinned Stack and GHC. Stack separates snapshots by lock.
+            mkdir -p "$RUNNER_TEMP/clafer-060" "$RUNNER_TEMP/clafer-compiler/stack-root"
+            ln -s "$RUNNER_TEMP/clafer-compiler/stack-root" "$RUNNER_TEMP/clafer-060/stack-root"
+          fi
+          python scripts/verification/runtime.py --profile 0.6.0-candidate --github-env "$RUNNER_TEMP/clafer-060"
       - name: Cache pinned Alloy download
         if: steps.selection.outputs.mode != 'docs'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
