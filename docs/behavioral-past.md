@@ -104,11 +104,16 @@ each binding depth, and every live context must have a present parent in the
 sense of `Trace.ParentPresent`. A valid trace supplies the latter premise. Under
 `root_live` the root is born only at zero and never dies.
 
-The [0.6.0 candidate's birth test](https://github.com/gsdlab/clafer/blob/6f3911a9d823ecd647f14168436656c08a4f24d8/src/Language/Clafer/Intermediate/Core.hs#L202-L220)
+The [earlier 0.6.0 candidate's birth test](https://github.com/gsdlab/clafer/blob/6f3911a9d823ecd647f14168436656c08a4f24d8/src/Language/Clafer/Intermediate/Core.hs#L202-L220)
 omits current presence. Attachment supplies it at entry, but two nested next
 operators can reach the second absent state of a child whose parent survives.
 The [checked example](../Clafer/Behavioral/AnchorExamples.lean) distinguishes
-the two meanings there. Raw agreement applies after resolving polarity and
+the two meanings there. The [0.6.0 release-branch implementation](https://github.com/gsdlab/clafer/blob/a7c58d30a4c04c566e9a53b03d013cff19f192f0/src/Language/Clafer/Intermediate/Core.hs#L292-L308)
+requires current presence for a nested context. Both the Haskell and Java core
+printers emit that conjunct under two nested next operators. The root specialization
+uses the assumption that the root is always live.
+
+Raw agreement applies after resolving polarity and
 definedness: a source negation stays inside the anchor, and an inactive anchor
 demands no defined RHS. Preserve those stages when compiling source formulas.
 
