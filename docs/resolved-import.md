@@ -164,7 +164,7 @@ python3 scripts/verification/build.py --profile 0.5.8 \
 
 The resulting `clafer-capture input.cfr` emits the raw generation receipt;
 `metadata-probe input.cfr` emits metadata, and `metadata-probe --synthetic` checks
-encoder-only cases. Current `capture.py` accepts only the selected 0.5.8
+encoder-only cases. With its default profile, `capture.py` requires the selected 0.5.8
 manifest/build/schema combination, including the exact metadata source and IG
 archive identities. The full validation suite executes live qualification and
 retains fresh raw captures and metadata externally; `CLAFER_CANDIDATE_EVIDENCE`
